@@ -16,8 +16,6 @@
     "deploy": "npm run config:check && npm run check && npm run build && wrangler deploy --config wrangler.generated.json"
   },
   "dependencies": {
-    "@fontsource/marmelad": "^5.2.8",
-    "@fontsource/roboto": "^5.2.8",
     "@tailwindcss/vite": "^4.3.3",
     "astro": "^7.3.5",
     "tailwindcss": "^4.3.3"
