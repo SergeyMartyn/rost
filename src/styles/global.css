@@ -6,6 +6,23 @@
   --color-line: #c5ceca;
   --color-accent: #245c49;
   --font-sans: Arial, Helvetica, sans-serif;
+
+  /* Shared spacing scale: 0.5 = 2px, 1 = 4px, 2 = 8px, etc. */
+  --spacing: 4px;
+  --spacing-page-mobile: 20px;
+  --spacing-page-tablet: 32px;
+  --spacing-page-desktop: 48px;
+  --container-content: 1200px;
+
+  /* Radius names and values follow Tailwind CSS v4. */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+  --radius-3xl: 24px;
+  --radius-4xl: 32px;
 }
 @layer base {
   html {
