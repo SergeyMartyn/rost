@@ -1,0 +1,44 @@
+---
+import type { Language } from '../lib/site';
+const { lang } = Astro.props as { lang: Language };
+const ru = lang === 'ru';
+---
+
+<dialog id="consent" aria-labelledby="consent-title" data-lang={lang}>
+  <h2 id="consent-title" class="text-2xl font-bold mb-3">
+    {ru ? 'Ваш выбор конфиденциальности' : 'Ihre Datenschutzauswahl'}
+  </h2>
+  <p class="mb-5">
+    {ru
+      ? 'Необязательные сервисы включаются только с вашего согласия. Выбор можно изменить внизу страницы.'
+      : 'Optionale Dienste werden nur mit Ihrer Einwilligung aktiviert. Sie können Ihre Auswahl im Seitenfuß ändern.'}
+  </p>
+  <div id="consent-options" hidden class="mb-5 space-y-3">
+    <p>
+      {ru
+        ? 'Необходимые функции: всегда включены.'
+        : 'Notwendige Funktionen: immer aktiv.'}
+    </p>
+    <label data-purpose="analytics" class="block">
+      <input type="checkbox" value="analytics" />{' '}
+      {ru ? 'Статистика посещений' : 'Besuchsstatistik'}
+    </label>
+    <label data-purpose="media" class="block">
+      <input type="checkbox" value="media" />{' '}
+      {ru ? 'Внешние медиа' : 'Externe Medien'}
+    </label>
+    <button data-consent="save">
+      {ru ? 'Сохранить выбор' : 'Auswahl speichern'}
+    </button>
+  </div>
+  <div class="flex flex-wrap gap-3">
+    <button data-consent="accept">{ru ? 'Принять' : 'Akzeptieren'}</button>
+    <button data-consent="reject">{ru ? 'Отклонить' : 'Ablehnen'}</button>
+    <button data-consent="configure">{ru ? 'Настроить' : 'Einstellen'}</button>
+  </div>
+</dialog>
+<script>
+  import { initConsent } from '../lib/consent';
+  import { services } from '../lib/services';
+  initConsent(services);
+</script>

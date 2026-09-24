@@ -1,0 +1,112 @@
+@import 'tailwindcss';
+@import '@fontsource/marmelad/400.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/700.css';
+
+@theme {
+  /* Brand & accent */
+  --color-primary: #214c3f;
+  --color-primary-dark: #0d352b;
+  --color-secondary: #577064;
+  --color-tertiary: #708d68;
+  --color-accent-gold: #f0cf63;
+  --color-accent-gold-soft: #f8edbd;
+  --color-accent-terracotta: #ee8f7f;
+  --color-accent-terracotta-soft: #f7e4dc;
+
+  /* Surface */
+  --color-surface: #ffffff;
+  --color-surface-mint: #e5f0e8;
+  --color-surface-sage: #dde9d4;
+  --color-surface-cream: #f5f7f0;
+
+  /* Text */
+  --color-ink: #3c564c;
+  --color-on-dark: #ffffff;
+
+  /* Footer */
+  --color-footer-bg: #284d3f;
+
+  /* Legacy aliases used by base styles below */
+  --color-paper: var(--color-surface-cream);
+  --color-muted: var(--color-secondary);
+  --color-line: var(--color-surface-sage);
+  --color-accent: var(--color-primary);
+
+  /* Fonts */
+  --font-display: 'Marmelad', sans-serif;
+  --font-sans: 'Roboto', Arial, Helvetica, sans-serif;
+
+  /* Radius */
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 26px;
+  --radius-2xl: 30px;
+  --radius-3xl: 38px;
+  --radius-pill: 999px;
+
+  /* Section rhythm */
+  --spacing-section: 68px;
+  --spacing-section-lg: 115px;
+}
+@layer base {
+  html {
+    font-family: var(--font-sans);
+    background: var(--color-paper);
+    color: var(--color-ink);
+    line-height: 1.6;
+    hyphens: none;
+    word-break: normal;
+    overflow-wrap: normal;
+  }
+  body {
+    margin: 0;
+  }
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+  }
+  a {
+    text-underline-offset: 0.25em;
+  }
+  a:hover {
+    text-decoration: underline;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 5px;
+  }
+  button {
+    cursor: pointer;
+    border: 1px solid var(--color-ink);
+    border-radius: 0.5rem;
+    padding: 0.65rem 1rem;
+    background: white;
+    color: var(--color-ink);
+    font: inherit;
+  }
+  button:hover {
+    background: #e8eee9;
+  }
+  input {
+    accent-color: var(--color-accent);
+  }
+  dialog {
+    max-width: min(36rem, calc(100% - 2rem));
+    max-height: 85dvh;
+    overflow: auto;
+    padding: 1.5rem;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    margin: auto;
+    background: var(--color-paper);
+  }
+  dialog::backdrop {
+    background: #16272199;
+  }
+  [hidden] {
+    display: none !important;
+  }
+}

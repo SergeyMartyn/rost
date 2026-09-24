@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.astro/
+.wrangler/
+.env*
+.dev.vars*
+wrangler.generated.json
+test-results/
+playwright-report/
+.copy-check/

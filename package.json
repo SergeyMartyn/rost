@@ -1,0 +1,37 @@
+{
+  "name": "astro-bilingual-template",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "format": "prettier --write .",
+    "test:copy": "node scripts/copy-check.mjs",
+    "dev": "astro dev",
+    "check": "astro check",
+    "build": "astro build && node scripts/worker-config.mjs",
+    "preview": "wrangler dev --config wrangler.generated.json --local",
+    "test": "tsx --test tests/*.test.ts",
+    "test:browser": "playwright test",
+    "config:check": "node scripts/config-check.mjs",
+    "deploy": "npm run config:check && npm run check && npm run build && wrangler deploy --config wrangler.generated.json"
+  },
+  "dependencies": {
+    "@fontsource/marmelad": "^5.2.8",
+    "@fontsource/roboto": "^5.2.8",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.5",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.2",
+    "esbuild": "^0.28.2",
+    "prettier": "^3.9.9",
+    "prettier-plugin-astro": "^1.0.1",
+    "sharp": "^0.35.4",
+    "tsx": "^4.23.15",
+    "typescript": "^6.0.3",
+    "wrangler": "^4.138.0"
+  }
+}

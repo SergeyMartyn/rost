@@ -1,0 +1,27 @@
+---
+import { routes } from '../lib/site';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex" />
+    <title>404 — Seite nicht gefunden / Страница не найдена</title>
+  </head>
+  <body>
+    <main class="max-w-3xl mx-auto p-8">
+      <h1 class="text-3xl mb-8">404</h1>
+      <p>Seite nicht gefunden.</p>
+      <p lang="ru">Страница не найдена.</p>
+      <nav class="flex flex-wrap gap-8 mt-8">
+        <a href={routes.home.de}>Startseite</a>
+        <a href={routes.home.ru} lang="ru">
+          Главная
+        </a>
+      </nav>
+    </main>
+  </body>
+</html>

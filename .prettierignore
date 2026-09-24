@@ -1,0 +1,10 @@
+node_modules
+dist
+.astro
+.wrangler
+.copy-check
+docs
+worker-configuration.d.ts
+package-lock.json
+wrangler.generated.json
+test-results

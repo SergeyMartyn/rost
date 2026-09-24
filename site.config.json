@@ -1,0 +1,21 @@
+{
+  "name": "R.O.S.T.",
+  "domain": "https://rost.community",
+  "defaultLanguage": "ru",
+  "workerName": "rost",
+  "legal": {
+    "operator": "",
+    "address": "",
+    "email": "",
+    "privacyContact": ""
+  },
+  "legalText": {
+    "imprint": { "de": "", "ru": "" },
+    "privacy": { "de": "", "ru": "" }
+  },
+  "routes": {
+    "home": { "de": "/de/", "ru": "/ru/" },
+    "imprint": { "de": "/de/impressum/", "ru": "/ru/pravovaya-informatsiya/" },
+    "privacy": { "de": "/de/datenschutz/", "ru": "/ru/konfidentsialnost/" }
+  }
+}

@@ -1,0 +1,106 @@
+---
+import {
+  site,
+  name,
+  origin,
+  routes,
+  languages,
+  text,
+  type Language,
+  type Page,
+} from '../lib/site';
+import Consent from '../components/Consent.astro';
+import '../styles/global.css';
+const { lang, page, title, description } = Astro.props as {
+  lang: Language;
+  page: Page;
+  title: string;
+  description: string;
+};
+const t = text[lang];
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>{title} · {name}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={new URL(routes[page][lang], origin)} />
+    {languages.map((l) => (
+      <link
+        rel="alternate"
+        hreflang={l}
+        href={new URL(routes[page][l], origin)}
+      />
+    ))}
+    <link
+      rel="alternate"
+      hreflang="x-default"
+      href={new URL(routes[page][site.defaultLanguage as Language], origin)}
+    />
+    <meta property="og:title" content={`${title} · ${name}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'ru_RU'} />
+    <meta property="og:url" content={new URL(routes[page][lang], origin)} />
+    <meta property="og:image" content={new URL('/social.png', origin)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body class="min-h-dvh flex flex-col">
+    <a class="fixed -top-20 focus:top-3 left-3 bg-white p-3 z-50" href="#main">
+      {t.skip}
+    </a>
+    <header class="border-b border-line">
+      <div class="max-w-6xl mx-auto px-5 md:px-8 py-6 flex flex-wrap items-center justify-between gap-5">
+        <a class="font-bold text-xl" href={routes.home[lang]}>
+          {name}
+        </a>
+        <nav aria-label={lang === 'ru' ? 'Язык' : 'Sprache'} class="flex gap-5">
+          {languages.map((l) => (
+            <a
+              href={routes[page][l]}
+              lang={l}
+              hreflang={l}
+              data-language={l}
+              aria-current={lang === l ? 'true' : undefined}
+            >
+              {l === 'de' ? 'Deutsch' : 'Русский'}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+    <main
+      id="main"
+      tabindex="-1"
+      class="w-full max-w-6xl mx-auto px-5 md:px-8 py-16 md:py-24 lg:py-28 flex-1"
+    >
+      <slot />
+    </main>
+    <footer class="border-t border-line">
+      <div class="max-w-6xl mx-auto px-5 md:px-8 py-8 flex flex-wrap gap-x-8 gap-y-4 text-sm">
+        <span>
+          © {new Date().getFullYear()} {name}
+        </span>
+        <a href={routes.imprint[lang]}>{t.imprint}</a>
+        <a href={routes.privacy[lang]}>{t.privacy}</a>
+        <button id="consent-open" hidden>
+          {t.settings}
+        </button>
+      </div>
+    </footer>
+    <Consent lang={lang} />
+    <script>
+      document
+        .querySelectorAll<HTMLAnchorElement>('[data-language]')
+        .forEach((a) =>
+          a.addEventListener('click', () => {
+            document.cookie = `site_language=${a.dataset.language}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`;
+          }),
+        );
+    </script>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+---
+import { routes } from '../lib/site';
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="robots" content="noindex,follow" />
+    <title>Sprache wählen / Выберите язык</title>
+  </head>
+  <body>
+    <main class="max-w-3xl mx-auto p-8">
+      <h1 class="text-3xl mb-8">
+        Sprache wählen / <span lang="ru">Выберите язык</span>
+      </h1>
+      <nav class="flex flex-wrap gap-8">
+        <a href={routes.home.de} lang="de">
+          Deutsch
+        </a>
+        <a href={routes.home.ru} lang="ru">
+          Русский
+        </a>
+      </nav>
+    </main>
+    <script>
+      document.querySelectorAll('a').forEach((a) =>
+        a.addEventListener('click', () => {
+          document.cookie = `site_language=${a.lang}; Path=/; Max-Age=31536000; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`;
+        }),
+      );
+    </script>
+  </body>
+</html>
