@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Events from '../components/Events.astro';
 import Formats from '../components/Formats.astro';
+import Faq from '../components/Faq.astro';
 import {
   routes,
   languages,
@@ -37,13 +38,14 @@ const title = page === 'home' ? t.title : t[page];
       <Hero lang={lang} />
       <Events lang={lang} />
       <Formats lang={lang} />
+      <Faq lang={lang} />
     </>
   ) : (
-    <div class="max-w-3xl">
-      <p class="text-accent mb-5">
-        {site.legalText[page][lang] ? t[page] : t.legal}
-      </p>
-      <h1 class="text-2xl md:text-5xl lg:text-6xl leading-tight font-bold mb-8">
+    <div class="font-hero-sans">
+      {!site.legalText[page][lang] && (
+        <p class="text-brand mb-5">{t.legal}</p>
+      )}
+      <h1 class="font-display text-2xl md:text-5xl lg:text-6xl leading-tight text-brand mb-8">
         {title}
       </h1>
       {!site.legalText[page][lang] && (
@@ -55,15 +57,32 @@ const title = page === 'home' ? t.title : t[page];
           : ['operator', 'privacyContact', 'email']
         ).map((key) => (
           <div>
-            <dt class="font-bold">{t[key as keyof typeof t]}</dt>
+            <dt class="font-bold text-brand">{t[key as keyof typeof t]}</dt>
             <dd>{site.legal[key as 'operator'] || `[${t.legal}]`}</dd>
           </div>
         ))}
       </dl>
-      <p class="mt-8 whitespace-pre-line">
-        {site.legalText[page][lang] ||
-          `[${lang === 'ru' ? 'Текст страницы: нужно подготовить и проверить' : 'Seitentext: ergänzen und prüfen'}]`}
-      </p>
+      {site.legalText[page][lang] ? (
+        <div class="mt-8 space-y-6 leading-relaxed">
+          {site.legalText[page][lang].split('\n\n').map((section) => {
+            const lines = section.split('\n');
+            const isHeadingOnly = lines.length === 1 && lines[0].length < 120;
+            const heading = lines.length > 1 ? lines[0] : isHeadingOnly ? lines[0] : null;
+            const bodyLines = lines.length > 1 ? lines.slice(1) : isHeadingOnly ? [] : lines;
+            const body = bodyLines.join(' ');
+            return (
+              <div>
+                {heading && <p class="font-bold text-brand mb-2">{heading}</p>}
+                {body && <p>{body}</p>}
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <p class="mt-8 leading-relaxed">
+          {`[${lang === 'ru' ? 'Текст страницы: нужно подготовить и проверить' : 'Seitentext: ergänzen und prüfen'}]`}
+        </p>
+      )}
     </div>
   )}
 </Layout>

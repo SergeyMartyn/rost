@@ -1,0 +1,136 @@
+---
+import type { Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+
+const copy =
+  lang === 'ru'
+    ? {
+        eyebrow: 'Спрашивай — отвечаем',
+        heading: 'Можно просто спросить',
+        intro:
+          'Спросите о том, что важно именно вам, — мы расскажем, как проходят встречи и чего ожидать.',
+        items: [
+          {
+            question: 'Лучше приходить одному или с другом?',
+            answer:
+              'Как вам комфортнее. Многие приходят одни и тоже никого заранее не знают. Ведущие помогают начать разговор, поэтому искать компанию для первого визита необязательно. Если хочется прийти с другом или партнёром — приходите вместе.',
+          },
+          {
+            question: 'Как проходит первая встреча?',
+            answer:
+              'На встрече-знакомстве сначала представляются ведущий и команда. Затем они помогают участникам познакомиться — например, через короткие разговоры в формате карусели. Это непринуждённо и весело: не нужно заранее знать кого-то из гостей или придумывать идеальный рассказ о себе.',
+          },
+          {
+            question: 'Кто обычно приходит на встречи?',
+            answer:
+              'Люди, которым хочется расширить круг общения в Германии: познакомиться, найти друзей и делать что-то вместе. У участников разный опыт и интересы. Не нужно быть экспертом в какой-то теме, чтобы прийти и почувствовать себя частью компании.',
+          },
+          {
+            question: 'Где проходят мероприятия?',
+            answer:
+              'Ближайшие встречи запланированы в Регенсбурге и Мюнхене. Место зависит от формата и числа участников. Город и подробности площадки мы укажем в описании конкретного мероприятия.',
+          },
+          {
+            question: 'Нужно ли записываться заранее?',
+            answer:
+              'Да, пожалуйста, записывайтесь заранее. Иногда у площадки ограниченная вместимость, и нам важно понимать, сколько человек придёт. Способ записи и условия участия будут указаны для каждой встречи отдельно.',
+          },
+          {
+            question: 'Сколько стоит участие?',
+            answer:
+              'Это зависит от встречи. Некоторые мероприятия бесплатны, другие могут стоить примерно от 30 до 70 € — в зависимости от формата, площадки, продолжительности и программы. Точную стоимость всегда укажем заранее в описании мероприятия.',
+          },
+          {
+            question: 'На каком языке мы общаемся?',
+            answer:
+              'R.O.S.T. — русскоязычное сообщество, поэтому чаще всего мы говорим по-русски. Немецкий и английский тоже приветствуются, хотя не каждый участник владеет всеми языками. Если вы совсем не говорите по-русски, всё равно приходите: практически все в сообществе говорят по-немецки.',
+          },
+          {
+            question: 'Есть ли возрастные ограничения?',
+            answer:
+              'Встречи рассчитаны на взрослых — для участия нужно быть совершеннолетним. Чаще всего участникам от 30 до 50 лет, но для знакомства важнее общие интересы и желание быть вместе, чем точное совпадение возраста.',
+          },
+          {
+            question: 'Можно ли предложить свою тему или формат встречи?',
+            answer:
+              'Конечно. Если у вас есть идея — расскажите нам. Обсудим, кому она может быть интересна и как её воплотить. Нам нравится, когда участники не только приходят на встречи, но и помогают придумывать новые поводы собраться.',
+          },
+        ],
+      }
+    : {
+        eyebrow: 'Frag uns einfach',
+        heading: 'Du kannst einfach fragen',
+        intro:
+          'Frag uns, was dir wichtig ist. Wir erzählen dir, wie unsere Treffen ablaufen und was dich erwartet.',
+        items: [
+          {
+            question: 'Komme ich besser allein oder mit jemandem zusammen?',
+            answer:
+              'So, wie du dich wohlfühlst. Viele kommen allein und kennen vorher ebenfalls niemanden. Die Moderation hilft dabei, ins Gespräch zu kommen. Du musst dir also für deinen ersten Besuch keine Begleitung suchen. Wenn du lieber mit einem Freund, einer Freundin oder deinem Partner kommst, ist das genauso willkommen.',
+          },
+          {
+            question: 'Wie läuft das erste Treffen ab?',
+            answer:
+              'Bei einem Kennenlerntreffen stellen sich zunächst die Moderation und das Team vor. Danach helfen sie allen, miteinander ins Gespräch zu kommen, zum Beispiel in kurzen Gesprächsrunden. Das ist locker und macht Spaß. Du musst niemanden kennen und keine perfekte Vorstellung von dir vorbereiten.',
+          },
+          {
+            question: 'Wer kommt zu den Treffen?',
+            answer:
+              'Menschen, die ihren Freundeskreis in Deutschland erweitern möchten: um neue Bekanntschaften zu schließen, Freunde zu finden und gemeinsam etwas zu unternehmen. Sie bringen unterschiedliche Erfahrungen und Interessen mit. Du musst auf keinem Gebiet Experte sein, um dabei zu sein.',
+          },
+          {
+            question: 'Wo finden die Veranstaltungen statt?',
+            answer:
+              'Die nächsten Treffen sind in Regensburg und München geplant. Der genaue Ort hängt vom Format und von der Zahl der Teilnehmenden ab. Stadt und Veranstaltungsort nennen wir in der Beschreibung des jeweiligen Treffens.',
+          },
+          {
+            question: 'Muss ich mich vorher anmelden?',
+            answer:
+              'Ja, bitte melde dich im Voraus an. Manche Veranstaltungsorte haben nur begrenzt Platz, und wir müssen wissen, mit wie vielen Menschen wir rechnen können. Wie du dich anmeldest und welche Bedingungen gelten, steht bei jedem Treffen.',
+          },
+          {
+            question: 'Was kostet die Teilnahme?',
+            answer:
+              'Das hängt vom Treffen ab. Manche Veranstaltungen sind kostenlos, andere kosten ungefähr 30 bis 70 € – je nach Format, Ort, Dauer und Programm. Den genauen Preis nennen wir immer vorab in der Veranstaltungsbeschreibung.',
+          },
+          {
+            question: 'In welcher Sprache sprechen wir?',
+            answer:
+              'R.O.S.T. ist eine russischsprachige Community. Meistens sprechen wir deshalb Russisch. Deutsch und Englisch sind ebenfalls willkommen, auch wenn nicht alle Mitglieder jede Sprache sprechen. Wenn du gar kein Russisch sprichst, komm trotzdem gern vorbei: Praktisch alle in der Community sprechen Deutsch.',
+          },
+          {
+            question: 'Gibt es eine Altersgrenze?',
+            answer:
+              'Unsere Treffen richten sich an Erwachsene. Du musst also volljährig sein. Die meisten Teilnehmenden sind zwischen 30 und 50 Jahre alt. Für neue Kontakte zählen gemeinsame Interessen und Lust auf Begegnung aber mehr als ein genau passendes Alter.',
+          },
+          {
+            question: 'Kann ich ein Thema oder ein neues Format vorschlagen?',
+            answer:
+              'Natürlich. Wenn du eine Idee hast, erzähl uns davon. Wir besprechen, für wen sie interessant sein könnte und wie wir sie umsetzen können. Wir freuen uns, wenn Mitglieder nicht nur zu Treffen kommen, sondern auch neue Anlässe für gemeinsame Zeit mitgestalten.',
+          },
+        ],
+      };
+---
+
+<section class="faq" aria-labelledby="faq-title">
+  <div class="faq__inner site-container">
+    <div class="faq__intro">
+      <p class="faq__eyebrow">{copy.eyebrow}</p>
+      <h2 class="faq__heading" id="faq-title">{copy.heading}</h2>
+      <p class="faq__lead">{copy.intro}</p>
+    </div>
+
+    <div class="faq__list">
+      {copy.items.map((item, index) => (
+        <details class="faq__item" name="rost-faq" open={index === 0}>
+          <summary class="faq__question">
+            <span class="faq__question-text">{item.question}</span>
+            <span class="faq__toggle" aria-hidden="true"></span>
+          </summary>
+          <p class="faq__answer">{item.answer}</p>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

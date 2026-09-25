@@ -2,6 +2,7 @@
 @import './hero.css';
 @import './events.css';
 @import './formats.css';
+@import './faq.css';
 
 @font-face {
   font-family: Onest;
@@ -57,6 +58,7 @@
   --color-formats-gold: #fff4cc;
   --color-formats-peach: #feeee8;
   --color-formats-mint: #eaf6f1;
+  --color-faq-surface: #f2f4f2;
   --font-sans: Arial, Helvetica, sans-serif;
   --font-hero-sans: Onest, Arial, sans-serif;
   --font-display: Marmelad, Georgia, serif;
