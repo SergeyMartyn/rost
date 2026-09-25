@@ -10,6 +10,7 @@ import {
   type Page,
 } from '../lib/site';
 import Consent from '../components/Consent.astro';
+import Header from '../components/Header.astro';
 import '../styles/global.css';
 const { lang, page, title, description } = Astro.props as {
   lang: Language;
@@ -47,41 +48,24 @@ const t = text[lang];
     <meta property="og:url" content={new URL(routes[page][lang], origin)} />
     <meta property="og:image" content={new URL('/social.png', origin)} />
     <meta name="twitter:card" content="summary_large_image" />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico" sizes="32x32 48x48" />
+    <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
   </head>
   <body class="min-h-dvh flex flex-col">
     <a class="fixed -top-20 focus:top-3 left-3 bg-white p-3 z-50" href="#main">
       {t.skip}
     </a>
-    <header class="border-b border-line">
-      <div class="max-w-6xl mx-auto px-5 md:px-8 py-6 flex flex-wrap items-center justify-between gap-5">
-        <a class="font-bold text-xl" href={routes.home[lang]}>
-          {name}
-        </a>
-        <nav aria-label={lang === 'ru' ? 'Язык' : 'Sprache'} class="flex gap-5">
-          {languages.map((l) => (
-            <a
-              href={routes[page][l]}
-              lang={l}
-              hreflang={l}
-              data-language={l}
-              aria-current={lang === l ? 'true' : undefined}
-            >
-              {l === 'de' ? 'Deutsch' : 'Русский'}
-            </a>
-          ))}
-        </nav>
-      </div>
-    </header>
+    <Header lang={lang} page={page} />
     <main
       id="main"
       tabindex="-1"
-      class="w-full max-w-6xl mx-auto px-5 md:px-8 py-16 md:py-24 lg:py-28 flex-1"
+      class="site-container py-16 md:py-24 lg:py-28 flex-1"
     >
       <slot />
     </main>
     <footer class="border-t border-line">
-      <div class="max-w-6xl mx-auto px-5 md:px-8 py-8 flex flex-wrap gap-x-8 gap-y-4 text-sm">
+      <div class="site-container py-8 flex flex-wrap gap-x-8 gap-y-4 text-sm">
         <span>
           © {new Date().getFullYear()} {name}
         </span>

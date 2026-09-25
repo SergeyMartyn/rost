@@ -1,0 +1,166 @@
+---
+import { routes, languages, type Language, type Page } from '../lib/site';
+
+const { lang, page } = Astro.props as { lang: Language; page: Page };
+const copy = lang === 'ru'
+  ? {
+      events: 'Мероприятия',
+      about: 'О нас',
+      contacts: 'Контакты',
+      join: 'Принять участие',
+      menu: 'Открыть меню',
+      close: 'Закрыть меню',
+      navigation: 'Основная навигация',
+      languages: 'Язык',
+      home: 'Главная',
+    }
+  : {
+      events: 'Veranstaltungen',
+      about: 'Über uns',
+      contacts: 'Kontakt',
+      join: 'Mitmachen',
+      menu: 'Menü öffnen',
+      close: 'Menü schließen',
+      navigation: 'Hauptnavigation',
+      languages: 'Sprache',
+      home: 'Startseite',
+    };
+const nav = [
+  { label: copy.events, href: `${routes.home[lang]}#events` },
+  { label: copy.about, href: `${routes.home[lang]}#about` },
+  { label: copy.contacts, href: `${routes.home[lang]}#contacts` },
+];
+const socials = [
+  { name: 'Instagram', icon: '/icons/instagram.svg' },
+  { name: 'YouTube', icon: '/icons/youtube.svg' },
+  { name: 'Telegram', icon: '/icons/telegram.svg' },
+];
+---
+
+<header class="site-header">
+  <div class="site-header__bar">
+    <a class="site-header__brand" href={routes.home[lang]} aria-label={`R.O.S.T. — ${copy.home}`}>
+      <span class="site-header__brand-mark"><img src="/brand-tree.png" alt="" width="38" height="38" /></span>
+      <span>R.O.S.T.</span>
+    </a>
+
+    <nav class="site-header__desktop-nav" aria-label={copy.navigation}>
+      {nav.map((item) => <a href={item.href}>{item.label}</a>)}
+    </nav>
+
+    <div class="site-header__desktop-actions">
+      <nav class="site-header__languages" aria-label={copy.languages}>
+        {languages.map((language) => (
+          <a
+            href={routes[page][language]}
+            lang={language}
+            hreflang={language}
+            data-language={language}
+            aria-current={lang === language ? 'page' : undefined}
+          >
+            {language.toUpperCase()}
+          </a>
+        ))}
+      </nav>
+      <span class="site-header__cta">{copy.join}</span>
+    </div>
+
+    <button
+      class="site-header__toggle"
+      type="button"
+      aria-label={copy.menu}
+      aria-expanded="false"
+      aria-controls="site-mobile-menu"
+      data-open-label={copy.menu}
+      data-close-label={copy.close}
+    >
+      <svg class="site-header__menu-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+      <svg class="site-header__close-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 5l14 14M19 5L5 19" /></svg>
+    </button>
+  </div>
+
+  <div class="site-header__mobile-panel" id="site-mobile-menu" hidden>
+    <nav class="site-header__mobile-nav" aria-label={copy.navigation}>
+      {nav.map((item) => <a href={item.href}><span>{item.label}</span></a>)}
+    </nav>
+    <div class="site-header__mobile-bottom">
+      <nav class="site-header__mobile-languages" aria-label={copy.languages}>
+        {languages.map((language) => (
+          <a
+            href={routes[page][language]}
+            lang={language}
+            hreflang={language}
+            data-language={language}
+            aria-current={lang === language ? 'page' : undefined}
+          >
+            {language === 'de' ? 'DE' : 'RU'}
+          </a>
+        ))}
+      </nav>
+      <span class="site-header__cta site-header__cta--mobile">{copy.join}</span>
+      <div class="site-header__socials" aria-label="Social Media">
+        {socials.map((social) => (
+          <span class="site-header__social" title={social.name}>
+            <img src={social.icon} alt={social.name} width="40" height="40" />
+          </span>
+        ))}
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('.site-header');
+  const toggle = header?.querySelector<HTMLButtonElement>('.site-header__toggle');
+  const panel = header?.querySelector<HTMLElement>('.site-header__mobile-panel');
+
+  if (header && toggle && panel) {
+    const closeMenu = (restoreFocus = false) => {
+      if (panel.hidden) return;
+      panel.hidden = true;
+      header.dataset.open = 'false';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.setAttribute('aria-label', toggle.dataset.openLabel || 'Open menu');
+      document.documentElement.classList.remove('site-menu-open');
+      if (restoreFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      if (!panel.hidden) {
+        closeMenu();
+        return;
+      }
+      panel.hidden = false;
+      header.dataset.open = 'true';
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.setAttribute('aria-label', toggle.dataset.closeLabel || 'Close menu');
+      document.documentElement.classList.add('site-menu-open');
+      panel.querySelector<HTMLAnchorElement>('a')?.focus();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (panel.hidden) return;
+      if (event.key === 'Escape') {
+        closeMenu(true);
+      } else if (event.key === 'Tab') {
+        const focusable = [toggle, ...panel.querySelectorAll<HTMLAnchorElement>('a')];
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first.focus();
+        }
+      }
+    });
+
+    panel.querySelectorAll<HTMLAnchorElement>('a').forEach((link) =>
+      link.addEventListener('click', () => closeMenu()),
+    );
+    window.matchMedia('(min-width: 64rem)').addEventListener('change', (event) => {
+      if (event.matches) closeMenu();
+    });
+  }
+</script>
