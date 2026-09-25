@@ -1,0 +1,89 @@
+---
+import type { Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+
+const copy =
+  lang === 'ru'
+    ? {
+        heading: 'Ближайшие мероприятия',
+        value: [
+          'Мы предлагаем вам хорошее окружение,',
+          'а также повод встретиться снова.',
+        ],
+        events: [
+          {
+            name: 'Встреча-знакомство в Регенсбурге',
+            date: '10 октября 2026',
+            datetime: '2026-10-10',
+            placeholder: 'Фото встречи',
+          },
+          {
+            name: 'Трансформационные игры в Мюнхене',
+            date: '14 ноября 2026',
+            datetime: '2026-11-14',
+            placeholder: 'Фото игры',
+          },
+        ],
+      }
+    : {
+        heading: 'Nächste Veranstaltungen',
+        value: [
+          'Wir bieten dir ein gutes Umfeld',
+          'und einen Anlass, dich wiederzusehen.',
+        ],
+        events: [
+          {
+            name: 'Kennenlerntreffen in Regensburg',
+            date: '10. Oktober 2026',
+            datetime: '2026-10-10',
+            placeholder: 'Foto vom Treffen',
+          },
+          {
+            name: 'Transformationsspiele in München',
+            date: '14. November 2026',
+            datetime: '2026-11-14',
+            placeholder: 'Foto vom Spiel',
+          },
+        ],
+      };
+---
+
+<section class="events" aria-labelledby="events-title">
+  <div class="events__inner site-container">
+    <div class="events__intro">
+      <h2 class="events__heading" id="events-title">
+        {copy.heading}
+      </h2>
+      <p class="events__value">
+        {copy.value.map((line) => (
+          <span>{line}</span>
+        ))}
+      </p>
+    </div>
+
+    <div class="events__grid">
+      {copy.events.map((event, index) => (
+        <article class="events__item">
+          <div
+            class:list={[
+              'events__frame',
+              { 'events__frame--game': index === 1 },
+            ]}
+          >
+            <div class="events__photo" aria-hidden="true">
+              <span class="events__photo-label">{event.placeholder}</span>
+            </div>
+            <span class="events__plus" aria-hidden="true">
+              +
+            </span>
+          </div>
+          <h3 class="events__name">{event.name}</h3>
+          <time class="events__date" datetime={event.datetime}>
+            {event.date}
+          </time>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

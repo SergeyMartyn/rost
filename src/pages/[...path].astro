@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
+import Events from '../components/Events.astro';
 import {
   routes,
   languages,
@@ -31,7 +32,10 @@ const title = page === 'home' ? t.title : t[page];
   }
 >
   {page === 'home' ? (
-    <Hero lang={lang} />
+    <>
+      <Hero lang={lang} />
+      <Events lang={lang} />
+    </>
   ) : (
     <div class="max-w-3xl">
       <p class="text-accent mb-5">

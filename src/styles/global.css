@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './hero.css';
+@import './events.css';
 
 @font-face {
   font-family: Onest;
@@ -46,6 +47,10 @@
   --color-hero-end: #c8d9bf;
   --color-hero-placeholder: #cbd3d0;
   --color-hero-copy: #5b6c6b;
+  --color-events-surface: #f8faf6;
+  --color-events-photo-meetup: #e2e9e2;
+  --color-events-photo-game: #e8e8e4;
+  --color-events-placeholder-text: #577064;
   --font-sans: Arial, Helvetica, sans-serif;
   --font-hero-sans: Onest, Arial, sans-serif;
   --font-display: Marmelad, Georgia, serif;
@@ -70,7 +75,10 @@
 
 @layer components {
   .site-container {
-    width: min(calc(100% - 2 * var(--page-gutter)), var(--container-content));
+    width: min(
+      calc(100% - 2 * var(--space-section-inline)),
+      var(--container-content)
+    );
     margin-inline: auto;
   }
 
@@ -370,17 +378,29 @@
 @layer base {
   :root {
     --page-gutter: var(--spacing-page-mobile);
+    --space-section-block: calc(var(--spacing) * 12);
+    --space-section-inline: var(--page-gutter);
+    --space-text-stack: calc(var(--spacing) * 6);
+    --space-section-media: calc(var(--spacing) * 6);
+    --space-media-column: calc(var(--spacing) * 8);
+    --space-media-row: calc(var(--spacing) * 12);
+    --space-media-caption: calc(var(--spacing) * 6);
+    --space-caption-meta: calc(var(--spacing) * 2);
   }
 
   @media (min-width: 48rem) {
     :root {
       --page-gutter: var(--spacing-page-tablet);
+      --space-section-block: calc(var(--spacing) * 16);
+      --space-section-media: calc(var(--spacing) * 8);
+      --space-caption-meta: calc(var(--spacing) * 4);
     }
   }
 
   @media (min-width: 64rem) {
     :root {
       --page-gutter: var(--spacing-page-desktop);
+      --space-section-media: calc(var(--spacing) * 12);
     }
   }
 
