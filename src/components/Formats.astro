@@ -1,0 +1,101 @@
+---
+import type { Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+
+const copy =
+  lang === 'ru'
+    ? {
+        eyebrow: 'Как это бывает',
+        heading: 'Форматы роста',
+        intro:
+          'Мы встречаемся по-разному: знакомимся, играем, путешествуем. И всегда открыты новым идеям.',
+        circles: ['Встречи', 'Эксперты', 'Онлайн', 'Поездки', 'Праздники'],
+        cards: [
+          {
+            eyebrow: 'Встречаемся',
+            heading: 'Встречи-знакомства',
+            body: 'Знакомимся без формальностей, общаемся и находим людей, с которыми хочется увидеться снова.',
+          },
+          {
+            eyebrow: 'Развиваемся',
+            heading: 'Трансформационные игры',
+            body: 'Психологические и финансовые игры помогают взглянуть на вопрос с новой стороны и обсудить идеи вместе.',
+          },
+          {
+            eyebrow: 'Делимся',
+            heading: 'Экспертные встречи',
+            body: 'Слушаем людей с опытом, задаём вопросы и делимся практическими наблюдениями.',
+          },
+          {
+            eyebrow: 'Путешествуем',
+            heading: 'Совместные поездки и отдых',
+            body: 'Открываем новые места, отдыхаем и проводим время вместе — так знакомства становятся ближе.',
+          },
+        ],
+      }
+    : {
+        eyebrow: 'So kommen wir zusammen',
+        heading: 'R.O.S.T.-Formate',
+        intro:
+          'Wir treffen uns auf unterschiedliche Weise: lernen uns kennen, spielen und reisen. Für neue Ideen sind wir immer offen.',
+        circles: ['Treffen', 'Experten', 'Online', 'Reisen', 'Feiern'],
+        cards: [
+          {
+            eyebrow: 'Kennenlernen',
+            heading: 'Kennenlerntreffen',
+            body: 'Wir kommen ungezwungen ins Gespräch und lernen Menschen kennen, die wir gern wiedersehen möchten.',
+          },
+          {
+            eyebrow: 'Wachsen',
+            heading: 'Transformationsspiele',
+            body: 'Psychologische und finanzielle Spiele helfen uns, Fragen neu zu betrachten und Ideen gemeinsam zu besprechen.',
+          },
+          {
+            eyebrow: 'Austauschen',
+            heading: 'Expertentreffen',
+            body: 'Wir hören Menschen mit Erfahrung zu, stellen Fragen und teilen praktische Beobachtungen.',
+          },
+          {
+            eyebrow: 'Unterwegs sein',
+            heading: 'Gemeinsame Ausflüge und Reisen',
+            body: 'Wir entdecken neue Orte, entspannen und verbringen Zeit miteinander. So wachsen aus Bekanntschaften Verbindungen.',
+          },
+        ],
+      };
+---
+
+<section class="formats" aria-labelledby="formats-title">
+  <div class="formats__inner site-container">
+    <div class="formats__intro">
+      <div>
+        <p class="formats__eyebrow">{copy.eyebrow}</p>
+        <h2 class="formats__heading" id="formats-title">
+          {copy.heading}
+        </h2>
+      </div>
+      <p class="formats__lead">{copy.intro}</p>
+    </div>
+
+    <ul
+      class="formats__circles"
+      aria-label={lang === 'ru' ? 'Наши форматы' : 'Unsere Formate'}
+    >
+      {copy.circles.map((circle) => (
+        <li class="formats__circle">
+          <span>{circle}</span>
+        </li>
+      ))}
+    </ul>
+
+    <div class="formats__grid">
+      {copy.cards.map((card) => (
+        <article class="formats__card">
+          <p class="formats__card-eyebrow">{card.eyebrow}</p>
+          <h3 class="formats__card-heading">{card.heading}</h3>
+          <p class="formats__card-body">{card.body}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

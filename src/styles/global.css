@@ -1,6 +1,7 @@
 @import 'tailwindcss';
 @import './hero.css';
 @import './events.css';
+@import './formats.css';
 
 @font-face {
   font-family: Onest;
@@ -51,6 +52,11 @@
   --color-events-photo-meetup: #e2e9e2;
   --color-events-photo-game: #e8e8e4;
   --color-events-placeholder-text: #577064;
+  --color-formats-start: #f4fbf1;
+  --color-formats-end: #e1f1e3;
+  --color-formats-gold: #fff4cc;
+  --color-formats-peach: #feeee8;
+  --color-formats-mint: #eaf6f1;
   --font-sans: Arial, Helvetica, sans-serif;
   --font-hero-sans: Onest, Arial, sans-serif;
   --font-display: Marmelad, Georgia, serif;

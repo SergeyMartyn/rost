@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Events from '../components/Events.astro';
+import Formats from '../components/Formats.astro';
 import {
   routes,
   languages,
@@ -35,6 +36,7 @@ const title = page === 'home' ? t.title : t[page];
     <>
       <Hero lang={lang} />
       <Events lang={lang} />
+      <Formats lang={lang} />
     </>
   ) : (
     <div class="max-w-3xl">
