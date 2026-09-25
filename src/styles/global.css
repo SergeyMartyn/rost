@@ -1,4 +1,38 @@
 @import 'tailwindcss';
+@import './hero.css';
+
+@font-face {
+  font-family: Onest;
+  src: url('/fonts/Onest-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Onest;
+  src: url('/fonts/Onest-SemiBold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Onest;
+  src: url('/fonts/Onest-Bold.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Marmelad;
+  src: url('/fonts/Marmelad-Regular.woff2') format('woff2');
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
 @theme {
   --color-paper: #f6f5f1;
   --color-ink: #202a2b;
@@ -8,7 +42,13 @@
   --color-brand: #214c3f;
   --color-brand-surface: #f5f7f0;
   --color-brand-gold: #f0cf63;
+  --color-hero-start: #f8faf6;
+  --color-hero-end: #c8d9bf;
+  --color-hero-placeholder: #cbd3d0;
+  --color-hero-copy: #5b6c6b;
   --font-sans: Arial, Helvetica, sans-serif;
+  --font-hero-sans: Onest, Arial, sans-serif;
+  --font-display: Marmelad, Georgia, serif;
 
   /* Shared spacing scale: 0.5 = 2px, 1 = 4px, 2 = 8px, etc. */
   --spacing: 4px;

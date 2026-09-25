@@ -1,0 +1,94 @@
+---
+import type { Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+
+const copy =
+  lang === 'ru'
+    ? {
+        eyebrow: 'R.O.S.T. — русскоязычное сообщество в Германии',
+        lines: [
+          'Сообщество людей,',
+          'которым интересно',
+          'знакомиться и',
+          'развиваться вместе',
+        ],
+        description: [
+          'Находите своё окружение — людей,',
+          'с которыми захочется встретиться снова.',
+        ],
+        join: 'Принять участие',
+        unavailable: 'Ссылка появится позже',
+        play: 'Видео появится позже',
+        notice:
+          'При запуске внешнего видео данные и cookie могут передаваться видеосервису.',
+      }
+    : {
+        eyebrow: 'R.O.S.T. — russischsprachige Gemeinschaft in Deutschland',
+        lines: [
+          'Eine Gemeinschaft,',
+          'in der Menschen sich',
+          'kennenlernen und',
+          'gemeinsam wachsen',
+        ],
+        description: [
+          'Finde Menschen, die dein Umfeld bereichern',
+          'und die du gern wiedersehen möchtest.',
+        ],
+        join: 'Mitmachen',
+        unavailable: 'Link folgt',
+        play: 'Video folgt',
+        notice:
+          'Beim Starten eines externen Videos können Daten und Cookies an den Videodienst übertragen werden.',
+      };
+---
+
+<section class="hero" aria-labelledby="hero-title">
+  <div class="hero__inner site-container">
+    <div class="hero__content">
+      <p class="hero__eyebrow">{copy.eyebrow}</p>
+      <h1 class="hero__title" id="hero-title">
+        {copy.lines.map((line, index) => (
+          <span
+            class:list={[
+              'hero__title-line',
+              { 'hero__title-line--accent': index === copy.lines.length - 1 },
+            ]}
+          >
+            {line}
+          </span>
+        ))}
+      </h1>
+      <p class="hero__description">
+        {copy.description.map((line) => (
+          <span class="hero__description-line">{line} </span>
+        ))}
+      </p>
+      <button
+        class="hero__cta"
+        type="button"
+        aria-disabled="true"
+        title={copy.unavailable}
+      >
+        {copy.join}
+      </button>
+    </div>
+
+    <div class="hero__media">
+      <div class="hero__video">
+        <button
+          class="hero__play"
+          type="button"
+          disabled
+          aria-label={copy.play}
+          title={copy.play}
+        >
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m8 5 11 7-11 7z" />
+          </svg>
+        </button>
+        <p class="hero__notice">{copy.notice}</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -13,8 +13,9 @@ export const text = {
     privacy: 'Datenschutz',
     skip: 'Zum Inhalt',
     settings: 'Datenschutzeinstellungen',
-    title: 'Raum für Ihre Ideen',
-    description: 'Ein klarer Anfang für Ihre neue Website.',
+    title: 'Gemeinsam wachsen',
+    description:
+      'R.O.S.T. verbindet russischsprachige Menschen in Deutschland. Finde Menschen, die du gern wiedersehen möchtest.',
     intro:
       'Hier entsteht Ihre Website. Gestalten Sie diesen Platz mit Ihren Inhalten.',
     legal: 'Noch auszufüllen',
@@ -31,8 +32,9 @@ export const text = {
     privacy: 'Конфиденциальность',
     skip: 'К содержанию',
     settings: 'Настройки конфиденциальности',
-    title: 'Место для ваших идей',
-    description: 'Понятное начало для вашего нового сайта.',
+    title: 'Сообщество людей',
+    description:
+      'R.O.S.T. — русскоязычное сообщество в Германии. Находите людей, с которыми захочется встретиться снова.',
     intro:
       'Здесь будет ваш сайт. Наполните это пространство своим содержанием.',
     legal: 'Нужно заполнить',

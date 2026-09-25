@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Hero from '../components/Hero.astro';
 import {
   routes,
   languages,
@@ -29,34 +30,34 @@ const title = page === 'home' ? t.title : t[page];
     page === 'home' ? t.description : `${t[page]} — ${site.name || t.legal}`
   }
 >
-  <div class="max-w-3xl">
-    <p class="text-accent mb-5">
-      {page === 'home' ? t.home : site.legalText[page][lang] ? t[page] : t.legal}
-    </p>
-    <h1 class="text-2xl md:text-5xl lg:text-6xl leading-tight font-bold mb-8">
-      {title}
-    </h1>
-    {page === 'home' ? (
-      <p class="text-xl text-muted max-w-2xl">{t.intro}</p>
-    ) : (
-      <>
-        {!site.legalText[page][lang] && <p class="mb-8 text-muted">{t.legalNote}</p>}
-        <dl class="space-y-5">
-          {(page === 'imprint'
-            ? ['operator', 'address', 'email']
-            : ['operator', 'privacyContact', 'email']
-          ).map((key) => (
-            <div>
-              <dt class="font-bold">{t[key as keyof typeof t]}</dt>
-              <dd>{site.legal[key as 'operator'] || `[${t.legal}]`}</dd>
-            </div>
-          ))}
-        </dl>
-        <p class="mt-8 whitespace-pre-line">
-          {site.legalText[page][lang] ||
-            `[${lang === 'ru' ? 'Текст страницы: нужно подготовить и проверить' : 'Seitentext: ergänzen und prüfen'}]`}
-        </p>
-      </>
-    )}
-  </div>
+  {page === 'home' ? (
+    <Hero lang={lang} />
+  ) : (
+    <div class="max-w-3xl">
+      <p class="text-accent mb-5">
+        {site.legalText[page][lang] ? t[page] : t.legal}
+      </p>
+      <h1 class="text-2xl md:text-5xl lg:text-6xl leading-tight font-bold mb-8">
+        {title}
+      </h1>
+      {!site.legalText[page][lang] && (
+        <p class="mb-8 text-muted">{t.legalNote}</p>
+      )}
+      <dl class="space-y-5">
+        {(page === 'imprint'
+          ? ['operator', 'address', 'email']
+          : ['operator', 'privacyContact', 'email']
+        ).map((key) => (
+          <div>
+            <dt class="font-bold">{t[key as keyof typeof t]}</dt>
+            <dd>{site.legal[key as 'operator'] || `[${t.legal}]`}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="mt-8 whitespace-pre-line">
+        {site.legalText[page][lang] ||
+          `[${lang === 'ru' ? 'Текст страницы: нужно подготовить и проверить' : 'Seitentext: ergänzen und prüfen'}]`}
+      </p>
+    </div>
+  )}
 </Layout>
