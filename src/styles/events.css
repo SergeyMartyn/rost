@@ -57,11 +57,16 @@
 
   .events__frame {
     position: relative;
+    display: block;
+    width: 100%;
     aspect-ratio: 35 / 29;
     overflow: hidden;
+    padding: 0;
     border: 6px solid white;
     border-radius: var(--radius-4xl);
     background: var(--color-events-photo-meetup);
+    text-align: left;
+    cursor: zoom-in;
     transition: transform 260ms ease;
   }
 
@@ -70,16 +75,24 @@
   }
 
   .events__photo {
-    display: grid;
+    display: block;
     width: 100%;
     height: 100%;
-    place-items: center;
     border-radius: calc(var(--radius-4xl) - 6px);
     background: inherit;
-    color: var(--color-events-placeholder-text);
-    font-size: 16px;
-    font-weight: 600;
     transition: transform 320ms ease;
+  }
+
+  .events__photo img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .events__photo--networking img {
+    transform: scale(1.4);
   }
 
   .events__plus {
@@ -97,12 +110,61 @@
     line-height: 1;
   }
 
-  .events__item:hover .events__frame {
+  .events__item:hover .events__frame,
+  .events__photo-trigger:focus-visible {
     transform: translateY(-8px);
   }
 
-  .events__item:hover .events__photo {
+  .events__item:hover .events__photo,
+  .events__photo-trigger:focus-visible .events__photo {
     transform: translateY(-16px) scale(1.04);
+  }
+
+  .events__lightbox {
+    width: max-content;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 32px);
+    overflow: visible;
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-3xl);
+    background: transparent;
+    box-shadow: 0 24px 60px rgb(13 53 43 / 0.3);
+  }
+
+  .events__lightbox-content {
+    position: relative;
+  }
+
+  .events__lightbox img {
+    display: block;
+    width: auto;
+    height: auto;
+    max-width: calc(100vw - 32px);
+    max-height: calc(100dvh - 32px);
+    border-radius: var(--radius-3xl);
+    object-fit: contain;
+  }
+
+  .events__lightbox-close {
+    position: absolute;
+    z-index: 1;
+    top: 12px;
+    right: 12px;
+    display: grid;
+    width: 44px;
+    height: 44px;
+    place-items: center;
+    padding: 0;
+    border: 1px solid var(--color-brand);
+    border-radius: 50%;
+    background: white;
+    color: var(--color-brand);
+  }
+
+  .events__lightbox-close svg {
+    width: 18px;
+    height: 18px;
   }
 
   .events__name {

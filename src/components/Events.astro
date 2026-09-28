@@ -17,14 +17,16 @@ const copy =
             date: '10 октября 2026',
             datetime: '2026-10-10',
             anchor: 'regensburg',
-            placeholder: 'Фото встречи',
+            photoAlt: 'Участники встречи на общей фотографии',
+            openPhoto: 'Открыть фотографию встречи целиком',
           },
           {
             name: 'Трансформационные игры в Мюнхене',
             date: '14 ноября 2026',
             datetime: '2026-11-14',
             anchor: 'games',
-            placeholder: 'Фото игры',
+            photoAlt: 'Участники трансформационной игры за столом',
+            openPhoto: 'Открыть фотографию игры целиком',
           },
         ],
       }
@@ -40,17 +42,33 @@ const copy =
             date: '10. Oktober 2026',
             datetime: '2026-10-10',
             anchor: 'regensburg',
-            placeholder: 'Foto vom Treffen',
+            photoAlt: 'Teilnehmende des Treffens auf einem Gruppenfoto',
+            openPhoto: 'Foto des Treffens vollständig öffnen',
           },
           {
             name: 'Transformationsspiele in München',
             date: '14. November 2026',
             datetime: '2026-11-14',
             anchor: 'games',
-            placeholder: 'Foto vom Spiel',
+            photoAlt: 'Teilnehmende bei einem Transformationsspiel am Tisch',
+            openPhoto: 'Foto des Spiels vollständig öffnen',
           },
         ],
       };
+const photos = [
+  {
+    preview: '/images/rost-networking-preview.webp',
+    full: '/images/rost-networking.png',
+    width: 1920,
+    height: 1080,
+  },
+  {
+    preview: '/images/rost-ti-preview.webp',
+    full: '/images/rost-ti.jpg',
+    width: 3840,
+    height: 2555,
+  },
+];
 ---
 
 <section class="events" aria-labelledby="events-title">
@@ -69,23 +87,33 @@ const copy =
     <div class="events__grid">
       {copy.events.map((event, index) => (
         <article class="events__item">
+          <button
+            class:list={[
+              'events__frame',
+              'events__photo-trigger',
+              { 'events__frame--game': index === 1 },
+            ]}
+            type="button"
+            data-photo-full={photos[index].full}
+            data-photo-alt={event.photoAlt}
+            aria-label={event.openPhoto}
+          >
+            <div class:list={['events__photo', { 'events__photo--networking': index === 0 }]}>
+              <img
+                src={photos[index].preview}
+                alt=""
+                width={photos[index].width}
+                height={photos[index].height}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+            <span class="events__plus" aria-hidden="true">+</span>
+          </button>
           <a
             class="events__link"
             href={`${routes.events[lang]}#${event.anchor}`}
           >
-            <div
-              class:list={[
-                'events__frame',
-                { 'events__frame--game': index === 1 },
-              ]}
-            >
-              <div class="events__photo" aria-hidden="true">
-                <span class="events__photo-label">{event.placeholder}</span>
-              </div>
-              <span class="events__plus" aria-hidden="true">
-                +
-              </span>
-            </div>
             <h3 class="events__name">{event.name}</h3>
             <time class="events__date" datetime={event.datetime}>
               {event.date}
@@ -96,3 +124,44 @@ const copy =
     </div>
   </div>
 </section>
+
+<dialog
+  id="event-photo-dialog"
+  class="events__lightbox"
+  aria-label={lang === 'ru' ? 'Фотография мероприятия' : 'Veranstaltungsfoto'}
+>
+  <div class="events__lightbox-content">
+    <button
+      class="events__lightbox-close"
+      type="button"
+      aria-label={lang === 'ru' ? 'Закрыть фотографию' : 'Foto schließen'}
+    >
+      <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <path d="M5 5 19 19M19 5 5 19" />
+      </svg>
+    </button>
+    <img id="event-photo-full" alt="" />
+  </div>
+</dialog>
+
+<script>
+  const photoDialog = document.querySelector<HTMLDialogElement>('#event-photo-dialog');
+  const fullPhoto = document.querySelector<HTMLImageElement>('#event-photo-full');
+
+  document.querySelectorAll<HTMLButtonElement>('[data-photo-full]').forEach((button) => {
+    button.addEventListener('click', () => {
+      if (!photoDialog || !fullPhoto || !button.dataset.photoFull) return;
+      fullPhoto.src = button.dataset.photoFull;
+      fullPhoto.alt = button.dataset.photoAlt || '';
+      photoDialog.showModal();
+    });
+  });
+
+  photoDialog?.querySelector('.events__lightbox-close')?.addEventListener('click', () => photoDialog.close());
+  photoDialog?.addEventListener('click', (event) => {
+    if (event.target === photoDialog) photoDialog.close();
+  });
+  photoDialog?.addEventListener('close', () => {
+    if (fullPhoto) fullPhoto.removeAttribute('src');
+  });
+</script>

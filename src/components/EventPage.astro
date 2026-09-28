@@ -50,6 +50,12 @@ const copy =
         contactPlaceholder: '@username или номер телефона',
         contactUse:
           'Используем контакт, чтобы сообщить детали встречи и связаться с вами по билету.',
+        whatsappType: 'Как связаться с вами в WhatsApp?',
+        whatsappPhone: 'По номеру',
+        whatsappUsername: 'По имени пользователя',
+        contactFor: 'Для',
+        privacyBefore: 'Я принимаю условия участия, согласен(на) на связь по билету и ознакомился(лась) с',
+        privacyLink: 'политикой конфиденциальности',
         continue: 'Продолжить →',
         choosePayment: 'Выберите, как вам удобнее оплатить билет.',
         stripe: 'Картой через Stripe',
@@ -103,6 +109,12 @@ const copy =
         contactPlaceholder: '@username oder Telefonnummer',
         contactUse:
           'Wir nutzen diesen Kontakt für Informationen zum Treffen und zu deinem Ticket.',
+        whatsappType: 'Wie erreichen wir dich auf WhatsApp?',
+        whatsappPhone: 'Per Telefonnummer',
+        whatsappUsername: 'Per Benutzername',
+        contactFor: 'Für',
+        privacyBefore: 'Ich akzeptiere die Teilnahmebedingungen, bin mit der Kontaktaufnahme zum Ticket einverstanden und habe die',
+        privacyLink: 'Datenschutzerklärung gelesen',
         continue: 'Weiter →',
         choosePayment: 'Wähle eine Zahlungsart für dein Ticket.',
         stripe: 'Mit Karte über Stripe',
@@ -112,7 +124,7 @@ const copy =
 ---
 
 <div class="font-hero-sans text-brand">
-  <section class="relative overflow-hidden bg-events-surface pb-18 pt-12 md:pb-24 md:pt-20">
+  <section class="relative overflow-hidden bg-events-surface pb-18 pt-28 md:pb-24 md:pt-36">
     <div class="site-container relative z-10">
       <div class="max-w-4xl">
         <p class="mb-5 text-xs font-bold uppercase tracking-[0.22em] text-accent md:text-sm">
@@ -137,13 +149,13 @@ const copy =
       <div class="mt-12 flex flex-wrap gap-3 text-sm font-semibold md:mt-16">
         <a
           href="#regensburg"
-          class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand"
+          class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
         >
           {copy.meetShort}
         </a>
         <a
           href="#games"
-          class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand"
+          class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
         >
           {copy.gamesShort}
         </a>
@@ -151,7 +163,7 @@ const copy =
     </div>
     <div
       aria-hidden="true"
-      class="pointer-events-none absolute -right-24 -top-36 h-[34rem] w-[34rem] rounded-full border-[5rem] border-hero-end/65"
+      class="pointer-events-none absolute -right-24 -top-16 h-[34rem] w-[34rem] rounded-full border-[5rem] border-hero-end/65"
     ></div>
   </section>
 
@@ -214,7 +226,7 @@ const copy =
           <button
             type="button"
             data-ticket="meetup"
-            class="mt-7 w-full rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white transition hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="mt-7 w-full rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             {copy.buyTicket}
           </button>
@@ -284,7 +296,7 @@ const copy =
           <button
             type="button"
             data-ticket="guest"
-            class="mb-3 flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="mb-3 flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             <span class="font-bold">{copy.guest}</span>
             <strong class="font-display text-2xl font-normal">149 €</strong>
@@ -292,7 +304,7 @@ const copy =
           <button
             type="button"
             data-ticket="host"
-            class="flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             <span class="font-bold">{copy.host}</span>
             <strong class="font-display text-2xl font-normal">349 €</strong>
@@ -347,9 +359,11 @@ const copy =
         id="ticket-close"
         type="button"
         aria-label={copy.close}
-        class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-surface text-xl hover:bg-hero-end"
+        class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand bg-brand-surface p-0 hover:bg-hero-end"
       >
-        ×
+        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M5 5 19 19M19 5 5 19" />
+        </svg>
       </button>
     </div>
     <form id="ticket-form" class="mt-7 space-y-5">
@@ -402,6 +416,19 @@ const copy =
           </label>
         </div>
       </fieldset>
+      <fieldset id="whatsapp-type" class="hidden">
+        <legend class="mb-2 text-sm font-bold">{copy.whatsappType}</legend>
+        <div class="grid grid-cols-2 gap-2 text-center text-sm">
+          <label>
+            <input type="radio" name="whatsapp-type" value="phone" checked class="peer sr-only" />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">{copy.whatsappPhone}</span>
+          </label>
+          <label>
+            <input type="radio" name="whatsapp-type" value="username" class="peer sr-only" />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">{copy.whatsappUsername}</span>
+          </label>
+        </div>
+      </fieldset>
       <label class="block">
         <span id="contact-label" class="mb-2 block text-sm font-bold">
           {copy.contactLabel}
@@ -410,9 +437,13 @@ const copy =
           name="contact"
           required
           placeholder={copy.contactPlaceholder}
+          aria-describedby="contact-hint contact-error"
+          aria-invalid="false"
           class="w-full rounded-xl border border-line px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
         />
       </label>
+      <p id="contact-hint" class="-mt-3 text-xs leading-relaxed text-muted"></p>
+      <p id="contact-error" role="alert" class="-mt-3 hidden text-xs font-semibold leading-relaxed text-red-700"></p>
       <p class="text-xs leading-relaxed text-muted">{copy.contactUse}</p>
       <button
         type="submit"
@@ -422,16 +453,29 @@ const copy =
       </button>
     </form>
     <div id="ticket-payment" class="mt-7 hidden space-y-3">
+      <div class="pb-2 text-center">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">{copy.contactFor}</p>
+        <p id="ticket-person" class="mt-1 break-words font-display text-3xl"></p>
+        <p id="ticket-contact" class="mt-1 break-all text-sm font-semibold text-accent"></p>
+      </div>
+      <label class="flex items-start gap-3 rounded-xl bg-brand-surface p-3 text-xs leading-relaxed text-brand">
+        <input id="ticket-privacy" type="checkbox" class="mt-0.5 h-4 w-4 shrink-0" />
+        <span>{copy.privacyBefore} <a href={routes.privacy[lang]} target="_blank" rel="noopener" class="font-semibold underline underline-offset-2">{copy.privacyLink}</a>.</span>
+      </label>
       <p class="text-sm text-muted">{copy.choosePayment}</p>
       <button
         type="button"
-        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand"
+        data-payment="paypal"
+        disabled
+        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
       >
         PayPal <span>→</span>
       </button>
       <button
         type="button"
-        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand"
+        data-payment="stripe"
+        disabled
+        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
       >
         {copy.stripe} <span>→</span>
       </button>
@@ -455,6 +499,15 @@ const copy =
   const title = document.querySelector<HTMLElement>('#ticket-title');
   const summary = document.querySelector<HTMLElement>('#ticket-summary');
   const contactLabel = document.querySelector<HTMLElement>('#contact-label');
+  const contactInput = form?.querySelector<HTMLInputElement>('input[name="contact"]');
+  const nameInput = form?.querySelector<HTMLInputElement>('input[name="name"]');
+  const contactHint = document.querySelector<HTMLElement>('#contact-hint');
+  const contactError = document.querySelector<HTMLElement>('#contact-error');
+  const whatsappType = document.querySelector<HTMLElement>('#whatsapp-type');
+  const privacy = document.querySelector<HTMLInputElement>('#ticket-privacy');
+  const paymentButtons = document.querySelectorAll<HTMLButtonElement>('[data-payment]');
+  const person = document.querySelector<HTMLElement>('#ticket-person');
+  const shownContact = document.querySelector<HTMLElement>('#ticket-contact');
   const isRu = dialog?.dataset.lang === 'ru';
   const contactStep = isRu
     ? 'Шаг 1 из 2 · Контакт'
@@ -473,6 +526,119 @@ const copy =
         guest: ['Ticket für Teilnehmende', '14. November · München · 149 €'],
         host: ['Ticket für Spielleitende', '14. November · München · 349 €'],
       };
+
+  const selectedChannel = () =>
+    form?.querySelector<HTMLInputElement>('input[name="channel"]:checked')?.value ||
+    'Telegram';
+  const selectedWhatsAppType = () =>
+    form?.querySelector<HTMLInputElement>('input[name="whatsapp-type"]:checked')
+      ?.value || 'phone';
+  const contactMode = () =>
+    selectedChannel() === 'WhatsApp'
+      ? `WhatsApp-${selectedWhatsAppType()}`
+      : selectedChannel();
+
+  const contactCopy = {
+    Telegram: {
+      label: isRu ? 'Ваш аккаунт в Telegram' : 'Dein Telegram-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Латинские буквы, цифры и _. От 5 до 27 символов. @ можно не писать.'
+        : 'Lateinische Buchstaben, Ziffern und _. 5 bis 27 Zeichen. @ ist optional.',
+      error: isRu
+        ? 'Введите имя Telegram латиницей: 5–27 букв, цифр или _. Первым символом должна быть буква.'
+        : 'Bitte gib einen Telegram-Namen mit 5–27 lateinischen Buchstaben, Ziffern oder _ ein. Er muss mit einem Buchstaben beginnen.',
+      maxLength: 28,
+      inputMode: 'text',
+    },
+    Instagram: {
+      label: isRu ? 'Ваш аккаунт в Instagram' : 'Dein Instagram-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Латинские буквы, цифры, точки и _. @ можно не писать.'
+        : 'Lateinische Buchstaben, Ziffern, Punkte und _. @ ist optional.',
+      error: isRu
+        ? 'Введите имя Instagram латиницей: до 30 букв, цифр, точек или _.'
+        : 'Bitte gib einen Instagram-Namen mit bis zu 30 lateinischen Buchstaben, Ziffern, Punkten oder _ ein.',
+      maxLength: 31,
+      inputMode: 'text',
+    },
+    'WhatsApp-phone': {
+      label: isRu ? 'Ваш номер в WhatsApp' : 'Deine WhatsApp-Nummer',
+      placeholder: '+49 176 12345678 / 0176 12345678',
+      hint: isRu
+        ? 'Номер с + и кодом страны или немецкий номер с 0.'
+        : 'Mit + und Ländervorwahl oder als deutsche Nummer mit 0.',
+      error: isRu
+        ? 'Проверьте номер: например, +49 176 12345678 или 0176 12345678.'
+        : 'Prüfe die Nummer: zum Beispiel +49 176 12345678 oder 0176 12345678.',
+      maxLength: 24,
+      inputMode: 'tel',
+    },
+    'WhatsApp-username': {
+      label: isRu ? 'Ваше имя пользователя WhatsApp' : 'Dein WhatsApp-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Имя пользователя доступно в WhatsApp постепенно. Проверьте, что у вас оно уже работает.'
+        : 'WhatsApp-Benutzernamen werden schrittweise eingeführt. Prüfe, ob deiner bereits funktioniert.',
+      error: isRu
+        ? 'Введите имя пользователя латиницей, без пробелов и русских букв.'
+        : 'Bitte gib einen Benutzernamen mit lateinischen Zeichen ein, ohne Leerzeichen.',
+      maxLength: 31,
+      inputMode: 'text',
+    },
+  } as const;
+
+  const clearContactError = () => {
+    if (!contactInput || !contactError) return;
+    contactInput.setCustomValidity('');
+    contactInput.setAttribute('aria-invalid', 'false');
+    contactError.textContent = '';
+    contactError.classList.add('hidden');
+  };
+
+  const validateContact = (showError: boolean) => {
+    if (!contactInput) return false;
+    const mode = contactMode();
+    const value = contactInput.value.trim();
+    const username = value.replace(/^@/, '');
+    let valid = false;
+    if (mode === 'Telegram') valid = /^[A-Za-z][A-Za-z0-9_]{4,26}$/.test(username);
+    if (mode === 'Instagram') valid = /^[A-Za-z0-9_][A-Za-z0-9._]{0,29}$/.test(username) && !username.endsWith('.') && !username.includes('..');
+    if (mode === 'WhatsApp-username') valid = /^[A-Za-z0-9_][A-Za-z0-9._]{2,29}$/.test(username);
+    if (mode === 'WhatsApp-phone') {
+      const number = value.replace(/[\s()-]/g, '');
+      valid = /^\+[1-9]\d{9,14}$/.test(number) || /^0\d{8,13}$/.test(number);
+    }
+    if (valid || !value) {
+      clearContactError();
+      return valid;
+    }
+    if (showError && contactError) {
+      const message = contactCopy[mode as keyof typeof contactCopy].error;
+      contactInput.setCustomValidity(message);
+      contactInput.setAttribute('aria-invalid', 'true');
+      contactError.textContent = message;
+      contactError.classList.remove('hidden');
+    }
+    return false;
+  };
+
+  const updateContactMode = () => {
+    if (!contactInput || !contactLabel || !contactHint || !whatsappType) return;
+    const mode = contactMode();
+    const config = contactCopy[mode as keyof typeof contactCopy];
+    whatsappType.classList.toggle('hidden', selectedChannel() !== 'WhatsApp');
+    contactLabel.textContent = config.label;
+    contactInput.placeholder = config.placeholder;
+    contactInput.maxLength = config.maxLength;
+    contactInput.inputMode = config.inputMode;
+    contactHint.textContent = config.hint;
+    contactInput.value = '';
+    clearContactError();
+  };
+
+  updateContactMode();
 
   document
     .querySelectorAll<HTMLButtonElement>('[data-ticket]')
@@ -494,6 +660,10 @@ const copy =
         step.textContent = contactStep;
         form.classList.remove('hidden');
         payment.classList.add('hidden');
+        form.reset();
+        if (privacy) privacy.checked = false;
+        paymentButtons.forEach((button) => (button.disabled = true));
+        updateContactMode();
         dialog.showModal();
       });
     });
@@ -504,26 +674,26 @@ const copy =
     if (event.target === dialog) dialog.close();
   });
   form
-    ?.querySelectorAll<HTMLInputElement>('input[name="channel"]')
+    ?.querySelectorAll<HTMLInputElement>('input[name="channel"], input[name="whatsapp-type"]')
     .forEach((radio) => {
-      radio.addEventListener('change', () => {
-        if (radio.checked && contactLabel)
-          contactLabel.textContent = isRu
-            ? radio.value === 'WhatsApp'
-              ? 'Ваш номер в WhatsApp'
-              : `Ваш аккаунт в ${radio.value}`
-            : radio.value === 'WhatsApp'
-              ? 'Deine WhatsApp-Nummer'
-              : `Dein ${radio.value}-Konto`;
-      });
+      radio.addEventListener('change', updateContactMode);
     });
+  contactInput?.addEventListener('input', () => validateContact(true));
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
-    if (!form.reportValidity() || !payment || !step) return;
+    validateContact(true);
+    if (!form.reportValidity() || !payment || !step || !person || !shownContact || !nameInput || !contactInput) return;
+    const contact = contactInput.value.trim();
+    const mode = contactMode();
+    person.textContent = nameInput.value.trim();
+    shownContact.textContent = `${selectedChannel()} · ${mode === 'WhatsApp-phone' ? contact : `@${contact.replace(/^@/, '')}`}`;
     form.classList.add('hidden');
     payment.classList.remove('hidden');
     step.textContent = paymentStep;
-    payment.querySelector<HTMLButtonElement>('button')?.focus();
+    privacy?.focus();
+  });
+  privacy?.addEventListener('change', () => {
+    paymentButtons.forEach((button) => (button.disabled = !privacy.checked));
   });
   document.querySelector('#ticket-back')?.addEventListener('click', () => {
     form?.classList.remove('hidden');

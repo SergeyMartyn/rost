@@ -27,7 +27,7 @@ const copy =
               'Люди, которым хочется расширить круг общения в Германии: познакомиться, найти друзей и делать что-то вместе. У участников разный опыт и интересы. Не нужно быть экспертом в какой-то теме, чтобы прийти и почувствовать себя частью компании.',
           },
           {
-            question: 'Где проходят мероприятия?',
+            question: 'Где проходит мероприятие?',
             answer:
               'Ближайшие встречи запланированы в Регенсбурге и Мюнхене. Место зависит от формата и числа участников. Город и подробности площадки мы укажем в описании конкретного мероприятия.',
           },
@@ -39,7 +39,7 @@ const copy =
           {
             question: 'Сколько стоит участие?',
             answer:
-              'Это зависит от встречи. Некоторые мероприятия бесплатны, другие могут стоить примерно от 30 до 70 € — в зависимости от формата, площадки, продолжительности и программы. Точную стоимость всегда укажем заранее в описании мероприятия.',
+              'Стоимость зависит от мероприятия. Билет на встречу в Регенсбурге стоит 29 €. На трансформационные игры в Мюнхене билет участника стоит 149 €, билет ведущего игр — 349 €. Актуальная цена указана на странице мероприятия.',
           },
           {
             question: 'На каком языке мы общаемся?',
@@ -52,7 +52,7 @@ const copy =
               'Встречи рассчитаны на взрослых — для участия нужно быть совершеннолетним. Чаще всего участникам от 30 до 50 лет, но для знакомства важнее общие интересы и желание быть вместе, чем точное совпадение возраста.',
           },
           {
-            question: 'Можно ли предложить свою тему или формат встречи?',
+            question: 'Можно ли предложить свою тему или формат?',
             answer:
               'Конечно. Если у вас есть идея — расскажите нам. Обсудим, кому она может быть интересна и как её воплотить. Нам нравится, когда участники не только приходят на встречи, но и помогают придумывать новые поводы собраться.',
           },
@@ -80,7 +80,7 @@ const copy =
               'Menschen, die ihren Freundeskreis in Deutschland erweitern möchten: um neue Bekanntschaften zu schließen, Freunde zu finden und gemeinsam etwas zu unternehmen. Sie bringen unterschiedliche Erfahrungen und Interessen mit. Du musst auf keinem Gebiet Experte sein, um dabei zu sein.',
           },
           {
-            question: 'Wo finden die Veranstaltungen statt?',
+            question: 'Wo findet die Veranstaltung statt?',
             answer:
               'Die nächsten Treffen sind in Regensburg und München geplant. Der genaue Ort hängt vom Format und von der Zahl der Teilnehmenden ab. Stadt und Veranstaltungsort nennen wir in der Beschreibung des jeweiligen Treffens.',
           },
@@ -92,7 +92,7 @@ const copy =
           {
             question: 'Was kostet die Teilnahme?',
             answer:
-              'Das hängt vom Treffen ab. Manche Veranstaltungen sind kostenlos, andere kosten ungefähr 30 bis 70 € – je nach Format, Ort, Dauer und Programm. Den genauen Preis nennen wir immer vorab in der Veranstaltungsbeschreibung.',
+              'Das hängt von der Veranstaltung ab. Das Treffen in Regensburg kostet 29 €. Für die Transformationsspiele in München kostet ein Ticket für Teilnehmende 149 € und für Spielleitende 349 €. Den aktuellen Preis findest du auf der Veranstaltungsseite.',
           },
           {
             question: 'In welcher Sprache sprechen wir?',
@@ -111,6 +111,7 @@ const copy =
           },
         ],
       };
+const orderedItems = [2, 5, 6, 7, 3, 1, 0, 8].map((index) => copy.items[index]);
 ---
 
 <section class="faq" aria-labelledby="faq-title">
@@ -122,7 +123,7 @@ const copy =
     </div>
 
     <div class="faq__list">
-      {copy.items.map((item, index) => (
+      {orderedItems.map((item, index) => (
         <details class="faq__item" name="rost-faq" open={index === 0}>
           <summary class="faq__question">
             <span class="faq__question-text">{item.question}</span>
