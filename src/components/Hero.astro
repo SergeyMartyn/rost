@@ -1,5 +1,5 @@
 ---
-import type { Language } from '../lib/site';
+import { routes, type Language } from '../lib/site';
 
 const { lang } = Astro.props as { lang: Language };
 
@@ -18,7 +18,6 @@ const copy =
           'с которыми захочется встретиться снова.',
         ],
         join: 'Принять участие',
-        unavailable: 'Ссылка появится позже',
         play: 'Видео появится позже',
         notice:
           'При запуске внешнего видео данные и cookie могут передаваться видеосервису.',
@@ -36,7 +35,6 @@ const copy =
           'und die du gern wiedersehen möchtest.',
         ],
         join: 'Mitmachen',
-        unavailable: 'Link folgt',
         play: 'Video folgt',
         notice:
           'Beim Starten eines externen Videos können Daten und Cookies an den Videodienst übertragen werden.',
@@ -64,14 +62,9 @@ const copy =
           <span class="hero__description-line">{line} </span>
         ))}
       </p>
-      <button
-        class="hero__cta"
-        type="button"
-        aria-disabled="true"
-        title={copy.unavailable}
-      >
+      <a class="hero__cta" href={routes.events[lang]}>
         {copy.join}
-      </button>
+      </a>
     </div>
 
     <div class="hero__media">

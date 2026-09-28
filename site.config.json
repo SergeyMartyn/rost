@@ -24,6 +24,18 @@
       "de": "/de/",
       "ru": "/ru/"
     },
+    "events": {
+      "de": "/de/veranstaltungen/",
+      "ru": "/ru/meropriyatiya/"
+    },
+    "about": {
+      "de": "/de/ueber-uns/",
+      "ru": "/ru/o-nas/"
+    },
+    "contacts": {
+      "de": "/de/kontakt/",
+      "ru": "/ru/kontakty/"
+    },
     "imprint": {
       "de": "/de/impressum/",
       "ru": "/ru/pravovaya-informatsiya/"

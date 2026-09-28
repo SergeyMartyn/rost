@@ -43,6 +43,18 @@
     min-width: 0;
   }
 
+  .events__link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .events__link:hover,
+  .events__link:focus-visible {
+    color: inherit;
+    text-decoration: none;
+  }
+
   .events__frame {
     position: relative;
     aspect-ratio: 35 / 29;

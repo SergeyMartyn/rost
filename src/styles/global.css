@@ -68,6 +68,7 @@
   --spacing-page-mobile: 20px;
   --spacing-page-tablet: 32px;
   --spacing-page-desktop: 48px;
+  --spacing-header-edge: 5px;
   --container-content: 1200px;
 
   /* Radius names and values follow Tailwind CSS v4. */
@@ -95,12 +96,16 @@
   }
 
   .site-header {
-    --header-gutter: var(--page-gutter);
+    --header-gutter: 0px;
     position: sticky;
     top: 0;
     z-index: 50;
     width: 100%;
-    padding-top: 12px;
+    background: transparent;
+  }
+
+  .events-page .site-header:not([data-scrolled='true']) {
+    background: var(--color-events-surface);
   }
 
   .site-header__bar {
@@ -184,6 +189,10 @@
     text-decoration: none;
   }
 
+  .site-header__desktop-nav [aria-current='page'] {
+    color: var(--color-brand-gold);
+  }
+
   .site-header__desktop-actions {
     gap: 20px;
   }
@@ -219,6 +228,10 @@
   }
 
   @media (max-width: 63.999rem) {
+    .site-header {
+      --header-gutter: var(--spacing-header-edge);
+    }
+
     .site-header__bar {
       grid-template-columns: minmax(0, 1fr) auto;
       gap: 8px;
@@ -327,6 +340,10 @@
     .site-header__mobile-nav a:focus-visible {
       color: var(--color-brand-gold);
       text-decoration: none;
+    }
+
+    .site-header__mobile-nav [aria-current='page'] {
+      color: var(--color-brand-gold);
     }
 
     .site-header__mobile-nav a:focus-visible {

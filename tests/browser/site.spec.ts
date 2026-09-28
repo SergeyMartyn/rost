@@ -23,7 +23,7 @@ test('HTTP, root negotiation, metadata and sitemap', async ({ request }) => {
   for (const [language, target] of [
     ['ru-RU,de;q=.5', '/ru/'],
     ['de;q=.2,ru;q=.8', '/ru/'],
-    ['en', '/de/'],
+    ['en', site.routes.home[site.defaultLanguage as 'de' | 'ru']],
   ]) {
     const r = await request.get('/', {
       headers: { 'Accept-Language': language },
@@ -33,7 +33,9 @@ test('HTTP, root negotiation, metadata and sitemap', async ({ request }) => {
     expect(r.headers().location).toContain(target);
   }
   const sitemap = await (await request.get('/sitemap.xml')).text();
-  expect(sitemap.match(/<loc>/g)).toHaveLength(6);
+  expect(sitemap.match(/<loc>/g)).toHaveLength(
+    Object.keys(site.routes).length * 2,
+  );
   expect(await (await request.get('/robots.txt')).text()).toContain(
     '/sitemap.xml',
   );
@@ -63,7 +65,9 @@ test('responsive pages, no optional banner or external requests; keyboard and la
   await page.goto('/de/impressum/');
   await page.keyboard.press('Tab');
   await expect(page.locator('a[href="#main"]')).toBeFocused();
-  await page.locator('[data-language="ru"]').click();
+  await page
+    .locator('.site-header__desktop-actions [data-language="ru"]')
+    .click();
   await expect(page).toHaveURL(/pravovaya-informatsiya/);
   expect(
     (await context.cookies()).find((c) => c.name === 'site_language')?.value,

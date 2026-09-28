@@ -3,8 +3,15 @@
     font-family: var(--font-hero-sans);
   }
 
-  .home-page .site-header,
   .home-main {
+    background: linear-gradient(
+      90deg,
+      var(--color-hero-start),
+      var(--color-hero-end)
+    );
+  }
+
+  .home-page .site-header:not([data-scrolled='true']) {
     background: linear-gradient(
       90deg,
       var(--color-hero-start),

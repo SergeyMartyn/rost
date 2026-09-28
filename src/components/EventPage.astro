@@ -1,0 +1,534 @@
+---
+import { routes, type Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+const copy =
+  lang === 'ru'
+    ? {
+        eyebrow: 'Встречаемся вживую',
+        title: 'Мероприятия',
+        intro:
+          'Повод выйти из чата и познакомиться с людьми, с которыми захочется встретиться снова.',
+        meetShort: '10 октября · Регенсбург ↗',
+        gamesShort: '14 ноября · Мюнхен ↗',
+        meetTag: 'Первая встреча',
+        meetTitle: 'Встреча-знакомство',
+        meetPlace: 'в Регенсбурге',
+        meetBody:
+          'Встретимся, чтобы познакомиться лично, спокойно поговорить и провести время в хорошей компании. Можно прийти одному — мы поможем включиться в разговор.',
+        when: 'Когда',
+        where: 'Где',
+        meetDate: '10 октября 2026',
+        gamesDate: '14 ноября 2026',
+        meetMonth: 'октября',
+        gamesMonth: 'ноября',
+        timeLater: 'Время уточняется',
+        addressLater: 'Точный адрес сообщим участникам',
+        meetTicket: 'Билет на встречу',
+        buyTicket: 'Купить билет →',
+        beforePayment: 'Перед оплатой попросим имя и удобный способ связи.',
+        gamesTag: 'Для участников и ведущих',
+        gamesTitle: 'Трансформационные',
+        gamesPlace: 'игры в Мюнхене',
+        gamesBody:
+          'День, в котором можно попробовать новый формат, посмотреть на свои вопросы с другой стороны и пообщаться с людьми. Для гостей и тех, кто проводит игры, предусмотрены разные билеты.',
+        role: 'Выберите свою роль',
+        guest: 'Я участник',
+        host: 'Я ведущий игр',
+        roleSaved: 'Роль и стоимость сохранятся в следующем шаге.',
+        questions: 'Есть вопросы перед встречей?',
+        questionsBody:
+          'Порядок участия и детали места уточним перед мероприятием.',
+        contactLink: 'Написать нам →',
+        contactStep: 'Шаг 1 из 2 · Контакт',
+        paymentStep: 'Шаг 2 из 2 · Оплата',
+        close: 'Закрыть форму',
+        name: 'Как к вам обращаться?',
+        namePlaceholder: 'Ваше имя',
+        channel: 'Где вам удобно написать?',
+        contactLabel: 'Ваш аккаунт в Telegram',
+        contactPlaceholder: '@username или номер телефона',
+        contactUse:
+          'Используем контакт, чтобы сообщить детали встречи и связаться с вами по билету.',
+        continue: 'Продолжить →',
+        choosePayment: 'Выберите, как вам удобнее оплатить билет.',
+        stripe: 'Картой через Stripe',
+        previewNote: 'Оплата и сохранение данных пока не подключены.',
+        back: '← Изменить контакт',
+      }
+    : {
+        eyebrow: 'Wir treffen uns persönlich',
+        title: 'Veranstaltungen',
+        intro:
+          'Ein Anlass, den Chat zu verlassen und Menschen kennenzulernen, die du gern wiedersehen möchtest.',
+        meetShort: '10. Oktober · Regensburg ↗',
+        gamesShort: '14. November · München ↗',
+        meetTag: 'Erstes Treffen',
+        meetTitle: 'Kennenlerntreffen',
+        meetPlace: 'in Regensburg',
+        meetBody:
+          'Wir lernen uns persönlich kennen, unterhalten uns in Ruhe und verbringen Zeit miteinander. Du kannst auch allein kommen – wir helfen dir, ins Gespräch zu finden.',
+        when: 'Wann',
+        where: 'Wo',
+        meetDate: '10. Oktober 2026',
+        gamesDate: '14. November 2026',
+        meetMonth: 'Oktober',
+        gamesMonth: 'November',
+        timeLater: 'Uhrzeit folgt',
+        addressLater: 'Die genaue Adresse teilen wir den Teilnehmenden mit',
+        meetTicket: 'Ticket für das Treffen',
+        buyTicket: 'Ticket kaufen →',
+        beforePayment:
+          'Vor der Zahlung fragen wir nach deinem Namen und einem Kontaktweg.',
+        gamesTag: 'Für Gäste und Spielleitende',
+        gamesTitle: 'Transformationsspiele',
+        gamesPlace: 'in München',
+        gamesBody:
+          'Ein Tag, an dem du ein neues Format ausprobieren, deine Fragen aus einer anderen Perspektive betrachten und Menschen kennenlernen kannst. Für Gäste und Spielleitende gibt es unterschiedliche Tickets.',
+        role: 'Wähle deine Rolle',
+        guest: 'Ich nehme teil',
+        host: 'Ich leite Spiele',
+        roleSaved: 'Rolle und Preis bleiben im nächsten Schritt sichtbar.',
+        questions: 'Noch Fragen zum Treffen?',
+        questionsBody:
+          'Details zum Ablauf und zum Ort teilen wir vor der Veranstaltung mit.',
+        contactLink: 'Schreib uns →',
+        contactStep: 'Schritt 1 von 2 · Kontakt',
+        paymentStep: 'Schritt 2 von 2 · Zahlung',
+        close: 'Formular schließen',
+        name: 'Wie dürfen wir dich nennen?',
+        namePlaceholder: 'Dein Name',
+        channel: 'Wo können wir dich erreichen?',
+        contactLabel: 'Dein Telegram-Konto',
+        contactPlaceholder: '@username oder Telefonnummer',
+        contactUse:
+          'Wir nutzen diesen Kontakt für Informationen zum Treffen und zu deinem Ticket.',
+        continue: 'Weiter →',
+        choosePayment: 'Wähle eine Zahlungsart für dein Ticket.',
+        stripe: 'Mit Karte über Stripe',
+        previewNote: 'Zahlung und Speicherung sind noch nicht verbunden.',
+        back: '← Kontakt ändern',
+      };
+---
+
+<div class="font-hero-sans text-brand">
+  <section class="relative overflow-hidden bg-events-surface pb-18 pt-12 md:pb-24 md:pt-20">
+    <div class="site-container relative z-10">
+      <div class="max-w-4xl">
+        <p class="mb-5 text-xs font-bold uppercase tracking-[0.22em] text-accent md:text-sm">
+          {copy.eyebrow}
+        </p>
+        <h1
+          class:list={[
+            'font-display leading-[0.98] tracking-[-0.045em]',
+            lang === 'de'
+              ? 'text-[clamp(2.5rem,7vw,7.4rem)]'
+              : 'text-[clamp(3.3rem,8vw,7.4rem)]',
+          ]}
+        >
+          {copy.title}
+          <br />
+          <span class="text-accent">R.O.S.T.</span>
+        </h1>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
+          {copy.intro}
+        </p>
+      </div>
+      <div class="mt-12 flex flex-wrap gap-3 text-sm font-semibold md:mt-16">
+        <a
+          href="#regensburg"
+          class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand"
+        >
+          {copy.meetShort}
+        </a>
+        <a
+          href="#games"
+          class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand"
+        >
+          {copy.gamesShort}
+        </a>
+      </div>
+    </div>
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute -right-24 -top-36 h-[34rem] w-[34rem] rounded-full border-[5rem] border-hero-end/65"
+    ></div>
+  </section>
+
+  <section id="regensburg" class="scroll-mt-24 bg-white py-18 md:py-26">
+    <div class="site-container grid gap-9 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14">
+      <div class="min-w-0">
+        <div class="mb-8 flex flex-wrap items-center gap-3">
+          <span class="rounded-full bg-brand-surface px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-accent">
+            {copy.meetTag}
+          </span>
+          <span class="text-sm font-semibold text-muted">
+            {lang === 'ru' ? 'Регенсбург' : 'Regensburg'}
+          </span>
+        </div>
+        <h2 class="max-w-3xl font-display text-[clamp(2.1rem,5vw,5.2rem)] leading-[1.03] tracking-[-0.035em]">
+          {copy.meetTitle}
+          <br />
+          {copy.meetPlace}
+        </h2>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
+          {copy.meetBody}
+        </p>
+        <div class="mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
+          <div class="rounded-3xl bg-brand-surface p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
+              {copy.when}
+            </p>
+            <p class="mt-3 font-display text-2xl">{copy.meetDate}</p>
+            <p class="mt-2 text-sm text-muted">{copy.timeLater}</p>
+          </div>
+          <div class="rounded-3xl bg-brand-surface p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
+              {copy.where}
+            </p>
+            <p class="mt-3 font-display text-2xl">
+              {lang === 'ru' ? 'Регенсбург' : 'Regensburg'}
+            </p>
+            <p class="mt-2 text-sm text-muted">{copy.addressLater}</p>
+          </div>
+        </div>
+      </div>
+      <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-brand-surface shadow-xl lg:sticky lg:top-28">
+        <div class="relative flex h-48 items-end overflow-hidden bg-hero-end/60 p-7">
+          <div
+            aria-hidden="true"
+            class="absolute -right-8 -top-16 h-60 w-60 rounded-full border-[2.5rem] border-white/40"
+          ></div>
+          <div class="relative flex items-end gap-3 text-brand">
+            <strong class="font-display text-7xl leading-none">10</strong>
+            <span class="pb-2 text-lg font-semibold leading-tight">
+              {copy.meetMonth}
+              <br />
+              2026
+            </span>
+          </div>
+        </div>
+        <div class="p-7">
+          <p class="text-sm font-semibold text-muted">{copy.meetTicket}</p>
+          <p class="mt-2 font-display text-5xl">29 €</p>
+          <button
+            type="button"
+            data-ticket="meetup"
+            class="mt-7 w-full rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white transition hover:bg-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            {copy.buyTicket}
+          </button>
+          <p class="mt-4 text-center text-xs leading-relaxed text-muted">
+            {copy.beforePayment}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section id="games" class="scroll-mt-24 bg-brand-surface py-18 md:py-26">
+    <div class="site-container grid gap-9 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14">
+      <div class="min-w-0">
+        <div class="mb-8 flex flex-wrap items-center gap-3">
+          <span class="rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-accent">
+            {copy.gamesTag}
+          </span>
+          <span class="text-sm font-semibold text-muted">
+            {lang === 'ru' ? 'Мюнхен' : 'München'}
+          </span>
+        </div>
+        <h2 class="max-w-3xl font-display text-[clamp(1.75rem,5vw,5.2rem)] leading-[1.03] tracking-[-0.035em]">
+          {copy.gamesTitle}
+          <br />
+          {copy.gamesPlace}
+        </h2>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
+          {copy.gamesBody}
+        </p>
+        <div class="mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
+          <div class="rounded-3xl bg-white/75 p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
+              {copy.when}
+            </p>
+            <p class="mt-3 font-display text-2xl">{copy.gamesDate}</p>
+            <p class="mt-2 text-sm text-muted">{copy.timeLater}</p>
+          </div>
+          <div class="rounded-3xl bg-white/75 p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
+              {copy.where}
+            </p>
+            <p class="mt-3 font-display text-2xl">
+              {lang === 'ru' ? 'Мюнхен' : 'München'}
+            </p>
+            <p class="mt-2 text-sm text-muted">{copy.addressLater}</p>
+          </div>
+        </div>
+      </div>
+      <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-white shadow-xl lg:sticky lg:top-28">
+        <div class="relative flex h-40 items-end overflow-hidden bg-hero-end/60 p-7">
+          <div
+            aria-hidden="true"
+            class="absolute -right-8 -top-16 h-60 w-60 rounded-full border-[2.5rem] border-white/40"
+          ></div>
+          <div class="relative flex items-end gap-3 text-brand">
+            <strong class="font-display text-7xl leading-none">14</strong>
+            <span class="pb-2 text-lg font-semibold leading-tight">
+              {copy.gamesMonth}
+              <br />
+              2026
+            </span>
+          </div>
+        </div>
+        <div class="p-7">
+          <p class="mb-4 text-sm font-semibold text-muted">{copy.role}</p>
+          <button
+            type="button"
+            data-ticket="guest"
+            class="mb-3 flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            <span class="font-bold">{copy.guest}</span>
+            <strong class="font-display text-2xl font-normal">149 €</strong>
+          </button>
+          <button
+            type="button"
+            data-ticket="host"
+            class="flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            <span class="font-bold">{copy.host}</span>
+            <strong class="font-display text-2xl font-normal">349 €</strong>
+          </button>
+          <p class="mt-4 text-center text-xs leading-relaxed text-muted">
+            {copy.roleSaved}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <section class="bg-brand py-16 text-white md:py-20">
+    <div class="site-container flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
+      <div>
+        <h2 class="font-display text-3xl md:text-4xl">{copy.questions}</h2>
+        <p class="mt-3 max-w-xl text-white/75">{copy.questionsBody}</p>
+      </div>
+      <a
+        href={routes.contacts[lang]}
+        class="rounded-2xl border border-white/40 px-6 py-4 font-bold transition hover:bg-white hover:text-brand"
+      >
+        {copy.contactLink}
+      </a>
+    </div>
+  </section>
+</div>
+
+<dialog
+  id="ticket-dialog"
+  data-lang={lang}
+  aria-labelledby="ticket-title"
+  class="m-auto w-[min(calc(100%-2rem),480px)] max-h-[calc(100dvh-2rem)] rounded-4xl border-0 bg-white p-0 text-brand shadow-2xl backdrop:bg-brand/65"
+>
+  <div class="max-h-[calc(100dvh-2rem)] overflow-y-auto p-6 sm:p-8">
+    <div class="flex items-start justify-between gap-6">
+      <div>
+        <p
+          id="ticket-step"
+          class="text-xs font-bold uppercase tracking-[0.16em] text-accent"
+        >
+          {copy.contactStep}
+        </p>
+        <h2 id="ticket-title" class="mt-3 font-display text-3xl leading-tight">
+          {copy.meetTicket}
+        </h2>
+        <p id="ticket-summary" class="mt-2 text-sm text-muted">
+          {copy.meetShort.replace(' ↗', '')} · 29 €
+        </p>
+      </div>
+      <button
+        id="ticket-close"
+        type="button"
+        aria-label={copy.close}
+        class="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-brand-surface text-xl hover:bg-hero-end"
+      >
+        ×
+      </button>
+    </div>
+    <form id="ticket-form" class="mt-7 space-y-5">
+      <label class="block">
+        <span class="mb-2 block text-sm font-bold">{copy.name}</span>
+        <input
+          name="name"
+          autocomplete="name"
+          required
+          placeholder={copy.namePlaceholder}
+          class="w-full rounded-xl border border-line px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+        />
+      </label>
+      <fieldset>
+        <legend class="mb-2 text-sm font-bold">{copy.channel}</legend>
+        <div class="grid grid-cols-3 gap-2 text-center text-sm">
+          <label>
+            <input
+              type="radio"
+              name="channel"
+              value="Telegram"
+              checked
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              Telegram
+            </span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="channel"
+              value="WhatsApp"
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              WhatsApp
+            </span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="channel"
+              value="Instagram"
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              Instagram
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <label class="block">
+        <span id="contact-label" class="mb-2 block text-sm font-bold">
+          {copy.contactLabel}
+        </span>
+        <input
+          name="contact"
+          required
+          placeholder={copy.contactPlaceholder}
+          class="w-full rounded-xl border border-line px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+        />
+      </label>
+      <p class="text-xs leading-relaxed text-muted">{copy.contactUse}</p>
+      <button
+        type="submit"
+        class="w-full rounded-2xl bg-brand px-6 py-4 font-bold text-white hover:bg-accent"
+      >
+        {copy.continue}
+      </button>
+    </form>
+    <div id="ticket-payment" class="mt-7 hidden space-y-3">
+      <p class="text-sm text-muted">{copy.choosePayment}</p>
+      <button
+        type="button"
+        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand"
+      >
+        PayPal <span>→</span>
+      </button>
+      <button
+        type="button"
+        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand"
+      >
+        {copy.stripe} <span>→</span>
+      </button>
+      <p class="pt-2 text-xs leading-relaxed text-muted">{copy.previewNote}</p>
+      <button
+        id="ticket-back"
+        type="button"
+        class="text-sm font-semibold underline underline-offset-4"
+      >
+        {copy.back}
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  const dialog = document.querySelector<HTMLDialogElement>('#ticket-dialog');
+  const form = document.querySelector<HTMLFormElement>('#ticket-form');
+  const payment = document.querySelector<HTMLElement>('#ticket-payment');
+  const step = document.querySelector<HTMLElement>('#ticket-step');
+  const title = document.querySelector<HTMLElement>('#ticket-title');
+  const summary = document.querySelector<HTMLElement>('#ticket-summary');
+  const contactLabel = document.querySelector<HTMLElement>('#contact-label');
+  const isRu = dialog?.dataset.lang === 'ru';
+  const contactStep = isRu
+    ? 'Шаг 1 из 2 · Контакт'
+    : 'Schritt 1 von 2 · Kontakt';
+  const paymentStep = isRu
+    ? 'Шаг 2 из 2 · Оплата'
+    : 'Schritt 2 von 2 · Zahlung';
+  const tickets = isRu
+    ? {
+        meetup: ['Билет на встречу', '10 октября · Регенсбург · 29 €'],
+        guest: ['Билет участника', '14 ноября · Мюнхен · 149 €'],
+        host: ['Билет ведущего игр', '14 ноября · Мюнхен · 349 €'],
+      }
+    : {
+        meetup: ['Ticket für das Treffen', '10. Oktober · Regensburg · 29 €'],
+        guest: ['Ticket für Teilnehmende', '14. November · München · 149 €'],
+        host: ['Ticket für Spielleitende', '14. November · München · 349 €'],
+      };
+
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-ticket]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        const ticket = tickets[button.dataset.ticket as keyof typeof tickets];
+        if (
+          !dialog ||
+          !ticket ||
+          !title ||
+          !summary ||
+          !step ||
+          !form ||
+          !payment
+        )
+          return;
+        title.textContent = ticket[0];
+        summary.textContent = ticket[1];
+        step.textContent = contactStep;
+        form.classList.remove('hidden');
+        payment.classList.add('hidden');
+        dialog.showModal();
+      });
+    });
+  document
+    .querySelector('#ticket-close')
+    ?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  form
+    ?.querySelectorAll<HTMLInputElement>('input[name="channel"]')
+    .forEach((radio) => {
+      radio.addEventListener('change', () => {
+        if (radio.checked && contactLabel)
+          contactLabel.textContent = isRu
+            ? radio.value === 'WhatsApp'
+              ? 'Ваш номер в WhatsApp'
+              : `Ваш аккаунт в ${radio.value}`
+            : radio.value === 'WhatsApp'
+              ? 'Deine WhatsApp-Nummer'
+              : `Dein ${radio.value}-Konto`;
+      });
+    });
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    if (!form.reportValidity() || !payment || !step) return;
+    form.classList.add('hidden');
+    payment.classList.remove('hidden');
+    step.textContent = paymentStep;
+    payment.querySelector<HTMLButtonElement>('button')?.focus();
+  });
+  document.querySelector('#ticket-back')?.addEventListener('click', () => {
+    form?.classList.remove('hidden');
+    payment?.classList.add('hidden');
+    if (step) step.textContent = contactStep;
+    form?.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
+  });
+</script>

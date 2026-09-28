@@ -53,7 +53,10 @@ const t = text[lang];
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
   </head>
   <body
-    class:list={['min-h-dvh flex flex-col', { 'home-page': page === 'home' }]}
+    class:list={[
+      'min-h-dvh flex flex-col',
+      { 'home-page': page === 'home', 'events-page': page === 'events' },
+    ]}
   >
     <a class="fixed -top-20 focus:top-3 left-3 bg-white p-3 z-50" href="#main">
       {t.skip}
@@ -65,7 +68,9 @@ const t = text[lang];
       class={
         page === 'home'
           ? 'home-main flex-1'
-          : 'site-container py-16 md:py-24 lg:py-28 flex-1'
+          : page === 'events'
+            ? 'flex-1'
+            : 'site-container py-16 md:py-24 lg:py-28 flex-1'
       }
     >
       <slot />

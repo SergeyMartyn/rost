@@ -9,6 +9,9 @@ export const name = config.name || 'Website / Сайт';
 export const text = {
   de: {
     home: 'Startseite',
+    events: 'Veranstaltungen',
+    about: 'Über uns',
+    contacts: 'Kontakt',
     imprint: 'Impressum',
     privacy: 'Datenschutz',
     skip: 'Zum Inhalt',
@@ -28,6 +31,9 @@ export const text = {
   },
   ru: {
     home: 'Главная',
+    events: 'Мероприятия',
+    about: 'О нас',
+    contacts: 'Контакты',
     imprint: 'Правовая информация',
     privacy: 'Конфиденциальность',
     skip: 'К содержанию',
