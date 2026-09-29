@@ -112,7 +112,13 @@ async function createOrder(request: Request, env: OrdersEnv, deps: Deps): Promis
   const url = new URL(request.url);
   if (!paymentsAllowed(url, env)) return json({ error: 'payments_disabled' }, 403);
   const origin = request.headers.get('Origin');
-  if (!origin || new URL(origin).host !== url.host) return json({ error: 'bad_origin' }, 403);
+  let originHost: string | null = null;
+  try {
+    originHost = origin ? new URL(origin).host : null;
+  } catch {
+    originHost = null;
+  }
+  if (!originHost || originHost !== url.host) return json({ error: 'bad_origin' }, 403);
   const text = await request.text();
   if (text.length > 4096) return json({ error: 'too_large' }, 413);
   let body: Record<string, unknown>;

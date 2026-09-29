@@ -197,9 +197,15 @@ test('event contact form validates channels and repeats the contact before payme
     if (lang === 'ru')
       await page.screenshot({ path: 'test-results/ticket-payment-ru.png' });
     await expect(page.locator('#ticket-privacy')).not.toBeChecked();
-    await expect(page.locator('[data-payment="paypal"]')).toBeDisabled();
+    const stripeButton = page.locator('[data-payment="stripe"]');
+    await expect(stripeButton).toBeVisible();
+    await expect(stripeButton).toBeDisabled();
+    await expect(page.locator('#ticket-preview-note')).toContainText(
+      lang === 'ru' ? 'недоступна' : 'nicht verfügbar',
+    );
     await page.locator('#ticket-privacy').check();
-    await expect(page.locator('[data-payment="paypal"]')).toBeEnabled();
+    // On the local preview host no payment method is enabled by /api/config.
+    await expect(stripeButton).toBeDisabled();
     await page.locator('#ticket-back').click();
     await page
       .locator('input[name="channel"][value="WhatsApp"] + span')

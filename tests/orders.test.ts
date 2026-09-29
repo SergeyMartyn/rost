@@ -260,7 +260,10 @@ test('admin CSV: token required, formulas neutralised, no public list', async ()
 
 test('/api/config: enabled only with payments flag, matching key mode and allowed host', async () => {
   const cfg = async (t: ReturnType<typeof setup>, host = HOST) =>
-    (await t.api(new Request(`${host}/api/config`))).json();
+    (await t.api(new Request(`${host}/api/config`))).json() as Promise<{
+      paymentsEnabled: boolean;
+      mode: string;
+    }>;
   assert.deepEqual(await cfg(setup()), { paymentsEnabled: true, mode: 'test' });
   assert.equal((await cfg(setup({ PAYMENTS_ENABLED: 'false' }))).paymentsEnabled, false);
   assert.equal((await cfg(setup(), 'https://rost.community')).paymentsEnabled, false);

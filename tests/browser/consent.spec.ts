@@ -211,11 +211,10 @@ for (const [key, lang] of [
     await expect(page.locator('iframe')).toHaveCount(0);
   });
 
-test('events page: address as text, map only after click', async ({ page }) => {
+test('events page: address shown as text, no map embed or external requests', async ({
+  page,
+}) => {
   const external = trackExternal(page);
-  await page.route('https://www.google.com/maps**', (route) =>
-    route.fulfill({ status: 200, contentType: 'text/html', body: 'map' }),
-  );
   await page.goto(site.routes.events.de);
   await expect(page.getByText('St. Katharinenplatz 5').first()).toBeVisible();
   await expect(page.locator('a[href*="google.com/maps"]')).toHaveCount(0);
@@ -225,7 +224,7 @@ test('events page: address as text, map only after click', async ({ page }) => {
   });
   if (await gamesAddress.count())
     await expect(gamesAddress.locator('a')).toHaveCount(0);
+  await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(0);
+  await page.waitForTimeout(300);
   expect(external.filter((u) => u.includes('google'))).toEqual([]);
-  await page.locator('[data-facade-load]').last().click();
-  await expect(page.locator('iframe[src*="google.com/maps"]')).toHaveCount(1);
 });

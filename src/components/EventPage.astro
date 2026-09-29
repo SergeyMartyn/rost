@@ -574,7 +574,13 @@ const copy =
   const noteRu = dialog?.dataset.lang === 'ru';
   let paymentsEnabled = false;
   fetch('/api/config')
-    .then((r) => (r.ok ? r.json() : null))
+    .then(
+      (r) =>
+        (r.ok ? r.json() : null) as Promise<{
+          paymentsEnabled?: boolean;
+          mode?: string;
+        } | null>,
+    )
     .then((cfg) => {
       paymentsEnabled = !!cfg?.paymentsEnabled;
       if (previewNote) {
@@ -582,7 +588,7 @@ const copy =
           previewNote.textContent = noteRu
             ? 'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.'
             : 'Online-Zahlung derzeit nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.';
-        else if (cfg.mode === 'test')
+        else if (cfg?.mode === 'test')
           previewNote.textContent = noteRu
             ? 'Тестовый режим Stripe. Настоящие деньги не списываются.'
             : 'Stripe-Testmodus. Es wird kein echtes Geld abgebucht.';
