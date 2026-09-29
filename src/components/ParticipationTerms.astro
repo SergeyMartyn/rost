@@ -15,7 +15,7 @@ const content =
           },
           {
             title: 'Оформление участия',
-            body: 'Сейчас онлайн-оплата и отправка контактных данных на сайте не подключены. Заполнение формы и выбор способа оплаты не создают бронирование и не списывают деньги. Когда оформление станет доступно, условия и итоговая сумма будут показаны до оплаты.',
+            body: 'Билет можно оплатить на сайте банковской картой и другими способами, которые предлагает Stripe. Оплата проходит на защищённой странице Stripe; данные карты мы не получаем. Цены указаны в евро. НДС не начисляется (малое предприятие, § 19 UStG). Договор считается заключённым, когда оплата подтверждена; подтверждение придёт на указанный при оплате адрес электронной почты, а мы свяжемся с вами через оставленный контакт. Организатор и получатель платежа — Margarita Martyn (Einzelunternehmerin), реквизиты — в Impressum.\n\nПраво на отказ от договора: для договоров об оказании услуг досуга на определённую дату законное право отказа не предусмотрено (§ 312g абз. 2 п. 9 BGB). Если мероприятие отменяется организатором, мы возвращаем полную стоимость билета. В остальных случаях напишите нам заранее: мы рассмотрим возврат или перенос индивидуально.',
           },
           {
             title: 'Изменения и вопросы',
@@ -36,7 +36,7 @@ const content =
           },
           {
             title: 'Anmeldung',
-            body: 'Die Online-Zahlung und die Übermittlung der Kontaktdaten sind derzeit noch nicht aktiviert. Das Ausfüllen des Formulars und die Auswahl einer Zahlungsart bewirken keine Buchung und keine Zahlung. Sobald die Anmeldung möglich ist, werden die Bedingungen und der Gesamtpreis vor der Zahlung angezeigt.',
+            body: 'Das Ticket kann online per Karte und weiteren von Stripe angebotenen Zahlungsarten bezahlt werden. Die Zahlung erfolgt auf der gesicherten Seite von Stripe; Kartendaten erhalten wir nicht. Alle Preise sind in Euro angegeben. Es wird keine Umsatzsteuer erhoben (Kleinunternehmerregelung, § 19 UStG). Der Vertrag kommt zustande, sobald die Zahlung bestätigt ist; die Bestätigung senden wir an die bei der Zahlung angegebene E-Mail-Adresse, und wir melden uns über den von dir angegebenen Kontakt. Veranstalterin und Zahlungsempfängerin ist Margarita Martyn (Einzelunternehmerin), Angaben im Impressum.\n\nWiderrufsrecht: Für Verträge über Freizeitveranstaltungen zu einem bestimmten Termin besteht kein gesetzliches Widerrufsrecht (§ 312g Abs. 2 Nr. 9 BGB). Sagt die Veranstalterin die Veranstaltung ab, erstatten wir den vollen Ticketpreis. In allen anderen Fällen schreib uns bitte rechtzeitig; wir prüfen eine Erstattung oder Umbuchung im Einzelfall.',
           },
           {
             title: 'Änderungen und Fragen',
@@ -57,7 +57,7 @@ const content =
     {content.sections.map((section) => (
       <section>
         <h2 class="font-display text-2xl md:text-3xl">{section.title}</h2>
-        <p class="mt-3 leading-relaxed text-muted">{section.body}</p>
+        <p class="mt-3 whitespace-pre-line leading-relaxed text-muted">{section.body}</p>
       </section>
     ))}
   </div>

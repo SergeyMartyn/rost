@@ -1,7 +1,6 @@
 ---
 import { routes, type Language } from '../lib/site';
 import VideoFacade from './VideoFacade.astro';
-import MapFacade from './MapFacade.astro';
 
 const { lang } = Astro.props as { lang: Language };
 const copy =
@@ -64,7 +63,7 @@ const copy =
         continue: 'Продолжить →',
         choosePayment: 'Выберите, как вам удобнее оплатить.',
         stripe: 'Картой через Stripe',
-        previewNote: 'Оплата и сохранение данных пока не подключены.',
+        previewNote: 'Оплата картой проходит на защищённой странице Stripe. Данные карты нам не передаются.',
         back: '← Изменить контакт',
       }
     : {
@@ -127,7 +126,7 @@ const copy =
         continue: 'Weiter →',
         choosePayment: 'Wähle, wie du bezahlen möchtest.',
         stripe: 'Mit Karte über Stripe',
-        previewNote: 'Zahlung und Speicherung sind noch nicht verbunden.',
+        previewNote: 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Kartendaten erhalten wir nicht.',
         back: '← Kontakt ändern',
       };
 ---
@@ -199,7 +198,6 @@ const copy =
             <p class="mt-2 text-sm text-muted">{copy.meetAddress}</p>
           </div>
         </div>
-        <MapFacade lang={lang} />
       </div>
       <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-brand-surface shadow-xl lg:sticky lg:top-28">
         <div class="relative flex h-48 items-end overflow-hidden bg-hero-end/60 p-7">
@@ -325,6 +323,20 @@ const copy =
       </a>
     </div>
   </section>
+</div>
+
+<div
+  id="payment-return"
+  role="status"
+  class="fixed inset-x-4 top-4 z-50 mx-auto hidden max-w-md items-start gap-3 rounded-2xl border border-brand/20 bg-white px-4 py-3 text-left text-sm font-semibold leading-relaxed text-brand shadow-lg"
+>
+  <span id="payment-return-message" class="flex-1"></span>
+  <button
+    id="payment-return-close"
+    type="button"
+    aria-label={lang === 'ru' ? 'Закрыть сообщение' : 'Mitteilung schließen'}
+    class="-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-2xl font-normal leading-none text-brand transition hover:bg-brand/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+  >×</button>
 </div>
 
 <dialog
@@ -518,21 +530,19 @@ const copy =
       <p class="text-sm text-muted">{copy.choosePayment}</p>
       <button
         type="button"
-        data-payment="paypal"
-        disabled
-        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        PayPal <span>→</span>
-      </button>
-      <button
-        type="button"
         data-payment="stripe"
         disabled
         class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
       >
         {copy.stripe} <span>→</span>
       </button>
-      <p class="pt-2 text-xs leading-relaxed text-muted">{copy.previewNote}</p>
+      <p
+        id="ticket-error"
+        role="alert"
+        class="hidden rounded-xl bg-red-50 p-3 text-sm text-red-800"
+      >
+      </p>
+      <p id="ticket-preview-note" class="pt-2 text-xs leading-relaxed text-muted">{copy.previewNote}</p>
       <button
         id="ticket-back"
         type="button"
@@ -560,8 +570,30 @@ const copy =
   const contactError = document.querySelector<HTMLElement>('#contact-error');
   const whatsappType = document.querySelector<HTMLElement>('#whatsapp-type');
   const privacy = document.querySelector<HTMLInputElement>('#ticket-privacy');
+  const previewNote = document.querySelector<HTMLElement>('#ticket-preview-note');
+  const noteRu = dialog?.dataset.lang === 'ru';
+  let paymentsEnabled = false;
+  fetch('/api/config')
+    .then((r) => (r.ok ? r.json() : null))
+    .then((cfg) => {
+      paymentsEnabled = !!cfg?.paymentsEnabled;
+      if (previewNote) {
+        if (!paymentsEnabled)
+          previewNote.textContent = noteRu
+            ? 'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.'
+            : 'Online-Zahlung derzeit nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.';
+        else if (cfg.mode === 'test')
+          previewNote.textContent = noteRu
+            ? 'Тестовый режим Stripe. Настоящие деньги не списываются.'
+            : 'Stripe-Testmodus. Es wird kein echtes Geld abgebucht.';
+      }
+      if (privacy) privacy.dispatchEvent(new Event('change'));
+    })
+    .catch(() => {});
   const paymentButtons =
     document.querySelectorAll<HTMLButtonElement>('[data-payment]');
+  const errorBox = document.querySelector<HTMLElement>('#ticket-error');
+  let currentTicket = '';
   const person = document.querySelector<HTMLElement>('#ticket-person');
   const shownContact = document.querySelector<HTMLElement>('#ticket-contact');
   const isRu = dialog?.dataset.lang === 'ru';
@@ -723,6 +755,8 @@ const copy =
           !payment
         )
           return;
+        currentTicket = button.dataset.ticket || '';
+        errorBox?.classList.add('hidden');
         title.textContent = ticket[0];
         summary.textContent = ticket[1];
         step.textContent = contactStep;
@@ -779,8 +813,91 @@ const copy =
     privacy?.focus();
   });
   privacy?.addEventListener('change', () => {
-    paymentButtons.forEach((button) => (button.disabled = !privacy.checked));
+    paymentButtons.forEach(
+      (button) =>
+        (button.disabled =
+          !privacy.checked ||
+          !paymentsEnabled ||
+          button.dataset.payment !== 'stripe'),
+    );
   });
+  const orderErrors = isRu
+    ? {
+        disabled: 'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
+        generic: 'Не удалось перейти к оплате. Попробуйте ещё раз или напишите нам.',
+      }
+    : {
+        disabled: 'Die Online-Zahlung ist noch nicht verfügbar. Schreib uns, wir regeln es.',
+        generic: 'Weiterleitung zur Zahlung fehlgeschlagen. Bitte versuche es erneut oder schreib uns.',
+      };
+  document
+    .querySelector<HTMLButtonElement>('[data-payment="stripe"]')
+    ?.addEventListener('click', async (event) => {
+      const button = event.currentTarget as HTMLButtonElement;
+      if (!currentTicket || !nameInput || !contactInput || !privacy?.checked)
+        return;
+      errorBox?.classList.add('hidden');
+      button.disabled = true;
+      let message = orderErrors.generic;
+      try {
+        const response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ticket: currentTicket,
+            name: nameInput.value.trim(),
+            channel: contactMode(),
+            contact: contactInput.value.trim(),
+            lang: isRu ? 'ru' : 'de',
+            consent: true,
+          }),
+        });
+        const data: unknown = await response.json().catch(() => ({}));
+        if (
+          response.ok &&
+          typeof data === 'object' &&
+          data !== null &&
+          'url' in data &&
+          typeof data.url === 'string'
+        ) {
+          location.href = data.url;
+          return;
+        }
+        if (response.status === 403 || response.status === 503)
+          message = orderErrors.disabled;
+      } catch {
+        /* network error: generic message */
+      }
+      if (errorBox) {
+        errorBox.textContent = message;
+        errorBox.classList.remove('hidden');
+      }
+      button.disabled = !privacy.checked || !paymentsEnabled;
+    });
+  const returned = new URLSearchParams(location.search).get('payment');
+  const returnBox = document.querySelector<HTMLElement>('#payment-return');
+  const returnMessage = document.querySelector<HTMLElement>('#payment-return-message');
+  document.querySelector('#payment-return-close')?.addEventListener('click', () => {
+    returnBox?.classList.add('hidden');
+    returnBox?.classList.remove('flex');
+  });
+  if (returnBox && returnMessage && (returned === 'success' || returned === 'cancelled')) {
+    returnMessage.textContent =
+      returned === 'success'
+        ? isRu
+          ? 'Спасибо! Проверяем подтверждение оплаты. После подтверждения свяжемся с вами.'
+          : 'Danke! Wir prüfen die Zahlungsbestätigung und melden uns danach bei dir.'
+        : isRu
+          ? 'Оплата отменена. Билет не оформлен, деньги не списаны.'
+          : 'Zahlung abgebrochen. Es wurde nichts berechnet.';
+    returnBox.classList.remove('hidden');
+    returnBox.classList.add('flex');
+    history.replaceState(null, '', location.pathname);
+    setTimeout(() => {
+      returnBox.classList.add('hidden');
+      returnBox.classList.remove('flex');
+    }, 12000);
+  }
   document.querySelector('#ticket-back')?.addEventListener('click', () => {
     form?.classList.remove('hidden');
     payment?.classList.add('hidden');

@@ -1,4 +1,5 @@
 import { routes, type Language } from '../src/lib/site';
+import { handleApi, type OrdersEnv } from './orders';
 export function chooseLanguage(header: string, fallback: Language): Language {
   const ranges = header.split(',').map((part, index) => {
     const [tag, ...params] = part.trim().toLowerCase().split(';');
@@ -20,13 +21,18 @@ export function chooseLanguage(header: string, fallback: Language): Language {
   );
   return scores[0].q > 0 ? scores[0].lang : fallback;
 }
-type WorkerEnv = {
+type WorkerEnv = OrdersEnv & {
   ASSETS: Pick<Env['ASSETS'], 'fetch'>;
   DEFAULT_LANGUAGE: Language;
 };
 export default {
-  async fetch(request: Request, env: WorkerEnv): Promise<Response> {
+  async fetch(
+    request: Request,
+    env: WorkerEnv,
+    ctx: ExecutionContext,
+  ): Promise<Response> {
     const url = new URL(request.url);
+    if (url.pathname.startsWith('/api/')) return handleApi(request, env, ctx);
     if (url.pathname !== '/') return env.ASSETS.fetch(request);
     if (request.method !== 'GET' && request.method !== 'HEAD')
       return new Response('Method not allowed', {

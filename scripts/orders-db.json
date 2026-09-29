@@ -1,0 +1,10 @@
+{
+  "test": {
+    "database_name": "rost-orders-test",
+    "database_id": "c239cc81-7eec-4d08-9001-0721aec10472"
+  },
+  "live": {
+    "database_name": "rost-orders",
+    "database_id": "3172652b-2274-4ce0-bf39-c74f94a58ee9"
+  }
+}

@@ -23,8 +23,10 @@ test('cookie wins at root, query survives, redirects cannot be cached', async ()
     }),
     {
       DEFAULT_LANGUAGE: 'de',
+      ORDERS: {} as D1Database,
       ASSETS: { fetch: async () => new Response('asset') },
     },
+    {} as ExecutionContext,
   );
   assert.equal(response.status, 302);
   assert.equal(
@@ -42,6 +44,7 @@ test('direct localized paths and missing pages are never language redirected', a
       }),
       {
         DEFAULT_LANGUAGE: 'de',
+        ORDERS: {} as D1Database,
         ASSETS: {
           fetch: async () => {
             passed = true;
@@ -51,6 +54,7 @@ test('direct localized paths and missing pages are never language redirected', a
           },
         },
       },
+      {} as ExecutionContext,
     );
     assert.ok(passed);
     assert.equal(response.status, path === '/missing' ? 404 : 200);
