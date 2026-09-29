@@ -63,6 +63,7 @@ const copy =
         continue: 'Продолжить →',
         choosePayment: 'Выберите, как вам удобнее оплатить.',
         stripe: 'Картой через Stripe',
+        paypal: 'Через PayPal',
         previewNote: 'Оплата картой проходит на защищённой странице Stripe. Данные карты нам не передаются.',
         back: '← Изменить контакт',
       }
@@ -126,6 +127,7 @@ const copy =
         continue: 'Weiter →',
         choosePayment: 'Wähle, wie du bezahlen möchtest.',
         stripe: 'Mit Karte über Stripe',
+        paypal: 'Mit PayPal',
         previewNote: 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Kartendaten erhalten wir nicht.',
         back: '← Kontakt ändern',
       };
@@ -536,6 +538,14 @@ const copy =
       >
         {copy.stripe} <span>→</span>
       </button>
+      <button
+        type="button"
+        data-payment="paypal"
+        disabled
+        class="hidden w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {copy.paypal} <span>→</span>
+      </button>
       <p
         id="ticket-error"
         role="alert"
@@ -573,16 +583,35 @@ const copy =
   const previewNote = document.querySelector<HTMLElement>('#ticket-preview-note');
   const noteRu = dialog?.dataset.lang === 'ru';
   let paymentsEnabled = false;
+  let providers = { stripe: false, paypal: false };
+  const paymentButtons =
+    document.querySelectorAll<HTMLButtonElement>('[data-payment]');
+  const refreshPaymentButtons = () => {
+    paymentButtons.forEach((button) => {
+      const provider = button.dataset.payment as 'stripe' | 'paypal';
+      if (provider === 'paypal') {
+        button.classList.toggle('hidden', !providers.paypal);
+        button.classList.toggle('flex', providers.paypal);
+      }
+      button.disabled = !privacy?.checked || !providers[provider];
+    });
+  };
   fetch('/api/config')
     .then(
       (r) =>
         (r.ok ? r.json() : null) as Promise<{
           paymentsEnabled?: boolean;
           mode?: string;
+          stripe?: boolean;
+          paypal?: boolean;
         } | null>,
     )
     .then((cfg) => {
       paymentsEnabled = !!cfg?.paymentsEnabled;
+      providers = {
+        stripe: cfg?.stripe ?? paymentsEnabled,
+        paypal: cfg?.paypal === true,
+      };
       if (previewNote) {
         if (!paymentsEnabled)
           previewNote.textContent = noteRu
@@ -590,14 +619,16 @@ const copy =
             : 'Online-Zahlung derzeit nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.';
         else if (cfg?.mode === 'test')
           previewNote.textContent = noteRu
-            ? 'Тестовый режим Stripe. Настоящие деньги не списываются.'
-            : 'Stripe-Testmodus. Es wird kein echtes Geld abgebucht.';
+            ? 'Тестовый режим оплаты. Настоящие деньги не списываются.'
+            : 'Testmodus für Zahlungen. Es wird kein echtes Geld abgebucht.';
+        else if (providers.paypal)
+          previewNote.textContent = noteRu
+            ? 'Оплата проходит на защищённой странице Stripe или PayPal.'
+            : 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe oder PayPal.';
       }
-      if (privacy) privacy.dispatchEvent(new Event('change'));
+      refreshPaymentButtons();
     })
     .catch(() => {});
-  const paymentButtons =
-    document.querySelectorAll<HTMLButtonElement>('[data-payment]');
   const errorBox = document.querySelector<HTMLElement>('#ticket-error');
   let currentTicket = '';
   const person = document.querySelector<HTMLElement>('#ticket-person');
@@ -819,13 +850,7 @@ const copy =
     privacy?.focus();
   });
   privacy?.addEventListener('change', () => {
-    paymentButtons.forEach(
-      (button) =>
-        (button.disabled =
-          !privacy.checked ||
-          !paymentsEnabled ||
-          button.dataset.payment !== 'stripe'),
-    );
+    refreshPaymentButtons();
   });
   const orderErrors = isRu
     ? {
@@ -836,10 +861,9 @@ const copy =
         disabled: 'Die Online-Zahlung ist noch nicht verfügbar. Schreib uns, wir regeln es.',
         generic: 'Weiterleitung zur Zahlung fehlgeschlagen. Bitte versuche es erneut oder schreib uns.',
       };
-  document
-    .querySelector<HTMLButtonElement>('[data-payment="stripe"]')
-    ?.addEventListener('click', async (event) => {
+  paymentButtons.forEach((button) => button.addEventListener('click', async (event) => {
       const button = event.currentTarget as HTMLButtonElement;
+      const provider = button.dataset.payment as 'stripe' | 'paypal';
       if (!currentTicket || !nameInput || !contactInput || !privacy?.checked)
         return;
       errorBox?.classList.add('hidden');
@@ -856,6 +880,7 @@ const copy =
             contact: contactInput.value.trim(),
             lang: isRu ? 'ru' : 'de',
             consent: true,
+            provider,
           }),
         });
         const data: unknown = await response.json().catch(() => ({}));
@@ -878,8 +903,8 @@ const copy =
         errorBox.textContent = message;
         errorBox.classList.remove('hidden');
       }
-      button.disabled = !privacy.checked || !paymentsEnabled;
-    });
+      refreshPaymentButtons();
+    }));
   const returned = new URLSearchParams(location.search).get('payment');
   const returnBox = document.querySelector<HTMLElement>('#payment-return');
   const returnMessage = document.querySelector<HTMLElement>('#payment-return-message');
@@ -887,12 +912,16 @@ const copy =
     returnBox?.classList.add('hidden');
     returnBox?.classList.remove('flex');
   });
-  if (returnBox && returnMessage && (returned === 'success' || returned === 'cancelled')) {
+  if (returnBox && returnMessage && (returned === 'success' || returned === 'cancelled' || returned === 'error')) {
     returnMessage.textContent =
       returned === 'success'
         ? isRu
           ? 'Спасибо! Проверяем подтверждение оплаты. После подтверждения свяжемся с вами.'
           : 'Danke! Wir prüfen die Zahlungsbestätigung und melden uns danach bei dir.'
+        : returned === 'error'
+          ? isRu
+            ? 'Не удалось подтвердить оплату. Если деньги списались, напишите нам — мы проверим платёж.'
+            : 'Die Zahlung konnte nicht bestätigt werden. Falls Geld abgebucht wurde, schreib uns bitte.'
         : isRu
           ? 'Оплата отменена. Билет не оформлен, деньги не списаны.'
           : 'Zahlung abgebrochen. Es wurde nichts berechnet.';

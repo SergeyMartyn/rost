@@ -36,6 +36,9 @@ writeFileSync(
         // Live payments stay off until PAYMENTS_ENABLED=true is set explicitly for the deploy.
         PAYMENTS_ENABLED:
           ordersEnv === 'test' ? 'true' : process.env.PAYMENTS_ENABLED || 'false',
+        PAYPAL_ENABLED: process.env.PAYPAL_ENABLED || 'false',
+        PAYPAL_MODE: ordersEnv === 'live' ? 'live' : 'sandbox',
+        PAYPAL_PAYEE_EMAIL: process.env.PAYPAL_PAYEE_EMAIL || 'mail@margaritamartyn.com',
       },
       d1_databases: [
         {

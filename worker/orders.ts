@@ -11,6 +11,12 @@ export interface OrdersEnv {
   ADMIN_TOKEN?: string; // Secret, protects the CSV export
   SHEETS_WEBHOOK_URL?: string; // Google Apps Script web app URL
   SHEETS_TOKEN?: string; // Secret shared with the Apps Script
+  PAYPAL_ENABLED?: string;
+  PAYPAL_MODE?: string; // 'sandbox' | 'live', must match ORDERS_ENV
+  PAYPAL_CLIENT_ID?: string;
+  PAYPAL_CLIENT_SECRET?: string;
+  PAYPAL_PAYEE_EMAIL?: string;
+  PAYPAL_WEBHOOK_ID?: string;
 }
 
 export interface Deps {
@@ -107,6 +113,52 @@ function paymentsAllowed(url: URL, env: OrdersEnv): boolean {
   return true;
 }
 
+function paypalReady(env: OrdersEnv): boolean {
+  const mode = env.ORDERS_ENV === 'live' ? 'live' : 'sandbox';
+  return env.PAYPAL_ENABLED === 'true' && env.PAYPAL_MODE === mode &&
+    !!env.PAYPAL_CLIENT_ID && !!env.PAYPAL_CLIENT_SECRET &&
+    !!env.PAYPAL_PAYEE_EMAIL && !!env.PAYPAL_WEBHOOK_ID;
+}
+
+const paypalBase = (env: OrdersEnv) => env.ORDERS_ENV === 'live'
+  ? 'https://api-m.paypal.com'
+  : 'https://api-m.sandbox.paypal.com';
+
+async function paypalToken(env: OrdersEnv, deps: Deps): Promise<string | null> {
+  if (!paypalReady(env)) return null;
+  const credentials = btoa(`${env.PAYPAL_CLIENT_ID}:${env.PAYPAL_CLIENT_SECRET}`);
+  try {
+    const res = await deps.fetch(`${paypalBase(env)}/v1/oauth2/token`, {
+      method: 'POST',
+      headers: {
+        Authorization: `Basic ${credentials}`,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: 'grant_type=client_credentials',
+    });
+    if (!res.ok) return null;
+    const data = await res.json() as { access_token?: string };
+    return data.access_token || null;
+  } catch {
+    return null;
+  }
+}
+
+function paypalApprovalUrl(links: unknown, live: boolean): string | null {
+  if (!Array.isArray(links)) return null;
+  const href = links.find((link) => link?.rel === 'payer-action' || link?.rel === 'approve')?.href;
+  if (typeof href !== 'string') return null;
+  try {
+    const url = new URL(href);
+    const host = live ? 'www.paypal.com' : 'www.sandbox.paypal.com';
+    return url.protocol === 'https:' && url.hostname === host ? href : null;
+  } catch {
+    return null;
+  }
+}
+
+const euroAmount = (cents: number) => (cents / 100).toFixed(2);
+
 // ---------- POST /api/orders ----------
 async function createOrder(request: Request, env: OrdersEnv, deps: Deps): Promise<Response> {
   const url = new URL(request.url);
@@ -118,7 +170,7 @@ async function createOrder(request: Request, env: OrdersEnv, deps: Deps): Promis
   } catch {
     originHost = null;
   }
-  if (!originHost || originHost !== url.host) return json({ error: 'bad_origin' }, 403);
+  if (originHost !== url.host) return json({ error: 'bad_origin' }, 403);
   const text = await request.text();
   if (text.length > 4096) return json({ error: 'too_large' }, 413);
   let body: Record<string, unknown>;
@@ -135,20 +187,67 @@ async function createOrder(request: Request, env: OrdersEnv, deps: Deps): Promis
   if (!contact) return json({ error: 'bad_contact' }, 400);
   if (body.consent !== true) return json({ error: 'consent_required' }, 400);
   const lang = body.lang === 'de' ? 'de' : 'ru';
-  const key = stripeKey(env);
-  if (!key) return json({ error: 'payments_not_configured' }, 503);
+  const provider = body.provider === undefined || body.provider === 'stripe' ? 'stripe'
+    : body.provider === 'paypal' ? 'paypal' : null;
+  if (!provider) return json({ error: 'bad_provider' }, 400);
+  const key = provider === 'stripe' ? stripeKey(env) : null;
+  if (provider === 'stripe' ? !key : !paypalReady(env))
+    return json({ error: 'payments_not_configured' }, 503);
 
   const ticket = TICKETS[body.ticket];
   const id = crypto.randomUUID();
   const now = iso(deps.now());
   await env.ORDERS.prepare(
     `INSERT INTO orders (id,event_id,ticket_type,customer_name,contact_method,contact_value,amount_cents,currency,status,provider,created_at,updated_at)
-     VALUES (?,?,?,?,?,?,?, 'EUR','pending','stripe',?,?)`,
+     VALUES (?,?,?,?,?,?,?, 'EUR','pending',?,?,?)`,
   )
-    .bind(id, ticket.eventId, body.ticket, name, contact.method, contact.value, ticket.amountCents, now, now)
+    .bind(id, ticket.eventId, body.ticket, name, contact.method, contact.value, ticket.amountCents, provider, now, now)
     .run();
 
   const events = `${url.origin}${routes.events[lang]}`;
+  if (provider === 'paypal') {
+    const accessToken = await paypalToken(env, deps);
+    if (!accessToken) {
+      await failPendingOrder(env, id, deps.now());
+      return json({ error: 'paypal_unavailable' }, 502);
+    }
+    try {
+      const res = await deps.fetch(`${paypalBase(env)}/v2/checkout/orders`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'PayPal-Request-Id': id,
+          Prefer: 'return=representation',
+        },
+        body: JSON.stringify({
+          intent: 'CAPTURE',
+          purchase_units: [{
+            reference_id: id,
+            custom_id: id,
+            description: ticket.label[lang],
+            payee: { email_address: env.PAYPAL_PAYEE_EMAIL },
+            amount: { currency_code: 'EUR', value: euroAmount(ticket.amountCents) },
+          }],
+          payment_source: { paypal: { experience_context: {
+            return_url: `${url.origin}/api/paypal/return?order=${id}&lang=${lang}`,
+            cancel_url: `${url.origin}/api/paypal/cancel?order=${id}&lang=${lang}`,
+            shipping_preference: 'NO_SHIPPING',
+            user_action: 'PAY_NOW',
+          } } },
+        }),
+      });
+      const data = await res.json() as { id?: string; links?: unknown };
+      const approval = paypalApprovalUrl(data.links, env.ORDERS_ENV === 'live');
+      if (!res.ok || !data.id || !approval) throw new Error('paypal_error');
+      await env.ORDERS.prepare(`UPDATE orders SET provider_session_id=?, updated_at=? WHERE id=?`)
+        .bind(data.id, iso(deps.now()), id).run();
+      return json({ url: approval });
+    } catch {
+      await failPendingOrder(env, id, deps.now());
+      return json({ error: 'paypal_unavailable' }, 502);
+    }
+  }
   const form = new URLSearchParams({
     mode: 'payment',
     'payment_method_types[0]': 'card',
@@ -178,11 +277,7 @@ async function createOrder(request: Request, env: OrdersEnv, deps: Deps): Promis
     session = (await res.json()) as typeof session;
     if (!res.ok || !session.id || !session.url) throw new Error('stripe_error');
   } catch {
-    await env.ORDERS.prepare(
-      `UPDATE orders SET status='failed', updated_at=? WHERE id=? AND status='pending'`,
-    )
-      .bind(iso(deps.now()), id)
-      .run();
+    await failPendingOrder(env, id, deps.now());
     return json({ error: 'stripe_unavailable' }, 502);
   }
   await env.ORDERS.prepare(`UPDATE orders SET provider_session_id=?, updated_at=? WHERE id=?`)
@@ -191,9 +286,16 @@ async function createOrder(request: Request, env: OrdersEnv, deps: Deps): Promis
   return json({ url: session.url });
 }
 
+async function failPendingOrder(env: OrdersEnv, id: string, now: number) {
+  await env.ORDERS.prepare(
+    `UPDATE orders SET status='failed', updated_at=? WHERE id=? AND status='pending'`,
+  ).bind(iso(now), id).run();
+}
+
 // ---------- POST /api/stripe/webhook ----------
 interface OrderRow {
   id: string;
+  provider: string;
   ticket_type: string;
   customer_name: string;
   contact_method: string;
@@ -205,6 +307,234 @@ interface OrderRow {
 }
 // deno-lint-ignore no-explicit-any
 type Obj = any;
+
+function paypalReturnLocation(url: URL, payment: string): string {
+  const lang = url.searchParams.get('lang') === 'de' ? 'de' : 'ru';
+  const target = new URL(routes.events[lang], url.origin);
+  target.searchParams.set('payment', payment);
+  return target.toString();
+}
+
+function returnRedirect(url: URL, payment: string): Response {
+  return new Response(null, {
+    status: 303,
+    headers: { Location: paypalReturnLocation(url, payment), 'Cache-Control': 'no-store' },
+  });
+}
+
+function paypalCaptureDetails(data: Obj, order: OrderRow, payeeEmail: string): {
+  captureId: string;
+  email: string | null;
+} | null {
+  const unit = data?.purchase_units?.[0];
+  const capture = unit?.payments?.captures?.[0];
+  if (data?.id !== order.provider_session_id || data?.status !== 'COMPLETED' ||
+      capture?.status !== 'COMPLETED' ||
+      unit?.reference_id !== order.id || unit?.custom_id !== order.id ||
+      unit?.payee?.email_address?.toLowerCase() !== payeeEmail.toLowerCase() ||
+      capture?.amount?.currency_code !== order.currency ||
+      capture?.amount?.value !== euroAmount(order.amount_cents) ||
+      typeof capture?.id !== 'string') return null;
+  return { captureId: capture.id, email: data?.payer?.email_address ?? null };
+}
+
+async function markPayPalPaid(
+  env: OrdersEnv, ctx: Ctx, deps: Deps, order: OrderRow,
+  details: { captureId: string; email: string | null },
+): Promise<void> {
+  const now = iso(deps.now());
+  const result = await env.ORDERS.prepare(
+    `UPDATE orders SET status='paid', email=?, provider_payment_id=?, paid_at=?, cancelled_at=NULL, updated_at=?
+     WHERE id=? AND provider='paypal' AND status IN ('pending','cancelled')`,
+  ).bind(details.email, details.captureId, now, now, order.id).run();
+  if (result.meta.changes === 1)
+    ctx.waitUntil(pushToSheet(env, deps, order, details.email, now));
+}
+
+async function capturePayPalOrder(
+  env: OrdersEnv, deps: Deps, order: OrderRow,
+): Promise<{ captureId: string; email: string | null } | null> {
+  if (!order.provider_session_id || !env.PAYPAL_PAYEE_EMAIL) return null;
+  const accessToken = await paypalToken(env, deps);
+  if (!accessToken) return null;
+  try {
+    const res = await deps.fetch(
+      `${paypalBase(env)}/v2/checkout/orders/${encodeURIComponent(order.provider_session_id)}/capture`,
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+          'Content-Type': 'application/json',
+          'PayPal-Request-Id': `c${order.id.replace(/-/g, '')}`,
+          Prefer: 'return=representation',
+        },
+        body: '{}',
+      },
+    );
+    if (!res.ok) return null;
+    return paypalCaptureDetails(await res.json(), order, env.PAYPAL_PAYEE_EMAIL);
+  } catch {
+    return null;
+  }
+}
+
+async function paypalReturn(
+  request: Request, env: OrdersEnv, ctx: Ctx, deps: Deps,
+): Promise<Response> {
+  if (request.method !== 'GET') return json({ error: 'method' }, 405);
+  const url = new URL(request.url);
+  const id = url.searchParams.get('order');
+  const token = url.searchParams.get('token');
+  if (!id || !token || !/^[0-9a-f-]{36}$/i.test(id) || !/^[A-Z0-9]{10,30}$/.test(token))
+    return json({ error: 'bad_return' }, 400);
+  const order = await env.ORDERS.prepare(
+    `SELECT * FROM orders WHERE id=? AND provider='paypal'`,
+  ).bind(id).first<OrderRow>();
+  if (!order || order.provider_session_id !== token) return json({ error: 'bad_return' }, 400);
+  if (order.status === 'paid') return returnRedirect(url, 'success');
+  if (order.status !== 'pending' && order.status !== 'cancelled') return returnRedirect(url, 'error');
+  const details = await capturePayPalOrder(env, deps, order);
+  if (!details) return returnRedirect(url, 'error');
+  await markPayPalPaid(env, ctx, deps, order, details);
+  return returnRedirect(url, 'success');
+}
+
+async function paypalCancel(request: Request, env: OrdersEnv, deps: Deps): Promise<Response> {
+  if (request.method !== 'GET') return json({ error: 'method' }, 405);
+  const url = new URL(request.url);
+  const id = url.searchParams.get('order');
+  const token = url.searchParams.get('token');
+  if (!id || !token || !/^[0-9a-f-]{36}$/i.test(id) || !/^[A-Z0-9]{10,30}$/.test(token))
+    return json({ error: 'bad_return' }, 400);
+  await env.ORDERS.prepare(
+    `UPDATE orders SET status='cancelled', cancelled_at=?, updated_at=?
+     WHERE id=? AND provider='paypal' AND provider_session_id=? AND status='pending'`,
+  ).bind(iso(deps.now()), iso(deps.now()), id, token).run();
+  const current = await env.ORDERS.prepare('SELECT status FROM orders WHERE id=? AND provider=\'paypal\'')
+    .bind(id).first<{ status: string }>();
+  return returnRedirect(url, current?.status === 'paid' ? 'success' : 'cancelled');
+}
+
+async function paypalOrderDetails(env: OrdersEnv, deps: Deps, order: OrderRow): Promise<Obj | null> {
+  if (!order.provider_session_id) return null;
+  const token = await paypalToken(env, deps);
+  if (!token) return null;
+  try {
+    const res = await deps.fetch(
+      `${paypalBase(env)}/v2/checkout/orders/${encodeURIComponent(order.provider_session_id)}`,
+      { headers: { Authorization: `Bearer ${token}` } },
+    );
+    return res.ok ? await res.json() : null;
+  } catch {
+    return null;
+  }
+}
+
+// PayPal verifies the signed event using this app's webhook ID. No event is trusted
+// merely because it arrived at our public URL.
+async function verifyPayPalWebhook(
+  request: Request, raw: string, env: OrdersEnv, deps: Deps,
+): Promise<boolean | null> {
+  const fields = {
+    transmission_id: request.headers.get('paypal-transmission-id'),
+    transmission_time: request.headers.get('paypal-transmission-time'),
+    cert_url: request.headers.get('paypal-cert-url'),
+    auth_algo: request.headers.get('paypal-auth-algo'),
+    transmission_sig: request.headers.get('paypal-transmission-sig'),
+    webhook_id: env.PAYPAL_WEBHOOK_ID,
+  };
+  if (Object.values(fields).some((v) => !v)) return false;
+  const token = await paypalToken(env, deps);
+  if (!token) return null;
+  try {
+    const res = await deps.fetch(`${paypalBase(env)}/v1/notifications/verify-webhook-signature`, {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+      // PayPal requires the webhook event to be posted back exactly as received.
+      body: `${JSON.stringify(fields).slice(0, -1)},"webhook_event":${raw}}`,
+    });
+    if (!res.ok) return null;
+    const result = await res.json() as { verification_status?: string };
+    return result.verification_status === 'SUCCESS';
+  } catch {
+    return null;
+  }
+}
+
+async function paypalWebhook(request: Request, env: OrdersEnv, ctx: Ctx, deps: Deps): Promise<Response> {
+  if (request.method !== 'POST') return json({ error: 'method' }, 405);
+  if (!paypalReady(env)) return json({ error: 'not_configured' }, 503);
+  const raw = await request.text();
+  if (raw.length > 65536) return json({ error: 'too_large' }, 413);
+  let event: Obj;
+  try {
+    event = JSON.parse(raw);
+  } catch {
+    return json({ error: 'bad_json' }, 400);
+  }
+  const verified = await verifyPayPalWebhook(request, raw, env, deps);
+  if (verified === null) return json({ error: 'verification_unavailable' }, 503);
+  if (!verified) return json({ error: 'bad_signature' }, 400);
+  if (typeof event?.id !== 'string' || typeof event?.event_type !== 'string')
+    return json({ error: 'bad_event' }, 400);
+  const eventId = `paypal:${event.id}`;
+  if (await env.ORDERS.prepare('SELECT 1 AS x FROM webhook_events WHERE event_id=?').bind(eventId).first())
+    return json({ received: true, duplicate: true });
+
+  const type = event.event_type as string;
+  const resource = event.resource ?? {};
+  let order: OrderRow | null = null;
+  let outcome = 'ignored:unrelated';
+  const sessionId = type === 'CHECKOUT.ORDER.APPROVED'
+    ? resource.id : resource.supplementary_data?.related_ids?.order_id;
+  if (typeof sessionId === 'string') {
+    order = await env.ORDERS.prepare(
+      "SELECT * FROM orders WHERE provider='paypal' AND provider_session_id=?",
+    ).bind(sessionId).first<OrderRow>();
+  }
+  if (type === 'CHECKOUT.ORDER.APPROVED' && (order?.status === 'pending' || order?.status === 'cancelled')) {
+    const details = await capturePayPalOrder(env, deps, order);
+    if (!details) return json({ error: 'capture_unavailable' }, 503);
+    await markPayPalPaid(env, ctx, deps, order, details);
+    outcome = 'applied';
+  } else if (type === 'PAYMENT.CAPTURE.COMPLETED' && order) {
+    if (order.status === 'pending' || order.status === 'cancelled') {
+      const paypalOrder = await paypalOrderDetails(env, deps, order);
+      if (!paypalOrder) return json({ error: 'order_unavailable' }, 503);
+      const details = paypalCaptureDetails(paypalOrder, order, env.PAYPAL_PAYEE_EMAIL!);
+      if (details && details.captureId === resource.id &&
+          resource.status === 'COMPLETED' &&
+          resource.amount?.currency_code === order.currency &&
+          resource.amount?.value === euroAmount(order.amount_cents)) {
+        await markPayPalPaid(env, ctx, deps, order, details);
+        outcome = 'applied';
+      } else outcome = 'rejected:capture_mismatch';
+    } else outcome = `ignored:status_${order.status}`;
+  } else if (type === 'PAYMENT.CAPTURE.REFUNDED') {
+    const related = resource.supplementary_data?.related_ids?.capture_id;
+    const up = Array.isArray(resource.links)
+      ? resource.links.find((link: Obj) => link?.rel === 'up')?.href : null;
+    const captureId = typeof related === 'string' ? related
+      : typeof up === 'string' ? up.match(/\/v2\/payments\/captures\/([A-Z0-9]+)$/)?.[1] : null;
+    if (captureId) {
+      order = await env.ORDERS.prepare(
+        "SELECT * FROM orders WHERE provider='paypal' AND provider_payment_id=?",
+      ).bind(captureId).first<OrderRow>();
+    }
+    if (order?.status === 'paid' && resource.status === 'COMPLETED' &&
+        resource.amount?.currency_code === order.currency &&
+        resource.amount?.value === euroAmount(order.amount_cents)) {
+      await env.ORDERS.prepare(
+        "UPDATE orders SET status='refunded', refunded_at=?, updated_at=? WHERE id=? AND provider='paypal' AND status='paid'",
+      ).bind(iso(deps.now()), iso(deps.now()), order.id).run();
+      outcome = 'applied';
+    } else outcome = 'ignored:partial_or_unknown_refund';
+  }
+  await env.ORDERS.prepare(
+    'INSERT OR IGNORE INTO webhook_events (event_id,type,order_id,outcome,received_at) VALUES (?,?,?,?,?)',
+  ).bind(eventId, type, order?.id ?? null, outcome, iso(deps.now())).run();
+  return json({ received: true });
+}
 
 async function stripeWebhook(
   request: Request,
@@ -401,15 +731,31 @@ export async function handleApi(
   ctx: Ctx,
   deps: Deps = defaultDeps,
 ): Promise<Response> {
-  const { pathname } = new URL(request.url);
+  const url = new URL(request.url);
+  const { pathname } = url;
+  if (pathname === '/api/payments/config') {
+    if (request.method !== 'GET') return json({ error: 'method' }, 405);
+    const enabled = paymentsAllowed(url, env);
+    return json({
+      mode: env.ORDERS_ENV === 'live' ? 'live' : 'test',
+      stripe: enabled && !!stripeKey(env),
+      paypal: enabled && paypalReady(env),
+    });
+  }
+  if (pathname === '/api/config') {
+    if (request.method !== 'GET') return json({ error: 'method' }, 405);
+    const enabled = paymentsAllowed(url, env);
+    const stripe = enabled && stripeKey(env) !== null;
+    const paypal = enabled && paypalReady(env);
+    return json({ paymentsEnabled: stripe || paypal, mode: env.ORDERS_ENV === 'live' ? 'live' : 'test', stripe, paypal });
+  }
   if (pathname === '/api/orders') {
     if (request.method !== 'POST') return json({ error: 'method' }, 405);
     return createOrder(request, env, deps);
   }
-  if (pathname === '/api/config' && request.method === 'GET') {
-    const enabled = paymentsAllowed(new URL(request.url), env) && stripeKey(env) !== null;
-    return json({ paymentsEnabled: enabled, mode: env.ORDERS_ENV === 'live' ? 'live' : 'test' });
-  }
+  if (pathname === '/api/paypal/return') return paypalReturn(request, env, ctx, deps);
+  if (pathname === '/api/paypal/cancel') return paypalCancel(request, env, deps);
+  if (pathname === '/api/paypal/webhook') return paypalWebhook(request, env, ctx, deps);
   if (pathname === '/api/stripe/webhook') return stripeWebhook(request, env, ctx, deps);
   if (pathname === '/api/admin/orders.csv' && request.method === 'GET') return adminCsv(request, env);
   return json({ error: 'not_found' }, 404);

@@ -263,12 +263,14 @@ test('/api/config: enabled only with payments flag, matching key mode and allowe
     (await t.api(new Request(`${host}/api/config`))).json() as Promise<{
       paymentsEnabled: boolean;
       mode: string;
+      stripe: boolean;
+      paypal: boolean;
     }>;
-  assert.deepEqual(await cfg(setup()), { paymentsEnabled: true, mode: 'test' });
+  assert.deepEqual(await cfg(setup()), { paymentsEnabled: true, mode: 'test', stripe: true, paypal: false });
   assert.equal((await cfg(setup({ PAYMENTS_ENABLED: 'false' }))).paymentsEnabled, false);
   assert.equal((await cfg(setup(), 'https://rost.community')).paymentsEnabled, false);
   const live = setup({ ORDERS_ENV: 'live', STRIPE_SECRET_KEY: 'rk_live_abc' });
-  assert.deepEqual(await cfg(live, 'https://rost.community'), { paymentsEnabled: true, mode: 'live' });
+  assert.deepEqual(await cfg(live, 'https://rost.community'), { paymentsEnabled: true, mode: 'live', stripe: true, paypal: false });
   const wrong = setup({ ORDERS_ENV: 'live', STRIPE_SECRET_KEY: 'sk_test_abc' });
   assert.equal((await cfg(wrong, 'https://rost.community')).paymentsEnabled, false);
 });

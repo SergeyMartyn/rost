@@ -198,6 +198,7 @@ test('event contact form validates channels and repeats the contact before payme
       await page.screenshot({ path: 'test-results/ticket-payment-ru.png' });
     await expect(page.locator('#ticket-privacy')).not.toBeChecked();
     const stripeButton = page.locator('[data-payment="stripe"]');
+    await expect(page.locator('[data-payment="paypal"]')).toBeHidden();
     await expect(stripeButton).toBeVisible();
     await expect(stripeButton).toBeDisabled();
     await expect(page.locator('#ticket-preview-note')).toContainText(
