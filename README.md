@@ -33,15 +33,27 @@ npm run preview
 - `legalText`: подготовленные владельцем тексты Impressum и Datenschutz на обоих языках. Обычный текст, абзацы разделяются переводами строк; HTML не исполняется.
 - `routes`: таблица соответствий; после изменения требуется новая сборка.
 
-| Страница    | Deutsch            | Русский                       |
-| ----------- | ------------------ | ----------------------------- |
-| Главная     | `/de/`             | `/ru/`                        |
-| Impressum   | `/de/impressum/`   | `/ru/pravovaya-informatsiya/` |
-| Datenschutz | `/de/datenschutz/` | `/ru/konfidentsialnost/`      |
+| Страница            | Deutsch                      | Русский                          |
+| ------------------- | ---------------------------- | -------------------------------- |
+| Главная             | `/de/`                       | `/ru/`                           |
+| Мероприятия         | `/de/veranstaltungen/`       | `/ru/meropriyatiya/`             |
+| О нас               | `/de/ueber-uns/`             | `/ru/o-nas/`                     |
+| Контакты            | `/de/kontakt/`               | `/ru/kontakty/`                  |
+| Условия участия     | `/de/teilnahmebedingungen/`  | `/ru/usloviya-uchastiya/`        |
+| Impressum           | `/de/impressum/`             | `/ru/pravovaya-informatsiya/`    |
+| Datenschutz         | `/de/datenschutz/`           | `/ru/konfidentsialnost/`         |
 
 Русские слова записаны латиницей: `ya`, `ts`, `iya`, мягкий знак опускается. Используйте нижний регистр, дефисы и завершающий `/`. Обе локализации обязательны для каждой страницы в этом небольшом шаблоне. Таблица управляет генерацией страниц, внутренними ссылками, переключателем, canonical, hreflang и sitemap. Для добавления страницы расширьте также типизированный словарь и её содержимое. `x-default` указывает на вариант страницы на языке по умолчанию.
 
 На `/` сначала учитывается cookie `site_language`, затем приоритеты `Accept-Language`, включая региональные варианты, веса `q` и `*`. При одинаковом весе учитывается порядок языков; при отсутствии поддерживаемого языка используется `defaultLanguage`. Ответ — временный 302 с `private, no-store` и `Vary`. Параметры URL сохраняются. Ручной переключатель сохраняет язык на год. При отключённом JavaScript ссылки работают, но предпочтение не сохраняется. Прямые `/de/...` и `/ru/...` не перенаправляются по языку. Если Worker отсутствует, `/` остаётся доступной страницей выбора языка.
+
+## Безопасность, SEO и AI
+
+- `public/_headers` — security-заголовки (`X-Content-Type-Options`, `Referrer-Policy`, `Permissions-Policy`, `HSTS`) и кэширование (`immutable` для `/_astro`, `/fonts`, `/icons`). Cloudflare применяет их к статике; ответ `/` генерирует Worker и под правила не попадает. CSP намеренно не задан — добавлять вместе с оплатой и её внешним скриптом (шаблон есть в файле).
+- `src/layouts/Layout.astro` — canonical/hreflang, Open Graph/Twitter, `preload` шрифтов Marmelad/Onest и JSON-LD (`Organization` + `WebSite`).
+- `public/llms.txt` — краткое описание сайта для AI-ассистентов.
+- `sitemap.xml` содержит `lastmod` (дата последнего коммита; если git недоступен, поле опускается).
+- Проверки: `tests/browser/seo.spec.ts`.
 
 ## Согласие и сторонние ресурсы
 
