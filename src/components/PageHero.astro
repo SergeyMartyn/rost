@@ -1,0 +1,93 @@
+---
+import { routes, site, type Language } from '../lib/site';
+import VideoFacade from './VideoFacade.astro';
+
+const { lang, page, title } = Astro.props as {
+  lang: Language;
+  page: 'about' | 'contacts';
+  title: string;
+};
+
+const copy =
+  page === 'about'
+    ? lang === 'ru'
+      ? {
+          eyebrow: 'Что нас объединяет',
+          lead: [
+            'R.O.S.T. объединяет людей,',
+            'которым важно живое общение и новые знакомства.',
+          ],
+          body: [
+            'Мы встречаемся, играем, проводим время вместе.',
+            'К нам можно прийти одному: мы стараемся, чтобы каждому было легко включиться в разговор, найти своих людей.',
+          ],
+          action: 'Посмотреть мероприятия',
+          href: routes.events[lang],
+        }
+      : {
+          eyebrow: 'Was uns verbindet',
+          lead: [
+            'R.O.S.T. bringt Menschen zusammen,',
+            'denen persönliche Begegnungen und neue Bekanntschaften wichtig sind.',
+          ],
+          body: [
+            'Wir treffen uns, spielen und verbringen Zeit miteinander.',
+            'Du kannst auch allein kommen: Wir möchten, dass du leicht ins Gespräch findest und Menschen triffst, bei denen du dich wohlfühlst.',
+          ],
+          action: 'Veranstaltungen ansehen',
+          href: routes.events[lang],
+        }
+    : lang === 'ru'
+      ? {
+          eyebrow: 'На связи',
+          lead: ['Есть вопрос о встрече или хотите связаться с нами?'],
+          body: [
+            'Напишите нам по электронной почте. Мы ответим, как только сможем.',
+          ],
+          action: 'Написать письмо',
+          href: `mailto:${site.legal.email}`,
+        }
+      : {
+          eyebrow: 'In Kontakt bleiben',
+          lead: [
+            'Hast du eine Frage zu einem Treffen oder möchtest du uns schreiben?',
+          ],
+          body: ['Schreib uns per E-Mail. Wir antworten, sobald wir können.'],
+          action: 'E-Mail schreiben',
+          href: `mailto:${site.legal.email}`,
+        };
+---
+
+<section class="hero hero--inner-page" aria-labelledby="hero-title">
+  <div class="hero__inner site-container">
+    <div class="hero__content">
+      <p class="hero__eyebrow">{copy.eyebrow}</p>
+      <h1 class="hero__title" id="hero-title">
+        {title}
+      </h1>
+      <p class="hero__description">
+        {copy.lead[0]}
+        {copy.lead[1] && (
+          <>
+            <br />
+            {copy.lead[1]}
+          </>
+        )}
+      </p>
+      <p class="hero__body">
+        {copy.body[0]}
+        {copy.body[1] && (
+          <>
+            <br />
+            {copy.body[1]}
+          </>
+        )}
+      </p>
+      <a class="hero__cta" href={copy.href}>
+        {copy.action} →
+      </a>
+      {page === 'contacts' && <p class="hero__meta">{site.legal.email}</p>}
+    </div>
+    <VideoFacade lang={lang} page={page} />
+  </div>
+</section>

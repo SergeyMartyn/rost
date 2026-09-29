@@ -15,7 +15,7 @@ export const text = {
     imprint: 'Impressum',
     privacy: 'Datenschutz',
     skip: 'Zum Inhalt',
-    settings: 'Datenschutzeinstellungen',
+    settings: 'Cookie-Einstellungen',
     title: 'Gemeinsam wachsen',
     description:
       'R.O.S.T. verbindet russischsprachige Menschen in Deutschland. Finde Menschen, die du gern wiedersehen möchtest.',
@@ -37,7 +37,7 @@ export const text = {
     imprint: 'Правовая информация',
     privacy: 'Конфиденциальность',
     skip: 'К содержанию',
-    settings: 'Настройки конфиденциальности',
+    settings: 'Настройки cookie',
     title: 'Сообщество людей',
     description:
       'R.O.S.T. — русскоязычное сообщество в Германии. Находите людей, с которыми захочется встретиться снова.',

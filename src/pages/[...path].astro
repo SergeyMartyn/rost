@@ -5,6 +5,8 @@ import Events from '../components/Events.astro';
 import EventPage from '../components/EventPage.astro';
 import Formats from '../components/Formats.astro';
 import Faq from '../components/Faq.astro';
+import Team from '../components/Team.astro';
+import PageHero from '../components/PageHero.astro';
 import {
   routes,
   languages,
@@ -26,30 +28,6 @@ const t = text[lang];
 const title = page === 'home' ? t.title : t[page];
 const legalText =
   page === 'imprint' || page === 'privacy' ? site.legalText[page][lang] : '';
-const aboutCopy =
-  lang === 'ru'
-    ? {
-        lead: 'R.O.S.T. объединяет людей, которым важно живое общение и новые знакомства.',
-        body: 'Мы встречаемся, играем и проводим время вместе. Каждый формат — повод познакомиться ближе и найти людей, с которыми хочется увидеться снова.',
-        action: 'Посмотреть мероприятия',
-      }
-    : {
-        lead: 'R.O.S.T. bringt Menschen zusammen, denen persönliche Begegnungen und neue Bekanntschaften wichtig sind.',
-        body: 'Wir treffen uns, spielen und verbringen Zeit miteinander. Jedes Format bietet Gelegenheit, einander näher kennenzulernen und Menschen zu finden, die man gern wiedersehen möchte.',
-        action: 'Veranstaltungen ansehen',
-      };
-const contactCopy =
-  lang === 'ru'
-    ? {
-        lead: 'Есть вопрос о встрече или хотите связаться с нами?',
-        body: 'Напишите нам по электронной почте. Мы ответим, как только сможем.',
-        email: 'Написать письмо',
-      }
-    : {
-        lead: 'Hast du eine Frage zu einem Treffen oder möchtest du uns schreiben?',
-        body: 'Schreib uns per E-Mail. Wir antworten, sobald wir können.',
-        email: 'E-Mail schreiben',
-      };
 ---
 
 <Layout
@@ -70,40 +48,12 @@ const contactCopy =
   ) : page === 'events' ? (
     <EventPage lang={lang} />
   ) : page === 'about' ? (
-    <section class="font-hero-sans text-brand max-w-4xl">
-      <p class="text-sm font-bold uppercase tracking-widest text-accent mb-5">
-        R.O.S.T.
-      </p>
-      <h1 class="font-display text-5xl md:text-7xl leading-tight mb-8">
-        {title}
-      </h1>
-      <p class="text-xl md:text-2xl leading-relaxed mb-6">{aboutCopy.lead}</p>
-      <p class="text-lg text-muted leading-relaxed mb-10">{aboutCopy.body}</p>
-      <a
-        class="inline-flex rounded-2xl bg-brand px-6 py-4 font-bold text-white hover:bg-accent"
-        href={routes.events[lang]}
-      >
-        {aboutCopy.action} →
-      </a>
-    </section>
+    <>
+      <PageHero lang={lang} page="about" title={title} />
+      <Team lang={lang} />
+    </>
   ) : page === 'contacts' ? (
-    <section class="font-hero-sans text-brand max-w-4xl">
-      <p class="text-sm font-bold uppercase tracking-widest text-accent mb-5">
-        R.O.S.T.
-      </p>
-      <h1 class="font-display text-5xl md:text-7xl leading-tight mb-8">
-        {title}
-      </h1>
-      <p class="text-xl md:text-2xl leading-relaxed mb-6">{contactCopy.lead}</p>
-      <p class="text-lg text-muted leading-relaxed mb-10">{contactCopy.body}</p>
-      <a
-        class="inline-flex rounded-2xl bg-brand px-6 py-4 font-bold text-white hover:bg-accent"
-        href={`mailto:${site.legal.email}`}
-      >
-        {contactCopy.email} →
-      </a>
-      <p class="mt-5 text-muted">{site.legal.email}</p>
-    </section>
+    <PageHero lang={lang} page="contacts" title={title} />
   ) : (
     <div class="font-hero-sans">
       {!legalText && <p class="text-brand mb-5">{t.legal}</p>}
@@ -143,6 +93,17 @@ const contactCopy =
       ) : (
         <p class="mt-8 leading-relaxed">
           {`[${lang === 'ru' ? 'Текст страницы: нужно подготовить и проверить' : 'Seitentext: ergänzen und prüfen'}]`}
+        </p>
+      )}
+      {page === 'privacy' && (
+        <p class="mt-8">
+          <button
+            type="button"
+            class="site-footer__cookie-settings font-bold text-brand underline"
+            data-cc="show-preferencesModal"
+          >
+            {t.settings}
+          </button>
         </p>
       )}
     </div>

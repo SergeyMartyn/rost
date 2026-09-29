@@ -1,0 +1,256 @@
+/*
+ * Consent banner styling. Uses the site's own tokens (global.css @theme) and
+ * follows the site's existing look: Onest, 16px button radius, brand green.
+ * Accept and refuse buttons are visually identical (R-6.4); "Settings" has the
+ * same size with the secondary (outlined) style.
+ */
+
+/* Footer link that reopens the settings (R-6.14): looks like the other footer links. */
+.site-footer__cookie-settings {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  white-space: nowrap;
+  text-underline-offset: 0.25em;
+}
+
+.site-footer__cookie-settings:hover {
+  background: none;
+  text-decoration: underline;
+}
+
+/* Room under the fixed bar so the footer is never covered (R-6.7). */
+body {
+  padding-bottom: var(--consent-bar-height, 0px);
+}
+
+#cc-main {
+  --cc-font-family: Onest, Arial, sans-serif;
+  --cc-bg: #ffffff;
+  --cc-primary-color: var(--color-ink);
+  --cc-secondary-color: var(--color-muted);
+  --cc-link-color: var(--color-accent);
+
+  --cc-btn-primary-bg: var(--color-brand);
+  --cc-btn-primary-color: #ffffff;
+  --cc-btn-primary-border-color: var(--color-brand);
+  --cc-btn-primary-hover-bg: var(--color-accent);
+  --cc-btn-primary-hover-color: var(--color-brand-gold);
+  --cc-btn-primary-hover-border-color: var(--color-accent);
+
+  --cc-btn-secondary-bg: #ffffff;
+  --cc-btn-secondary-color: var(--color-brand);
+  --cc-btn-secondary-border-color: var(--color-brand);
+  --cc-btn-secondary-hover-bg: var(--color-brand-surface);
+  --cc-btn-secondary-hover-color: var(--color-brand);
+  --cc-btn-secondary-hover-border-color: var(--color-brand);
+
+  --cc-separator-border-color: var(--color-line);
+  --cc-toggle-on-bg: var(--color-brand);
+  --cc-toggle-off-bg: #667481;
+  --cc-toggle-readonly-bg: var(--color-hero-end);
+  --cc-toggle-readonly-knob-bg: #ffffff;
+  --cc-toggle-readonly-knob-icon-color: var(--color-brand);
+  --cc-section-category-border: var(--color-line);
+  --cc-cookie-category-block-bg: var(--color-brand-surface);
+  --cc-cookie-category-block-border: var(--color-line);
+  --cc-cookie-category-block-hover-bg: var(--color-events-surface);
+  --cc-cookie-category-block-hover-border: var(--color-line);
+  --cc-cookie-category-expanded-block-bg: #ffffff;
+  --cc-cookie-category-expanded-block-hover-bg: var(--color-brand-surface);
+  --cc-footer-bg: var(--color-brand-surface);
+  --cc-footer-color: var(--color-muted);
+  --cc-footer-border-color: var(--color-line);
+
+  --cc-btn-border-radius: var(--radius-2xl);
+  --cc-modal-border-radius: var(--radius-3xl);
+  --cc-pm-toggle-border-radius: 4em;
+  --cc-overlay-bg: rgb(22 39 33 / 0.6);
+  --cc-z-index: 100;
+
+  font-family: var(--cc-font-family);
+}
+
+#cc-main .cm__title,
+#cc-main .pm__title,
+#cc-main .pm__section-title {
+  font-family: var(--font-display);
+  font-weight: 400;
+}
+
+#cc-main .cm__desc,
+#cc-main .pm__section-desc {
+  color: var(--color-ink);
+  line-height: 1.55;
+}
+
+#cc-main .cm__footer {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+#cc-main .cm--bar .cm__links {
+  max-width: var(--container-content);
+  padding-left: calc(var(--spacing-page-desktop) + 1.1rem) !important;
+  padding-right: var(--spacing-page-desktop) !important;
+}
+
+#cc-main .cm__links a {
+  font-weight: 600;
+}
+
+/* Buttons: same height and shape for all three actions. */
+#cc-main .cm__btn,
+#cc-main .pm__btn {
+  min-height: 48px;
+  border-width: 1px;
+  border-style: solid;
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+#cc-main :focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Bar: light elevation like the site header. */
+#cc-main .cm--bar {
+  border-top: 1px solid var(--color-line);
+  box-shadow: 0 -12px 32px rgb(13 53 43 / 0.12);
+}
+
+#cc-main .cm--bar .cm__body {
+  max-width: var(--container-content);
+  padding: 20px var(--spacing-page-desktop) 12px;
+}
+
+#cc-main .cm--bar .cm__texts {
+  padding-bottom: 12px;
+}
+
+#cc-main .cm--bar .cm__title {
+  margin-bottom: 6px;
+  font-size: 1.25rem;
+}
+
+#cc-main .cm--bar .cm__desc {
+  font-size: 0.9375rem;
+}
+
+#cc-main .cm--bar .cm__btns {
+  padding-top: 0;
+}
+
+#cc-main .cm--bar .cm__btn-group {
+  gap: 12px;
+}
+
+#cc-main .cm--bar .cm__btn + .cm__btn,
+#cc-main .cm--bar .cm__btn-group + .cm__btn-group {
+  margin-left: 0;
+}
+
+/* Service details in the settings dialog (R-6.11). */
+#cc-main .cc-service {
+  margin: 12px 0 0;
+  padding: 12px 16px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-2xl);
+  background: var(--color-brand-surface);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+#cc-main .cc-service dt {
+  font-weight: 700;
+}
+
+#cc-main .cc-service dd {
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+}
+
+#cc-main .cc-service dd span {
+  color: var(--color-muted);
+}
+
+@media (max-width: 63.999rem) {
+  #cc-main .cm--bar .cm__body {
+    padding-inline: var(--spacing-page-tablet);
+  }
+
+  #cc-main .cm--bar .cm__links {
+    padding-left: calc(var(--spacing-page-tablet) + 1.1rem) !important;
+    padding-right: var(--spacing-page-tablet) !important;
+  }
+}
+
+@media (max-width: 47.999rem) {
+  #cc-main .cm--bar .cm__body {
+    padding: 10px var(--spacing-page-mobile) 8px;
+  }
+
+  #cc-main .cm--bar .cm__links {
+    padding-left: calc(var(--spacing-page-mobile) + 1.1rem) !important;
+    padding-right: var(--spacing-page-mobile) !important;
+  }
+
+  #cc-main .cm--bar .cm__texts {
+    padding-bottom: 8px;
+  }
+
+  #cc-main .cm--bar .cm__title {
+    margin-bottom: 4px;
+    font-size: 1rem;
+  }
+
+  #cc-main .cm--bar .cm__desc {
+    font-size: 0.8125rem;
+    line-height: 1.4;
+  }
+
+  #cc-main .cm--bar .cm__btns {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  #cc-main .cm--bar .cm__btns .cm__btn-group {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 8px;
+    width: 100%;
+  }
+
+  #cc-main .cm--bar .cm__btns .cm__btn-group .cm__btn {
+    flex: 1 1 0;
+    margin: 0 !important;
+  }
+
+  #cc-main .cm--bar .cm__btns .cm__btn-group + .cm__btn-group {
+    margin: 0 !important;
+  }
+
+  #cc-main .cm--bar .cm__btn {
+    min-width: 0;
+    min-height: 44px;
+    padding: 6px 8px;
+    font-size: 0.9375rem;
+  }
+
+  #cc-main .cm__footer {
+    font-size: 0.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #cc-main,
+  #cc-main * {
+    transition: none !important;
+  }
+}

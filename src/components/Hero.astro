@@ -1,5 +1,6 @@
 ---
 import { routes, type Language } from '../lib/site';
+import VideoFacade from './VideoFacade.astro';
 
 const { lang } = Astro.props as { lang: Language };
 
@@ -18,9 +19,6 @@ const copy =
           'с которыми захочется встретиться снова.',
         ],
         join: 'Принять участие',
-        play: 'Видео появится позже',
-        notice:
-          'При запуске внешнего видео данные и cookie могут передаваться видеосервису.',
       }
     : {
         eyebrow: 'R.O.S.T. — russischsprachige Gemeinschaft in Deutschland',
@@ -35,9 +33,6 @@ const copy =
           'und die du gern wiedersehen möchtest.',
         ],
         join: 'Mitmachen',
-        play: 'Video folgt',
-        notice:
-          'Beim Starten eines externen Videos können Daten und Cookies an den Videodienst übertragen werden.',
       };
 ---
 
@@ -67,21 +62,6 @@ const copy =
       </a>
     </div>
 
-    <div class="hero__media">
-      <div class="hero__video">
-        <button
-          class="hero__play"
-          type="button"
-          disabled
-          aria-label={copy.play}
-          title={copy.play}
-        >
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="m8 5 11 7-11 7z" />
-          </svg>
-        </button>
-        <p class="hero__notice">{copy.notice}</p>
-      </div>
-    </div>
+    <VideoFacade lang={lang} page="home" />
   </div>
 </section>

@@ -1,0 +1,49 @@
+---
+import type { Language } from '../lib/site';
+import { heroVideos, youtubeEmbed, type HeroVideoPage } from '../lib/media';
+
+const { lang, page = 'home' } = Astro.props as {
+  lang: Language;
+  page?: HeroVideoPage;
+};
+const copy =
+  lang === 'ru'
+    ? {
+        play: 'Загрузить видео YouTube',
+        notice: 'При запуске видео cookies могут передаваться видеосервису.',
+      }
+    : {
+        play: 'YouTube-Video laden',
+        notice:
+          'Beim Starten eines Videos können Cookies an den Videodienst übertragen werden.',
+      };
+const videoId = heroVideos[page];
+const hasVideo = videoId !== 'xxxxxxxxxxx';
+---
+
+<div class="hero__media">
+  <div
+    class="hero__video"
+    data-facade
+    data-facade-src={hasVideo ? youtubeEmbed(videoId) : undefined}
+    data-facade-title={lang === 'ru' ? 'Видео R.O.S.T.' : 'R.O.S.T. Video'}
+    data-facade-allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+  >
+    <button
+      class="hero__play"
+      type="button"
+      data-facade-load
+      data-facade-ui
+      aria-label={copy.play}
+      title={copy.play}
+      disabled={!hasVideo}
+    >
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="m8 5 11 7-11 7z"></path>
+      </svg>
+    </button>
+    <p class="hero__notice" data-facade-ui>
+      {hasVideo ? copy.notice : lang === 'ru' ? 'Видео скоро появится.' : 'Das Video folgt in Kürze.'}
+    </p>
+  </div>
+</div>

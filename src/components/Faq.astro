@@ -29,7 +29,7 @@ const copy =
           {
             question: 'Где проходит мероприятие?',
             answer:
-              'Ближайшие встречи запланированы в Регенсбурге и Мюнхене. Место зависит от формата и числа участников. Город и подробности площадки мы укажем в описании конкретного мероприятия.',
+              'Встреча-знакомство пройдёт в Регенсбурге по адресу Санкт-Катариненплац, 5. Трансформационные игры пройдут в отеле «Палладиум» по адресу Перхтингер-штрассе, 12, Мюнхен. Адрес и карта есть на странице мероприятий.',
           },
           {
             question: 'Нужно ли записываться заранее?',
@@ -82,7 +82,7 @@ const copy =
           {
             question: 'Wo findet die Veranstaltung statt?',
             answer:
-              'Die nächsten Treffen sind in Regensburg und München geplant. Der genaue Ort hängt vom Format und von der Zahl der Teilnehmenden ab. Stadt und Veranstaltungsort nennen wir in der Beschreibung des jeweiligen Treffens.',
+              'Das Kennenlerntreffen findet in Regensburg statt, St. Katharinenplatz 5, 93059 Regensburg. Die Transformationsspiele finden im Grand Hotel Palladium, Perchtinger Straße 12, 81379 München statt. Adresse und Karte findest du auf der Veranstaltungsseite.',
           },
           {
             question: 'Muss ich mich vorher anmelden?',
@@ -118,7 +118,9 @@ const orderedItems = [2, 5, 6, 7, 3, 1, 0, 8].map((index) => copy.items[index]);
   <div class="faq__inner site-container">
     <div class="faq__intro">
       <p class="faq__eyebrow">{copy.eyebrow}</p>
-      <h2 class="faq__heading" id="faq-title">{copy.heading}</h2>
+      <h2 class="faq__heading" id="faq-title">
+        {copy.heading}
+      </h2>
       <p class="faq__lead">{copy.intro}</p>
     </div>
 

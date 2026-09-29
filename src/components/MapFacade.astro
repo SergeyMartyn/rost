@@ -1,0 +1,49 @@
+---
+import { routes, type Language } from '../lib/site';
+import { googleMapsEmbed, regensburgPlace } from '../lib/media';
+
+const { lang } = Astro.props as { lang: Language };
+const copy =
+  lang === 'ru'
+    ? {
+        notice:
+          'Здесь встроена интерактивная карта Google Maps (Google Ireland Limited). При загрузке данные, в том числе IP-адрес, передаются Google и могут обрабатываться в США.',
+        privacy: 'Подробнее — в политике конфиденциальности',
+        load: 'Загрузить карту',
+        title: 'Карта: Регенсбург, St. Katharinenplatz 5',
+      }
+    : {
+        notice:
+          'Hier wird eine interaktive Karte von Google Maps (Google Ireland Limited) eingebettet. Beim Laden werden Daten, u. a. Ihre IP-Adresse, an Google übermittelt und ggf. in den USA verarbeitet.',
+        privacy: 'Mehr in der Datenschutzerklärung',
+        load: 'Karte laden',
+        title: 'Karte: Regensburg, St. Katharinenplatz 5',
+      };
+---
+
+<div
+  class="relative mt-4 h-80 max-w-2xl overflow-hidden rounded-3xl bg-brand-surface"
+  data-facade
+  data-facade-src={googleMapsEmbed(regensburgPlace.mapQuery, lang)}
+  data-facade-title={copy.title}
+  data-facade-allow=""
+>
+  <div
+    class="flex h-full flex-col items-start justify-center gap-4 p-6"
+    data-facade-ui
+  >
+    <p class="text-sm leading-relaxed text-muted">
+      {copy.notice}
+      <a href={routes.privacy[lang]} class="underline">
+        {copy.privacy}
+      </a>
+    </p>
+    <button
+      type="button"
+      data-facade-load
+      class="rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    >
+      {copy.load}
+    </button>
+  </div>
+</div>

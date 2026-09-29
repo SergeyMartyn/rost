@@ -1,5 +1,7 @@
 ---
 import { routes, type Language } from '../lib/site';
+import VideoFacade from './VideoFacade.astro';
+import MapFacade from './MapFacade.astro';
 
 const { lang } = Astro.props as { lang: Language };
 const copy =
@@ -10,7 +12,7 @@ const copy =
         intro:
           'Повод выйти из чата и познакомиться с людьми, с которыми захочется встретиться снова.',
         meetShort: '10 октября · Регенсбург ↗',
-        gamesShort: '14 ноября · Мюнхен ↗',
+        gamesShort: '7 ноября · Мюнхен ↗',
         meetTag: 'Первая встреча',
         meetTitle: 'Встреча-знакомство',
         meetPlace: 'в Регенсбурге',
@@ -19,11 +21,13 @@ const copy =
         when: 'Когда',
         where: 'Где',
         meetDate: '10 октября 2026',
-        gamesDate: '14 ноября 2026',
+        gamesDate: '7 ноября 2026',
         meetMonth: 'октября',
         gamesMonth: 'ноября',
         timeLater: 'Время уточняется',
-        addressLater: 'Точный адрес сообщим участникам',
+        meetAddress: 'Санкт-Катариненплац, 5 · 93059 Регенсбург',
+        gamesVenue: 'Отель «Палладиум»',
+        gamesAddress: 'Перхтингер-штрассе, 12 · 81379 Мюнхен',
         meetTicket: 'Билет на встречу',
         buyTicket: 'Купить билет →',
         beforePayment: 'Перед оплатой попросим имя и удобный способ связи.',
@@ -38,7 +42,7 @@ const copy =
         roleSaved: 'Роль и стоимость сохранятся в следующем шаге.',
         questions: 'Есть вопросы перед встречей?',
         questionsBody:
-          'Порядок участия и детали места уточним перед мероприятием.',
+          'Порядок участия и время начала уточним перед мероприятием.',
         contactLink: 'Написать нам →',
         contactStep: 'Шаг 1 из 2 · Контакт',
         paymentStep: 'Шаг 2 из 2 · Оплата',
@@ -54,7 +58,8 @@ const copy =
         whatsappPhone: 'По номеру',
         whatsappUsername: 'По имени пользователя',
         contactFor: 'Для',
-        privacyBefore: 'Я принимаю условия участия, согласен(на) на связь по билету и ознакомился(лась) с',
+        privacyBefore:
+          'Я принимаю условия участия, согласен(на) на связь по билету и ознакомился(лась) с',
         privacyLink: 'политикой конфиденциальности',
         continue: 'Продолжить →',
         choosePayment: 'Выберите, как вам удобнее оплатить билет.',
@@ -68,7 +73,7 @@ const copy =
         intro:
           'Ein Anlass, den Chat zu verlassen und Menschen kennenzulernen, die du gern wiedersehen möchtest.',
         meetShort: '10. Oktober · Regensburg ↗',
-        gamesShort: '14. November · München ↗',
+        gamesShort: '7. November · München ↗',
         meetTag: 'Erstes Treffen',
         meetTitle: 'Kennenlerntreffen',
         meetPlace: 'in Regensburg',
@@ -77,11 +82,13 @@ const copy =
         when: 'Wann',
         where: 'Wo',
         meetDate: '10. Oktober 2026',
-        gamesDate: '14. November 2026',
+        gamesDate: '7. November 2026',
         meetMonth: 'Oktober',
         gamesMonth: 'November',
         timeLater: 'Uhrzeit folgt',
-        addressLater: 'Die genaue Adresse teilen wir den Teilnehmenden mit',
+        meetAddress: 'St. Katharinenplatz 5 · 93059 Regensburg',
+        gamesVenue: 'Grand Hotel Palladium',
+        gamesAddress: 'Perchtinger Straße 12 · 81379 München',
         meetTicket: 'Ticket für das Treffen',
         buyTicket: 'Ticket kaufen →',
         beforePayment:
@@ -97,7 +104,7 @@ const copy =
         roleSaved: 'Rolle und Preis bleiben im nächsten Schritt sichtbar.',
         questions: 'Noch Fragen zum Treffen?',
         questionsBody:
-          'Details zum Ablauf und zum Ort teilen wir vor der Veranstaltung mit.',
+          'Details zum Ablauf und zur Anfangszeit teilen wir vor der Veranstaltung mit.',
         contactLink: 'Schreib uns →',
         contactStep: 'Schritt 1 von 2 · Kontakt',
         paymentStep: 'Schritt 2 von 2 · Zahlung',
@@ -113,7 +120,8 @@ const copy =
         whatsappPhone: 'Per Telefonnummer',
         whatsappUsername: 'Per Benutzername',
         contactFor: 'Für',
-        privacyBefore: 'Ich akzeptiere die Teilnahmebedingungen, bin mit der Kontaktaufnahme zum Ticket einverstanden und habe die',
+        privacyBefore:
+          'Ich akzeptiere die Teilnahmebedingungen, bin mit der Kontaktaufnahme zum Ticket einverstanden und habe die',
         privacyLink: 'Datenschutzerklärung gelesen',
         continue: 'Weiter →',
         choosePayment: 'Wähle eine Zahlungsart für dein Ticket.',
@@ -124,47 +132,33 @@ const copy =
 ---
 
 <div class="font-hero-sans text-brand">
-  <section class="relative overflow-hidden bg-events-surface pb-18 pt-28 md:pb-24 md:pt-36">
-    <div class="site-container relative z-10">
-      <div class="max-w-4xl">
-        <p class="mb-5 text-xs font-bold uppercase tracking-[0.22em] text-accent md:text-sm">
-          {copy.eyebrow}
-        </p>
-        <h1
-          class:list={[
-            'font-display leading-[0.98] tracking-[-0.045em]',
-            lang === 'de'
-              ? 'text-[clamp(2.5rem,7vw,7.4rem)]'
-              : 'text-[clamp(3.3rem,8vw,7.4rem)]',
-          ]}
-        >
+  <section class="hero hero--events" aria-labelledby="hero-title">
+    <div class="hero__inner site-container">
+      <div class="hero__content">
+        <p class="hero__eyebrow">{copy.eyebrow}</p>
+        <h1 class="hero__title" id="hero-title">
           {copy.title}
           <br />
           <span class="text-accent">R.O.S.T.</span>
         </h1>
-        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
-          {copy.intro}
-        </p>
+        <p class="hero__description">{copy.intro}</p>
+        <div class="hero__links">
+          <a
+            href="#regensburg"
+            class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
+          >
+            {copy.meetShort}
+          </a>
+          <a
+            href="#games"
+            class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
+          >
+            {copy.gamesShort}
+          </a>
+        </div>
       </div>
-      <div class="mt-12 flex flex-wrap gap-3 text-sm font-semibold md:mt-16">
-        <a
-          href="#regensburg"
-          class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
-        >
-          {copy.meetShort}
-        </a>
-        <a
-          href="#games"
-          class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
-        >
-          {copy.gamesShort}
-        </a>
-      </div>
+      <VideoFacade lang={lang} page="events" />
     </div>
-    <div
-      aria-hidden="true"
-      class="pointer-events-none absolute -right-24 -top-16 h-[34rem] w-[34rem] rounded-full border-[5rem] border-hero-end/65"
-    ></div>
   </section>
 
   <section id="regensburg" class="scroll-mt-24 bg-white py-18 md:py-26">
@@ -201,9 +195,10 @@ const copy =
             <p class="mt-3 font-display text-2xl">
               {lang === 'ru' ? 'Регенсбург' : 'Regensburg'}
             </p>
-            <p class="mt-2 text-sm text-muted">{copy.addressLater}</p>
+            <p class="mt-2 text-sm text-muted">{copy.meetAddress}</p>
           </div>
         </div>
+        <MapFacade lang={lang} />
       </div>
       <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-brand-surface shadow-xl lg:sticky lg:top-28">
         <div class="relative flex h-48 items-end overflow-hidden bg-hero-end/60 p-7">
@@ -269,10 +264,8 @@ const copy =
             <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
               {copy.where}
             </p>
-            <p class="mt-3 font-display text-2xl">
-              {lang === 'ru' ? 'Мюнхен' : 'München'}
-            </p>
-            <p class="mt-2 text-sm text-muted">{copy.addressLater}</p>
+            <p class="mt-3 font-display text-2xl">{copy.gamesVenue}</p>
+            <p class="mt-2 text-sm text-muted">{copy.gamesAddress}</p>
           </div>
         </div>
       </div>
@@ -283,7 +276,7 @@ const copy =
             class="absolute -right-8 -top-16 h-60 w-60 rounded-full border-[2.5rem] border-white/40"
           ></div>
           <div class="relative flex items-end gap-3 text-brand">
-            <strong class="font-display text-7xl leading-none">14</strong>
+            <strong class="font-display text-7xl leading-none">7</strong>
             <span class="pb-2 text-lg font-semibold leading-tight">
               {copy.gamesMonth}
               <br />
@@ -361,7 +354,15 @@ const copy =
         aria-label={copy.close}
         class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand bg-brand-surface p-0 hover:bg-hero-end"
       >
-        <svg aria-hidden="true" viewBox="0 0 24 24" class="h-4 w-4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          class="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
           <path d="M5 5 19 19M19 5 5 19" />
         </svg>
       </button>
@@ -420,12 +421,27 @@ const copy =
         <legend class="mb-2 text-sm font-bold">{copy.whatsappType}</legend>
         <div class="grid grid-cols-2 gap-2 text-center text-sm">
           <label>
-            <input type="radio" name="whatsapp-type" value="phone" checked class="peer sr-only" />
-            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">{copy.whatsappPhone}</span>
+            <input
+              type="radio"
+              name="whatsapp-type"
+              value="phone"
+              checked
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              {copy.whatsappPhone}
+            </span>
           </label>
           <label>
-            <input type="radio" name="whatsapp-type" value="username" class="peer sr-only" />
-            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">{copy.whatsappUsername}</span>
+            <input
+              type="radio"
+              name="whatsapp-type"
+              value="username"
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              {copy.whatsappUsername}
+            </span>
           </label>
         </div>
       </fieldset>
@@ -443,7 +459,11 @@ const copy =
         />
       </label>
       <p id="contact-hint" class="-mt-3 text-xs leading-relaxed text-muted"></p>
-      <p id="contact-error" role="alert" class="-mt-3 hidden text-xs font-semibold leading-relaxed text-red-700"></p>
+      <p
+        id="contact-error"
+        role="alert"
+        class="-mt-3 hidden text-xs font-semibold leading-relaxed text-red-700"
+      ></p>
       <p class="text-xs leading-relaxed text-muted">{copy.contactUse}</p>
       <button
         type="submit"
@@ -454,13 +474,36 @@ const copy =
     </form>
     <div id="ticket-payment" class="mt-7 hidden space-y-3">
       <div class="pb-2 text-center">
-        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">{copy.contactFor}</p>
-        <p id="ticket-person" class="mt-1 break-words font-display text-3xl"></p>
-        <p id="ticket-contact" class="mt-1 break-all text-sm font-semibold text-accent"></p>
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
+          {copy.contactFor}
+        </p>
+        <p
+          id="ticket-person"
+          class="mt-1 break-words font-display text-3xl"
+        ></p>
+        <p
+          id="ticket-contact"
+          class="mt-1 break-all text-sm font-semibold text-accent"
+        ></p>
       </div>
       <label class="flex items-start gap-3 rounded-xl bg-brand-surface p-3 text-xs leading-relaxed text-brand">
-        <input id="ticket-privacy" type="checkbox" class="mt-0.5 h-4 w-4 shrink-0" />
-        <span>{copy.privacyBefore} <a href={routes.privacy[lang]} target="_blank" rel="noopener" class="font-semibold underline underline-offset-2">{copy.privacyLink}</a>.</span>
+        <input
+          id="ticket-privacy"
+          type="checkbox"
+          class="mt-0.5 h-4 w-4 shrink-0"
+        />
+        <span>
+          {copy.privacyBefore}{' '}
+          <a
+            href={routes.privacy[lang]}
+            target="_blank"
+            rel="noopener"
+            class="font-semibold underline underline-offset-2"
+          >
+            {copy.privacyLink}
+          </a>
+          .
+        </span>
       </label>
       <p class="text-sm text-muted">{copy.choosePayment}</p>
       <button
@@ -499,13 +542,16 @@ const copy =
   const title = document.querySelector<HTMLElement>('#ticket-title');
   const summary = document.querySelector<HTMLElement>('#ticket-summary');
   const contactLabel = document.querySelector<HTMLElement>('#contact-label');
-  const contactInput = form?.querySelector<HTMLInputElement>('input[name="contact"]');
+  const contactInput = form?.querySelector<HTMLInputElement>(
+    'input[name="contact"]',
+  );
   const nameInput = form?.querySelector<HTMLInputElement>('input[name="name"]');
   const contactHint = document.querySelector<HTMLElement>('#contact-hint');
   const contactError = document.querySelector<HTMLElement>('#contact-error');
   const whatsappType = document.querySelector<HTMLElement>('#whatsapp-type');
   const privacy = document.querySelector<HTMLInputElement>('#ticket-privacy');
-  const paymentButtons = document.querySelectorAll<HTMLButtonElement>('[data-payment]');
+  const paymentButtons =
+    document.querySelectorAll<HTMLButtonElement>('[data-payment]');
   const person = document.querySelector<HTMLElement>('#ticket-person');
   const shownContact = document.querySelector<HTMLElement>('#ticket-contact');
   const isRu = dialog?.dataset.lang === 'ru';
@@ -518,18 +564,18 @@ const copy =
   const tickets = isRu
     ? {
         meetup: ['Билет на встречу', '10 октября · Регенсбург · 29 €'],
-        guest: ['Билет участника', '14 ноября · Мюнхен · 149 €'],
-        host: ['Билет ведущего игр', '14 ноября · Мюнхен · 349 €'],
+        guest: ['Билет участника', '7 ноября · Мюнхен · 149 €'],
+        host: ['Билет ведущего игр', '7 ноября · Мюнхен · 349 €'],
       }
     : {
         meetup: ['Ticket für das Treffen', '10. Oktober · Regensburg · 29 €'],
-        guest: ['Ticket für Teilnehmende', '14. November · München · 149 €'],
-        host: ['Ticket für Spielleitende', '14. November · München · 349 €'],
+        guest: ['Ticket für Teilnehmende', '7. November · München · 149 €'],
+        host: ['Ticket für Spielleitende', '7. November · München · 349 €'],
       };
 
   const selectedChannel = () =>
-    form?.querySelector<HTMLInputElement>('input[name="channel"]:checked')?.value ||
-    'Telegram';
+    form?.querySelector<HTMLInputElement>('input[name="channel"]:checked')
+      ?.value || 'Telegram';
   const selectedWhatsAppType = () =>
     form?.querySelector<HTMLInputElement>('input[name="whatsapp-type"]:checked')
       ?.value || 'phone';
@@ -576,7 +622,9 @@ const copy =
       inputMode: 'tel',
     },
     'WhatsApp-username': {
-      label: isRu ? 'Ваше имя пользователя WhatsApp' : 'Dein WhatsApp-Benutzername',
+      label: isRu
+        ? 'Ваше имя пользователя WhatsApp'
+        : 'Dein WhatsApp-Benutzername',
       placeholder: '@username',
       hint: isRu
         ? 'Имя пользователя доступно в WhatsApp постепенно. Проверьте, что у вас оно уже работает.'
@@ -603,9 +651,15 @@ const copy =
     const value = contactInput.value.trim();
     const username = value.replace(/^@/, '');
     let valid = false;
-    if (mode === 'Telegram') valid = /^[A-Za-z][A-Za-z0-9_]{4,26}$/.test(username);
-    if (mode === 'Instagram') valid = /^[A-Za-z0-9_][A-Za-z0-9._]{0,29}$/.test(username) && !username.endsWith('.') && !username.includes('..');
-    if (mode === 'WhatsApp-username') valid = /^[A-Za-z0-9_][A-Za-z0-9._]{2,29}$/.test(username);
+    if (mode === 'Telegram')
+      valid = /^[A-Za-z][A-Za-z0-9_]{4,26}$/.test(username);
+    if (mode === 'Instagram')
+      valid =
+        /^[A-Za-z0-9_][A-Za-z0-9._]{0,29}$/.test(username) &&
+        !username.endsWith('.') &&
+        !username.includes('..');
+    if (mode === 'WhatsApp-username')
+      valid = /^[A-Za-z0-9_][A-Za-z0-9._]{2,29}$/.test(username);
     if (mode === 'WhatsApp-phone') {
       const number = value.replace(/[\s()-]/g, '');
       valid = /^\+[1-9]\d{9,14}$/.test(number) || /^0\d{8,13}$/.test(number);
@@ -674,7 +728,9 @@ const copy =
     if (event.target === dialog) dialog.close();
   });
   form
-    ?.querySelectorAll<HTMLInputElement>('input[name="channel"], input[name="whatsapp-type"]')
+    ?.querySelectorAll<HTMLInputElement>(
+      'input[name="channel"], input[name="whatsapp-type"]',
+    )
     .forEach((radio) => {
       radio.addEventListener('change', updateContactMode);
     });
@@ -682,7 +738,16 @@ const copy =
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
     validateContact(true);
-    if (!form.reportValidity() || !payment || !step || !person || !shownContact || !nameInput || !contactInput) return;
+    if (
+      !form.reportValidity() ||
+      !payment ||
+      !step ||
+      !person ||
+      !shownContact ||
+      !nameInput ||
+      !contactInput
+    )
+      return;
     const contact = contactInput.value.trim();
     const mode = contactMode();
     person.textContent = nameInput.value.trim();

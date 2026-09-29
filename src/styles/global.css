@@ -3,6 +3,7 @@
 @import './events.css';
 @import './formats.css';
 @import './faq.css';
+@import './team.css';
 
 @font-face {
   font-family: Onest;
@@ -104,9 +105,46 @@
     background: transparent;
   }
 
-  .home-page .site-header,
-  .events-page .site-header {
+  .hero-page .site-header {
     margin-bottom: -64px;
+  }
+
+  .site-footer__inner {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--spacing) * 8);
+    padding-block: calc(var(--spacing) * 8);
+    font-size: 14px;
+  }
+
+  .site-footer__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: calc(var(--spacing) * 8);
+  }
+
+  .site-footer__links a {
+    white-space: nowrap;
+  }
+
+  @media (max-width: 63.999rem) {
+    .site-footer__inner,
+    .site-footer__links {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 47.999rem) {
+    .site-footer__inner {
+      flex-direction: column;
+      gap: calc(var(--spacing) * 4);
+      text-align: center;
+    }
+
+    .site-footer__links {
+      column-gap: calc(var(--spacing) * 4);
+      row-gap: calc(var(--spacing) * 2);
+    }
   }
 
   .site-header__bar {
@@ -223,7 +261,9 @@
     white-space: nowrap;
     border: 1px solid white;
     text-decoration: none;
-    transition: background-color 180ms ease, color 180ms ease;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease;
   }
 
   .site-header__cta:hover,
