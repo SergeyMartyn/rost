@@ -138,10 +138,10 @@ const socials = [
       >
         {copy.join}
       </a>
-      <div class="site-header__socials" aria-label="Social Media">
+      <div class="site-header__socials" aria-hidden="true">
         {socials.map((social) => (
           <span class="site-header__social" title={social.name}>
-            <img src={social.icon} alt={social.name} width="40" height="40" />
+            <img src={social.icon} alt="" width="40" height="40" />
           </span>
         ))}
       </div>
