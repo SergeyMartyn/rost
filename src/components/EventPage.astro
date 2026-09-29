@@ -1,7 +1,6 @@
 ---
 import { routes, type Language } from '../lib/site';
 import VideoFacade from './VideoFacade.astro';
-import MapFacade from './MapFacade.astro';
 
 const { lang } = Astro.props as { lang: Language };
 const copy =
@@ -199,7 +198,6 @@ const copy =
             <p class="mt-2 text-sm text-muted">{copy.meetAddress}</p>
           </div>
         </div>
-        <MapFacade lang={lang} />
       </div>
       <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-brand-surface shadow-xl lg:sticky lg:top-28">
         <div class="relative flex h-48 items-end overflow-hidden bg-hero-end/60 p-7">
