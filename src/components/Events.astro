@@ -58,15 +58,23 @@ const copy =
 const photos = [
   {
     preview: '/images/rost-networking-preview.webp',
-    full: '/images/rost-networking.png',
-    width: 1920,
-    height: 1080,
+    previewSmall: '/images/rost-networking-preview-600.webp',
+    previewAvif: '/images/rost-networking-preview.avif',
+    previewSmallAvif: '/images/rost-networking-preview-600.avif',
+    full: '/images/rost-networking-full.webp',
+    fullAvif: '/images/rost-networking-full.avif',
+    width: 1200,
+    height: 675,
   },
   {
     preview: '/images/rost-ti-preview.webp',
-    full: '/images/rost-ti.jpg',
-    width: 3840,
-    height: 2555,
+    previewSmall: '/images/rost-ti-preview-600.webp',
+    previewAvif: '/images/rost-ti-preview.avif',
+    previewSmallAvif: '/images/rost-ti-preview-600.avif',
+    full: '/images/rost-ti-full.webp',
+    fullAvif: '/images/rost-ti-full.avif',
+    width: 1200,
+    height: 798,
   },
 ];
 ---
@@ -95,6 +103,7 @@ const photos = [
             ]}
             type="button"
             data-photo-full={photos[index].full}
+            data-photo-avif={photos[index].fullAvif}
             data-photo-alt={event.photoAlt}
             aria-label={event.openPhoto}
           >
@@ -104,14 +113,26 @@ const photos = [
                 { 'events__photo--networking': index === 0 },
               ]}
             >
-              <img
-                src={photos[index].preview}
-                alt=""
-                width={photos[index].width}
-                height={photos[index].height}
-                loading="lazy"
-                decoding="async"
-              />
+              <picture>
+                <source
+                  type="image/avif"
+                  srcset={`${photos[index].previewSmallAvif} 600w, ${photos[index].previewAvif} 1200w`}
+                  sizes="(min-width: 64rem) 600px, 100vw"
+                />
+                <source
+                  type="image/webp"
+                  srcset={`${photos[index].previewSmall} 600w, ${photos[index].preview} 1200w`}
+                  sizes="(min-width: 64rem) 600px, 100vw"
+                />
+                <img
+                  src={photos[index].preview}
+                  alt=""
+                  width={photos[index].width}
+                  height={photos[index].height}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </picture>
             </div>
             <span class="events__plus" aria-hidden="true">
               +
@@ -154,7 +175,11 @@ const photos = [
         <path d="M5 5 19 19M19 5 5 19" />
       </svg>
     </button>
-    <img id="event-photo-full" alt="" />
+    <picture>
+      <source id="event-photo-avif" type="image/avif" />
+      <source id="event-photo-webp" type="image/webp" />
+      <img id="event-photo-full" alt="" />
+    </picture>
   </div>
 </dialog>
 
@@ -164,12 +189,19 @@ const photos = [
   );
   const fullPhoto =
     document.querySelector<HTMLImageElement>('#event-photo-full');
+  const fullPhotoAvif =
+    document.querySelector<HTMLSourceElement>('#event-photo-avif');
+  const fullPhotoWebp =
+    document.querySelector<HTMLSourceElement>('#event-photo-webp');
 
   document
     .querySelectorAll<HTMLButtonElement>('[data-photo-full]')
     .forEach((button) => {
       button.addEventListener('click', () => {
         if (!photoDialog || !fullPhoto || !button.dataset.photoFull) return;
+        if (fullPhotoAvif)
+          fullPhotoAvif.srcset = button.dataset.photoAvif || '';
+        if (fullPhotoWebp) fullPhotoWebp.srcset = button.dataset.photoFull;
         fullPhoto.src = button.dataset.photoFull;
         fullPhoto.alt = button.dataset.photoAlt || '';
         photoDialog.showModal();
@@ -184,5 +216,7 @@ const photos = [
   });
   photoDialog?.addEventListener('close', () => {
     if (fullPhoto) fullPhoto.removeAttribute('src');
+    fullPhotoAvif?.removeAttribute('srcset');
+    fullPhotoWebp?.removeAttribute('srcset');
   });
 </script>

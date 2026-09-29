@@ -83,6 +83,11 @@
     transition: transform 320ms ease;
   }
 
+  .events__photo picture,
+  .events__lightbox picture {
+    display: contents;
+  }
+
   .events__photo img {
     display: block;
     width: 100%;
