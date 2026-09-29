@@ -43,6 +43,10 @@
     "privacy": {
       "de": "/de/datenschutz/",
       "ru": "/ru/konfidentsialnost/"
+    },
+    "terms": {
+      "de": "/de/teilnahmebedingungen/",
+      "ru": "/ru/usloviya-uchastiya/"
     }
   }
 }

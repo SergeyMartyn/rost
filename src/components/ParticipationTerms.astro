@@ -1,0 +1,75 @@
+---
+import { routes, type Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+const content =
+  lang === 'ru'
+    ? {
+        title: 'Условия участия',
+        intro:
+          'Здесь собрана информация об участии во встречах R.O.S.T. Перед оформлением конкретного участия проверьте дату, место и стоимость на странице мероприятия.',
+        sections: [
+          {
+            title: 'Мероприятия и стоимость',
+            body: 'Встреча-знакомство проходит 10 октября 2026 года в Регенсбурге, участие стоит 29 €. Трансформационные игры проходят 7 ноября 2026 года в Мюнхене: билет участника стоит 99 €, ведущего игр — 249 €. Время, место и итоговая стоимость указаны на странице мероприятий и повторяются перед оплатой.',
+          },
+          {
+            title: 'Оформление участия',
+            body: 'Сейчас онлайн-оплата и отправка контактных данных на сайте не подключены. Заполнение формы и выбор способа оплаты не создают бронирование и не списывают деньги. Когда оформление станет доступно, условия и итоговая сумма будут показаны до оплаты.',
+          },
+          {
+            title: 'Изменения и вопросы',
+            body: 'Если планы изменились или у вас есть вопрос об участии, напишите нам через страницу контактов. Об изменениях в программе, времени или месте мы сообщим на странице мероприятия.',
+          },
+        ],
+        events: 'Мероприятия',
+        contacts: 'Связаться с нами',
+      }
+    : {
+        title: 'Teilnahmebedingungen',
+        intro:
+          'Hier findest du Informationen zur Teilnahme an den Treffen von R.O.S.T. Prüfe vor einer Buchung Datum, Ort und Preis auf der jeweiligen Veranstaltungsseite.',
+        sections: [
+          {
+            title: 'Veranstaltungen und Preise',
+            body: 'Das Kennenlerntreffen findet am 10. Oktober 2026 in Regensburg statt und kostet 29 €. Die Transformationsspiele finden am 7. November 2026 in München statt: Ein Ticket für Teilnehmende kostet 99 €, für Spielleitende 249 €. Uhrzeit, Ort und Gesamtpreis stehen auf der Veranstaltungsseite und werden vor der Zahlung erneut angezeigt.',
+          },
+          {
+            title: 'Anmeldung',
+            body: 'Die Online-Zahlung und die Übermittlung der Kontaktdaten sind derzeit noch nicht aktiviert. Das Ausfüllen des Formulars und die Auswahl einer Zahlungsart bewirken keine Buchung und keine Zahlung. Sobald die Anmeldung möglich ist, werden die Bedingungen und der Gesamtpreis vor der Zahlung angezeigt.',
+          },
+          {
+            title: 'Änderungen und Fragen',
+            body: 'Wenn sich deine Pläne ändern oder du Fragen zur Teilnahme hast, schreib uns über die Kontaktseite. Änderungen an Programm, Uhrzeit oder Ort geben wir auf der Veranstaltungsseite bekannt.',
+          },
+        ],
+        events: 'Veranstaltungen',
+        contacts: 'Kontakt aufnehmen',
+      };
+---
+
+<article class="font-hero-sans max-w-3xl text-brand">
+  <h1 class="font-display text-2xl leading-tight sm:text-4xl md:text-5xl">
+    {content.title}
+  </h1>
+  <p class="mt-6 text-lg leading-relaxed text-muted">{content.intro}</p>
+  <div class="mt-10 space-y-8">
+    {content.sections.map((section) => (
+      <section>
+        <h2 class="font-display text-2xl md:text-3xl">{section.title}</h2>
+        <p class="mt-3 leading-relaxed text-muted">{section.body}</p>
+      </section>
+    ))}
+  </div>
+  <nav
+    class="mt-10 flex flex-wrap gap-6 font-semibold"
+    aria-label={content.title}
+  >
+    <a class="underline underline-offset-4" href={routes.events[lang]}>
+      {content.events}
+    </a>
+    <a class="underline underline-offset-4" href={routes.contacts[lang]}>
+      {content.contacts}
+    </a>
+  </nav>
+</article>

@@ -52,17 +52,17 @@ const copy =
         channel: 'Где вам удобно написать?',
         contactLabel: 'Ваш аккаунт в Telegram',
         contactPlaceholder: '@username или номер телефона',
-        contactUse:
-          'Используем контакт, чтобы сообщить детали встречи и связаться с вами по билету.',
+        contactUse: 'Используем контакт, чтобы сообщить детали встречи.',
         whatsappType: 'Как связаться с вами в WhatsApp?',
         whatsappPhone: 'По номеру',
-        whatsappUsername: 'По имени пользователя',
+        whatsappUsername: 'По нику',
         contactFor: 'Для',
-        privacyBefore:
-          'Я принимаю условия участия, согласен(на) на связь по билету и ознакомился(лась) с',
+        termsBefore: 'Я согласен с',
+        termsLink: 'условиями участия',
+        privacyBefore: 'и ознакомился с',
         privacyLink: 'политикой конфиденциальности',
         continue: 'Продолжить →',
-        choosePayment: 'Выберите, как вам удобнее оплатить билет.',
+        choosePayment: 'Выберите, как вам удобнее оплатить.',
         stripe: 'Картой через Stripe',
         previewNote: 'Оплата и сохранение данных пока не подключены.',
         back: '← Изменить контакт',
@@ -115,16 +115,17 @@ const copy =
         contactLabel: 'Dein Telegram-Konto',
         contactPlaceholder: '@username oder Telefonnummer',
         contactUse:
-          'Wir nutzen diesen Kontakt für Informationen zum Treffen und zu deinem Ticket.',
+          'Wir nutzen deinen Kontakt, um dir die Details zum Treffen mitzuteilen.',
         whatsappType: 'Wie erreichen wir dich auf WhatsApp?',
         whatsappPhone: 'Per Telefonnummer',
         whatsappUsername: 'Per Benutzername',
         contactFor: 'Für',
-        privacyBefore:
-          'Ich akzeptiere die Teilnahmebedingungen, bin mit der Kontaktaufnahme zum Ticket einverstanden und habe die',
-        privacyLink: 'Datenschutzerklärung gelesen',
+        termsBefore: 'Ich stimme den',
+        termsLink: 'Teilnahmebedingungen',
+        privacyBefore: 'zu und habe die',
+        privacyLink: 'Datenschutzerklärung',
         continue: 'Weiter →',
-        choosePayment: 'Wähle eine Zahlungsart für dein Ticket.',
+        choosePayment: 'Wähle, wie du bezahlen möchtest.',
         stripe: 'Mit Karte über Stripe',
         previewNote: 'Zahlung und Speicherung sind noch nicht verbunden.',
         back: '← Kontakt ändern',
@@ -292,7 +293,7 @@ const copy =
             class="mb-3 flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             <span class="font-bold">{copy.guest}</span>
-            <strong class="font-display text-2xl font-normal">149 €</strong>
+            <strong class="font-display text-2xl font-normal">99 €</strong>
           </button>
           <button
             type="button"
@@ -300,7 +301,7 @@ const copy =
             class="flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             <span class="font-bold">{copy.host}</span>
-            <strong class="font-display text-2xl font-normal">349 €</strong>
+            <strong class="font-display text-2xl font-normal">249 €</strong>
           </button>
           <p class="mt-4 text-center text-xs leading-relaxed text-muted">
             {copy.roleSaved}
@@ -493,6 +494,15 @@ const copy =
           class="mt-0.5 h-4 w-4 shrink-0"
         />
         <span>
+          {copy.termsBefore}{' '}
+          <a
+            href={routes.terms[lang]}
+            target="_blank"
+            rel="noopener"
+            class="font-semibold underline underline-offset-2"
+          >
+            {copy.termsLink}
+          </a>{' '}
           {copy.privacyBefore}{' '}
           <a
             href={routes.privacy[lang]}
@@ -502,7 +512,7 @@ const copy =
           >
             {copy.privacyLink}
           </a>
-          .
+          {lang === 'de' ? ' gelesen.' : '.'}
         </span>
       </label>
       <p class="text-sm text-muted">{copy.choosePayment}</p>
@@ -564,13 +574,13 @@ const copy =
   const tickets = isRu
     ? {
         meetup: ['Билет на встречу', '10 октября · Регенсбург · 29 €'],
-        guest: ['Билет участника', '7 ноября · Мюнхен · 149 €'],
-        host: ['Билет ведущего игр', '7 ноября · Мюнхен · 349 €'],
+        guest: ['Билет участника', '7 ноября · Мюнхен · 99 €'],
+        host: ['Билет ведущего игр', '7 ноября · Мюнхен · 249 €'],
       }
     : {
         meetup: ['Ticket für das Treffen', '10. Oktober · Regensburg · 29 €'],
-        guest: ['Ticket für Teilnehmende', '7. November · München · 149 €'],
-        host: ['Ticket für Spielleitende', '7. November · München · 349 €'],
+        guest: ['Ticket für Teilnehmende', '7. November · München · 99 €'],
+        host: ['Ticket für Spielleitende', '7. November · München · 249 €'],
       };
 
   const selectedChannel = () =>
@@ -589,8 +599,8 @@ const copy =
       label: isRu ? 'Ваш аккаунт в Telegram' : 'Dein Telegram-Benutzername',
       placeholder: '@username',
       hint: isRu
-        ? 'Латинские буквы, цифры и _. От 5 до 27 символов. @ можно не писать.'
-        : 'Lateinische Buchstaben, Ziffern und _. 5 bis 27 Zeichen. @ ist optional.',
+        ? 'Латинские буквы, цифры и _. @ можно не писать.'
+        : 'Lateinische Buchstaben, Ziffern und _. @ ist optional.',
       error: isRu
         ? 'Введите имя Telegram латиницей: 5–27 букв, цифр или _. Первым символом должна быть буква.'
         : 'Bitte gib einen Telegram-Namen mit 5–27 lateinischen Buchstaben, Ziffern oder _ ein. Er muss mit einem Buchstaben beginnen.',
@@ -611,7 +621,9 @@ const copy =
     },
     'WhatsApp-phone': {
       label: isRu ? 'Ваш номер в WhatsApp' : 'Deine WhatsApp-Nummer',
-      placeholder: '+49 176 12345678 / 0176 12345678',
+      placeholder: isRu
+        ? '+49 176 12345678 или 0176 12345678'
+        : '+49 176 12345678 oder 0176 12345678',
       hint: isRu
         ? 'Номер с + и кодом страны или немецкий номер с 0.'
         : 'Mit + und Ländervorwahl oder als deutsche Nummer mit 0.',
@@ -638,11 +650,12 @@ const copy =
   } as const;
 
   const clearContactError = () => {
-    if (!contactInput || !contactError) return;
+    if (!contactInput || !contactError || !contactHint) return;
     contactInput.setCustomValidity('');
     contactInput.setAttribute('aria-invalid', 'false');
     contactError.textContent = '';
     contactError.classList.add('hidden');
+    contactHint.classList.remove('hidden');
   };
 
   const validateContact = (showError: boolean) => {
@@ -674,6 +687,7 @@ const copy =
       contactInput.setAttribute('aria-invalid', 'true');
       contactError.textContent = message;
       contactError.classList.remove('hidden');
+      contactHint?.classList.add('hidden');
     }
     return false;
   };
@@ -750,8 +764,15 @@ const copy =
       return;
     const contact = contactInput.value.trim();
     const mode = contactMode();
+    const normalizedContact =
+      mode === 'WhatsApp-phone'
+        ? (() => {
+            const digits = contact.replace(/[\s()-]/g, '');
+            return digits.startsWith('0') ? `+49${digits.slice(1)}` : digits;
+          })()
+        : contact;
     person.textContent = nameInput.value.trim();
-    shownContact.textContent = `${selectedChannel()} · ${mode === 'WhatsApp-phone' ? contact : `@${contact.replace(/^@/, '')}`}`;
+    shownContact.textContent = `${selectedChannel()} · ${mode === 'WhatsApp-phone' ? normalizedContact : `@${contact.replace(/^@/, '')}`}`;
     form.classList.add('hidden');
     payment.classList.remove('hidden');
     step.textContent = paymentStep;
