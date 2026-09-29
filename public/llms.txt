@@ -1,0 +1,36 @@
+# R.O.S.T.
+
+> R.O.S.T. — русскоязычное сообщество в Германии: живые встречи, знакомства и
+> совместно проведённое время. Ближайшие даты, места и цены — на странице
+> «Мероприятия».
+> R.O.S.T. ist eine russischsprachige Gemeinschaft in Deutschland: persönliche
+> Begegnungen, neue Kontakte und gemeinsame Zeit. Aktuelle Termine, Orte und
+> Preise stehen auf der Seite „Veranstaltungen".
+
+- Языки / Sprachen: Русский, Deutsch
+- Сайт / Website: https://rost.community
+- Контакт / Kontakt: grupparost@gmail.com
+- Города / Städte: Regensburg, München
+
+## Основные страницы / Hauptseiten
+
+- [Главная](https://rost.community/ru/) / [Startseite](https://rost.community/de/):
+  что такое R.O.S.T., форматы и ближайшие мероприятия.
+- [Мероприятия](https://rost.community/ru/meropriyatiya/) /
+  [Veranstaltungen](https://rost.community/de/veranstaltungen/): встречи и игры
+  с датами, адресами и ценами.
+- [О нас](https://rost.community/ru/o-nas/) /
+  [Über uns](https://rost.community/de/ueber-uns/): смысл сообщества и команда.
+- [Контакты](https://rost.community/ru/kontakty/) /
+  [Kontakt](https://rost.community/de/kontakt/): как с нами связаться.
+- [Условия участия](https://rost.community/ru/usloviya-uchastiya/) /
+  [Teilnahmebedingungen](https://rost.community/de/teilnahmebedingungen/).
+- [Правовая информация](https://rost.community/ru/pravovaya-informatsiya/) /
+  [Impressum](https://rost.community/de/impressum/).
+- [Конфиденциальность](https://rost.community/ru/konfidentsialnost/) /
+  [Datenschutz](https://rost.community/de/datenschutz/).
+
+## Примечание / Hinweis
+
+Смысл названия R.O.S.T.: Развитие, Окружение, Самореализация, Трансформация.
+R.O.S.T. steht für Entwicklung, Umfeld, Selbstverwirklichung und Transformation.

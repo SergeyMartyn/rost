@@ -19,6 +19,38 @@ const { lang, page, title, description } = Astro.props as {
   description: string;
 };
 const t = text[lang];
+const socialImage = new URL('/social.png', origin).toString();
+const ogImageAlt = lang === 'de' ? 'R.O.S.T. Logo' : 'Логотип R.O.S.T.';
+const orgId = `${origin}/#organization`;
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'Organization',
+      '@id': orgId,
+      name,
+      url: origin,
+      logo: new URL('/brand-tree.png', origin).toString(),
+      email: site.legal.email,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: site.legal.email,
+        availableLanguage: ['ru', 'de'],
+      },
+      knowsLanguage: ['ru', 'de'],
+      areaServed: { '@type': 'Country', name: 'Germany' },
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${origin}/#website`,
+      url: origin,
+      name,
+      inLanguage: lang,
+      publisher: { '@id': orgId },
+    },
+  ],
+};
 ---
 
 <!doctype html>
@@ -26,6 +58,20 @@ const t = text[lang];
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
+    <link
+      rel="preload"
+      href="/fonts/Marmelad-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="/fonts/Onest-Regular.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
     <title>{title} · {name}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={new URL(routes[page][lang], origin)} />
@@ -41,13 +87,24 @@ const t = text[lang];
       hreflang="x-default"
       href={new URL(routes[page][site.defaultLanguage as Language], origin)}
     />
+    <meta property="og:site_name" content={name} />
     <meta property="og:title" content={`${title} · ${name}`} />
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'ru_RU'} />
     <meta property="og:url" content={new URL(routes[page][lang], origin)} />
-    <meta property="og:image" content={new URL('/social.png', origin)} />
+    <meta property="og:image" content={socialImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={ogImageAlt} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={`${title} · ${name}`} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
+    <script
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
     <link rel="icon" href="/favicon.ico" sizes="32x32 48x48" />
     <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
