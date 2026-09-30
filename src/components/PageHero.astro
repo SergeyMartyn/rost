@@ -1,6 +1,6 @@
 ---
 import { routes, site, type Language } from '../lib/site';
-import VideoFacade from './VideoFacade.astro';
+import ContactChannels from './ContactChannels.astro';
 
 const { lang, page, title } = Astro.props as {
   lang: Language;
@@ -42,7 +42,7 @@ const copy =
           eyebrow: 'На связи',
           lead: ['Есть вопрос о встрече или хотите связаться с нами?'],
           body: [
-            'Напишите нам по электронной почте. Мы ответим, как только сможем.',
+            'Или напишите нам по электронной почте. Мы ответим, как только сможем.',
           ],
           action: 'Написать письмо',
           href: `mailto:${site.legal.email}`,
@@ -52,13 +52,22 @@ const copy =
           lead: [
             'Hast du eine Frage zu einem Treffen oder möchtest du uns schreiben?',
           ],
-          body: ['Schreib uns per E-Mail. Wir antworten, sobald wir können.'],
+          body: [
+            'Oder schreib uns per E-Mail. Wir antworten, sobald wir können.',
+          ],
           action: 'E-Mail schreiben',
           href: `mailto:${site.legal.email}`,
         };
 ---
 
-<section class="hero hero--inner-page" aria-labelledby="hero-title">
+<section
+  class:list={[
+    'hero',
+    'hero--inner-page',
+    { 'hero--contacts': page === 'contacts' },
+  ]}
+  aria-labelledby="hero-title"
+>
   <div class="hero__inner site-container">
     <div class="hero__content">
       <p class="hero__eyebrow">{copy.eyebrow}</p>
@@ -74,6 +83,7 @@ const copy =
           </>
         )}
       </p>
+      {page === 'contacts' && <ContactChannels lang={lang} />}
       <p class="hero__body">
         {copy.body[0]}
         {copy.body[1] && (
@@ -86,8 +96,6 @@ const copy =
       <a class="hero__cta" href={copy.href}>
         {copy.action} →
       </a>
-      {page === 'contacts' && <p class="hero__meta">{site.legal.email}</p>}
     </div>
-    <VideoFacade lang={lang} page={page} />
   </div>
 </section>

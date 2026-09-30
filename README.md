@@ -33,15 +33,15 @@ npm run preview
 - `legalText`: подготовленные владельцем тексты Impressum и Datenschutz на обоих языках. Обычный текст, абзацы разделяются переводами строк; HTML не исполняется.
 - `routes`: таблица соответствий; после изменения требуется новая сборка.
 
-| Страница            | Deutsch                      | Русский                          |
-| ------------------- | ---------------------------- | -------------------------------- |
-| Главная             | `/de/`                       | `/ru/`                           |
-| Мероприятия         | `/de/veranstaltungen/`       | `/ru/meropriyatiya/`             |
-| О нас               | `/de/ueber-uns/`             | `/ru/o-nas/`                     |
-| Контакты            | `/de/kontakt/`               | `/ru/kontakty/`                  |
-| Условия участия     | `/de/teilnahmebedingungen/`  | `/ru/usloviya-uchastiya/`        |
-| Impressum           | `/de/impressum/`             | `/ru/pravovaya-informatsiya/`    |
-| Datenschutz         | `/de/datenschutz/`           | `/ru/konfidentsialnost/`         |
+| Страница        | Deutsch                     | Русский                       |
+| --------------- | --------------------------- | ----------------------------- |
+| Главная         | `/de/`                      | `/ru/`                        |
+| Мероприятия     | `/de/veranstaltungen/`      | `/ru/meropriyatiya/`          |
+| О нас           | `/de/ueber-uns/`            | `/ru/o-nas/`                  |
+| Контакты        | `/de/kontakt/`              | `/ru/kontakty/`               |
+| Условия участия | `/de/teilnahmebedingungen/` | `/ru/usloviya-uchastiya/`     |
+| Impressum       | `/de/impressum/`            | `/ru/pravovaya-informatsiya/` |
+| Datenschutz     | `/de/datenschutz/`          | `/ru/konfidentsialnost/`      |
 
 Русские слова записаны латиницей: `ya`, `ts`, `iya`, мягкий знак опускается. Используйте нижний регистр, дефисы и завершающий `/`. Обе локализации обязательны для каждой страницы в этом небольшом шаблоне. Таблица управляет генерацией страниц, внутренними ссылками, переключателем, canonical, hreflang и sitemap. Для добавления страницы расширьте также типизированный словарь и её содержимое. `x-default` указывает на вариант страницы на языке по умолчанию.
 
@@ -63,7 +63,7 @@ npm run preview
 
 **Поведение.** До выбора и после отказа не загружается ничего стороннего. Consent Mode Basic: `consent default` (всё `denied`, кроме `security_storage`) попадает в `dataLayer` до загрузки контейнера; GTM подключается кодом только после согласия на статистику, затем событие `consent_statistics_granted`. В HTML нет сниппета GTM, `<noscript>`, `preconnect`, `dns-prefetch`. Смена сохранённого выбора: `consent update`, удаление `_ga*`, перезагрузка. Повторно открыть настройки: кнопка «Настройки cookie» в футере (`data-cc="show-preferencesModal"`). Для ботов баннер скрыт (`hideFromBots`).
 
-**Внешний контент по клику (click-to-load).** YouTube (`youtube-nocookie.com`) и Google Maps подгружаются только после нажатия (`src/lib/facade.ts`). ID видео для страниц — `src/lib/media.ts → heroVideos` (сейчас заглушки `xxxxxxxxxxx`, кнопки неактивны), адрес карты — `regensburgPlace` там же.
+**Внешний контент по клику (click-to-load).** YouTube (`youtube-nocookie.com`) и Google Maps подгружаются только после нажатия (`src/lib/facade.ts`). ID видео для страниц — `src/lib/media.ts → heroVideos`: на главной и странице мероприятий видео подключены; на страницах «О нас» и «Контакты» видеоблоки пока скрыты. Адрес карты — `regensburgPlace` там же.
 
 **GTM:** контейнер публиковать только после проверки в Tag Assistant (тег GA4 — триггер на событие `consent_statistics_granted`, проверка согласия `analytics_storage`).
 

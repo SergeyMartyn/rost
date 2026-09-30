@@ -3,6 +3,9 @@ import { test, expect } from '@playwright/test';
 test('team section keeps the requested order and responsive layout', async ({
   page,
 }) => {
+  const portraits = ['kristina', 'timur', 'maksim', 'margo', 'sergey'].map(
+    (name) => `/images/team/${name}.webp`,
+  );
   const cases = [
     {
       path: '/ru/o-nas/',
@@ -48,24 +51,60 @@ test('team section keeps the requested order and responsive layout', async ({
       await expect(page.locator('.team__role')).toHaveText(roles);
       await expect(page.locator('.team__portrait')).toHaveCount(5);
       expect(
+        await page
+          .locator('.team__portrait img')
+          .evaluateAll((images) =>
+            images.every((image) => image.getAttribute('alt') === ''),
+          ),
+      ).toBe(true);
+      expect(
+        await page
+          .locator('.team__portrait img')
+          .evaluateAll((images) =>
+            images.map((image) => image.getAttribute('src')),
+          ),
+      ).toEqual(portraits);
+      expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
         ),
         `${path} at ${width}px`,
       ).toBe(true);
+      const positions = await page
+        .locator('.team__person')
+        .evaluateAll((people) =>
+          people.map((person) => {
+            const rect = person.getBoundingClientRect();
+            return {
+              top: rect.top,
+              bottom: rect.bottom,
+              center: rect.left + rect.width / 2,
+            };
+          }),
+        );
+      if (width < 768) {
+        for (let index = 1; index < positions.length; index++) {
+          expect(positions[index].top).toBeGreaterThan(
+            positions[index - 1].bottom,
+          );
+        }
+      } else if (width < 1024) {
+        expect(positions[0].top).toBe(positions[1].top);
+        expect(positions[2].top).toBe(positions[3].top);
+        expect(positions[2].top).toBeGreaterThan(positions[0].bottom);
+        expect(positions[4].top).toBeGreaterThan(positions[2].bottom);
+        expect(Math.abs(positions[4].center - width / 2)).toBeLessThan(2);
+      } else {
+        expect(
+          positions.every((position) => position.top === positions[0].top),
+        ).toBe(true);
+      }
       if (width === 390) {
-        const people = page.locator('.team__people');
-        await expect(
-          page.locator('[data-team-direction="previous"]'),
-        ).toBeDisabled();
+        await expect(page.locator('[data-team-direction]')).toHaveCount(0);
         await page.screenshot({
           path: `test-results/team-${path.startsWith('/ru') ? 'ru' : 'de'}-mobile.png`,
           fullPage: true,
         });
-        await page.locator('[data-team-direction="next"]').click();
-        await expect
-          .poll(() => people.evaluate((element) => element.scrollLeft))
-          .toBeGreaterThan(0);
       }
       if (width === 768) {
         await page.screenshot({
@@ -74,7 +113,21 @@ test('team section keeps the requested order and responsive layout', async ({
         });
       }
       if (width === 1440) {
-        await expect(page.locator('.team__controls')).toBeHidden();
+        await page.locator('.team__people').scrollIntoViewIfNeeded();
+        await expect
+          .poll(() =>
+            page
+              .locator('.team__portrait img')
+              .evaluateAll((images) =>
+                images.every(
+                  (image) =>
+                    (image as HTMLImageElement).complete &&
+                    (image as HTMLImageElement).naturalWidth > 0,
+                ),
+              ),
+          )
+          .toBe(true);
+        await expect(page.locator('.team__controls')).toHaveCount(0);
         await page.screenshot({
           path: `test-results/team-${path.startsWith('/ru') ? 'ru' : 'de'}-desktop.png`,
           fullPage: true,

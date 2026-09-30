@@ -15,7 +15,9 @@ test('all four heroes share spacing and type at every viewport', async ({
       await page.setViewportSize({ width, height: 900 });
       for (const [index, route] of routes.entries()) {
         await page.goto(route);
-        await expect(page.locator('.hero__video')).toHaveCount(1);
+        await expect(page.locator('.hero__video')).toHaveCount(
+          index < 2 ? 1 : 0,
+        );
         expect(
           await page
             .locator('.hero')
@@ -44,7 +46,7 @@ test('all four heroes share spacing and type at every viewport', async ({
             ];
           }),
         );
-        if (width === 1440) {
+        if (width === 1440 && index < 2) {
           videoTops.push(
             await page
               .locator('.hero__video')
@@ -64,6 +66,26 @@ test('all four heroes share spacing and type at every viewport', async ({
       if (width === 1440) {
         for (const top of videoTops.slice(1)) expect(top).toBe(videoTops[0]);
       }
+    }
+  }
+});
+
+test('contact headings use the available desktop width', async ({ page }) => {
+  for (const lang of ['ru', 'de'] as const) {
+    for (const width of [1076, 1440]) {
+      await page.setViewportSize({ width, height: 900 });
+      await page.goto(lang === 'ru' ? '/ru/kontakty/' : '/de/kontakt/');
+      const lead = page.locator('.hero--contacts .hero__description');
+      const dimensions = await lead.evaluate((element) => {
+        const style = getComputedStyle(element);
+        return {
+          height: element.getBoundingClientRect().height,
+          lineHeight: parseFloat(style.lineHeight),
+        };
+      });
+      expect(dimensions.height).toBeLessThanOrEqual(dimensions.lineHeight + 1);
+      await expect(page.locator('.hero__video')).toHaveCount(0);
+      await expect(page.locator('.contact-channel')).toHaveCount(4);
     }
   }
 });

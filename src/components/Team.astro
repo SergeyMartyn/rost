@@ -13,19 +13,37 @@ const copy =
           'Мы придумываем поводы собраться, продумываем детали и создаём атмосферу, в которой легко знакомиться и хочется увидеться снова.',
         ],
         people: [
-          { name: 'Кристина Бауэр', role: 'Вдохновительница, ведущая' },
-          { name: 'Тимур Черепанов', role: 'Ведущий встреч, фотограф' },
-          { name: 'Максим Бурлаков', role: 'Организует наши выходные' },
-          { name: 'Маргарита Мартын', role: 'Менеджер проектов' },
-          { name: 'Сергей Мартын', role: 'Сайт, маркетинг, реклама' },
+          {
+            name: 'Кристина Бауэр',
+            role: 'Вдохновительница, ведущая',
+            image: '/images/team/kristina.webp',
+          },
+          {
+            name: 'Тимур Черепанов',
+            role: 'Ведущий встреч, фотограф',
+            image: '/images/team/timur.webp',
+          },
+          {
+            name: 'Максим Бурлаков',
+            role: 'Организует наши выходные',
+            image: '/images/team/maksim.webp',
+          },
+          {
+            name: 'Маргарита Мартын',
+            role: 'Менеджер проектов',
+            image: '/images/team/margo.webp',
+          },
+          {
+            name: 'Сергей Мартын',
+            role: 'Сайт, маркетинг, реклама',
+            image: '/images/team/sergey.webp',
+          },
         ],
         caption: [
           'У каждого из нас свой опыт и взгляд.',
           'Нас объединяет желание помогать людям находить друг друга —',
           'для разговора, дружбы, новых совместных идей.',
         ],
-        previous: 'Показать предыдущих участников команды',
-        next: 'Показать следующих участников команды',
         list: 'Участники команды R.O.S.T.',
       }
     : {
@@ -36,27 +54,42 @@ const copy =
           'Wir finden Anlässe, zusammenzukommen, kümmern uns um die Details und schaffen eine Atmosphäre, in der neue Bekanntschaften leichtfallen und man sich gern wiedersieht.',
         ],
         people: [
-          { name: 'Kristina Bauer', role: 'Ideengeberin, Gastgeberin' },
-          { name: 'Timur Cherepanov', role: 'Gastgeber, Fotograf' },
+          {
+            name: 'Kristina Bauer',
+            role: 'Ideengeberin, Gastgeberin',
+            image: '/images/team/kristina.webp',
+          },
+          {
+            name: 'Timur Cherepanov',
+            role: 'Gastgeber, Fotograf',
+            image: '/images/team/timur.webp',
+          },
           {
             name: 'Maksim Burlakov',
             role: 'Plant unsere gemeinsamen Wochenenden',
+            image: '/images/team/maksim.webp',
           },
-          { name: 'Margarita Martyn', role: 'Projektmanagerin' },
-          { name: 'Sergey Martyn', role: 'Website, Marketing, Werbung' },
+          {
+            name: 'Margarita Martyn',
+            role: 'Projektmanagerin',
+            image: '/images/team/margo.webp',
+          },
+          {
+            name: 'Sergey Martyn',
+            role: 'Website, Marketing, Werbung',
+            image: '/images/team/sergey.webp',
+          },
         ],
         caption: [
           'Jeder von uns bringt eigene Erfahrungen und Perspektiven mit.',
           'Uns verbindet der Wunsch, Menschen zusammenzubringen —',
           'für Gespräche, Freundschaften und neue gemeinsame Ideen.',
         ],
-        previous: 'Vorherige Teammitglieder anzeigen',
-        next: 'Nächste Teammitglieder anzeigen',
         list: 'Das Team von R.O.S.T.',
       };
 ---
 
-<section class="team" aria-labelledby="team-title" data-team>
+<section class="team" aria-labelledby="team-title">
   <div class="site-container">
     <p class="team__eyebrow">{copy.eyebrow}</p>
     <div class="team__intro">
@@ -70,56 +103,18 @@ const copy =
       </p>
     </div>
 
-    <div class="team__controls" aria-label={copy.list}>
-      <button
-        class="team__arrow"
-        type="button"
-        data-team-direction="previous"
-        aria-label={copy.previous}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m13 5-7 7 7 7M6 12h13" />
-        </svg>
-      </button>
-      <button
-        class="team__arrow"
-        type="button"
-        data-team-direction="next"
-        aria-label={copy.next}
-      >
-        <svg
-          viewBox="0 0 24 24"
-          aria-hidden="true"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="1.5"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path d="m11 5 7 7-7 7M18 12H5" />
-        </svg>
-      </button>
-    </div>
-
     <ul class="team__people" aria-label={copy.list}>
       {copy.people.map((person) => (
         <li class="team__person">
           <div class="team__portrait" aria-hidden="true">
-            <svg viewBox="0 0 120 120" fill="none">
-              <circle cx="60" cy="43" r="19" fill="currentColor" />
-              <path
-                d="M25 105c2-25 17-38 35-38s33 13 35 38"
-                fill="currentColor"
-              />
-            </svg>
+            <img
+              src={person.image}
+              alt=""
+              width="512"
+              height="512"
+              loading="eager"
+              decoding="async"
+            />
           </div>
           <h3 class="team__name">{person.name}</h3>
           <p class="team__role">{person.role}</p>
@@ -136,38 +131,3 @@ const copy =
     </p>
   </div>
 </section>
-
-<script>
-  const team = document.querySelector<HTMLElement>('[data-team]');
-  const people = team?.querySelector<HTMLElement>('.team__people');
-  const previous = team?.querySelector<HTMLButtonElement>(
-    '[data-team-direction="previous"]',
-  );
-  const next = team?.querySelector<HTMLButtonElement>(
-    '[data-team-direction="next"]',
-  );
-
-  if (people && previous && next) {
-    const updateButtons = () => {
-      const maxScroll = people.scrollWidth - people.clientWidth;
-      previous.disabled = people.scrollLeft <= 1;
-      next.disabled = people.scrollLeft >= maxScroll - 1;
-    };
-    const move = (direction: number) => {
-      const card = people.querySelector<HTMLElement>('.team__person');
-      if (!card) return;
-      const gap = parseFloat(getComputedStyle(people).columnGap) || 0;
-      people.scrollBy({
-        left: direction * (card.offsetWidth + gap),
-        behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches
-          ? 'auto'
-          : 'smooth',
-      });
-    };
-    previous.addEventListener('click', () => move(-1));
-    next.addEventListener('click', () => move(1));
-    people.addEventListener('scroll', updateButtons, { passive: true });
-    window.addEventListener('resize', updateButtons);
-    updateButtons();
-  }
-</script>

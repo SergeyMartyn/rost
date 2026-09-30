@@ -19,6 +19,12 @@ const copy =
       };
 const videoId = heroVideos[page];
 const hasVideo = videoId !== 'xxxxxxxxxxx';
+const poster =
+  page === 'events'
+    ? { src: '/images/video/znakomstvo.png', size: 1254 }
+    : page === 'home'
+      ? { src: '/images/video/events.webp', size: 512 }
+      : null;
 ---
 
 <div class="hero__media">
@@ -29,6 +35,17 @@ const hasVideo = videoId !== 'xxxxxxxxxxx';
     data-facade-title={lang === 'ru' ? 'Видео R.O.S.T.' : 'R.O.S.T. Video'}
     data-facade-allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
   >
+    {poster && (
+      <img
+        class="hero__poster"
+        src={poster.src}
+        alt=""
+        width={poster.size}
+        height={poster.size}
+        decoding="async"
+        data-facade-ui
+      />
+    )}
     <button
       class="hero__play"
       type="button"
@@ -43,7 +60,11 @@ const hasVideo = videoId !== 'xxxxxxxxxxx';
       </svg>
     </button>
     <p class="hero__notice" data-facade-ui>
-      {hasVideo ? copy.notice : lang === 'ru' ? 'Видео скоро появится.' : 'Das Video folgt in Kürze.'}
+      {hasVideo
+        ? copy.notice
+        : lang === 'ru'
+          ? 'Видео скоро появится.'
+          : 'Das Video folgt in Kürze.'}
     </p>
   </div>
 </div>

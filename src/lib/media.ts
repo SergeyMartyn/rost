@@ -2,12 +2,12 @@
 // Nothing here is requested from the provider before the visitor clicks.
 
 /**
- * YouTube video IDs for the hero blocks. PLACEHOLDER: not an existing video.
- * Replace a value with the real ID (the part after `v=` in the YouTube URL).
+ * YouTube video IDs for the hero blocks. Keep the remaining placeholders
+ * disabled until their real videos are supplied.
  */
 export const heroVideos = {
-  home: 'xxxxxxxxxxx',
-  events: 'xxxxxxxxxxx',
+  home: 'g4yCiYpuvWg',
+  events: 'ZuZd1IsZnJ0',
   about: 'xxxxxxxxxxx',
   contacts: 'xxxxxxxxxxx',
 } as const;

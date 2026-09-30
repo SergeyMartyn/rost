@@ -328,7 +328,7 @@ test('requested FAQ order and purchase hover colors', async ({ page }) => {
   await page.locator('.site-header__desktop-actions .site-header__cta').hover();
   await expect(
     page.locator('.site-header__desktop-actions .site-header__cta'),
-  ).toHaveCSS('color', 'rgb(255, 255, 255)');
+  ).toHaveCSS('color', 'rgb(240, 207, 99)');
   const heroMargins = await page.evaluate(() => {
     const header = document
       .querySelector('.site-header__bar')!

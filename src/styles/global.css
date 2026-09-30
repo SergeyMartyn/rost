@@ -102,11 +102,12 @@
     top: 0;
     z-index: 50;
     width: 100%;
+    padding-top: var(--spacing-header-edge);
     background: transparent;
   }
 
   .hero-page .site-header {
-    margin-bottom: -64px;
+    margin-bottom: calc(-64px - var(--spacing-header-edge));
   }
 
   .site-footer__inner {
@@ -269,7 +270,7 @@
   .site-header__cta:hover,
   .site-header__cta:focus-visible {
     background: var(--color-brand);
-    color: white;
+    color: var(--color-brand-gold);
     text-decoration: none;
   }
 

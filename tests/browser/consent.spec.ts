@@ -183,21 +183,37 @@ test('language switch keeps the choice; new revision asks again', async ({
   await expect(page.locator('#cc-main .cm')).toBeVisible();
 });
 
-for (const [key, lang] of [
-  ['home', 'ru'],
-  ['home', 'de'],
-  ['events', 'ru'],
-  ['about', 'ru'],
-  ['contacts', 'de'],
+for (const [key, lang, id] of [
+  ['home', 'ru', 'g4yCiYpuvWg'],
+  ['home', 'de', 'g4yCiYpuvWg'],
+  ['events', 'ru', 'ZuZd1IsZnJ0'],
+  ['events', 'de', 'ZuZd1IsZnJ0'],
 ] as const)
-  test(`video facade ${key}/${lang}: placeholder stays local`, async ({
+  test(`video facade ${key}/${lang}: loads the video only after click`, async ({
     page,
   }) => {
     const external = trackExternal(page);
+    await page.route('https://www.youtube-nocookie.com/**', (route) =>
+      route.fulfill({ status: 200, contentType: 'text/html', body: 'video' }),
+    );
     await page.goto(site.routes[key][lang]);
+    const poster = page.locator('.hero__video .hero__poster');
+    await expect(poster).toHaveAttribute(
+      'src',
+      key === 'events'
+        ? '/images/video/znakomstvo.png'
+        : '/images/video/events.webp',
+    );
+    await expect
+      .poll(() =>
+        poster.evaluate((image: HTMLImageElement) => image.naturalWidth),
+      )
+      .toBeGreaterThan(0);
     const notice = page.locator('.hero__notice').first();
     await expect(notice).toHaveText(
-      lang === 'ru' ? 'Видео скоро появится.' : 'Das Video folgt in Kürze.',
+      lang === 'ru'
+        ? 'При запуске видео cookies могут передаваться видеосервису.'
+        : 'Beim Starten eines Videos können Cookies an den Videodienst übertragen werden.',
     );
     expect(await notice.evaluate((el) => getComputedStyle(el).fontWeight)).toBe(
       '400',
@@ -205,10 +221,33 @@ for (const [key, lang] of [
     await expect(page.locator('iframe')).toHaveCount(0);
     await page.waitForTimeout(300);
     expect(external.filter((u) => u.includes('youtube'))).toEqual([]);
-    await expect(page.locator('.hero__video [data-facade-load]')).toBeDisabled();
-    await expect(page.locator('.hero__video iframe')).toHaveCount(0);
+    const play = page.locator('.hero__video [data-facade-load]');
+    await expect(play).toBeEnabled();
+    await play.click();
+    const frame = page.locator('.hero__video iframe');
+    await expect(frame).toHaveAttribute(
+      'src',
+      new RegExp(
+        `^https://www\\.youtube-nocookie\\.com/embed/${id}\\?autoplay=1`,
+      ),
+    );
+    await expect(frame).toHaveAttribute('allow', /autoplay/);
+    await expect(poster).toHaveCount(0);
     await page.reload();
     await expect(page.locator('iframe')).toHaveCount(0);
+  });
+
+for (const [key, lang] of [
+  ['about', 'ru'],
+  ['about', 'de'],
+  ['contacts', 'ru'],
+  ['contacts', 'de'],
+] as const)
+  test(`${key}/${lang}: hidden video stays local`, async ({ page }) => {
+    const external = trackExternal(page);
+    await page.goto(site.routes[key][lang]);
+    await expect(page.locator('.hero__video')).toHaveCount(0);
+    expect(external.filter((url) => url.includes('youtube'))).toEqual([]);
   });
 
 test('events page: address shown as text, no map embed or external requests', async ({

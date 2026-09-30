@@ -1,0 +1,103 @@
+---
+import type { Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+const channels = [
+  {
+    id: 'instagram',
+    label: 'Instagram',
+    href: 'https://www.instagram.com/group_r.o.s.t/',
+  },
+  {
+    id: 'telegram',
+    label: 'Telegram',
+    href: 'https://t.me/+atkRam55MV1iYzEy',
+  },
+  {
+    id: 'facebook',
+    label: 'Facebook',
+    href: 'https://www.facebook.com/profile.php?id=61566868460921',
+  },
+  {
+    id: 'phone',
+    label: lang === 'ru' ? 'Телефон' : 'Telefon',
+    href: 'tel:+4916095450657',
+  },
+];
+---
+
+<ul
+  class="contact-channels"
+  aria-label={lang === 'ru' ? 'Способы связи' : 'Kontaktwege'}
+>
+  {channels.map((channel) => (
+    <li>
+      <a
+        class="contact-channel"
+        href={channel.href}
+        target={channel.id === 'phone' ? undefined : '_blank'}
+        rel={channel.id === 'phone' ? undefined : 'noopener noreferrer'}
+        aria-label={
+          channel.id === 'phone'
+            ? lang === 'ru'
+              ? 'Позвонить: +49 160 9545 0657'
+              : 'Anrufen: +49 160 9545 0657'
+            : channel.label
+        }
+      >
+        <span class="contact-channel__icon" aria-hidden="true">
+          {channel.id === 'instagram' && (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="3" width="18" height="18" rx="5" />
+              <circle cx="12" cy="12" r="4" />
+              <circle
+                cx="17.5"
+                cy="6.5"
+                r="1"
+                fill="currentColor"
+                stroke="none"
+              />
+            </svg>
+          )}
+          {channel.id === 'telegram' && (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="m21 3-3.8 18-5.5-4-2.8 2.5.5-4.3L18 7l-10 7.1-5-1.6L21 3Z" />
+            </svg>
+          )}
+          {channel.id === 'facebook' && (
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M14.1 21v-8h2.7l.4-3.1h-3.1v-2c0-.9.3-1.5 1.6-1.5h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.1H8V13h2.7v8h3.4Z" />
+            </svg>
+          )}
+          {channel.id === 'phone' && (
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5.5 3.5h3l1.4 4.1-1.8 1.8a15.4 15.4 0 0 0 6.5 6.5l1.8-1.8 4.1 1.4v3A2.5 2.5 0 0 1 18 21C9.7 20.6 3.4 14.3 3 6a2.5 2.5 0 0 1 2.5-2.5Z" />
+            </svg>
+          )}
+        </span>
+        <span class="contact-channel__label">{channel.label}</span>
+      </a>
+    </li>
+  ))}
+</ul>
