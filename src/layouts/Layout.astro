@@ -21,10 +21,9 @@ const { lang, page, title, description } = Astro.props as {
 const t = text[lang];
 const socialPage =
   page === 'events' || page === 'about' || page === 'contacts' ? page : 'home';
-const socialImage = new URL(
-  `/images/social/${socialPage}-${lang}.png`,
-  origin,
-).toString();
+const socialFile =
+  socialPage === 'about' ? `about-${lang}-v2.png` : `${socialPage}-${lang}.png`;
+const socialImage = new URL(`/images/social/${socialFile}`, origin).toString();
 const ogImageAlt =
   lang === 'de'
     ? `R.O.S.T. mit Logo und Motiv für ${text.de[socialPage]}`

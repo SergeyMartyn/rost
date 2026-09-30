@@ -291,13 +291,14 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
       .locator('..')
       .locator('..');
     await expect(answer).toContainText('29 €');
+    await expect(answer).toContainText('70 €');
     await expect(answer).toContainText('99 €');
     await expect(answer).toContainText('249 €');
 
     await page.goto(events);
     for (const [ticket, price] of [
       ['meetup', '29 €'],
-      ['guest', '99 €'],
+      ['guest', '70 €'],
       ['host', '249 €'],
     ] as const) {
       await page.locator(`[data-ticket="${ticket}"]`).click();
@@ -307,7 +308,7 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await page.goto(
       lang === 'ru' ? '/ru/usloviya-uchastiya/' : '/de/teilnahmebedingungen/',
     );
-    for (const price of ['29 €', '99 €', '249 €'])
+    for (const price of ['29 €', '70 €', '99 €', '249 €'])
       await expect(page.locator('main')).toContainText(price);
   }
 });

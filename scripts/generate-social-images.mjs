@@ -11,7 +11,7 @@ const [logo, homePhoto, eventsPhoto, ...portraits] = await Promise.all([
   asDataUrl('brand-tree.png', 'image/png'),
   asDataUrl('images/video/events.webp', 'image/webp'),
   asDataUrl('images/video/znakomstvo.png', 'image/png'),
-  ...['kristina', 'timur', 'maksim', 'margo', 'sergey'].map((person) =>
+  ...['kristina', 'timur-portrait', 'maksim', 'margo', 'sergey'].map((person) =>
     asDataUrl(`images/team/${person}.webp`, 'image/webp'),
   ),
 ]);
@@ -152,7 +152,11 @@ try {
     for (const [language, copy] of Object.entries(languages)) {
       await tab.setContent(render(page, language, copy), { waitUntil: 'load' });
       await tab.evaluate(() => document.fonts.ready);
-      const target = join(outputDir, `${page}-${language}.png`);
+      const fileName =
+        page === 'about'
+          ? `about-${language}-v2.png`
+          : `${page}-${language}.png`;
+      const target = join(outputDir, fileName);
       await tab.screenshot({ path: target });
       console.log(target);
     }

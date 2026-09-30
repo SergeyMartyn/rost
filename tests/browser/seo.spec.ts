@@ -54,7 +54,11 @@ test('structured data, canonical and social metadata on every page', async ({
     const socialPage = ['home', 'events', 'about', 'contacts'].includes(page)
       ? page
       : 'home';
-    const imageUrl = `${domain}/images/social/${socialPage}-${lang}.png`;
+    const imageFile =
+      socialPage === 'about'
+        ? `about-${lang}-v2.png`
+        : `${socialPage}-${lang}.png`;
+    const imageUrl = `${domain}/images/social/${imageFile}`;
     expect(html, path).toContain(`property="og:image" content="${imageUrl}"`);
     expect(html, path).toContain(`name="twitter:image" content="${imageUrl}"`);
     const webPage = graph.find((node) => node['@type'] === 'WebPage')!;
@@ -75,7 +79,9 @@ test('the eight page-specific social images are served at 1200 × 630', async ({
 }) => {
   for (const page of ['home', 'events', 'about', 'contacts'])
     for (const lang of ['ru', 'de']) {
-      const response = await request.get(`/images/social/${page}-${lang}.png`);
+      const imageFile =
+        page === 'about' ? `about-${lang}-v2.png` : `${page}-${lang}.png`;
+      const response = await request.get(`/images/social/${imageFile}`);
       expect(response.status(), `${page}/${lang}`).toBe(200);
       expect(response.headers()['content-type']).toContain('image/png');
       const bytes = await response.body();

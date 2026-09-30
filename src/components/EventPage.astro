@@ -1,8 +1,10 @@
 ---
 import { routes, type Language } from '../lib/site';
+import { isEarlyBirdActive } from '../lib/early-bird';
 import VideoFacade from './VideoFacade.astro';
 
 const { lang } = Astro.props as { lang: Language };
+const earlyBirdInitially = isEarlyBirdActive(Date.now());
 const copy =
   lang === 'ru'
     ? {
@@ -24,8 +26,9 @@ const copy =
         meetMonth: 'октября',
         gamesMonth: 'ноября',
         timeLater: 'Время уточняется',
+        meetRegistration: 'Начало регистрации в 10:00',
         meetAddress: 'Санкт-Катариненплац, 5 · 93059 Регенсбург',
-        gamesVenue: 'Отель «Палладиум»',
+        gamesVenue: 'Мюнхен',
         gamesAddress: 'Перхтингер-штрассе, 12 · 81379 Мюнхен',
         meetTicket: 'Билет на встречу',
         buyTicket: 'Купить билет →',
@@ -37,6 +40,7 @@ const copy =
           'День, в котором можно попробовать новый формат, посмотреть на свои вопросы с другой стороны и пообщаться с людьми. Для гостей и тех, кто проводит игры, предусмотрены разные билеты.',
         role: 'Выберите свою роль',
         guest: 'Я участник',
+        earlyBirdUntil: 'Ранняя цена до 15 октября',
         host: 'Я ведущий игр',
         roleSaved: 'Роль и стоимость сохранятся в следующем шаге.',
         questions: 'Есть вопросы перед встречей?',
@@ -64,7 +68,8 @@ const copy =
         choosePayment: 'Выберите, как вам удобнее оплатить.',
         stripe: 'Картой через Stripe',
         paypal: 'Через PayPal',
-        previewNote: 'Оплата картой проходит на защищённой странице Stripe. Данные карты нам не передаются.',
+        previewNote:
+          'Оплата картой проходит на защищённой странице Stripe. Данные карты нам не передаются.',
         back: '← Изменить контакт',
       }
     : {
@@ -86,8 +91,9 @@ const copy =
         meetMonth: 'Oktober',
         gamesMonth: 'November',
         timeLater: 'Uhrzeit folgt',
+        meetRegistration: 'Registrierung ab 10:00 Uhr',
         meetAddress: 'St. Katharinenplatz 5 · 93059 Regensburg',
-        gamesVenue: 'Grand Hotel Palladium',
+        gamesVenue: 'München',
         gamesAddress: 'Perchtinger Straße 12 · 81379 München',
         meetTicket: 'Ticket für das Treffen',
         buyTicket: 'Ticket kaufen →',
@@ -100,6 +106,7 @@ const copy =
           'Ein Tag, an dem du ein neues Format ausprobieren, deine Fragen aus einer anderen Perspektive betrachten und Menschen kennenlernen kannst. Für Gäste und Spielleitende gibt es unterschiedliche Tickets.',
         role: 'Wähle deine Rolle',
         guest: 'Ich nehme teil',
+        earlyBirdUntil: 'Frühbucherpreis bis 15. Oktober',
         host: 'Ich leite Spiele',
         roleSaved: 'Rolle und Preis bleiben im nächsten Schritt sichtbar.',
         questions: 'Noch Fragen zum Treffen?',
@@ -128,7 +135,8 @@ const copy =
         choosePayment: 'Wähle, wie du bezahlen möchtest.',
         stripe: 'Mit Karte über Stripe',
         paypal: 'Mit PayPal',
-        previewNote: 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Kartendaten erhalten wir nicht.',
+        previewNote:
+          'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Kartendaten erhalten wir nicht.',
         back: '← Kontakt ändern',
       };
 ---
@@ -188,7 +196,7 @@ const copy =
               {copy.when}
             </p>
             <p class="mt-3 font-display text-2xl">{copy.meetDate}</p>
-            <p class="mt-2 text-sm text-muted">{copy.timeLater}</p>
+            <p class="mt-2 text-sm text-muted">{copy.meetRegistration}</p>
           </div>
           <div class="rounded-3xl bg-brand-surface p-6">
             <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
@@ -290,10 +298,38 @@ const copy =
           <button
             type="button"
             data-ticket="guest"
-            class="mb-3 flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="mb-3 flex w-full items-center justify-between gap-3 rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
-            <span class="font-bold">{copy.guest}</span>
-            <strong class="font-display text-2xl font-normal">99 €</strong>
+            <span class="min-w-0">
+              <span class="block font-bold">{copy.guest}</span>
+              <span
+                id="guest-offer-note"
+                class:list={[
+                  'mt-1 block text-xs leading-snug opacity-80',
+                  { hidden: !earlyBirdInitially },
+                ]}
+              >
+                {copy.earlyBirdUntil}
+              </span>
+            </span>
+            <span class="flex shrink-0 items-baseline gap-2 whitespace-nowrap">
+              <s
+                id="guest-old-price"
+                aria-hidden="true"
+                class:list={[
+                  'text-sm opacity-65',
+                  { hidden: !earlyBirdInitially },
+                ]}
+              >
+                99 €
+              </s>
+              <strong
+                id="guest-current-price"
+                class="font-display text-2xl font-normal"
+              >
+                {earlyBirdInitially ? '70 €' : '99 €'}
+              </strong>
+            </span>
           </button>
           <button
             type="button"
@@ -338,7 +374,9 @@ const copy =
     type="button"
     aria-label={lang === 'ru' ? 'Закрыть сообщение' : 'Mitteilung schließen'}
     class="-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-2xl font-normal leading-none text-brand transition hover:bg-brand/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-  >×</button>
+  >
+    ×
+  </button>
 </div>
 
 <dialog
@@ -550,9 +588,13 @@ const copy =
         id="ticket-error"
         role="alert"
         class="hidden rounded-xl bg-red-50 p-3 text-sm text-red-800"
+      ></p>
+      <p
+        id="ticket-preview-note"
+        class="pt-2 text-xs leading-relaxed text-muted"
       >
+        {copy.previewNote}
       </p>
-      <p id="ticket-preview-note" class="pt-2 text-xs leading-relaxed text-muted">{copy.previewNote}</p>
       <button
         id="ticket-back"
         type="button"
@@ -565,6 +607,8 @@ const copy =
 </dialog>
 
 <script>
+  import { isEarlyBirdActive } from '../lib/early-bird';
+
   const dialog = document.querySelector<HTMLDialogElement>('#ticket-dialog');
   const form = document.querySelector<HTMLFormElement>('#ticket-form');
   const payment = document.querySelector<HTMLElement>('#ticket-payment');
@@ -580,8 +624,43 @@ const copy =
   const contactError = document.querySelector<HTMLElement>('#contact-error');
   const whatsappType = document.querySelector<HTMLElement>('#whatsapp-type');
   const privacy = document.querySelector<HTMLInputElement>('#ticket-privacy');
-  const previewNote = document.querySelector<HTMLElement>('#ticket-preview-note');
+  const previewNote = document.querySelector<HTMLElement>(
+    '#ticket-preview-note',
+  );
   const noteRu = dialog?.dataset.lang === 'ru';
+  const guestButton = document.querySelector<HTMLButtonElement>(
+    '[data-ticket="guest"]',
+  );
+  const guestCurrentPrice = document.querySelector<HTMLElement>(
+    '#guest-current-price',
+  );
+  const guestOldPrice = document.querySelector<HTMLElement>('#guest-old-price');
+  const guestOfferNote =
+    document.querySelector<HTMLElement>('#guest-offer-note');
+  let serverClockOffsetMs = 0;
+  const effectiveNow = () => Date.now() + serverClockOffsetMs;
+  const refreshGuestOffer = () => {
+    const early = isEarlyBirdActive(effectiveNow());
+    if (guestCurrentPrice)
+      guestCurrentPrice.textContent = early ? '70 €' : '99 €';
+    guestOldPrice?.classList.toggle('hidden', !early);
+    guestOfferNote?.classList.toggle('hidden', !early);
+    guestButton?.setAttribute(
+      'aria-label',
+      noteRu
+        ? early
+          ? 'Я участник. Ранняя цена 70 евро до 15 октября, затем 99 евро'
+          : 'Я участник. Цена 99 евро'
+        : early
+          ? 'Ich nehme teil. Frühbucherpreis 70 Euro bis 15. Oktober, danach 99 Euro'
+          : 'Ich nehme teil. Preis 99 Euro',
+    );
+  };
+  refreshGuestOffer();
+  window.setInterval(refreshGuestOffer, 30_000);
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden) refreshGuestOffer();
+  });
   let paymentsEnabled = false;
   let providers = { stripe: false, paypal: false };
   const paymentButtons =
@@ -604,9 +683,14 @@ const copy =
           mode?: string;
           stripe?: boolean;
           paypal?: boolean;
+          serverTime?: number;
         } | null>,
     )
     .then((cfg) => {
+      if (typeof cfg?.serverTime === 'number') {
+        serverClockOffsetMs = cfg.serverTime - Date.now();
+        refreshGuestOffer();
+      }
       paymentsEnabled = !!cfg?.paymentsEnabled;
       providers = {
         stripe: cfg?.stripe ?? paymentsEnabled,
@@ -643,11 +727,16 @@ const copy =
   const tickets = isRu
     ? {
         meetup: ['Билет на встречу', '10 октября · Регенсбург · 29 €'],
+        guest_early: ['Билет участника', '7 ноября · Мюнхен · 70 €'],
         guest: ['Билет участника', '7 ноября · Мюнхен · 99 €'],
         host: ['Билет ведущего игр', '7 ноября · Мюнхен · 249 €'],
       }
     : {
         meetup: ['Ticket für das Treffen', '10. Oktober · Regensburg · 29 €'],
+        guest_early: [
+          'Ticket für Teilnehmende',
+          '7. November · München · 70 €',
+        ],
         guest: ['Ticket für Teilnehmende', '7. November · München · 99 €'],
         host: ['Ticket für Spielleitende', '7. November · München · 249 €'],
       };
@@ -781,7 +870,12 @@ const copy =
     .querySelectorAll<HTMLButtonElement>('[data-ticket]')
     .forEach((button) => {
       button.addEventListener('click', () => {
-        const ticket = tickets[button.dataset.ticket as keyof typeof tickets];
+        refreshGuestOffer();
+        const selectedTicket =
+          button.dataset.ticket === 'guest' && isEarlyBirdActive(effectiveNow())
+            ? 'guest_early'
+            : button.dataset.ticket;
+        const ticket = tickets[selectedTicket as keyof typeof tickets];
         if (
           !dialog ||
           !ticket ||
@@ -792,7 +886,7 @@ const copy =
           !payment
         )
           return;
-        currentTicket = button.dataset.ticket || '';
+        currentTicket = selectedTicket || '';
         errorBox?.classList.add('hidden');
         title.textContent = ticket[0];
         summary.textContent = ticket[1];
@@ -854,18 +948,44 @@ const copy =
   });
   const orderErrors = isRu
     ? {
-        disabled: 'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
-        generic: 'Не удалось перейти к оплате. Попробуйте ещё раз или напишите нам.',
+        disabled:
+          'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
+        generic:
+          'Не удалось перейти к оплате. Попробуйте ещё раз или напишите нам.',
+        offerEnded:
+          'Ранняя цена закончилась. Билет участника теперь стоит 99 €. Проверьте сумму и нажмите оплату ещё раз.',
       }
     : {
-        disabled: 'Die Online-Zahlung ist noch nicht verfügbar. Schreib uns, wir regeln es.',
-        generic: 'Weiterleitung zur Zahlung fehlgeschlagen. Bitte versuche es erneut oder schreib uns.',
+        disabled:
+          'Die Online-Zahlung ist noch nicht verfügbar. Schreib uns, wir regeln es.',
+        generic:
+          'Weiterleitung zur Zahlung fehlgeschlagen. Bitte versuche es erneut oder schreib uns.',
+        offerEnded:
+          'Der Frühbucherpreis ist abgelaufen. Das Ticket für Teilnehmende kostet jetzt 99 €. Bitte prüfe den Preis und starte die Zahlung erneut.',
       };
-  paymentButtons.forEach((button) => button.addEventListener('click', async (event) => {
+  const showOfferEnded = () => {
+    currentTicket = 'guest';
+    if (summary) summary.textContent = tickets.guest[1];
+    refreshGuestOffer();
+    if (errorBox) {
+      errorBox.textContent = orderErrors.offerEnded;
+      errorBox.classList.remove('hidden');
+    }
+    refreshPaymentButtons();
+  };
+  paymentButtons.forEach((button) =>
+    button.addEventListener('click', async (event) => {
       const button = event.currentTarget as HTMLButtonElement;
       const provider = button.dataset.payment as 'stripe' | 'paypal';
       if (!currentTicket || !nameInput || !contactInput || !privacy?.checked)
         return;
+      if (
+        currentTicket === 'guest_early' &&
+        !isEarlyBirdActive(effectiveNow())
+      ) {
+        showOfferEnded();
+        return;
+      }
       errorBox?.classList.add('hidden');
       button.disabled = true;
       let message = orderErrors.generic;
@@ -894,6 +1014,18 @@ const copy =
           location.href = data.url;
           return;
         }
+        if (
+          response.status === 409 &&
+          typeof data === 'object' &&
+          data !== null &&
+          'error' in data &&
+          data.error === 'offer_ended'
+        ) {
+          if ('serverTime' in data && typeof data.serverTime === 'number')
+            serverClockOffsetMs = data.serverTime - Date.now();
+          showOfferEnded();
+          return;
+        }
         if (response.status === 403 || response.status === 503)
           message = orderErrors.disabled;
       } catch {
@@ -904,15 +1036,24 @@ const copy =
         errorBox.classList.remove('hidden');
       }
       refreshPaymentButtons();
-    }));
+    }),
+  );
   const returned = new URLSearchParams(location.search).get('payment');
   const returnBox = document.querySelector<HTMLElement>('#payment-return');
-  const returnMessage = document.querySelector<HTMLElement>('#payment-return-message');
-  document.querySelector('#payment-return-close')?.addEventListener('click', () => {
-    returnBox?.classList.add('hidden');
-    returnBox?.classList.remove('flex');
-  });
-  if (returnBox && returnMessage && (returned === 'success' || returned === 'cancelled' || returned === 'error')) {
+  const returnMessage = document.querySelector<HTMLElement>(
+    '#payment-return-message',
+  );
+  document
+    .querySelector('#payment-return-close')
+    ?.addEventListener('click', () => {
+      returnBox?.classList.add('hidden');
+      returnBox?.classList.remove('flex');
+    });
+  if (
+    returnBox &&
+    returnMessage &&
+    (returned === 'success' || returned === 'cancelled' || returned === 'error')
+  ) {
     returnMessage.textContent =
       returned === 'success'
         ? isRu
@@ -922,9 +1063,9 @@ const copy =
           ? isRu
             ? 'Не удалось подтвердить оплату. Если деньги списались, напишите нам — мы проверим платёж.'
             : 'Die Zahlung konnte nicht bestätigt werden. Falls Geld abgebucht wurde, schreib uns bitte.'
-        : isRu
-          ? 'Оплата отменена. Билет не оформлен, деньги не списаны.'
-          : 'Zahlung abgebrochen. Es wurde nichts berechnet.';
+          : isRu
+            ? 'Оплата отменена. Билет не оформлен, деньги не списаны.'
+            : 'Zahlung abgebrochen. Es wurde nichts berechnet.';
     returnBox.classList.remove('hidden');
     returnBox.classList.add('flex');
     history.replaceState(null, '', location.pathname);

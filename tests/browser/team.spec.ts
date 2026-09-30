@@ -3,9 +3,13 @@ import { test, expect } from '@playwright/test';
 test('team section keeps the requested order and responsive layout', async ({
   page,
 }) => {
-  const portraits = ['kristina', 'timur', 'maksim', 'margo', 'sergey'].map(
-    (name) => `/images/team/${name}.webp`,
-  );
+  const portraits = [
+    'kristina',
+    'timur-portrait',
+    'maksim',
+    'margo',
+    'sergey',
+  ].map((name) => `/images/team/${name}.webp`);
   const cases = [
     {
       path: '/ru/o-nas/',

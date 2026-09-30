@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createHmac } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { handleApi, type Deps, type OrdersEnv } from '../worker/orders';
+import { EARLY_BIRD_END_MS } from '../src/lib/early-bird';
 
 // Real SQL (the real migration file) behind a tiny D1-compatible adapter.
 function makeD1() {
@@ -13,7 +14,11 @@ function makeD1() {
     let args: unknown[] = [];
     const s: any = {
       bind: (...a: unknown[]) => ((args = a), s),
-      _run: () => ({ meta: { changes: Number(db.prepare(sql).run(...(args as any)).changes) } }),
+      _run: () => ({
+        meta: {
+          changes: Number(db.prepare(sql).run(...(args as any)).changes),
+        },
+      }),
       run: async () => s._run(),
       first: async () => db.prepare(sql).get(...(args as any)) ?? null,
       all: async () => ({ results: db.prepare(sql).all(...(args as any)) }),
@@ -52,7 +57,13 @@ function setup(over: Partial<OrdersEnv> = {}) {
         const body = new URLSearchParams(init.body);
         stripeCalls.push({ body, headers: init.headers });
         const n = stripeCalls.length;
-        return new Response(JSON.stringify({ id: `cs_test_${n}`, url: `https://checkout.stripe.com/c/pay/cs_test_${n}` }), { status: 200 });
+        return new Response(
+          JSON.stringify({
+            id: `cs_test_${n}`,
+            url: `https://checkout.stripe.com/c/pay/cs_test_${n}`,
+          }),
+          { status: 200 },
+        );
       }
       sheetCalls.push(JSON.parse(init.body));
       return new Response('ok');
@@ -83,10 +94,22 @@ const orderReq = (body: object, host = HOST) =>
     body: JSON.stringify(body),
   });
 const goodBody = (ticket: string, extra: object = {}) => ({
-  ticket, name: 'Анна Тест', channel: 'Telegram', contact: '@anna_test', lang: 'ru', consent: true, ...extra,
+  ticket,
+  name: 'Анна Тест',
+  channel: 'Telegram',
+  contact: '@anna_test',
+  lang: 'ru',
+  consent: true,
+  ...extra,
 });
 
-function signedEvent(type: string, object: object, id = 'evt_1', t = Math.floor(T0 / 1000), secret = WH_SECRET) {
+function signedEvent(
+  type: string,
+  object: object,
+  id = 'evt_1',
+  t = Math.floor(T0 / 1000),
+  secret = WH_SECRET,
+) {
   const body = JSON.stringify({ id, type, data: { object } });
   const sig = createHmac('sha256', secret).update(`${t}.${body}`).digest('hex');
   return new Request(`${HOST}/api/stripe/webhook`, {
@@ -103,19 +126,39 @@ async function createOrder(t: ReturnType<typeof setup>, ticket: string) {
   const id = t.stripeCalls.at(-1)!.body.get('client_reference_id')!;
   return { id, session: `cs_test_${t.stripeCalls.length}` };
 }
-const paidSession = (id: string, session: string, amount: number, over: object = {}) => ({
-  id: session, client_reference_id: id, payment_status: 'paid', currency: 'eur', amount_total: amount,
-  payment_intent: 'pi_1', customer_details: { email: 'buyer@example.com' }, ...over,
+const paidSession = (
+  id: string,
+  session: string,
+  amount: number,
+  over: object = {},
+) => ({
+  id: session,
+  client_reference_id: id,
+  payment_status: 'paid',
+  currency: 'eur',
+  amount_total: amount,
+  payment_intent: 'pi_1',
+  customer_details: { email: 'buyer@example.com' },
+  ...over,
 });
 
-for (const [ticket, cents] of [['meetup', 2900], ['guest', 9900], ['host', 24900]] as const) {
+for (const [ticket, cents] of [
+  ['meetup', 2900],
+  ['guest', 9900],
+  ['host', 24900],
+] as const) {
   test(`ticket ${ticket}: server-side price ${cents / 100} EUR, pending → paid`, async () => {
     const t = setup();
     // The browser tries to send its own amount: it must be ignored.
-    const res = await t.api(orderReq(goodBody(ticket, { amount: 1, amount_cents: 1, price: 0.01 })));
+    const res = await t.api(
+      orderReq(goodBody(ticket, { amount: 1, amount_cents: 1, price: 0.01 })),
+    );
     assert.equal(res.status, 200);
     const call = t.stripeCalls[0];
-    assert.equal(call.body.get('line_items[0][price_data][unit_amount]'), String(cents));
+    assert.equal(
+      call.body.get('line_items[0][price_data][unit_amount]'),
+      String(cents),
+    );
     assert.equal(call.body.get('line_items[0][price_data][currency]'), 'eur');
     assert.equal(call.body.get('payment_method_types[0]'), 'card');
     assert.ok(call.headers.Authorization.startsWith('Bearer sk_test_'));
@@ -126,7 +169,12 @@ for (const [ticket, cents] of [['meetup', 2900], ['guest', 9900], ['host', 24900
     assert.equal(o.provider_session_id, 'cs_test_1');
     assert.equal(o.email, null);
 
-    const wh = await t.api(signedEvent('checkout.session.completed', paidSession(id, 'cs_test_1', cents)));
+    const wh = await t.api(
+      signedEvent(
+        'checkout.session.completed',
+        paidSession(id, 'cs_test_1', cents),
+      ),
+    );
     assert.equal(wh.status, 200);
     await t.flush();
     o = row(t, id);
@@ -139,10 +187,49 @@ for (const [ticket, cents] of [['meetup', 2900], ['guest', 9900], ['host', 24900
   });
 }
 
+test('early participant price is enforced at the Berlin deadline', async () => {
+  const t = setup();
+  t.deps.now = () => EARLY_BIRD_END_MS - 1;
+  const early = await t.api(
+    orderReq(goodBody('guest_early', { amount_cents: 1 })),
+  );
+  assert.equal(early.status, 200);
+  assert.equal(
+    t.stripeCalls[0].body.get('line_items[0][price_data][unit_amount]'),
+    '7000',
+  );
+  const id = t.stripeCalls[0].body.get('client_reference_id')!;
+  assert.equal(row(t, id).ticket_type, 'guest_early');
+  assert.equal(row(t, id).amount_cents, 7000);
+
+  t.deps.now = () => EARLY_BIRD_END_MS;
+  const expired = await t.api(orderReq(goodBody('guest_early')));
+  assert.equal(expired.status, 409);
+  assert.deepEqual(await expired.json(), {
+    error: 'offer_ended',
+    serverTime: EARLY_BIRD_END_MS,
+  });
+  assert.equal(t.stripeCalls.length, 1);
+  assert.equal(t.d1.db.prepare('SELECT COUNT(*) c FROM orders').get()!.c, 1);
+
+  const regular = await t.api(orderReq(goodBody('guest')));
+  assert.equal(regular.status, 200);
+  assert.equal(
+    t.stripeCalls[1].body.get('line_items[0][price_data][unit_amount]'),
+    '9900',
+  );
+});
+
 test('cancelled payment: expired session → cancelled, never paid', async () => {
   const t = setup();
   const { id, session } = await createOrder(t, 'meetup');
-  await t.api(signedEvent('checkout.session.expired', { id: session, client_reference_id: id }, 'evt_exp'));
+  await t.api(
+    signedEvent(
+      'checkout.session.expired',
+      { id: session, client_reference_id: id },
+      'evt_exp',
+    ),
+  );
   const o = row(t, id);
   assert.equal(o.status, 'cancelled');
   assert.ok(o.cancelled_at);
@@ -152,7 +239,12 @@ test('cancelled payment: expired session → cancelled, never paid', async () =>
 test('repeated webhook: no duplicate, no second change, no second sheet row', async () => {
   const t = setup();
   const { id, session } = await createOrder(t, 'guest');
-  const ev = () => signedEvent('checkout.session.completed', paidSession(id, session, 9900), 'evt_same');
+  const ev = () =>
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(id, session, 9900),
+      'evt_same',
+    );
   assert.equal((await t.api(ev())).status, 200);
   await t.flush();
   const first = row(t, id);
@@ -164,7 +256,13 @@ test('repeated webhook: no duplicate, no second change, no second sheet row', as
   assert.equal(t.sheetCalls.length, 1);
   assert.equal(t.d1.db.prepare('SELECT COUNT(*) c FROM orders').get()!.c, 1);
   // A different event for the same, already paid session must not re-apply either.
-  await t.api(signedEvent('checkout.session.async_payment_succeeded', paidSession(id, session, 9900), 'evt_other'));
+  await t.api(
+    signedEvent(
+      'checkout.session.async_payment_succeeded',
+      paidSession(id, session, 9900),
+      'evt_other',
+    ),
+  );
   await t.flush();
   assert.deepEqual(row(t, id), first);
   assert.equal(t.sheetCalls.length, 1);
@@ -173,12 +271,20 @@ test('repeated webhook: no duplicate, no second change, no second sheet row', as
 test('amount mismatch: order stays pending, rejection recorded', async () => {
   const t = setup();
   const { id, session } = await createOrder(t, 'host');
-  const res = await t.api(signedEvent('checkout.session.completed', paidSession(id, session, 100), 'evt_bad'));
+  const res = await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(id, session, 100),
+      'evt_bad',
+    ),
+  );
   assert.equal(res.status, 200); // acknowledged so Stripe does not retry forever
   await t.flush();
   assert.equal(row(t, id).status, 'pending');
   assert.equal(row(t, id).paid_at, null);
-  const ev: any = t.d1.db.prepare('SELECT outcome FROM webhook_events WHERE event_id=?').get('evt_bad');
+  const ev: any = t.d1.db
+    .prepare('SELECT outcome FROM webhook_events WHERE event_id=?')
+    .get('evt_bad');
   assert.equal(ev.outcome, 'rejected:amount_mismatch');
   assert.equal(t.sheetCalls.length, 0);
 });
@@ -186,23 +292,74 @@ test('amount mismatch: order stays pending, rejection recorded', async () => {
 test('currency / session / unknown order mismatches are rejected', async () => {
   const t = setup();
   const { id, session } = await createOrder(t, 'meetup');
-  await t.api(signedEvent('checkout.session.completed', paidSession(id, session, 2900, { currency: 'usd' }), 'e1'));
-  await t.api(signedEvent('checkout.session.completed', paidSession(id, 'cs_other', 2900), 'e2'));
-  await t.api(signedEvent('checkout.session.completed', paidSession('nope', session, 2900), 'e3'));
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(id, session, 2900, { currency: 'usd' }),
+      'e1',
+    ),
+  );
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(id, 'cs_other', 2900),
+      'e2',
+    ),
+  );
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession('nope', session, 2900),
+      'e3',
+    ),
+  );
   assert.equal(row(t, id).status, 'pending');
-  const outs = t.d1.db.prepare('SELECT event_id,outcome FROM webhook_events ORDER BY event_id').all() as any[];
-  assert.deepEqual(outs.map((o) => o.outcome), ['rejected:currency_mismatch', 'rejected:session_mismatch', 'rejected:unknown_order']);
+  const outs = t.d1.db
+    .prepare('SELECT event_id,outcome FROM webhook_events ORDER BY event_id')
+    .all() as any[];
+  assert.deepEqual(
+    outs.map((o) => o.outcome),
+    [
+      'rejected:currency_mismatch',
+      'rejected:session_mismatch',
+      'rejected:unknown_order',
+    ],
+  );
 });
 
 test('refund is a separate event: paid → refunded (partial refund ignored)', async () => {
   const t = setup();
   const { id, session } = await createOrder(t, 'meetup');
-  await t.api(signedEvent('charge.refunded', { payment_intent: 'pi_1', refunded: true }, 'r0'));
+  await t.api(
+    signedEvent(
+      'charge.refunded',
+      { payment_intent: 'pi_1', refunded: true },
+      'r0',
+    ),
+  );
   assert.equal(row(t, id).status, 'pending'); // not paid yet: nothing to refund
-  await t.api(signedEvent('checkout.session.completed', paidSession(id, session, 2900), 'p1'));
-  await t.api(signedEvent('charge.refunded', { payment_intent: 'pi_1', refunded: false, amount_refunded: 500 }, 'r1'));
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(id, session, 2900),
+      'p1',
+    ),
+  );
+  await t.api(
+    signedEvent(
+      'charge.refunded',
+      { payment_intent: 'pi_1', refunded: false, amount_refunded: 500 },
+      'r1',
+    ),
+  );
   assert.equal(row(t, id).status, 'paid');
-  await t.api(signedEvent('charge.refunded', { payment_intent: 'pi_1', refunded: true }, 'r2'));
+  await t.api(
+    signedEvent(
+      'charge.refunded',
+      { payment_intent: 'pi_1', refunded: true },
+      'r2',
+    ),
+  );
   const o = row(t, id);
   assert.equal(o.status, 'refunded');
   assert.ok(o.refunded_at);
@@ -212,18 +369,63 @@ test('webhook signature: bad secret and stale timestamp are rejected', async () 
   const t = setup();
   const { id, session } = await createOrder(t, 'meetup');
   const obj = paidSession(id, session, 2900);
-  assert.equal((await t.api(signedEvent('checkout.session.completed', obj, 'x1', undefined, 'whsec_wrong'))).status, 400);
-  assert.equal((await t.api(signedEvent('checkout.session.completed', obj, 'x2', Math.floor(T0 / 1000) - 3600))).status, 400);
-  assert.equal((await t.api(new Request(`${HOST}/api/stripe/webhook`, { method: 'POST', body: '{}' }))).status, 400);
+  assert.equal(
+    (
+      await t.api(
+        signedEvent(
+          'checkout.session.completed',
+          obj,
+          'x1',
+          undefined,
+          'whsec_wrong',
+        ),
+      )
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await t.api(
+        signedEvent(
+          'checkout.session.completed',
+          obj,
+          'x2',
+          Math.floor(T0 / 1000) - 3600,
+        ),
+      )
+    ).status,
+    400,
+  );
+  assert.equal(
+    (
+      await t.api(
+        new Request(`${HOST}/api/stripe/webhook`, {
+          method: 'POST',
+          body: '{}',
+        }),
+      )
+    ).status,
+    400,
+  );
   assert.equal(row(t, id).status, 'pending');
 });
 
 test('input validation: unknown ticket, bad contact, no consent, wrong origin', async () => {
   const t = setup();
   assert.equal((await t.api(orderReq(goodBody('vip')))).status, 400);
-  assert.equal((await t.api(orderReq(goodBody('meetup', { contact: 'ab' })))).status, 400);
-  assert.equal((await t.api(orderReq(goodBody('meetup', { consent: false })))).status, 400);
-  const evil = new Request(`${HOST}/api/orders`, { method: 'POST', headers: { Origin: 'https://evil.example' }, body: JSON.stringify(goodBody('meetup')) });
+  assert.equal(
+    (await t.api(orderReq(goodBody('meetup', { contact: 'ab' })))).status,
+    400,
+  );
+  assert.equal(
+    (await t.api(orderReq(goodBody('meetup', { consent: false })))).status,
+    400,
+  );
+  const evil = new Request(`${HOST}/api/orders`, {
+    method: 'POST',
+    headers: { Origin: 'https://evil.example' },
+    body: JSON.stringify(goodBody('meetup')),
+  });
   assert.equal((await t.api(evil)).status, 403);
   assert.equal(t.d1.db.prepare('SELECT COUNT(*) c FROM orders').get()!.c, 0);
 });
@@ -232,7 +434,14 @@ test('test payments are unavailable on the public domain and with wrong key mode
   const t = setup();
   const pub = 'https://rost.community';
   assert.equal((await t.api(orderReq(goodBody('meetup'), pub))).status, 403);
-  assert.equal((await setup({ PAYMENTS_ENABLED: 'false' }).api(orderReq(goodBody('meetup')))).status, 403);
+  assert.equal(
+    (
+      await setup({ PAYMENTS_ENABLED: 'false' }).api(
+        orderReq(goodBody('meetup')),
+      )
+    ).status,
+    403,
+  );
   // a live key in the test environment is refused
   const mix = setup({ stripe_test: 'sk_live_zzz' });
   assert.equal((await mix.api(orderReq(goodBody('meetup')))).status, 503);
@@ -242,20 +451,31 @@ test('stripe outage marks the order failed', async () => {
   const t = setup();
   t.deps.fetch = (async () => new Response('{}', { status: 500 })) as any;
   assert.equal((await t.api(orderReq(goodBody('meetup')))).status, 502);
-  assert.equal((t.d1.db.prepare('SELECT status FROM orders').get() as any).status, 'failed');
+  assert.equal(
+    (t.d1.db.prepare('SELECT status FROM orders').get() as any).status,
+    'failed',
+  );
 });
 
 test('admin CSV: token required, formulas neutralised, no public list', async () => {
   const t = setup();
   await t.api(orderReq(goodBody('meetup', { name: '=HYPERLINK("http://x")' })));
-  const get = (h: Record<string, string> = {}) => t.api(new Request(`${HOST}/api/admin/orders.csv`, { headers: h }));
+  const get = (h: Record<string, string> = {}) =>
+    t.api(new Request(`${HOST}/api/admin/orders.csv`, { headers: h }));
   assert.equal((await get()).status, 401);
   assert.equal((await get({ Authorization: 'Bearer nope' })).status, 401);
   const ok = await get({ Authorization: 'Bearer admin-secret' });
   assert.equal(ok.status, 200);
   const csv = await ok.text();
   assert.match(csv, /"'=HYPERLINK/);
-  assert.equal((await setup({ ADMIN_TOKEN: undefined }).api(new Request(`${HOST}/api/admin/orders.csv`))).status, 404);
+  assert.equal(
+    (
+      await setup({ ADMIN_TOKEN: undefined }).api(
+        new Request(`${HOST}/api/admin/orders.csv`),
+      )
+    ).status,
+    404,
+  );
 });
 
 test('/api/config: enabled only with payments flag, matching key mode and allowed host', async () => {
@@ -265,12 +485,34 @@ test('/api/config: enabled only with payments flag, matching key mode and allowe
       mode: string;
       stripe: boolean;
       paypal: boolean;
+      serverTime: number;
     }>;
-  assert.deepEqual(await cfg(setup()), { paymentsEnabled: true, mode: 'test', stripe: true, paypal: false });
-  assert.equal((await cfg(setup({ PAYMENTS_ENABLED: 'false' }))).paymentsEnabled, false);
-  assert.equal((await cfg(setup(), 'https://rost.community')).paymentsEnabled, false);
+  assert.deepEqual(await cfg(setup()), {
+    paymentsEnabled: true,
+    mode: 'test',
+    stripe: true,
+    paypal: false,
+    serverTime: T0,
+  });
+  assert.equal(
+    (await cfg(setup({ PAYMENTS_ENABLED: 'false' }))).paymentsEnabled,
+    false,
+  );
+  assert.equal(
+    (await cfg(setup(), 'https://rost.community')).paymentsEnabled,
+    false,
+  );
   const live = setup({ ORDERS_ENV: 'live', STRIPE_SECRET_KEY: 'rk_live_abc' });
-  assert.deepEqual(await cfg(live, 'https://rost.community'), { paymentsEnabled: true, mode: 'live', stripe: true, paypal: false });
+  assert.deepEqual(await cfg(live, 'https://rost.community'), {
+    paymentsEnabled: true,
+    mode: 'live',
+    stripe: true,
+    paypal: false,
+    serverTime: T0,
+  });
   const wrong = setup({ ORDERS_ENV: 'live', STRIPE_SECRET_KEY: 'sk_test_abc' });
-  assert.equal((await cfg(wrong, 'https://rost.community')).paymentsEnabled, false);
+  assert.equal(
+    (await cfg(wrong, 'https://rost.community')).paymentsEnabled,
+    false,
+  );
 });

@@ -1,5 +1,5 @@
 // Server-side ticket catalogue. Prices are decided HERE, never taken from the browser.
-export type TicketKey = 'meetup' | 'guest' | 'host';
+export type TicketKey = 'meetup' | 'guest_early' | 'guest' | 'host';
 
 export interface Ticket {
   eventId: string;
@@ -25,6 +25,15 @@ export const TICKETS: Record<TicketKey, Ticket> = {
     label: {
       de: 'R.O.S.T. Spiele München, Ticket für Teilnehmende',
       ru: 'R.O.S.T. Игры в Мюнхене, билет участника',
+    },
+    sheetTab: '07.11.2026 - TI_München',
+  },
+  guest_early: {
+    eventId: 'munich-games-2026-11-07',
+    amountCents: 7000,
+    label: {
+      de: 'R.O.S.T. Spiele München, Frühbucherticket für Teilnehmende',
+      ru: 'R.O.S.T. Игры в Мюнхене, ранний билет участника',
     },
     sheetTab: '07.11.2026 - TI_München',
   },

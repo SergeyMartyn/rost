@@ -11,7 +11,7 @@ const content =
         sections: [
           {
             title: 'Мероприятия и стоимость',
-            body: 'Встреча-знакомство проходит 10 октября 2026 года в Регенсбурге, участие стоит 29 €. Трансформационные игры проходят 7 ноября 2026 года в Мюнхене: билет участника стоит 99 €, ведущего игр — 249 €. Время, место и итоговая стоимость указаны на странице мероприятий и повторяются перед оплатой.',
+            body: 'Встреча-знакомство проходит 10 октября 2026 года в Регенсбурге, участие стоит 29 €. Трансформационные игры проходят 7 ноября 2026 года в Мюнхене: билет участника стоит 70 € до 15 октября 2026 года включительно, затем 99 €; билет ведущего игр — 249 €. Время, место и итоговая стоимость указаны на странице мероприятий и повторяются перед оплатой.',
           },
           {
             title: 'Оформление участия',
@@ -32,7 +32,7 @@ const content =
         sections: [
           {
             title: 'Veranstaltungen und Preise',
-            body: 'Das Kennenlerntreffen findet am 10. Oktober 2026 in Regensburg statt und kostet 29 €. Die Transformationsspiele finden am 7. November 2026 in München statt: Ein Ticket für Teilnehmende kostet 99 €, für Spielleitende 249 €. Uhrzeit, Ort und Gesamtpreis stehen auf der Veranstaltungsseite und werden vor der Zahlung erneut angezeigt.',
+            body: 'Das Kennenlerntreffen findet am 10. Oktober 2026 in Regensburg statt und kostet 29 €. Die Transformationsspiele finden am 7. November 2026 in München statt: Ein Ticket für Teilnehmende kostet bis einschließlich 15. Oktober 2026 70 €, danach 99 €; für Spielleitende kostet es 249 €. Uhrzeit, Ort und Gesamtpreis stehen auf der Veranstaltungsseite und werden vor der Zahlung erneut angezeigt.',
           },
           {
             title: 'Anmeldung',
@@ -57,7 +57,9 @@ const content =
     {content.sections.map((section) => (
       <section>
         <h2 class="font-display text-2xl md:text-3xl">{section.title}</h2>
-        <p class="mt-3 whitespace-pre-line leading-relaxed text-muted">{section.body}</p>
+        <p class="mt-3 whitespace-pre-line leading-relaxed text-muted">
+          {section.body}
+        </p>
       </section>
     ))}
   </div>
