@@ -13,7 +13,7 @@ const entries = Object.entries(site.routes).flatMap(([page, row]) =>
 test('structured data, canonical and social metadata on every page', async ({
   request,
 }) => {
-  for (const { lang, path } of entries) {
+  for (const { page, lang, path } of entries) {
     const response = await request.get(path);
     expect(response.status(), path).toBe(200);
     const html = await response.text();
@@ -25,6 +25,9 @@ test('structured data, canonical and social metadata on every page', async ({
     expect(html, path).toContain('property="og:site_name"');
     expect(html, path).toContain('property="og:image:width" content="1200"');
     expect(html, path).toContain('property="og:image:height" content="630"');
+    expect(html, path).toContain(
+      'property="og:image:type" content="image/png"',
+    );
     expect(html, path).toContain('property="og:image:alt"');
     expect(html, path).toContain(
       'name="twitter:card" content="summary_large_image"',
@@ -41,12 +44,45 @@ test('structured data, canonical and social metadata on every page', async ({
     const types = graph.map((node) => node['@type']);
     expect(types, path).toContain('Organization');
     expect(types, path).toContain('WebSite');
-    const organization = graph.find((node) => node['@type'] === 'Organization')!;
+    const organization = graph.find(
+      (node) => node['@type'] === 'Organization',
+    )!;
     expect(organization.url, path).toBe(domain);
     expect(organization.name, path).toBe(site.name);
     const website = graph.find((node) => node['@type'] === 'WebSite')!;
     expect(website.inLanguage, path).toBe(lang);
+    const socialPage = ['home', 'events', 'about', 'contacts'].includes(page)
+      ? page
+      : 'home';
+    const imageUrl = `${domain}/images/social/${socialPage}-${lang}.png`;
+    expect(html, path).toContain(`property="og:image" content="${imageUrl}"`);
+    expect(html, path).toContain(`name="twitter:image" content="${imageUrl}"`);
+    const webPage = graph.find((node) => node['@type'] === 'WebPage')!;
+    expect(webPage.url, path).toBe(`${domain}${path}`);
+    expect(webPage.inLanguage, path).toBe(lang);
+    expect(webPage.primaryImageOfPage, path).toMatchObject({
+      '@type': 'ImageObject',
+      contentUrl: imageUrl,
+      width: 1200,
+      height: 630,
+      encodingFormat: 'image/png',
+    });
   }
+});
+
+test('the eight page-specific social images are served at 1200 × 630', async ({
+  request,
+}) => {
+  for (const page of ['home', 'events', 'about', 'contacts'])
+    for (const lang of ['ru', 'de']) {
+      const response = await request.get(`/images/social/${page}-${lang}.png`);
+      expect(response.status(), `${page}/${lang}`).toBe(200);
+      expect(response.headers()['content-type']).toContain('image/png');
+      const bytes = await response.body();
+      expect(bytes.subarray(0, 8).toString('hex')).toBe('89504e470d0a1a0a');
+      expect(bytes.readUInt32BE(16)).toBe(1200);
+      expect(bytes.readUInt32BE(20)).toBe(630);
+    }
 });
 
 test('critical fonts are preloaded', async ({ request }) => {

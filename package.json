@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "format": "prettier --write .",
+    "generate:social-images": "node scripts/generate-social-images.mjs",
     "test:copy": "node scripts/copy-check.mjs",
     "dev": "astro dev",
     "check": "astro check",

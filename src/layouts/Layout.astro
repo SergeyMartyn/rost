@@ -19,9 +19,18 @@ const { lang, page, title, description } = Astro.props as {
   description: string;
 };
 const t = text[lang];
-const socialImage = new URL('/social.png', origin).toString();
-const ogImageAlt = lang === 'de' ? 'R.O.S.T. Logo' : 'Логотип R.O.S.T.';
+const socialPage =
+  page === 'events' || page === 'about' || page === 'contacts' ? page : 'home';
+const socialImage = new URL(
+  `/images/social/${socialPage}-${lang}.png`,
+  origin,
+).toString();
+const ogImageAlt =
+  lang === 'de'
+    ? `R.O.S.T. mit Logo und Motiv für ${text.de[socialPage]}`
+    : `R.O.S.T. с логотипом и изображением для страницы «${text.ru[socialPage]}»`;
 const orgId = `${origin}/#organization`;
+const pageUrl = new URL(routes[page][lang], origin).toString();
 const structuredData = {
   '@context': 'https://schema.org',
   '@graph': [
@@ -49,6 +58,24 @@ const structuredData = {
       inLanguage: lang,
       publisher: { '@id': orgId },
     },
+    {
+      '@type': 'WebPage',
+      '@id': `${pageUrl}#webpage`,
+      url: pageUrl,
+      name: title,
+      description,
+      inLanguage: lang,
+      isPartOf: { '@id': `${origin}/#website` },
+      publisher: { '@id': orgId },
+      primaryImageOfPage: {
+        '@type': 'ImageObject',
+        contentUrl: socialImage,
+        width: 1200,
+        height: 630,
+        encodingFormat: 'image/png',
+        caption: ogImageAlt,
+      },
+    },
   ],
 };
 ---
@@ -74,7 +101,7 @@ const structuredData = {
     />
     <title>{title} · {name}</title>
     <meta name="description" content={description} />
-    <link rel="canonical" href={new URL(routes[page][lang], origin)} />
+    <link rel="canonical" href={pageUrl} />
     {languages.map((l) => (
       <link
         rel="alternate"
@@ -92,8 +119,9 @@ const structuredData = {
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={lang === 'de' ? 'de_DE' : 'ru_RU'} />
-    <meta property="og:url" content={new URL(routes[page][lang], origin)} />
+    <meta property="og:url" content={pageUrl} />
     <meta property="og:image" content={socialImage} />
+    <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content={ogImageAlt} />
@@ -104,7 +132,7 @@ const structuredData = {
     <script
       type="application/ld+json"
       set:html={JSON.stringify(structuredData)}
-    />
+    ></script>
     <link rel="icon" href="/favicon.ico" sizes="32x32 48x48" />
     <link rel="icon" href="/favicon-48.png" type="image/png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" sizes="180x180" />
