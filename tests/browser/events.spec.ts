@@ -221,6 +221,55 @@ test('event contact form validates channels and repeats the contact before payme
   }
 });
 
+test('Regensburg details open accessibly and lead to the existing ticket form', async ({
+  page,
+}) => {
+  for (const [lang, path] of [
+    ['ru', '/ru/meropriyatiya/'],
+    ['de', '/de/veranstaltungen/'],
+  ] as const) {
+    for (const width of [390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto(path);
+      const trigger = page.locator('#meet-details-open');
+      const details = page.locator('#meet-details-dialog');
+      await trigger.click();
+      await expect(details).toBeVisible();
+      await expect(details.locator('h2')).toContainText(
+        lang === 'ru' ? 'Регенсбурге' : 'Regensburg',
+      );
+      await expect(details.locator('ol li')).toHaveCount(6);
+      await expect(details.locator('ol li').first()).toContainText('09:45');
+      await expect(page.locator('#regensburg')).toContainText('09:45');
+      if (lang === 'ru' && (width === 390 || width === 1440))
+        await details.screenshot({
+          path: `test-results/meet-details-ru-${width}.png`,
+        });
+      expect(
+        await details.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          return (
+            rect.left >= 0 &&
+            rect.right <= innerWidth &&
+            rect.bottom <= innerHeight
+          );
+        }),
+      ).toBe(true);
+      await details.locator('ol li').last().scrollIntoViewIfNeeded();
+      await expect(details.locator('ol li').last()).toContainText('14:00');
+      await page.keyboard.press('Escape');
+      await expect(details).not.toBeVisible();
+      await expect(trigger).toBeFocused();
+      await trigger.click();
+      await page.locator('#meet-details-buy').click();
+      await expect(details).not.toBeVisible();
+      await expect(page.locator('#ticket-dialog')).toBeVisible();
+      await expect(page.locator('#ticket-summary')).toContainText('29 €');
+      await page.locator('#ticket-close').click();
+    }
+  }
+});
+
 test('contact errors replace hints, local WhatsApp numbers normalize, and terms links resolve', async ({
   page,
   request,

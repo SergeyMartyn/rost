@@ -19,6 +19,27 @@ const copy =
         meetPlace: 'в Регенсбурге',
         meetBody:
           'Встретимся, чтобы познакомиться лично, спокойно поговорить и провести время в хорошей компании. Можно прийти одному — мы поможем включиться в разговор.',
+        meetDetailsLink: 'Программа и подробности встречи →',
+        meetDetailsTitle: 'Встреча-знакомство в Регенсбурге',
+        meetDetailsIntro:
+          'Хотите расширить круг общения, найти компанию для совместных планов или познакомиться с людьми, близкими по интересам?',
+        meetDetailsBody:
+          'Мы подготовили встречу, где знакомство не придётся брать на себя: ведущие организуют общение так, чтобы каждый познакомился с каждым. А командная игра с юмором поможет узнать людей ближе — через их идеи, опыт и то, как они проявляют себя в общем деле.',
+        meetDetailsEnd:
+          'В завершение каждый сможет рассказать, чем может быть полезен и кого или что сейчас ищет, — чтобы знакомства получили продолжение после встречи.',
+        meetScheduleTitle: 'Как пройдёт встреча',
+        meetSchedule: [
+          ['09:45', 'Сбор и регистрация'],
+          ['10:15', 'Приветствие и начало встречи'],
+          ['10:30', 'Модерируемое знакомство: каждый с каждым'],
+          ['11:30', 'Игра-знакомство в небольших командах'],
+          ['13:30', 'Завершение'],
+          ['14:00', 'Совместный обед по желанию'],
+        ],
+        meetDetailsClosing:
+          'Можно прийти одному или с компанией. Главное — желание познакомиться. О том, как начать разговор, позаботимся мы.',
+        meetDetailsClose: 'Закрыть описание встречи',
+        meetDetailsBuy: 'Купить билет · 29 €',
         when: 'Когда',
         where: 'Где',
         meetDate: '10 октября 2026',
@@ -26,7 +47,7 @@ const copy =
         meetMonth: 'октября',
         gamesMonth: 'ноября',
         timeLater: 'Время уточняется',
-        meetRegistration: 'Начало регистрации в 10:00',
+        meetRegistration: 'Сбор и регистрация с 09:45',
         meetAddress: 'Санкт-Катариненплац, 5 · 93059 Регенсбург',
         gamesVenue: 'Мюнхен',
         gamesAddress: 'Перхтингер-штрассе, 12 · 81379 Мюнхен',
@@ -84,6 +105,27 @@ const copy =
         meetPlace: 'in Regensburg',
         meetBody:
           'Wir lernen uns persönlich kennen, unterhalten uns in Ruhe und verbringen Zeit miteinander. Du kannst auch allein kommen – wir helfen dir, ins Gespräch zu finden.',
+        meetDetailsLink: 'Programm und Details →',
+        meetDetailsTitle: 'Kennenlerntreffen in Regensburg',
+        meetDetailsIntro:
+          'Möchtest du deinen Bekanntenkreis erweitern, Menschen für gemeinsame Unternehmungen finden oder neue Kontakte mit ähnlichen Interessen knüpfen?',
+        meetDetailsBody:
+          'Du musst nicht selbst nach einem Gesprächseinstieg suchen: Unsere Moderation gestaltet den Austausch so, dass alle einander kennenlernen. Ein lockeres Spiel in kleinen Teams sorgt für Humor und hilft euch, mehr voneinander zu erfahren.',
+        meetDetailsEnd:
+          'Zum Abschluss könnt ihr erzählen, wobei ihr andere unterstützen könnt und wen oder was ihr gerade sucht – damit aus der ersten Begegnung weitere Kontakte entstehen können.',
+        meetScheduleTitle: 'So läuft das Treffen ab',
+        meetSchedule: [
+          ['09:45', 'Ankommen und Registrierung'],
+          ['10:15', 'Begrüßung und gemeinsamer Start'],
+          ['10:30', 'Moderiertes Kennenlernen: Alle lernen einander kennen'],
+          ['11:30', 'Kennenlernspiel in kleinen Teams'],
+          ['13:30', 'Abschluss'],
+          ['14:00', 'Gemeinsames Mittagessen auf Wunsch'],
+        ],
+        meetDetailsClosing:
+          'Du kannst allein oder in Begleitung kommen. Bring einfach Lust mit, neue Menschen kennenzulernen – wir helfen dir, ins Gespräch zu kommen.',
+        meetDetailsClose: 'Beschreibung des Treffens schließen',
+        meetDetailsBuy: 'Ticket kaufen · 29 €',
         when: 'Wann',
         where: 'Wo',
         meetDate: '10. Oktober 2026',
@@ -91,7 +133,7 @@ const copy =
         meetMonth: 'Oktober',
         gamesMonth: 'November',
         timeLater: 'Uhrzeit folgt',
-        meetRegistration: 'Registrierung ab 10:00 Uhr',
+        meetRegistration: 'Ankommen und Registrierung ab 09:45 Uhr',
         meetAddress: 'St. Katharinenplatz 5 · 93059 Regensburg',
         gamesVenue: 'München',
         gamesAddress: 'Perchtinger Straße 12 · 81379 München',
@@ -190,6 +232,15 @@ const copy =
         <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
           {copy.meetBody}
         </p>
+        <button
+          id="meet-details-open"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="meet-details-dialog"
+          class="mt-6 inline-flex min-h-12 items-center rounded-xl border border-brand/20 bg-brand-surface px-5 py-3 font-semibold text-brand transition hover:border-brand hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        >
+          {copy.meetDetailsLink}
+        </button>
         <div class="mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
           <div class="rounded-3xl bg-brand-surface p-6">
             <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
@@ -378,6 +429,77 @@ const copy =
     ×
   </button>
 </div>
+
+<dialog
+  id="meet-details-dialog"
+  aria-labelledby="meet-details-title"
+  class="m-auto h-[calc(100dvh-1rem)] w-[calc(100%-1rem)] max-w-none max-h-[calc(100dvh-1rem)] overflow-hidden rounded-4xl border-0 bg-white p-0 text-brand shadow-2xl backdrop:bg-brand/65 sm:h-auto sm:max-w-[44rem] sm:max-h-[min(88dvh,900px)]"
+>
+  <div class="flex h-full max-h-[calc(100dvh-1rem)] min-h-0 flex-col sm:max-h-[min(88dvh,900px)]">
+    <div class="flex shrink-0 items-start justify-between gap-4 border-b border-brand/10 bg-brand-surface px-5 py-5 sm:px-8 sm:py-6">
+      <div class="min-w-0">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
+          {copy.meetTag}
+        </p>
+        <h2
+          id="meet-details-title"
+          class="mt-2 font-display text-2xl leading-tight sm:text-3xl"
+        >
+          {copy.meetDetailsTitle}
+        </h2>
+        <p class="mt-2 text-sm text-muted">{copy.meetDate} · 29 €</p>
+      </div>
+      <button
+        id="meet-details-close"
+        type="button"
+        aria-label={copy.meetDetailsClose}
+        class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-brand bg-white transition hover:bg-hero-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          class="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M5 5 19 19M19 5 5 19" />
+        </svg>
+      </button>
+    </div>
+    <div class="min-h-0 overflow-y-auto overscroll-contain px-5 py-6 text-base leading-relaxed text-muted sm:px-8 sm:py-8">
+      <div class="space-y-4">
+        <p class="font-semibold text-brand">{copy.meetDetailsIntro}</p>
+        <p>{copy.meetDetailsBody}</p>
+        <p>{copy.meetDetailsEnd}</p>
+      </div>
+      <section class="mt-8" aria-labelledby="meet-schedule-title">
+        <h3 id="meet-schedule-title" class="font-display text-2xl text-brand">
+          {copy.meetScheduleTitle}
+        </h3>
+        <ol class="mt-4 divide-y divide-brand/10 rounded-2xl bg-brand-surface px-4 sm:px-6">
+          {copy.meetSchedule.map(([time, activity]) => (
+            <li class="grid grid-cols-[3.75rem_minmax(0,1fr)] gap-4 py-3 sm:grid-cols-[4.5rem_minmax(0,1fr)]">
+              <time class="font-bold text-brand">{time}</time>
+              <span>{activity}</span>
+            </li>
+          ))}
+        </ol>
+      </section>
+      <p class="mt-7">{copy.meetDetailsClosing}</p>
+    </div>
+    <div class="shrink-0 border-t border-brand/10 bg-white px-5 py-4 sm:px-8">
+      <button
+        id="meet-details-buy"
+        type="button"
+        class="w-full rounded-2xl bg-brand px-6 py-4 font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        {copy.meetDetailsBuy}
+      </button>
+    </div>
+  </div>
+</dialog>
 
 <dialog
   id="ticket-dialog"
@@ -608,6 +730,34 @@ const copy =
 
 <script>
   import { isEarlyBirdActive } from '../lib/early-bird';
+
+  const detailsDialog = document.querySelector<HTMLDialogElement>(
+    '#meet-details-dialog',
+  );
+  const detailsOpen =
+    document.querySelector<HTMLButtonElement>('#meet-details-open');
+  const detailsClose = document.querySelector<HTMLButtonElement>(
+    '#meet-details-close',
+  );
+  const detailsBuy =
+    document.querySelector<HTMLButtonElement>('#meet-details-buy');
+  let openingTicketFromDetails = false;
+  detailsOpen?.addEventListener('click', () => detailsDialog?.showModal());
+  detailsClose?.addEventListener('click', () => detailsDialog?.close());
+  detailsDialog?.addEventListener('click', (event) => {
+    if (event.target === detailsDialog) detailsDialog.close();
+  });
+  detailsDialog?.addEventListener('close', () => {
+    if (!openingTicketFromDetails) detailsOpen?.focus();
+    openingTicketFromDetails = false;
+  });
+  detailsBuy?.addEventListener('click', () => {
+    openingTicketFromDetails = true;
+    detailsDialog?.close();
+    document
+      .querySelector<HTMLButtonElement>('[data-ticket="meetup"]')
+      ?.click();
+  });
 
   const dialog = document.querySelector<HTMLDialogElement>('#ticket-dialog');
   const form = document.querySelector<HTMLFormElement>('#ticket-form');

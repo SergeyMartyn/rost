@@ -102,8 +102,8 @@ test('games date and venue agree across pages and ticket summary', async ({
     await page.goto(routes[1]);
     await expect(page.locator('#regensburg')).toContainText(
       lang === 'ru'
-        ? 'Начало регистрации в 10:00'
-        : 'Registrierung ab 10:00 Uhr',
+        ? 'Сбор и регистрация с 09:45'
+        : 'Ankommen und Registrierung ab 09:45 Uhr',
     );
     await expect(page.locator('#games')).toContainText(
       lang === 'ru' ? '7 ноября 2026' : '7. November 2026',
