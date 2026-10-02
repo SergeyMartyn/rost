@@ -240,6 +240,26 @@ test('Regensburg details open accessibly and lead to the existing ticket form', 
       );
       await expect(details.locator('ol li')).toHaveCount(6);
       await expect(details.locator('ol li').first()).toContainText('09:45');
+      await expect(details.locator('ol li').last()).toContainText(
+        lang === 'ru'
+          ? 'Совместный обед (оплачивается отдельно)'
+          : 'Gemeinsames Mittagessen (separat zu bezahlen)',
+      );
+      const closeCentered = await page
+        .locator('#meet-details-close')
+        .evaluate((button) => {
+          const outer = button.getBoundingClientRect();
+          const inner = button.querySelector('svg')!.getBoundingClientRect();
+          return (
+            Math.abs(
+              outer.left + outer.width / 2 - inner.left - inner.width / 2,
+            ) < 1 &&
+            Math.abs(
+              outer.top + outer.height / 2 - inner.top - inner.height / 2,
+            ) < 1
+          );
+        });
+      expect(closeCentered).toBe(true);
       await expect(page.locator('#regensburg')).toContainText('09:45');
       if (lang === 'ru' && (width === 390 || width === 1440))
         await details.screenshot({
