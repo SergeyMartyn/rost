@@ -25,8 +25,9 @@ export const consentConfig = {
    * purpose or provider is added/changed or the texts change materially:
    * everybody is asked again. Keep the history here.
    *   1 — 2026-09: GTM + GA4 (category "analytics").
+   *   2 — 2026-10: Meta Pixel via GTM (separate "marketing" category).
    */
-  revision: 1,
+  revision: 2,
   /** Validity of the choice in days (R-10.4: 6–13 months). */
   expiresAfterDays: 365,
   cookieName: 'cc_cookie',
@@ -61,6 +62,31 @@ export const services: ConsentService[] = [
       ru: 'да, основание — EU-US Data Privacy Framework',
     },
     policyUrl: 'https://policies.google.com/privacy',
+  },
+  {
+    id: 'meta-pixel',
+    category: 'marketing',
+    name: {
+      de: 'Meta Pixel (über den Google Tag Manager)',
+      ru: 'Meta Pixel (через Google Tag Manager)',
+    },
+    provider: {
+      de: 'Meta Platforms Ireland Limited, Merrion Road, Ballsbridge, Dublin D04 X2K5, Irland',
+      ru: 'Meta Platforms Ireland Limited, Merrion Road, Ballsbridge, Dublin D04 X2K5, Ирландия',
+    },
+    purpose: {
+      de: 'Erfassung von Seitenaufrufen zur Messung und Optimierung unserer Werbung auf Facebook und Instagram',
+      ru: 'учёт посещений страниц для оценки и настройки нашей рекламы в Facebook и Instagram',
+    },
+    cookies: {
+      de: '„_fbp“ und gegebenenfalls „_fbc“',
+      ru: '«_fbp» и, если применимо, «_fbc»',
+    },
+    usTransfer: {
+      de: 'möglich; Einzelheiten in den Datenschutzhinweisen von Meta',
+      ru: 'возможна; подробности в политике Meta',
+    },
+    policyUrl: 'https://www.facebook.com/privacy/policy/',
   },
 ];
 

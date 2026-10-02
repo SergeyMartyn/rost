@@ -39,6 +39,8 @@ test('HTML has no GTM snippet, noscript or pre-connect hints', async ({
       const html = await (await request.get(path)).text();
       expect(html, path).not.toContain('googletagmanager');
       expect(html, path).not.toContain('google-analytics');
+      expect(html, path).not.toContain('connect.facebook.net');
+      expect(html, path).not.toContain('facebook.com/tr');
       expect(html, path).not.toMatch(/rel="(preconnect|dns-prefetch)"/);
     }
 });
@@ -127,9 +129,10 @@ test('accept: consent default before GTM, events, cookies, revoke', async ({
     () => (window as any).__gtmLoadedAfter as string,
   );
   expect(loadedAfter).toContain('"analytics_storage":"granted"');
-  expect(loadedAfter).toContain('"ad_storage":"denied"');
-  expect(loadedAfter).toContain('"ad_user_data":"denied"');
-  expect(loadedAfter).toContain('"ad_personalization":"denied"');
+  expect(loadedAfter).toContain('"ad_storage":"granted"');
+  expect(loadedAfter).toContain('"ad_user_data":"granted"');
+  expect(loadedAfter).toContain('"ad_personalization":"granted"');
+  expect(flat).toContain('"consent_marketing":"granted"');
   expect(loadedAfter).toContain('"security_storage":"granted"');
 
   // saved choice: GTM is loaded again on the next page, without a banner
@@ -138,22 +141,29 @@ test('accept: consent default before GTM, events, cookies, revoke', async ({
   await expect.poll(() => gtm.length).toBe(1);
   await expect(page.locator('#cc-main .cm')).toBeHidden();
 
-  // revoke: fake a _ga cookie, switch statistics off in the settings
+  // revoke both optional categories: their first-party cookies are cleared.
   await context.addCookies([
     { name: '_ga', value: 'x', url: 'http://127.0.0.1:8787' },
     { name: '_ga_DMY7BHLRLX', value: 'x', url: 'http://127.0.0.1:8787' },
+    { name: '_fbp', value: 'x', url: 'http://127.0.0.1:8787' },
+    { name: '_fbc', value: 'x', url: 'http://127.0.0.1:8787' },
   ]);
   await page.locator('.site-footer__cookie-settings').click();
   await page
     .locator('#cc-main input.section__toggle[value="analytics"]')
+    .evaluate((el: HTMLInputElement) => el.click());
+  await page
+    .locator('#cc-main input.section__toggle[value="marketing"]')
     .evaluate((el: HTMLInputElement) => el.click());
   await page.locator('#cc-main .pm__btn--secondary').first().click();
   await page.waitForLoadState('load');
   await expect
     .poll(
       async () =>
-        (await context.cookies()).filter((c) => c.name.startsWith('_ga'))
-          .length,
+        (await context.cookies()).filter(
+          (c) =>
+            c.name.startsWith('_ga') || c.name === '_fbp' || c.name === '_fbc',
+        ).length,
     )
     .toBe(0);
   gtm.length = 0;
@@ -161,6 +171,42 @@ test('accept: consent default before GTM, events, cookies, revoke', async ({
   await page.waitForTimeout(500);
   expect(gtm).toEqual([]);
 });
+
+for (const [category, trigger, forbidden] of [
+  ['analytics', 'consent_statistics_granted', 'consent_marketing_granted'],
+  ['marketing', 'consent_marketing_granted', 'consent_statistics_granted'],
+] as const)
+  test(`${category} alone loads GTM with only its matching consent event`, async ({
+    page,
+  }) => {
+    await stubGtm(page);
+    await page.goto(home.ru);
+    await page.locator('[data-role="show"]').click();
+    await expect(page.locator('#cc-main .pm')).toBeVisible();
+    await page
+      .locator(`#cc-main input.section__toggle[value="${category}"]`)
+      .evaluate((el: HTMLInputElement) => el.click());
+    await page.locator('#cc-main .pm__btn--secondary').first().click();
+    await expect
+      .poll(() =>
+        page.evaluate(() => (window as any).__gtmLoadedAfter as string),
+      )
+      .toContain(trigger);
+    const layer = await page.evaluate(() =>
+      JSON.stringify((window as any).dataLayer),
+    );
+    expect(layer.split(trigger)).toHaveLength(2);
+    expect(layer).not.toContain(forbidden);
+    expect(layer).toContain(
+      `"${category === 'marketing' ? 'consent_marketing' : 'consent_statistics'}":"granted"`,
+    );
+    expect(layer).toContain(
+      `"${category === 'marketing' ? 'ad_storage' : 'analytics_storage'}":"granted"`,
+    );
+    expect(layer).toContain(
+      `"${category === 'marketing' ? 'analytics_storage' : 'ad_storage'}":"denied"`,
+    );
+  });
 
 test('language switch keeps the choice; new revision asks again', async ({
   page,

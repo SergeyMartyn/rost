@@ -1,8 +1,6 @@
 // Banner texts (Consent Banner 2, parts III.1–III.3). German is the legally
 // leading text (R-13.5); the Russian text must keep the same meaning (R-13.2).
-// Only the categories that really exist are described (R-5.2): the template's
-// "Marketing" wording is intentionally left out because no marketing service
-// is connected.
+// Only categories with connected services are shown (R-5.2).
 import { routes, site } from './site';
 import { activeCategories, services, type ConsentService } from './services';
 
@@ -16,6 +14,12 @@ const settingsLabel = { de: 'Cookie-Einstellungen', ru: 'Настройки cook
 const statisticsServices = (lang: Lang) =>
   services
     .filter((s) => s.category === 'analytics')
+    .map((s) => s.name[lang].replace(/ \(.*\)$/, ''))
+    .join(', ');
+
+const marketingServices = (lang: Lang) =>
+  services
+    .filter((s) => s.category === 'marketing')
     .map((s) => s.name[lang].replace(/ \(.*\)$/, ''))
     .join(', ');
 
@@ -49,14 +53,17 @@ function serviceBlock(service: ConsentService, lang: Lang) {
 export function buildTranslations() {
   const operator = esc(site.legal.operator);
   const hasAnalytics = activeCategories.includes('analytics');
+  const hasMarketing = activeCategories.includes('marketing');
 
   const de = {
     consentModal: {
       label: 'Datenschutz-Einstellungen',
       title: 'Datenschutz-Einstellungen',
-      description: hasAnalytics
-        ? `Wir möchten auf dieser Website einen optionalen Dienst für Statistik (${statisticsServices('de')}) einsetzen. Er wird erst aktiviert, wenn Sie zustimmen – ohne Zustimmung funktioniert die Website vollständig. Dabei können Daten wie Ihre IP-Adresse und Geräteinformationen an Google übermittelt und auch in den USA verarbeitet werden. Ihre Auswahl können Sie jederzeit unter „${settingsLabel.de}“ ändern oder widerrufen.`
-        : '',
+      description: hasMarketing
+        ? `Wir möchten optionale Dienste für Statistik (${statisticsServices('de')}) und Marketing (${marketingServices('de')}) einsetzen. Je nach Ihrer Auswahl können Daten zu Ihrem Besuch und Gerät an Google oder Meta übermittelt und auch außerhalb der EU verarbeitet werden. Jeder Dienst wird erst mit Ihrer Einwilligung aktiviert; die Website funktioniert auch ohne diese Dienste. Ihre Auswahl können Sie jederzeit unter „${settingsLabel.de}“ ändern oder widerrufen.`
+        : hasAnalytics
+          ? `Wir möchten auf dieser Website einen optionalen Dienst für Statistik (${statisticsServices('de')}) einsetzen. Er wird erst aktiviert, wenn Sie zustimmen – ohne Zustimmung funktioniert die Website vollständig. Dabei können Daten wie Ihre IP-Adresse und Geräteinformationen an Google übermittelt und auch in den USA verarbeitet werden. Ihre Auswahl können Sie jederzeit unter „${settingsLabel.de}“ ändern oder widerrufen.`
+          : '',
       acceptAllBtn: 'Alle akzeptieren',
       acceptNecessaryBtn: 'Nur notwendige',
       showPreferencesBtn: 'Einstellungen',
@@ -92,6 +99,18 @@ export function buildTranslations() {
               },
             ]
           : []),
+        ...(hasMarketing
+          ? [
+              {
+                title: 'Marketing',
+                description: `Hilft uns, Seitenaufrufe zu erfassen und unsere Werbung auf Facebook und Instagram zu messen und zu verbessern. Dienst: ${marketingServices('de')}.${services
+                  .filter((s) => s.category === 'marketing')
+                  .map((s) => serviceBlock(s, 'de'))
+                  .join('')}`,
+                linkedCategory: 'marketing',
+              },
+            ]
+          : []),
       ],
     },
   };
@@ -100,9 +119,11 @@ export function buildTranslations() {
     consentModal: {
       label: 'Настройки конфиденциальности',
       title: 'Настройки конфиденциальности',
-      description: hasAnalytics
-        ? `Мы хотели бы использовать на этом сайте дополнительный сервис для статистики (${statisticsServices('ru')}). Он включается только с вашего согласия — без него сайт работает полностью. При этом данные, например IP-адрес и сведения об устройстве, могут передаваться Google и обрабатываться в том числе в США. Выбор можно в любой момент изменить или отозвать в «${settingsLabel.ru}».`
-        : '',
+      description: hasMarketing
+        ? `Мы хотели бы использовать дополнительные сервисы для статистики (${statisticsServices('ru')}) и маркетинга (${marketingServices('ru')}). В зависимости от вашего выбора сведения о посещении и устройстве могут передаваться Google или Meta и обрабатываться за пределами ЕС. Каждый сервис включается только после вашего согласия; без них сайт работает полностью. Выбор можно в любой момент изменить или отозвать в «${settingsLabel.ru}».`
+        : hasAnalytics
+          ? `Мы хотели бы использовать на этом сайте дополнительный сервис для статистики (${statisticsServices('ru')}). Он включается только с вашего согласия — без него сайт работает полностью. При этом данные, например IP-адрес и сведения об устройстве, могут передаваться Google и обрабатываться в том числе в США. Выбор можно в любой момент изменить или отозвать в «${settingsLabel.ru}».`
+          : '',
       acceptAllBtn: 'Принять все',
       acceptNecessaryBtn: 'Только необходимые',
       showPreferencesBtn: 'Настройки',
@@ -135,6 +156,18 @@ export function buildTranslations() {
                   .map((s) => serviceBlock(s, 'ru'))
                   .join('')}`,
                 linkedCategory: 'analytics',
+              },
+            ]
+          : []),
+        ...(hasMarketing
+          ? [
+              {
+                title: 'Маркетинг',
+                description: `Помогает учитывать посещения страниц и оценивать и улучшать нашу рекламу в Facebook и Instagram. Сервис: ${marketingServices('ru')}.${services
+                  .filter((s) => s.category === 'marketing')
+                  .map((s) => serviceBlock(s, 'ru'))
+                  .join('')}`,
+                linkedCategory: 'marketing',
               },
             ]
           : []),
