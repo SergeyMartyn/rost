@@ -196,11 +196,11 @@ test('early participant price is enforced at the Berlin deadline', async () => {
   assert.equal(early.status, 200);
   assert.equal(
     t.stripeCalls[0].body.get('line_items[0][price_data][unit_amount]'),
-    '7000',
+    '8000',
   );
   const id = t.stripeCalls[0].body.get('client_reference_id')!;
   assert.equal(row(t, id).ticket_type, 'guest_early');
-  assert.equal(row(t, id).amount_cents, 7000);
+  assert.equal(row(t, id).amount_cents, 8000);
 
   t.deps.now = () => EARLY_BIRD_END_MS;
   const expired = await t.api(orderReq(goodBody('guest_early')));

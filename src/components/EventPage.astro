@@ -378,14 +378,15 @@ const copy =
                 id="guest-current-price"
                 class="font-display text-2xl font-normal"
               >
-                {earlyBirdInitially ? '70 €' : '99 €'}
+                {earlyBirdInitially ? '80 €' : '99 €'}
               </strong>
             </span>
           </button>
           <button
             type="button"
             data-ticket="host"
-            class="flex w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            hidden
+            class="hidden w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
             <span class="font-bold">{copy.host}</span>
             <strong class="font-display text-2xl font-normal">249 €</strong>
@@ -792,17 +793,17 @@ const copy =
   const refreshGuestOffer = () => {
     const early = isEarlyBirdActive(effectiveNow());
     if (guestCurrentPrice)
-      guestCurrentPrice.textContent = early ? '70 €' : '99 €';
+      guestCurrentPrice.textContent = early ? '80 €' : '99 €';
     guestOldPrice?.classList.toggle('hidden', !early);
     guestOfferNote?.classList.toggle('hidden', !early);
     guestButton?.setAttribute(
       'aria-label',
       noteRu
         ? early
-          ? 'Я участник. Ранняя цена 70 евро до 15 октября, затем 99 евро'
+          ? 'Я участник. Ранняя цена 80 евро до 15 октября, затем 99 евро'
           : 'Я участник. Цена 99 евро'
         : early
-          ? 'Ich nehme teil. Frühbucherpreis 70 Euro bis 15. Oktober, danach 99 Euro'
+          ? 'Ich nehme teil. Frühbucherpreis 80 Euro bis 15. Oktober, danach 99 Euro'
           : 'Ich nehme teil. Preis 99 Euro',
     );
   };
@@ -877,7 +878,7 @@ const copy =
   const tickets = isRu
     ? {
         meetup: ['Билет на встречу', '10 октября · Регенсбург · 29 €'],
-        guest_early: ['Билет участника', '7 ноября · Мюнхен · 70 €'],
+        guest_early: ['Билет участника', '7 ноября · Мюнхен · 80 €'],
         guest: ['Билет участника', '7 ноября · Мюнхен · 99 €'],
         host: ['Билет ведущего игр', '7 ноября · Мюнхен · 249 €'],
       }
@@ -885,7 +886,7 @@ const copy =
         meetup: ['Ticket für das Treffen', '10. Oktober · Regensburg · 29 €'],
         guest_early: [
           'Ticket für Teilnehmende',
-          '7. November · München · 70 €',
+          '7. November · München · 80 €',
         ],
         guest: ['Ticket für Teilnehmende', '7. November · München · 99 €'],
         host: ['Ticket für Spielleitende', '7. November · München · 249 €'],

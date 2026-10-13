@@ -30,7 +30,7 @@ export const TICKETS: Record<TicketKey, Ticket> = {
   },
   guest_early: {
     eventId: 'munich-games-2026-11-07',
-    amountCents: 7000,
+    amountCents: 8000,
     label: {
       de: 'R.O.S.T. Spiele München, Frühbucherticket für Teilnehmende',
       ru: 'R.O.S.T. Игры в Мюнхене, ранний билет участника',
