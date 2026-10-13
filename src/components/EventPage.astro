@@ -59,11 +59,9 @@ const copy =
         gamesPlace: 'игры в Мюнхене',
         gamesBody:
           'День, в котором можно попробовать новый формат, посмотреть на свои вопросы с другой стороны и пообщаться с людьми. Для гостей и тех, кто проводит игры, предусмотрены разные билеты.',
-        role: 'Выберите свою роль',
-        guest: 'Я участник',
+        guest: 'Купить билет участника',
         earlyBirdUntil: 'Ранняя цена до 15 октября',
         host: 'Я ведущий игр',
-        roleSaved: 'Роль и стоимость сохранятся в следующем шаге.',
         questions: 'Есть вопросы перед встречей?',
         questionsBody:
           'Порядок участия и время начала уточним перед мероприятием.',
@@ -146,11 +144,9 @@ const copy =
         gamesPlace: 'in München',
         gamesBody:
           'Ein Tag, an dem du ein neues Format ausprobieren, deine Fragen aus einer anderen Perspektive betrachten und Menschen kennenlernen kannst. Für Gäste und Spielleitende gibt es unterschiedliche Tickets.',
-        role: 'Wähle deine Rolle',
-        guest: 'Ich nehme teil',
+        guest: 'Ticket für Teilnehmende kaufen',
         earlyBirdUntil: 'Frühbucherpreis bis 15. Oktober',
         host: 'Ich leite Spiele',
-        roleSaved: 'Rolle und Preis bleiben im nächsten Schritt sichtbar.',
         questions: 'Noch Fragen zum Treffen?',
         questionsBody:
           'Details zum Ablauf und zur Anfangszeit teilen wir vor der Veranstaltung mit.',
@@ -345,13 +341,12 @@ const copy =
           </div>
         </div>
         <div class="p-7">
-          <p class="mb-4 text-sm font-semibold text-muted">{copy.role}</p>
           <button
             type="button"
             data-ticket="guest"
-            class="mb-3 flex w-full items-center justify-between gap-3 rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="w-full rounded-2xl bg-brand px-6 py-4 text-center text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
-            <span class="min-w-0">
+            <span class="block">
               <span class="block font-bold">{copy.guest}</span>
               <span
                 id="guest-offer-note"
@@ -363,7 +358,7 @@ const copy =
                 {copy.earlyBirdUntil}
               </span>
             </span>
-            <span class="flex shrink-0 items-baseline gap-2 whitespace-nowrap">
+            <span class="mt-2 inline-flex items-baseline justify-center gap-2 whitespace-nowrap">
               <s
                 id="guest-old-price"
                 aria-hidden="true"
@@ -391,9 +386,6 @@ const copy =
             <span class="font-bold">{copy.host}</span>
             <strong class="font-display text-2xl font-normal">249 €</strong>
           </button>
-          <p class="mt-4 text-center text-xs leading-relaxed text-muted">
-            {copy.roleSaved}
-          </p>
         </div>
       </aside>
     </div>
@@ -800,11 +792,11 @@ const copy =
       'aria-label',
       noteRu
         ? early
-          ? 'Я участник. Ранняя цена 80 евро до 15 октября, затем 99 евро'
-          : 'Я участник. Цена 99 евро'
+          ? 'Купить билет участника. Ранняя цена 80 евро до 15 октября, затем 99 евро'
+          : 'Купить билет участника. Цена 99 евро'
         : early
-          ? 'Ich nehme teil. Frühbucherpreis 80 Euro bis 15. Oktober, danach 99 Euro'
-          : 'Ich nehme teil. Preis 99 Euro',
+          ? 'Ticket für Teilnehmende kaufen. Frühbucherpreis 80 Euro bis 15. Oktober, danach 99 Euro'
+          : 'Ticket für Teilnehmende kaufen. Preis 99 Euro',
     );
   };
   refreshGuestOffer();
