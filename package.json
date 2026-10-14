@@ -14,7 +14,7 @@
     "test": "tsx --test tests/*.test.ts",
     "test:browser": "playwright test",
     "config:check": "node scripts/config-check.mjs",
-    "deploy": "npm run config:check && npm run check && npm run build && wrangler deploy --config wrangler.generated.json"
+    "deploy": "npm run config:check && npm run check && npm run build && node scripts/worker-config.mjs --live && wrangler deploy --config wrangler.generated.json"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
