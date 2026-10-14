@@ -180,7 +180,7 @@ test('event contact form validates channels and repeats the contact before payme
   ]) {
     await page.setViewportSize({ width: 390, height: 850 });
     await page.goto(path);
-    await page.locator('[data-ticket="meetup"]').click();
+    await page.locator('[data-ticket="nuremberg_meetup"]').click();
     await expect(page.locator('#ticket-close svg')).toBeVisible();
     await page.locator('input[name="name"]').fill(name);
     await page.locator('input[name="contact"]').fill('валпвиеи');
@@ -221,7 +221,7 @@ test('event contact form validates channels and repeats the contact before payme
   }
 });
 
-test('Regensburg details open accessibly and lead to the existing ticket form', async ({
+test('Nuremberg details open accessibly and lead to its ticket form', async ({
   page,
 }) => {
   for (const [lang, path] of [
@@ -236,15 +236,9 @@ test('Regensburg details open accessibly and lead to the existing ticket form', 
       await trigger.click();
       await expect(details).toBeVisible();
       await expect(details.locator('h2')).toContainText(
-        lang === 'ru' ? 'Регенсбурге' : 'Regensburg',
+        lang === 'ru' ? 'Нюрнберге' : 'Nürnberg',
       );
-      await expect(details.locator('ol li')).toHaveCount(6);
-      await expect(details.locator('ol li').first()).toContainText('09:45');
-      await expect(details.locator('ol li').last()).toContainText(
-        lang === 'ru'
-          ? 'Совместный обед (оплачивается отдельно)'
-          : 'Gemeinsames Mittagessen (separat zu bezahlen)',
-      );
+      await expect(details).not.toContainText('09:45');
       const closeCentered = await page
         .locator('#meet-details-close')
         .evaluate((button) => {
@@ -260,7 +254,6 @@ test('Regensburg details open accessibly and lead to the existing ticket form', 
           );
         });
       expect(closeCentered).toBe(true);
-      await expect(page.locator('#regensburg')).toContainText('09:45');
       if (lang === 'ru' && (width === 390 || width === 1440))
         await details.screenshot({
           path: `test-results/meet-details-ru-${width}.png`,
@@ -275,8 +268,6 @@ test('Regensburg details open accessibly and lead to the existing ticket form', 
           );
         }),
       ).toBe(true);
-      await details.locator('ol li').last().scrollIntoViewIfNeeded();
-      await expect(details.locator('ol li').last()).toContainText('14:00');
       await page.keyboard.press('Escape');
       await expect(details).not.toBeVisible();
       await expect(trigger).toBeFocused();
@@ -299,7 +290,7 @@ test('contact errors replace hints, local WhatsApp numbers normalize, and terms 
     ['de', '/de/veranstaltungen/', '/de/teilnahmebedingungen/', 'Anna'],
   ]) {
     await page.goto(path);
-    await page.locator('[data-ticket="meetup"]').click();
+    await page.locator('[data-ticket="nuremberg_meetup"]').click();
     await page.locator('input[name="name"]').fill(name);
     await expect(page.locator('#contact-hint')).not.toContainText('27');
     await page.locator('input[name="contact"]').fill('кириллица');
@@ -362,11 +353,10 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await expect(answer).toContainText('29 €');
     await expect(answer).toContainText('80 €');
     await expect(answer).toContainText('99 €');
-    await expect(answer).toContainText('249 €');
 
     await page.goto(events);
     for (const [ticket, price] of [
-      ['meetup', '29 €'],
+      ['nuremberg_meetup', '29 €'],
       ['guest', '80 €'],
     ] as const) {
       await page.locator(`[data-ticket="${ticket}"]`).click();
@@ -377,8 +367,52 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await page.goto(
       lang === 'ru' ? '/ru/usloviya-uchastiya/' : '/de/teilnahmebedingungen/',
     );
-    for (const price of ['29 €', '80 €', '99 €', '249 €'])
+    for (const price of ['29 €', '80 €', '99 €'])
       await expect(page.locator('main')).toContainText(price);
+  }
+});
+
+test('archive navigation and Regensburg retrospective work in both languages', async ({
+  page,
+}) => {
+  for (const [lang, eventsPath, archivePath, detailPath] of [
+    [
+      'ru',
+      '/ru/meropriyatiya/',
+      '/ru/arkhiv-meropriyatiy/',
+      '/ru/arkhiv-meropriyatiy/regensburg/',
+    ],
+    [
+      'de',
+      '/de/veranstaltungen/',
+      '/de/veranstaltungsarchiv/',
+      '/de/veranstaltungsarchiv/regensburg/',
+    ],
+  ] as const) {
+    for (const width of [390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto(eventsPath);
+      await expect(page.locator('#games')).toBeVisible();
+      await expect(page.locator('#nuremberg')).toBeVisible();
+      await expect(page.locator('[data-ticket="meetup"]')).toHaveCount(0);
+      await page.locator(`a[href="${archivePath}"]`).click();
+      await expect(page).toHaveURL(new RegExp(`${archivePath}$`));
+      await page.locator(`a[href="${detailPath}"]`).last().click();
+      await expect(page).toHaveURL(new RegExp(`${detailPath}$`));
+      await expect(page.locator('main h1')).toContainText(
+        lang === 'ru' ? 'Встреча-знакомство в Регенсбурге' : 'Kennenlerntreffen in Regensburg',
+      );
+      await expect(page.locator('main')).not.toContainText('29 €');
+      await expect(
+        page
+          .locator('a[href="https://www.instagram.com/p/DeWzwDOqNv2/"]')
+          .first(),
+      ).toBeVisible();
+      await expect(page.locator('[data-ticket]')).toHaveCount(0);
+      expect(
+        await page.evaluate(() => document.documentElement.scrollWidth),
+      ).toBeLessThanOrEqual(width + 1);
+    }
   }
 });
 
@@ -413,13 +447,13 @@ test('requested FAQ order and purchase hover colors', async ({ page }) => {
   });
   expect(Math.abs(heroMargins[0] - heroMargins[1])).toBeLessThan(2);
   await page.goto('/ru/meropriyatiya/');
-  await page.locator('a[href="#regensburg"]').hover();
-  await expect(page.locator('a[href="#regensburg"]')).toHaveCSS(
+  await page.locator('a[href="#nuremberg"]').hover();
+  await expect(page.locator('a[href="#nuremberg"]')).toHaveCSS(
     'background-color',
     'rgb(33, 76, 63)',
   );
-  await page.locator('[data-ticket="meetup"]').hover();
-  await expect(page.locator('[data-ticket="meetup"]')).toHaveCSS(
+  await page.locator('[data-ticket="nuremberg_meetup"]').hover();
+  await expect(page.locator('[data-ticket="nuremberg_meetup"]')).toHaveCSS(
     'color',
     'rgb(240, 207, 99)',
   );

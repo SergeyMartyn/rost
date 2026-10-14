@@ -1,0 +1,147 @@
+---
+import { routes, type Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+const copy =
+  lang === 'ru'
+    ? {
+        eyebrow: 'АРХИВ МЕРОПРИЯТИЙ',
+        title: 'Прошедшие встречи',
+        intro:
+          'Фотографии, видео и короткие истории о том, как мы встречались и знакомились.',
+        count: '1 ВСТРЕЧА В АРХИВЕ',
+        month: 'ОКТЯБРЬ 2026',
+        meta: '10 ОКТЯБРЯ 2026 · РЕГЕНСБУРГ',
+        event: 'Встреча-знакомство в Регенсбурге',
+        description:
+          'Знакомились, играли в «Крокодила» и разговаривали за чаем и кофе. Посмотрите, как это было.',
+        eventLink: 'Смотреть встречу →',
+        nextEyebrow: 'ВСТРЕТИМСЯ СНОВА',
+        nextTitle: 'Впереди новые встречи',
+        nextDescription: 'Узнайте, где и когда мы увидимся в следующий раз.',
+        nextLink: 'Ближайшие мероприятия →',
+        photoAlt: 'Участники встречи в Регенсбурге',
+      }
+    : {
+        eyebrow: 'VERANSTALTUNGSARCHIV',
+        title: 'Vergangene Treffen',
+        intro:
+          'Fotos, Videos und kurze Geschichten darüber, wie wir uns getroffen und kennengelernt haben.',
+        count: '1 TREFFEN IM ARCHIV',
+        month: 'OKTOBER 2026',
+        meta: '10. OKTOBER 2026 · REGENSBURG',
+        event: 'Kennenlerntreffen in Regensburg',
+        description:
+          'Wir lernten uns kennen, spielten „Krokodil“ und unterhielten uns bei Tee und Kaffee. Schau dir an, wie es war.',
+        eventLink: 'Treffen ansehen →',
+        nextEyebrow: 'WIR SEHEN UNS WIEDER',
+        nextTitle: 'Neue Treffen liegen vor uns',
+        nextDescription: 'Erfahre, wo und wann wir uns das nächste Mal sehen.',
+        nextLink: 'Nächste Veranstaltungen →',
+        photoAlt: 'Teilnehmende beim Treffen in Regensburg',
+      };
+---
+
+<div class="font-hero-sans text-brand">
+  <section class="relative overflow-hidden bg-hero-start">
+    <div
+      aria-hidden="true"
+      class="pointer-events-none absolute -right-24 top-10 h-[450px] w-[450px] rounded-full border-[80px] border-hero-end/70"
+    ></div>
+    <div class="site-container relative pb-14 pt-32 md:pb-20 md:pt-36 lg:pb-24">
+      <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
+        {copy.eyebrow}
+      </p>
+      <h1 class="mt-10 max-w-5xl font-display text-[clamp(2.8rem,6vw,4.5rem)] leading-[1.1]">
+        {copy.title}
+      </h1>
+      <p class="mt-7 max-w-3xl text-lg leading-relaxed text-muted md:text-2xl">
+        {copy.intro}
+      </p>
+      <p class="mt-9 inline-flex min-h-10 items-center rounded-full bg-white px-5 text-xs font-bold tracking-[0.12em]">
+        {copy.count}
+      </p>
+    </div>
+  </section>
+
+  <section
+    class="bg-white py-16 md:py-20 lg:py-24"
+    aria-labelledby="archive-month"
+  >
+    <div class="site-container">
+      <h2
+        id="archive-month"
+        class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]"
+      >
+        {copy.month}
+      </h2>
+      <article class="mt-9 grid overflow-hidden rounded-4xl bg-brand-surface p-4 md:p-8 lg:grid-cols-[540px_minmax(0,1fr)] lg:gap-12">
+        <a
+          href={routes.archiveRegensburg[lang]}
+          class="block overflow-hidden rounded-3xl bg-hero-end"
+          aria-label={copy.event}
+        >
+          <picture>
+            <source
+              type="image/avif"
+              srcset="/images/rost-networking-preview-600.avif 600w, /images/rost-networking-preview.avif 1200w"
+              sizes="(min-width: 64rem) 540px, 100vw"
+            />
+            <source
+              type="image/webp"
+              srcset="/images/rost-networking-preview-600.webp 600w, /images/rost-networking-preview.webp 1200w"
+              sizes="(min-width: 64rem) 540px, 100vw"
+            />
+            <img
+              src="/images/rost-networking-preview.webp"
+              alt={copy.photoAlt}
+              width="1200"
+              height="675"
+              loading="lazy"
+              decoding="async"
+              class="h-64 w-full object-cover md:h-96 lg:h-full"
+            />
+          </picture>
+        </a>
+        <div class="flex flex-col items-start justify-center px-3 pb-5 pt-8 md:px-0 lg:py-6">
+          <time
+            datetime="2026-10-10"
+            class="text-xs font-bold uppercase tracking-[0.13em]"
+          >
+            {copy.meta}
+          </time>
+          <h3 class="mt-6 max-w-xl font-display text-[clamp(2rem,3.5vw,2.625rem)] leading-[1.12]">
+            {copy.event}
+          </h3>
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+            {copy.description}
+          </p>
+          <a
+            href={routes.archiveRegensburg[lang]}
+            class="mt-7 inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            {copy.eventLink}
+          </a>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <section class="bg-brand py-14 text-white md:py-16">
+    <div class="site-container flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.13em] text-brand-gold">
+          {copy.nextEyebrow}
+        </p>
+        <h2 class="mt-5 font-display text-3xl md:text-5xl">{copy.nextTitle}</h2>
+        <p class="mt-4 text-white/80">{copy.nextDescription}</p>
+      </div>
+      <a
+        href={routes.events[lang]}
+        class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-white px-7 font-bold text-brand transition hover:bg-hero-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      >
+        {copy.nextLink}
+      </a>
+    </div>
+  </section>
+</div>

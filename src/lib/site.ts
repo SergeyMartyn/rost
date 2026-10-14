@@ -10,6 +10,8 @@ export const text = {
   de: {
     home: 'Startseite',
     events: 'Veranstaltungen',
+    archive: 'Veranstaltungsarchiv',
+    archiveRegensburg: 'Kennenlerntreffen in Regensburg',
     about: 'Über uns',
     contacts: 'Kontakt',
     imprint: 'Impressum',
@@ -33,6 +35,8 @@ export const text = {
   ru: {
     home: 'Главная',
     events: 'Мероприятия',
+    archive: 'Архив мероприятий',
+    archiveRegensburg: 'Встреча-знакомство в Регенсбурге',
     about: 'О нас',
     contacts: 'Контакты',
     imprint: 'Правовая информация',

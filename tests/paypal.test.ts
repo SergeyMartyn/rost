@@ -107,7 +107,7 @@ function orderRequest(extra: object = {}, host = HOST) {
     method: 'POST',
     headers: { Origin: host, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      ticket: 'meetup', name: 'Buyer Example', channel: 'Telegram',
+      ticket: 'nuremberg_meetup', name: 'Buyer Example', channel: 'Telegram',
       contact: '@buyer_example', lang: 'ru', consent: true,
       provider: 'paypal', ...extra,
     }),

@@ -20,7 +20,11 @@ const { lang, page, title, description } = Astro.props as {
 };
 const t = text[lang];
 const socialPage =
-  page === 'events' || page === 'about' || page === 'contacts' ? page : 'home';
+  page === 'archive' || page === 'archiveRegensburg'
+    ? 'events'
+    : page === 'events' || page === 'about' || page === 'contacts'
+      ? page
+      : 'home';
 const socialFile =
   socialPage === 'about' ? `about-${lang}-v2.png` : `${socialPage}-${lang}.png`;
 const socialImage = new URL(`/images/social/${socialFile}`, origin).toString();
@@ -142,7 +146,14 @@ const structuredData = {
       {
         'home-page': page === 'home',
         'events-page': page === 'events',
-        'hero-page': ['home', 'events', 'about', 'contacts'].includes(page),
+        'hero-page': [
+          'home',
+          'events',
+          'about',
+          'contacts',
+          'archive',
+          'archiveRegensburg',
+        ].includes(page),
       },
     ]}
   >
@@ -156,7 +167,11 @@ const structuredData = {
       class={
         page === 'home'
           ? 'home-main flex-1'
-          : page === 'events' || page === 'about' || page === 'contacts'
+          : page === 'events' ||
+              page === 'about' ||
+              page === 'contacts' ||
+              page === 'archive' ||
+              page === 'archiveRegensburg'
             ? 'flex-1'
             : 'site-container py-16 md:py-24 lg:py-28 flex-1'
       }

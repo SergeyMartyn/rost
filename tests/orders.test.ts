@@ -143,7 +143,7 @@ const paidSession = (
 });
 
 for (const [ticket, cents] of [
-  ['meetup', 2900],
+  ['nuremberg_meetup', 2900],
   ['guest', 9900],
   ['host', 24900],
 ] as const) {
@@ -187,6 +187,13 @@ for (const [ticket, cents] of [
   });
 }
 
+test('archived Regensburg ticket cannot create a new order', async () => {
+  const t = setup();
+  const res = await t.api(orderReq(goodBody('meetup')));
+  assert.equal(res.status, 410);
+  assert.equal(t.stripeCalls.length, 0);
+});
+
 test('early participant price is enforced at the Berlin deadline', async () => {
   const t = setup();
   t.deps.now = () => EARLY_BIRD_END_MS - 1;
@@ -222,7 +229,7 @@ test('early participant price is enforced at the Berlin deadline', async () => {
 
 test('cancelled payment: expired session → cancelled, never paid', async () => {
   const t = setup();
-  const { id, session } = await createOrder(t, 'meetup');
+  const { id, session } = await createOrder(t, 'nuremberg_meetup');
   await t.api(
     signedEvent(
       'checkout.session.expired',
@@ -291,7 +298,7 @@ test('amount mismatch: order stays pending, rejection recorded', async () => {
 
 test('currency / session / unknown order mismatches are rejected', async () => {
   const t = setup();
-  const { id, session } = await createOrder(t, 'meetup');
+  const { id, session } = await createOrder(t, 'nuremberg_meetup');
   await t.api(
     signedEvent(
       'checkout.session.completed',
@@ -329,7 +336,7 @@ test('currency / session / unknown order mismatches are rejected', async () => {
 
 test('refund is a separate event: paid → refunded (partial refund ignored)', async () => {
   const t = setup();
-  const { id, session } = await createOrder(t, 'meetup');
+  const { id, session } = await createOrder(t, 'nuremberg_meetup');
   await t.api(
     signedEvent(
       'charge.refunded',
@@ -367,7 +374,7 @@ test('refund is a separate event: paid → refunded (partial refund ignored)', a
 
 test('webhook signature: bad secret and stale timestamp are rejected', async () => {
   const t = setup();
-  const { id, session } = await createOrder(t, 'meetup');
+  const { id, session } = await createOrder(t, 'nuremberg_meetup');
   const obj = paidSession(id, session, 2900);
   assert.equal(
     (
@@ -414,17 +421,19 @@ test('input validation: unknown ticket, bad contact, no consent, wrong origin', 
   const t = setup();
   assert.equal((await t.api(orderReq(goodBody('vip')))).status, 400);
   assert.equal(
-    (await t.api(orderReq(goodBody('meetup', { contact: 'ab' })))).status,
+    (await t.api(orderReq(goodBody('nuremberg_meetup', { contact: 'ab' }))))
+      .status,
     400,
   );
   assert.equal(
-    (await t.api(orderReq(goodBody('meetup', { consent: false })))).status,
+    (await t.api(orderReq(goodBody('nuremberg_meetup', { consent: false }))))
+      .status,
     400,
   );
   const evil = new Request(`${HOST}/api/orders`, {
     method: 'POST',
     headers: { Origin: 'https://evil.example' },
-    body: JSON.stringify(goodBody('meetup')),
+    body: JSON.stringify(goodBody('nuremberg_meetup')),
   });
   assert.equal((await t.api(evil)).status, 403);
   assert.equal(t.d1.db.prepare('SELECT COUNT(*) c FROM orders').get()!.c, 0);
@@ -433,24 +442,33 @@ test('input validation: unknown ticket, bad contact, no consent, wrong origin', 
 test('test payments are unavailable on the public domain and with wrong key mode', async () => {
   const t = setup();
   const pub = 'https://rost.community';
-  assert.equal((await t.api(orderReq(goodBody('meetup'), pub))).status, 403);
+  assert.equal(
+    (await t.api(orderReq(goodBody('nuremberg_meetup'), pub))).status,
+    403,
+  );
   assert.equal(
     (
       await setup({ PAYMENTS_ENABLED: 'false' }).api(
-        orderReq(goodBody('meetup')),
+        orderReq(goodBody('nuremberg_meetup')),
       )
     ).status,
     403,
   );
   // a live key in the test environment is refused
   const mix = setup({ stripe_test: 'sk_live_zzz' });
-  assert.equal((await mix.api(orderReq(goodBody('meetup')))).status, 503);
+  assert.equal(
+    (await mix.api(orderReq(goodBody('nuremberg_meetup')))).status,
+    503,
+  );
 });
 
 test('stripe outage marks the order failed', async () => {
   const t = setup();
   t.deps.fetch = (async () => new Response('{}', { status: 500 })) as any;
-  assert.equal((await t.api(orderReq(goodBody('meetup')))).status, 502);
+  assert.equal(
+    (await t.api(orderReq(goodBody('nuremberg_meetup')))).status,
+    502,
+  );
   assert.equal(
     (t.d1.db.prepare('SELECT status FROM orders').get() as any).status,
     'failed',
@@ -459,7 +477,9 @@ test('stripe outage marks the order failed', async () => {
 
 test('admin CSV: token required, formulas neutralised, no public list', async () => {
   const t = setup();
-  await t.api(orderReq(goodBody('meetup', { name: '=HYPERLINK("http://x")' })));
+  await t.api(
+    orderReq(goodBody('nuremberg_meetup', { name: '=HYPERLINK("http://x")' })),
+  );
   const get = (h: Record<string, string> = {}) =>
     t.api(new Request(`${HOST}/api/admin/orders.csv`, { headers: h }));
   assert.equal((await get()).status, 401);

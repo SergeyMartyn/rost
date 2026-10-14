@@ -348,8 +348,8 @@
     }
 
     .hero__inner {
-      max-width: 1150px;
-      grid-template-columns: minmax(0, 630px) minmax(0, 500px);
+      max-width: var(--container-content);
+      grid-template-columns: minmax(0, 1.36fr) minmax(0, 1fr);
       column-gap: 20px;
     }
 

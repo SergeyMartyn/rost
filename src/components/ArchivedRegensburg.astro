@@ -1,0 +1,221 @@
+---
+import { routes, type Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+const instagramPost = 'https://www.instagram.com/p/DeWzwDOqNv2/';
+const copy =
+  lang === 'ru'
+    ? {
+        eyebrow: 'АРХИВ МЕРОПРИЯТИЙ',
+        title: 'Встреча-знакомство в Регенсбурге',
+        intro: 'Тёплый день, после которого знакомых стало больше.',
+        status: 'ВСТРЕЧА ПРОШЛА',
+        date: '10 октября 2026 · Регенсбург',
+        nextLink: 'Ближайшие мероприятия →',
+        storyEyebrow: 'КАК ЭТО БЫЛО',
+        storyTitle: 'Знакомство без неловкости',
+        story:
+          'Мы собрались небольшой компанией, чтобы познакомиться вживую. За чаем и кофе говорили о себе и своих планах, провели короткий нетворкинг и сыграли в «Крокодила».',
+        moments: [
+          [
+            'Знакомились',
+            'Короткие разговоры помогли каждому включиться в общение.',
+          ],
+          ['Играли', '«Крокодил» добавил встрече движения и смеха.'],
+          ['Общались', 'За чаем и кофе было время поговорить свободнее.'],
+        ],
+        galleryEyebrow: 'АТМОСФЕРА ВСТРЕЧИ',
+        galleryTitle: 'Несколько моментов',
+        galleryCopy: 'Короткое видео поможет вернуться в этот день.',
+        video: 'ВИДЕО В INSTAGRAM',
+        instagramEyebrow: 'ПРОДОЛЖЕНИЕ ИСТОРИИ',
+        instagramTitle: 'Больше моментов — в Instagram R.O.S.T.',
+        instagramLink: 'Смотреть публикацию ↗',
+        nextEyebrow: 'ВСТРЕТИМСЯ СНОВА',
+        nextTitle: 'Приходите на следующую встречу',
+        nextCopy: 'Узнайте, где и когда мы увидимся в следующий раз.',
+        photoAlt: 'Участники встречи в Регенсбурге',
+      }
+    : {
+        eyebrow: 'VERANSTALTUNGSARCHIV',
+        title: 'Kennenlerntreffen in Regensburg',
+        intro: 'Ein warmer Tag, nach dem wir mehr Menschen kannten.',
+        status: 'DAS TREFFEN IST VORBEI',
+        date: '10. Oktober 2026 · Regensburg',
+        nextLink: 'Nächste Veranstaltungen →',
+        storyEyebrow: 'SO WAR ES',
+        storyTitle: 'Kennenlernen ohne Hemmungen',
+        story:
+          'Wir kamen in einer kleinen Runde zusammen, um uns persönlich kennenzulernen. Bei Tee und Kaffee sprachen wir über uns und unsere Pläne, lernten einander in kurzen Gesprächen kennen und spielten „Krokodil“.',
+        moments: [
+          [
+            'Kennenlernen',
+            'Kurze Gespräche machten den Einstieg für alle leichter.',
+          ],
+          ['Spielen', '„Krokodil“ brachte Bewegung und Lachen in die Runde.'],
+          ['Reden', 'Bei Tee und Kaffee blieb Zeit für entspannte Gespräche.'],
+        ],
+        galleryEyebrow: 'MOMENTE DES TREFFENS',
+        galleryTitle: 'Ein paar Eindrücke',
+        galleryCopy: 'Ein kurzes Video bringt uns zurück zu diesem Tag.',
+        video: 'VIDEO AUF INSTAGRAM',
+        instagramEyebrow: 'DIE GESCHICHTE GEHT WEITER',
+        instagramTitle: 'Mehr Eindrücke auf Instagram R.O.S.T.',
+        instagramLink: 'Beitrag ansehen ↗',
+        nextEyebrow: 'WIR SEHEN UNS WIEDER',
+        nextTitle: 'Komm zum nächsten Treffen',
+        nextCopy: 'Erfahre, wo und wann wir uns das nächste Mal sehen.',
+        photoAlt: 'Teilnehmende beim Treffen in Regensburg',
+      };
+---
+
+<div class="font-hero-sans text-brand">
+  <section class="relative overflow-hidden bg-hero-start">
+    <div class="site-container relative grid gap-12 pb-16 pt-32 md:pt-36 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center lg:pb-24">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
+          {copy.eyebrow}
+        </p>
+        <h1 class="mt-9 max-w-3xl font-display text-[clamp(2.2rem,5vw,4rem)] leading-[1.13]">
+          {copy.title}
+        </h1>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-2xl">
+          {copy.intro}
+        </p>
+        <p class="mt-7 inline-flex min-h-10 items-center justify-center rounded-full bg-white px-5 text-xs font-bold uppercase tracking-[0.12em]">
+          {copy.status}
+        </p>
+        <p class="mt-6 text-lg font-semibold">
+          <time datetime="2026-10-10">{copy.date}</time>
+        </p>
+        <p class="mt-2 text-muted">St. Katharinenplatz 5, 93059 Regensburg</p>
+        <a
+          href={routes.events[lang]}
+          class="mt-7 inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        >
+          {copy.nextLink}
+        </a>
+      </div>
+      <div class="relative mx-auto w-full max-w-[420px] lg:mx-0">
+        <div
+          aria-hidden="true"
+          class="absolute -right-5 -top-5 h-full w-full rounded-4xl bg-hero-end"
+        ></div>
+        <picture class="relative block overflow-hidden rounded-4xl border-[6px] border-white shadow-xl">
+          <source
+            type="image/avif"
+            srcset="/images/rost-networking-preview-600.avif 600w, /images/rost-networking-preview.avif 1200w"
+            sizes="(min-width: 64rem) 420px, 100vw"
+          />
+          <source
+            type="image/webp"
+            srcset="/images/rost-networking-preview-600.webp 600w, /images/rost-networking-preview.webp 1200w"
+            sizes="(min-width: 64rem) 420px, 100vw"
+          />
+          <img
+            src="/images/rost-networking-preview.webp"
+            alt={copy.photoAlt}
+            width="1200"
+            height="675"
+            class="h-72 w-full object-cover md:h-96"
+          />
+        </picture>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-18 md:py-24">
+    <div class="site-container">
+      <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
+        {copy.storyEyebrow}
+      </p>
+      <h2 class="mt-6 font-display text-[clamp(2.2rem,4vw,3rem)] leading-tight">
+        {copy.storyTitle}
+      </h2>
+      <p class="mt-6 max-w-5xl text-lg leading-relaxed text-muted md:text-[22px]">
+        {copy.story}
+      </p>
+      <div class="mt-12 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+        {copy.moments.map(([title, description], index) => (
+          <article class="rounded-3xl bg-brand-surface p-7">
+            <p class="text-lg text-events-placeholder-text">
+              {String(index + 1).padStart(2, '0')}
+            </p>
+            <h3 class="mt-6 font-display text-3xl">{title}</h3>
+            <p class="mt-4 leading-relaxed text-muted">{description}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-brand-surface py-18 md:py-24">
+    <div class="site-container">
+      <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
+        {copy.galleryEyebrow}
+      </p>
+      <h2 class="mt-5 font-display text-[clamp(2.2rem,4vw,3rem)]">
+        {copy.galleryTitle}
+      </h2>
+      <p class="mt-4 text-lg text-muted">{copy.galleryCopy}</p>
+      <a
+        href={instagramPost}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="mt-9 flex min-h-72 max-w-xl flex-col items-center justify-center gap-6 rounded-3xl bg-hero-end text-brand transition hover:bg-hero-placeholder focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        aria-label={copy.instagramLink}
+      >
+        <span
+          aria-hidden="true"
+          class="grid h-16 w-16 place-items-center rounded-full bg-brand text-white"
+        >
+          <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M8 5.5v13l10-6.5z" />
+          </svg>
+        </span>
+        <span class="text-xs font-bold uppercase tracking-[0.13em]">
+          {copy.video}
+        </span>
+      </a>
+    </div>
+  </section>
+
+  <section class="bg-formats-peach py-12">
+    <div class="site-container flex flex-col items-start justify-between gap-7 lg:flex-row lg:items-center">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.13em]">
+          {copy.instagramEyebrow}
+        </p>
+        <h2 class="mt-4 font-display text-3xl md:text-4xl">
+          {copy.instagramTitle}
+        </h2>
+      </div>
+      <a
+        href={instagramPost}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+      >
+        {copy.instagramLink}
+      </a>
+    </div>
+  </section>
+
+  <section class="bg-brand py-14 text-white md:py-16">
+    <div class="site-container flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
+      <div>
+        <p class="text-xs font-bold uppercase tracking-[0.13em] text-brand-gold">
+          {copy.nextEyebrow}
+        </p>
+        <h2 class="mt-5 font-display text-3xl md:text-5xl">{copy.nextTitle}</h2>
+        <p class="mt-4 text-white/80">{copy.nextCopy}</p>
+      </div>
+      <a
+        href={routes.events[lang]}
+        class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-white px-7 font-bold text-brand transition hover:bg-hero-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+      >
+        {copy.nextLink}
+      </a>
+    </div>
+  </section>
+</div>

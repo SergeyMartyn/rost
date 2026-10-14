@@ -2,6 +2,7 @@
 import { routes, type Language } from '../lib/site';
 import { isEarlyBirdActive } from '../lib/early-bird';
 import VideoFacade from './VideoFacade.astro';
+import ArchiveLink from './ArchiveLink.astro';
 
 const { lang } = Astro.props as { lang: Language };
 const earlyBirdInitially = isEarlyBirdActive(Date.now());
@@ -12,43 +13,34 @@ const copy =
         title: 'Мероприятия',
         intro:
           'Повод выйти из чата и познакомиться с людьми, с которыми захочется встретиться снова.',
-        meetShort: '10 октября · Регенсбург ↗',
+        meetShort: '12 декабря · Нюрнберг ↗',
         gamesShort: '7 ноября · Мюнхен ↗',
         meetTag: 'Первая встреча',
         meetTitle: 'Встреча-знакомство',
-        meetPlace: 'в Регенсбурге',
+        meetPlace: 'в Нюрнберге',
         meetBody:
           'Встретимся, чтобы познакомиться лично, спокойно поговорить и провести время в хорошей компании. Можно прийти одному — мы поможем включиться в разговор.',
         meetDetailsLink: 'Программа и подробности встречи →',
-        meetDetailsTitle: 'Встреча-знакомство в Регенсбурге',
+        meetDetailsTitle: 'Встреча-знакомство в Нюрнберге',
         meetDetailsIntro:
           'Хотите расширить круг общения, найти компанию для совместных планов или познакомиться с людьми, близкими по интересам?',
         meetDetailsBody:
           'Мы подготовили встречу, где знакомство не придётся брать на себя: ведущие организуют общение так, чтобы каждый познакомился с каждым. А командная игра с юмором поможет узнать людей ближе — через их идеи, опыт и то, как они проявляют себя в общем деле.',
         meetDetailsEnd:
           'В завершение каждый сможет рассказать, чем может быть полезен и кого или что сейчас ищет, — чтобы знакомства получили продолжение после встречи.',
-        meetScheduleTitle: 'Как пройдёт встреча',
-        meetSchedule: [
-          ['09:45', 'Сбор и регистрация'],
-          ['10:15', 'Приветствие и начало встречи'],
-          ['10:30', 'Модерируемое знакомство: каждый с каждым'],
-          ['11:30', 'Игра-знакомство в небольших командах'],
-          ['13:30', 'Завершение'],
-          ['14:00', 'Совместный обед (оплачивается отдельно)'],
-        ],
         meetDetailsClosing:
           'Можно прийти одному или с компанией. Главное — желание познакомиться. О том, как начать разговор, позаботимся мы.',
         meetDetailsClose: 'Закрыть описание встречи',
         meetDetailsBuy: 'Купить билет · 29 €',
         when: 'Когда',
         where: 'Где',
-        meetDate: '10 октября 2026',
+        meetDate: '12 декабря 2026',
         gamesDate: '7 ноября 2026',
-        meetMonth: 'октября',
+        meetMonth: 'декабря',
         gamesMonth: 'ноября',
         timeLater: 'Время уточняется',
-        meetRegistration: 'Сбор и регистрация с 09:45',
-        meetAddress: 'Санкт-Катариненплац, 5 · 93059 Регенсбург',
+        meetRegistration: 'Время начала сообщим позже',
+        meetAddress: 'Адрес сообщим позже',
         gamesVenue: 'Мюнхен',
         gamesAddress: 'Перхтингер-штрассе, 12 · 81379 Мюнхен',
         meetTicket: 'Билет на встречу',
@@ -58,7 +50,7 @@ const copy =
         gamesTitle: 'Трансформационные',
         gamesPlace: 'игры в Мюнхене',
         gamesBody:
-          'День, в котором можно попробовать новый формат, посмотреть на свои вопросы с другой стороны и пообщаться с людьми. Для гостей и тех, кто проводит игры, предусмотрены разные билеты.',
+          'День, в котором можно попробовать новый формат, посмотреть на свои вопросы с другой стороны и пообщаться с людьми.',
         guest: 'Купить билет участника',
         earlyBirdUntil: 'Ранняя цена до 15 октября',
         host: 'Я ведущий игр',
@@ -96,43 +88,34 @@ const copy =
         title: 'Veranstaltungen',
         intro:
           'Ein Anlass, den Chat zu verlassen und Menschen kennenzulernen, die du gern wiedersehen möchtest.',
-        meetShort: '10. Oktober · Regensburg ↗',
+        meetShort: '12. Dezember · Nürnberg ↗',
         gamesShort: '7. November · München ↗',
         meetTag: 'Erstes Treffen',
         meetTitle: 'Kennenlerntreffen',
-        meetPlace: 'in Regensburg',
+        meetPlace: 'in Nürnberg',
         meetBody:
           'Wir lernen uns persönlich kennen, unterhalten uns in Ruhe und verbringen Zeit miteinander. Du kannst auch allein kommen – wir helfen dir, ins Gespräch zu finden.',
         meetDetailsLink: 'Programm und Details →',
-        meetDetailsTitle: 'Kennenlerntreffen in Regensburg',
+        meetDetailsTitle: 'Kennenlerntreffen in Nürnberg',
         meetDetailsIntro:
           'Möchtest du deinen Bekanntenkreis erweitern, Menschen für gemeinsame Unternehmungen finden oder neue Kontakte mit ähnlichen Interessen knüpfen?',
         meetDetailsBody:
           'Du musst nicht selbst nach einem Gesprächseinstieg suchen: Unsere Moderation gestaltet den Austausch so, dass alle einander kennenlernen. Ein lockeres Spiel in kleinen Teams sorgt für Humor und hilft euch, mehr voneinander zu erfahren.',
         meetDetailsEnd:
           'Zum Abschluss könnt ihr erzählen, wobei ihr andere unterstützen könnt und wen oder was ihr gerade sucht – damit aus der ersten Begegnung weitere Kontakte entstehen können.',
-        meetScheduleTitle: 'So läuft das Treffen ab',
-        meetSchedule: [
-          ['09:45', 'Ankommen und Registrierung'],
-          ['10:15', 'Begrüßung und gemeinsamer Start'],
-          ['10:30', 'Moderiertes Kennenlernen: Alle lernen einander kennen'],
-          ['11:30', 'Kennenlernspiel in kleinen Teams'],
-          ['13:30', 'Abschluss'],
-          ['14:00', 'Gemeinsames Mittagessen (separat zu bezahlen)'],
-        ],
         meetDetailsClosing:
           'Du kannst allein oder in Begleitung kommen. Bring einfach Lust mit, neue Menschen kennenzulernen – wir helfen dir, ins Gespräch zu kommen.',
         meetDetailsClose: 'Beschreibung des Treffens schließen',
         meetDetailsBuy: 'Ticket kaufen · 29 €',
         when: 'Wann',
         where: 'Wo',
-        meetDate: '10. Oktober 2026',
+        meetDate: '12. Dezember 2026',
         gamesDate: '7. November 2026',
-        meetMonth: 'Oktober',
+        meetMonth: 'Dezember',
         gamesMonth: 'November',
         timeLater: 'Uhrzeit folgt',
-        meetRegistration: 'Ankommen und Registrierung ab 09:45 Uhr',
-        meetAddress: 'St. Katharinenplatz 5 · 93059 Regensburg',
+        meetRegistration: 'Die Anfangszeit geben wir noch bekannt',
+        meetAddress: 'Die Adresse geben wir noch bekannt',
         gamesVenue: 'München',
         gamesAddress: 'Perchtinger Straße 12 · 81379 München',
         meetTicket: 'Ticket für das Treffen',
@@ -143,7 +126,7 @@ const copy =
         gamesTitle: 'Transformationsspiele',
         gamesPlace: 'in München',
         gamesBody:
-          'Ein Tag, an dem du ein neues Format ausprobieren, deine Fragen aus einer anderen Perspektive betrachten und Menschen kennenlernen kannst. Für Gäste und Spielleitende gibt es unterschiedliche Tickets.',
+          'Ein Tag, an dem du ein neues Format ausprobieren, deine Fragen aus einer anderen Perspektive betrachten und Menschen kennenlernen kannst.',
         guest: 'Ticket für Teilnehmende kaufen',
         earlyBirdUntil: 'Frühbucherpreis bis 15. Oktober',
         host: 'Ich leite Spiele',
@@ -192,100 +175,20 @@ const copy =
         <p class="hero__description">{copy.intro}</p>
         <div class="hero__links">
           <a
-            href="#regensburg"
-            class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
-          >
-            {copy.meetShort}
-          </a>
-          <a
             href="#games"
             class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
           >
             {copy.gamesShort}
           </a>
+          <a
+            href="#nuremberg"
+            class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
+          >
+            {copy.meetShort}
+          </a>
         </div>
       </div>
       <VideoFacade lang={lang} page="events" />
-    </div>
-  </section>
-
-  <section id="regensburg" class="scroll-mt-24 bg-white py-18 md:py-26">
-    <div class="site-container grid gap-9 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14">
-      <div class="min-w-0">
-        <div class="mb-8 flex flex-wrap items-center gap-3">
-          <span class="rounded-full bg-brand-surface px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-accent">
-            {copy.meetTag}
-          </span>
-          <span class="text-sm font-semibold text-muted">
-            {lang === 'ru' ? 'Регенсбург' : 'Regensburg'}
-          </span>
-        </div>
-        <h2 class="max-w-3xl font-display text-[clamp(2.1rem,5vw,5.2rem)] leading-[1.03] tracking-[-0.035em]">
-          {copy.meetTitle}
-          <br />
-          {copy.meetPlace}
-        </h2>
-        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
-          {copy.meetBody}
-        </p>
-        <button
-          id="meet-details-open"
-          type="button"
-          aria-haspopup="dialog"
-          aria-controls="meet-details-dialog"
-          class="mt-6 inline-flex min-h-12 items-center rounded-xl border border-brand/20 bg-brand-surface px-5 py-3 font-semibold text-brand transition hover:border-brand hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-        >
-          {copy.meetDetailsLink}
-        </button>
-        <div class="mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
-          <div class="rounded-3xl bg-brand-surface p-6">
-            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
-              {copy.when}
-            </p>
-            <p class="mt-3 font-display text-2xl">{copy.meetDate}</p>
-            <p class="mt-2 text-sm text-muted">{copy.meetRegistration}</p>
-          </div>
-          <div class="rounded-3xl bg-brand-surface p-6">
-            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
-              {copy.where}
-            </p>
-            <p class="mt-3 font-display text-2xl">
-              {lang === 'ru' ? 'Регенсбург' : 'Regensburg'}
-            </p>
-            <p class="mt-2 text-sm text-muted">{copy.meetAddress}</p>
-          </div>
-        </div>
-      </div>
-      <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-brand-surface shadow-xl lg:sticky lg:top-28">
-        <div class="relative flex h-48 items-end overflow-hidden bg-hero-end/60 p-7">
-          <div
-            aria-hidden="true"
-            class="absolute -right-8 -top-16 h-60 w-60 rounded-full border-[2.5rem] border-white/40"
-          ></div>
-          <div class="relative flex items-end gap-3 text-brand">
-            <strong class="font-display text-7xl leading-none">10</strong>
-            <span class="pb-2 text-lg font-semibold leading-tight">
-              {copy.meetMonth}
-              <br />
-              2026
-            </span>
-          </div>
-        </div>
-        <div class="p-7">
-          <p class="text-sm font-semibold text-muted">{copy.meetTicket}</p>
-          <p class="mt-2 font-display text-5xl">29 €</p>
-          <button
-            type="button"
-            data-ticket="meetup"
-            class="mt-7 w-full rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-          >
-            {copy.buyTicket}
-          </button>
-          <p class="mt-4 text-center text-xs leading-relaxed text-muted">
-            {copy.beforePayment}
-          </p>
-        </div>
-      </aside>
     </div>
   </section>
 
@@ -391,6 +294,88 @@ const copy =
     </div>
   </section>
 
+  <section id="nuremberg" class="scroll-mt-24 bg-white py-18 md:py-26">
+    <div class="site-container grid gap-9 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14">
+      <div class="min-w-0">
+        <div class="mb-8 flex flex-wrap items-center gap-3">
+          <span class="rounded-full bg-brand-surface px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-accent">
+            {copy.meetTag}
+          </span>
+          <span class="text-sm font-semibold text-muted">
+            {lang === 'ru' ? 'Нюрнберг' : 'Nürnberg'}
+          </span>
+        </div>
+        <h2 class="max-w-3xl font-display text-[clamp(2.1rem,5vw,5.2rem)] leading-[1.03] tracking-[-0.035em]">
+          {copy.meetTitle}
+          <br />
+          {copy.meetPlace}
+        </h2>
+        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
+          {copy.meetBody}
+        </p>
+        <button
+          id="meet-details-open"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="meet-details-dialog"
+          class="mt-6 inline-flex min-h-12 items-center rounded-xl border border-brand/20 bg-brand-surface px-5 py-3 font-semibold text-brand transition hover:border-brand hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        >
+          {copy.meetDetailsLink}
+        </button>
+        <div class="mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
+          <div class="rounded-3xl bg-brand-surface p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
+              {copy.when}
+            </p>
+            <p class="mt-3 font-display text-2xl">{copy.meetDate}</p>
+            <p class="mt-2 text-sm text-muted">{copy.meetRegistration}</p>
+          </div>
+          <div class="rounded-3xl bg-brand-surface p-6">
+            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
+              {copy.where}
+            </p>
+            <p class="mt-3 font-display text-2xl">
+              {lang === 'ru' ? 'Нюрнберг' : 'Nürnberg'}
+            </p>
+            <p class="mt-2 text-sm text-muted">{copy.meetAddress}</p>
+          </div>
+        </div>
+      </div>
+      <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-brand-surface shadow-xl lg:sticky lg:top-28">
+        <div class="relative flex h-48 items-end overflow-hidden bg-hero-end/60 p-7">
+          <div
+            aria-hidden="true"
+            class="absolute -right-8 -top-16 h-60 w-60 rounded-full border-[2.5rem] border-white/40"
+          ></div>
+          <div class="relative flex items-end gap-3 text-brand">
+            <strong class="font-display text-7xl leading-none">12</strong>
+            <span class="pb-2 text-lg font-semibold leading-tight">
+              {copy.meetMonth}
+              <br />
+              2026
+            </span>
+          </div>
+        </div>
+        <div class="p-7">
+          <p class="text-sm font-semibold text-muted">{copy.meetTicket}</p>
+          <p class="mt-2 font-display text-5xl">29 €</p>
+          <button
+            type="button"
+            data-ticket="nuremberg_meetup"
+            class="mt-7 w-full rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          >
+            {copy.buyTicket}
+          </button>
+          <p class="mt-4 text-center text-xs leading-relaxed text-muted">
+            {copy.beforePayment}
+          </p>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <ArchiveLink lang={lang} />
+
   <section class="bg-brand py-16 text-white md:py-20">
     <div class="site-container flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
       <div>
@@ -467,19 +452,6 @@ const copy =
         <p>{copy.meetDetailsBody}</p>
         <p>{copy.meetDetailsEnd}</p>
       </div>
-      <section class="mt-8" aria-labelledby="meet-schedule-title">
-        <h3 id="meet-schedule-title" class="font-display text-2xl text-brand">
-          {copy.meetScheduleTitle}
-        </h3>
-        <ol class="mt-4 divide-y divide-brand/10 rounded-2xl bg-brand-surface px-4 sm:px-6">
-          {copy.meetSchedule.map(([time, activity]) => (
-            <li class="grid grid-cols-[3.75rem_minmax(0,1fr)] gap-4 py-3 sm:grid-cols-[4.5rem_minmax(0,1fr)]">
-              <time class="font-bold text-brand">{time}</time>
-              <span>{activity}</span>
-            </li>
-          ))}
-        </ol>
-      </section>
       <p class="mt-7">{copy.meetDetailsClosing}</p>
     </div>
     <div class="shrink-0 border-t border-brand/10 bg-white px-5 py-4 sm:px-8">
@@ -748,7 +720,7 @@ const copy =
     openingTicketFromDetails = true;
     detailsDialog?.close();
     document
-      .querySelector<HTMLButtonElement>('[data-ticket="meetup"]')
+      .querySelector<HTMLButtonElement>('[data-ticket="nuremberg_meetup"]')
       ?.click();
   });
 
@@ -869,13 +841,16 @@ const copy =
     : 'Schritt 2 von 2 · Zahlung';
   const tickets = isRu
     ? {
-        meetup: ['Билет на встречу', '10 октября · Регенсбург · 29 €'],
+        nuremberg_meetup: ['Билет на встречу', '12 декабря · Нюрнберг · 29 €'],
         guest_early: ['Билет участника', '7 ноября · Мюнхен · 80 €'],
         guest: ['Билет участника', '7 ноября · Мюнхен · 99 €'],
         host: ['Билет ведущего игр', '7 ноября · Мюнхен · 249 €'],
       }
     : {
-        meetup: ['Ticket für das Treffen', '10. Oktober · Regensburg · 29 €'],
+        nuremberg_meetup: [
+          'Ticket für das Treffen',
+          '12. Dezember · Nürnberg · 29 €',
+        ],
         guest_early: [
           'Ticket für Teilnehmende',
           '7. November · München · 80 €',

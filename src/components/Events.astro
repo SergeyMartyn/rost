@@ -13,20 +13,20 @@ const copy =
         ],
         events: [
           {
-            name: 'Встреча-знакомство в Регенсбурге',
-            date: '10 октября 2026',
-            datetime: '2026-10-10',
-            anchor: 'regensburg',
-            photoAlt: 'Участники встречи на общей фотографии',
-            openPhoto: 'Открыть фотографию встречи целиком',
-          },
-          {
             name: 'Трансформационные игры в Мюнхене',
             date: '7 ноября 2026',
             datetime: '2026-11-07',
             anchor: 'games',
             photoAlt: 'Участники трансформационной игры за столом',
             openPhoto: 'Открыть фотографию игры целиком',
+          },
+          {
+            name: 'Встреча-знакомство в Нюрнберге',
+            date: '12 декабря 2026',
+            datetime: '2026-12-12',
+            anchor: 'nuremberg',
+            photoAlt: 'Участники встречи на общей фотографии',
+            openPhoto: 'Открыть фотографию встречи целиком',
           },
         ],
       }
@@ -38,14 +38,6 @@ const copy =
         ],
         events: [
           {
-            name: 'Kennenlerntreffen in Regensburg',
-            date: '10. Oktober 2026',
-            datetime: '2026-10-10',
-            anchor: 'regensburg',
-            photoAlt: 'Teilnehmende des Treffens auf einem Gruppenfoto',
-            openPhoto: 'Foto des Treffens vollständig öffnen',
-          },
-          {
             name: 'Transformationsspiele in München',
             date: '7. November 2026',
             datetime: '2026-11-07',
@@ -53,19 +45,17 @@ const copy =
             photoAlt: 'Teilnehmende bei einem Transformationsspiel am Tisch',
             openPhoto: 'Foto des Spiels vollständig öffnen',
           },
+          {
+            name: 'Kennenlerntreffen in Nürnberg',
+            date: '12. Dezember 2026',
+            datetime: '2026-12-12',
+            anchor: 'nuremberg',
+            photoAlt: 'Teilnehmende des Treffens auf einem Gruppenfoto',
+            openPhoto: 'Foto des Treffens vollständig öffnen',
+          },
         ],
       };
 const photos = [
-  {
-    preview: '/images/rost-networking-preview.webp',
-    previewSmall: '/images/rost-networking-preview-600.webp',
-    previewAvif: '/images/rost-networking-preview.avif',
-    previewSmallAvif: '/images/rost-networking-preview-600.avif',
-    full: '/images/rost-networking-full.webp',
-    fullAvif: '/images/rost-networking-full.avif',
-    width: 1200,
-    height: 675,
-  },
   {
     preview: '/images/rost-ti-preview.webp',
     previewSmall: '/images/rost-ti-preview-600.webp',
@@ -75,6 +65,16 @@ const photos = [
     fullAvif: '/images/rost-ti-full.avif',
     width: 1200,
     height: 798,
+  },
+  {
+    preview: '/images/rost-networking-preview.webp',
+    previewSmall: '/images/rost-networking-preview-600.webp',
+    previewAvif: '/images/rost-networking-preview.avif',
+    previewSmallAvif: '/images/rost-networking-preview-600.avif',
+    full: '/images/rost-networking-full.webp',
+    fullAvif: '/images/rost-networking-full.avif',
+    width: 1200,
+    height: 675,
   },
 ];
 ---
@@ -99,7 +99,7 @@ const photos = [
             class:list={[
               'events__frame',
               'events__photo-trigger',
-              { 'events__frame--game': index === 1 },
+              { 'events__frame--game': index === 0 },
             ]}
             type="button"
             data-photo-full={photos[index].full}
@@ -110,7 +110,7 @@ const photos = [
             <div
               class:list={[
                 'events__photo',
-                { 'events__photo--networking': index === 0 },
+                { 'events__photo--networking': index === 1 },
               ]}
             >
               <picture>

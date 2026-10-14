@@ -1,5 +1,6 @@
 // Server-side ticket catalogue. Prices are decided HERE, never taken from the browser.
-export type TicketKey = 'meetup' | 'guest_early' | 'guest' | 'host';
+export type TicketKey =
+  'meetup' | 'nuremberg_meetup' | 'guest_early' | 'guest' | 'host';
 
 export interface Ticket {
   eventId: string;
@@ -7,6 +8,8 @@ export interface Ticket {
   label: { de: string; ru: string };
   /** Google Sheets tab that receives paid orders for this event. */
   sheetTab: string;
+  /** Historical tickets remain in the catalogue for webhook reconciliation. */
+  salesClosed?: boolean;
 }
 
 export const TICKETS: Record<TicketKey, Ticket> = {
@@ -18,6 +21,16 @@ export const TICKETS: Record<TicketKey, Ticket> = {
       ru: 'R.O.S.T. Встреча в Регенсбурге, 10 октября 2026',
     },
     sheetTab: '10.10.26 - Regensburg',
+    salesClosed: true,
+  },
+  nuremberg_meetup: {
+    eventId: 'nuremberg-2026-12-12',
+    amountCents: 2900,
+    label: {
+      de: 'R.O.S.T. Kennenlerntreffen Nürnberg, 12. Dezember 2026',
+      ru: 'R.O.S.T. Встреча-знакомство в Нюрнберге, 12 декабря 2026',
+    },
+    sheetTab: '12.12.26 - Nuernberg',
   },
   guest: {
     eventId: 'munich-games-2026-11-07',

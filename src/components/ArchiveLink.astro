@@ -1,0 +1,36 @@
+---
+import { routes, type Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+const copy =
+  lang === 'ru'
+    ? {
+        eyebrow: 'ПРОШЕДШИЕ ВСТРЕЧИ',
+        description: 'Посмотрите, как проходили наши встречи.',
+        link: 'Архив мероприятий →',
+      }
+    : {
+        eyebrow: 'VERGANGENE TREFFEN',
+        description: 'Schau dir an, wie unsere Treffen waren.',
+        link: 'Veranstaltungsarchiv →',
+      };
+---
+
+<section class="bg-brand-surface font-hero-sans text-brand">
+  <div class="site-container grid gap-7 py-12 md:gap-8 md:py-10 lg:min-h-56 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-center lg:py-8">
+    <div>
+      <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
+        {copy.eyebrow}
+      </p>
+      <p class="mt-4 max-w-3xl text-[clamp(1.3rem,2.2vw,1.625rem)] leading-snug">
+        {copy.description}
+      </p>
+    </div>
+    <a
+      href={routes.archive[lang]}
+      class="mx-auto inline-flex min-h-14 w-full max-w-[300px] items-center justify-center rounded-2xl bg-brand px-6 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand lg:mx-0"
+    >
+      {copy.link}
+    </a>
+  </div>
+</section>

@@ -213,6 +213,8 @@ async function createOrder(
   // NOTE: any amount/price sent by the browser is ignored on purpose.
   if (!isTicketKey(body.ticket)) return json({ error: 'bad_ticket' }, 400);
   const requestTime = deps.now();
+  const ticket = TICKETS[body.ticket];
+  if (ticket.salesClosed) return json({ error: 'event_archived' }, 410);
   if (body.ticket === 'guest_early' && !isEarlyBirdActive(requestTime))
     return json({ error: 'offer_ended', serverTime: requestTime }, 409);
   const name = typeof body.name === 'string' ? body.name.trim() : '';
@@ -236,7 +238,6 @@ async function createOrder(
   if (provider === 'stripe' ? !key : !paypalReady(env))
     return json({ error: 'payments_not_configured' }, 503);
 
-  const ticket = TICKETS[body.ticket];
   const id = crypto.randomUUID();
   const now = iso(requestTime);
   await env.ORDERS.prepare(

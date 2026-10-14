@@ -3,6 +3,8 @@ import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Events from '../components/Events.astro';
 import EventPage from '../components/EventPage.astro';
+import ArchiveIndex from '../components/ArchiveIndex.astro';
+import ArchivedRegensburg from '../components/ArchivedRegensburg.astro';
 import Formats from '../components/Formats.astro';
 import Faq from '../components/Faq.astro';
 import Team from '../components/Team.astro';
@@ -48,6 +50,10 @@ const legalText =
     </>
   ) : page === 'events' ? (
     <EventPage lang={lang} />
+  ) : page === 'archive' ? (
+    <ArchiveIndex lang={lang} />
+  ) : page === 'archiveRegensburg' ? (
+    <ArchivedRegensburg lang={lang} />
   ) : page === 'about' ? (
     <>
       <PageHero lang={lang} page="about" title={title} />
