@@ -1,5 +1,6 @@
 import { routes, type Language } from '../src/lib/site';
 import { handleApi, type OrdersEnv } from './orders';
+import { releaseExpiredHostHolds } from './host';
 export function chooseLanguage(header: string, fallback: Language): Language {
   const ranges = header.split(',').map((part, index) => {
     const [tag, ...params] = part.trim().toLowerCase().split(';');
@@ -58,5 +59,12 @@ export default {
         Vary: 'Accept-Language, Cookie',
       },
     });
+  },
+  async scheduled(
+    _controller: ScheduledController,
+    env: WorkerEnv,
+    ctx: ExecutionContext,
+  ): Promise<void> {
+    ctx.waitUntil(releaseExpiredHostHolds(env, Date.now()));
   },
 };

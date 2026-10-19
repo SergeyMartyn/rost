@@ -1,5 +1,28 @@
 import { routes } from '../src/lib/site';
 import { isEarlyBirdActive } from '../src/lib/early-bird';
+import { normalizeContact } from '../src/lib/contact';
+import {
+  HOST_EVENT_ID,
+  HOST_HOLD_MINUTES,
+  HOST_TABLE_COUNT,
+  formatEuro,
+  hostPrice,
+  isHostFormat,
+} from '../src/lib/host';
+import {
+  allocateHostTable,
+  confirmHostPayment,
+  expireHostCheckout,
+  findHostRegistration,
+  findHostRegistrationByPayment,
+  insertHostRegistration,
+  markHostRegistrationFailed,
+  refundHostRegistration,
+  releaseExpiredHostHolds,
+  releaseHostTable,
+  setHostProviderSession,
+  type HostRegistrationRow,
+} from './host';
 import { TICKETS, isTicketKey } from './tickets';
 
 export interface OrdersEnv {
@@ -83,34 +106,7 @@ export async function verifyStripeSignature(
   return sigs.some((s) => timingSafeEqual(s, expected));
 }
 
-export function normalizeContact(
-  channel: string,
-  raw: string,
-): { method: string; value: string } | null {
-  const value = raw.trim();
-  const user = value.replace(/^@/, '');
-  if (channel === 'Telegram' && /^[A-Za-z][A-Za-z0-9_]{4,26}$/.test(user))
-    return { method: 'telegram', value: '@' + user };
-  if (
-    channel === 'Instagram' &&
-    /^[A-Za-z0-9_][A-Za-z0-9._]{0,29}$/.test(user) &&
-    !user.endsWith('.') &&
-    !user.includes('..')
-  )
-    return { method: 'instagram', value: '@' + user };
-  if (
-    channel === 'WhatsApp-username' &&
-    /^[A-Za-z0-9_][A-Za-z0-9._]{2,29}$/.test(user)
-  )
-    return { method: 'whatsapp-username', value: '@' + user };
-  if (channel === 'WhatsApp-phone') {
-    let n = value.replace(/[\s()-]/g, '');
-    if (/^0\d{8,13}$/.test(n)) n = '+49' + n.slice(1);
-    if (/^\+[1-9]\d{9,14}$/.test(n))
-      return { method: 'whatsapp-phone', value: n };
-  }
-  return null;
-}
+export { normalizeContact };
 
 function stripeKey(env: OrdersEnv): string | null {
   const live = env.ORDERS_ENV === 'live';
@@ -363,6 +359,214 @@ async function failPendingOrder(env: OrdersEnv, id: string, now: number) {
   )
     .bind(iso(now), id)
     .run();
+}
+
+// ---------- POST /api/host-registrations ----------
+function hostCheckoutLabel(
+  lang: 'de' | 'ru',
+  format: 'standard' | 'expanded',
+  media: boolean,
+  deposit: boolean,
+  totalCents: number,
+): string {
+  const base =
+    lang === 'de'
+      ? `R.O.S.T. Spiele München — ${format === 'expanded' ? 'erweiterte Teilnahme' : 'Standardteilnahme'}${media ? ' + Foto/Video' : ''}`
+      : `R.O.S.T. Игры в Мюнхене — ${format === 'expanded' ? 'расширенное участие' : 'стандартное участие'}${media ? ' + фото/видео' : ''}`;
+  if (!deposit) return `${base}, ${formatEuro(totalCents)}`;
+  return lang === 'de'
+    ? `${base}, Anzahlung 50 € (gesamt ${formatEuro(totalCents)})`
+    : `${base}, предоплата 50 € (всего ${formatEuro(totalCents)})`;
+}
+
+async function createHostRegistration(
+  request: Request,
+  env: OrdersEnv,
+  deps: Deps,
+): Promise<Response> {
+  const url = new URL(request.url);
+  if (!paymentsAllowed(url, env))
+    return json({ error: 'payments_disabled' }, 403);
+  const origin = request.headers.get('Origin');
+  let originHost: string | null = null;
+  try {
+    originHost = origin ? new URL(origin).host : null;
+  } catch {
+    originHost = null;
+  }
+  if (originHost !== url.host) return json({ error: 'bad_origin' }, 403);
+  const text = await request.text();
+  if (text.length > 8192) return json({ error: 'too_large' }, 413);
+  let body: Record<string, unknown>;
+  try {
+    body = JSON.parse(text);
+  } catch {
+    return json({ error: 'bad_json' }, 400);
+  }
+  if (!isHostFormat(body.format)) return json({ error: 'bad_format' }, 400);
+  const name = typeof body.name === 'string' ? body.name.trim() : '';
+  if (name.length < 2 || name.length > 80)
+    return json({ error: 'bad_name' }, 400);
+  const email = typeof body.email === 'string' ? body.email.trim() : '';
+  if (
+    email.length > 160 ||
+    !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)
+  )
+    return json({ error: 'bad_email' }, 400);
+  const contact = normalizeContact(
+    String(body.channel ?? ''),
+    String(body.contact ?? ''),
+  );
+  if (!contact) return json({ error: 'bad_contact' }, 400);
+  const gameTitle =
+    typeof body.gameTitle === 'string' ? body.gameTitle.trim() : '';
+  if (gameTitle.length < 3 || gameTitle.length > 120)
+    return json({ error: 'bad_game_title' }, 400);
+  const gameDescription =
+    typeof body.gameDescription === 'string'
+      ? body.gameDescription.trim()
+      : '';
+  if (gameDescription.length < 10 || gameDescription.length > 800)
+    return json({ error: 'bad_game_description' }, 400);
+  if (body.terms !== true || body.privacy !== true)
+    return json({ error: 'consent_required' }, 400);
+  const lang = body.lang === 'de' ? 'de' : 'ru';
+  const media = body.media === true;
+  const deposit = body.deposit === true;
+  const key = stripeKey(env);
+  if (!key) return json({ error: 'payments_not_configured' }, 503);
+
+  const price = hostPrice(body.format, media, deposit);
+  const nowMs = deps.now();
+  const id = crypto.randomUUID();
+  await releaseExpiredHostHolds(env, nowMs);
+  const holdExpiresAt = iso(nowMs + HOST_HOLD_MINUTES * 60_000);
+  const tableNo = await allocateHostTable(env, id, holdExpiresAt, nowMs);
+  if (tableNo === null) return json({ error: 'sold_out' }, 409);
+  try {
+    await insertHostRegistration(env, {
+      id,
+      eventId: HOST_EVENT_ID,
+      name,
+      email,
+      contactMethod: contact.method,
+      contactValue: contact.value,
+      gameTitle,
+      gameDescription,
+      format: body.format,
+      media,
+      deposit,
+      totalCents: price.totalCents,
+      dueNowCents: price.dueNowCents,
+      remainingCents: price.remainingCents,
+      holdExpiresAt,
+      tableNo,
+      createdAt: iso(nowMs),
+    });
+  } catch (error) {
+    await releaseHostTable(env, id, nowMs);
+    throw error;
+  }
+
+  const hostPage = `${url.origin}${routes.host[lang]}`;
+  const form = new URLSearchParams({
+    mode: 'payment',
+    'payment_method_types[0]': 'card',
+    'line_items[0][quantity]': '1',
+    'line_items[0][price_data][currency]': 'eur',
+    'line_items[0][price_data][unit_amount]': String(price.dueNowCents),
+    'line_items[0][price_data][product_data][name]': hostCheckoutLabel(
+      lang,
+      body.format,
+      media,
+      deposit,
+      price.totalCents,
+    ),
+    client_reference_id: id,
+    'metadata[kind]': 'host-registration',
+    'metadata[host_registration_id]': id,
+    'payment_intent_data[metadata][host_registration_id]': id,
+    success_url: `${hostPage}?payment=success&registration=${id}`,
+    cancel_url: `${hostPage}?payment=cancelled&registration=${id}`,
+    locale: lang,
+    // Stripe requires at least 30 minutes; the extra minute absorbs request
+    // latency. The table hold itself is 30 minutes.
+    expires_at: String(Math.floor(nowMs / 1000) + 31 * 60),
+  });
+  let session: { id?: string; url?: string } = {};
+  try {
+    const res = await deps.fetch(
+      'https://api.stripe.com/v1/checkout/sessions',
+      {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${key}`,
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Idempotency-Key': `host-${id}`,
+        },
+        body: form.toString(),
+      },
+    );
+    session = (await res.json()) as typeof session;
+    if (!res.ok || !session.id || !session.url) throw new Error('stripe_error');
+  } catch {
+    await markHostRegistrationFailed(env, id, deps.now());
+    return json({ error: 'stripe_unavailable' }, 502);
+  }
+  await setHostProviderSession(env, id, session.id, deps.now());
+  return json({
+    url: session.url,
+    registrationId: id,
+    tableNo,
+    totalCents: price.totalCents,
+    dueNowCents: price.dueNowCents,
+    remainingCents: price.remainingCents,
+    holdExpiresAt,
+  });
+}
+
+function hostStatusPayload(row: HostRegistrationRow) {
+  return {
+    id: row.id,
+    status: row.status,
+    tableNo: row.status === 'paid' ? row.table_no : null,
+    placeConfirmed: row.status === 'paid' && row.table_no !== null,
+    totalCents: row.total_cents,
+    dueNowCents: row.due_now_cents,
+    remainingCents: row.remaining_cents,
+    amountPaidCents: row.amount_paid_cents,
+    holdExpiresAt: row.hold_expires_at,
+    paidAt: row.paid_at,
+  };
+}
+
+async function hostRegistrationStatus(
+  request: Request,
+  env: OrdersEnv,
+  deps: Deps,
+  id: string,
+): Promise<Response> {
+  if (request.method !== 'GET') return json({ error: 'method' }, 405);
+  await releaseExpiredHostHolds(env, deps.now());
+  const row = await findHostRegistration(env, id);
+  if (!row) return json({ error: 'not_found' }, 404);
+  return json(hostStatusPayload(row));
+}
+
+async function hostAvailability(env: OrdersEnv, deps: Deps): Promise<Response> {
+  await releaseExpiredHostHolds(env, deps.now());
+  const row = await env.ORDERS.prepare(
+    `SELECT COUNT(*) AS free FROM host_table_slots
+     WHERE slot_no <= ? AND registration_id IS NULL`,
+  )
+    .bind(HOST_TABLE_COUNT)
+    .first<{ free: number }>();
+  return json({
+    freeTables: Number(row?.free ?? 0),
+    totalTables: HOST_TABLE_COUNT,
+    holdMinutes: HOST_HOLD_MINUTES,
+    serverTime: deps.now(),
+  });
 }
 
 // ---------- POST /api/stripe/webhook ----------
@@ -758,9 +962,61 @@ async function stripeWebhook(
     return { orderId, order };
   };
 
+  const hostForSession = async (
+    session: Obj,
+  ): Promise<HostRegistrationRow | null> => {
+    if (
+      session.metadata?.kind !== 'host-registration' ||
+      typeof session.metadata?.host_registration_id !== 'string'
+    )
+      return null;
+    return findHostRegistration(env, session.metadata.host_registration_id);
+  };
+
   switch (type) {
     case 'checkout.session.completed':
     case 'checkout.session.async_payment_succeeded': {
+      const host = await hostForSession(obj);
+      if (host) {
+        if (obj.payment_status !== 'paid') {
+          await record(host.id, 'ignored:not_paid_yet').run();
+          break;
+        }
+        let reason: string | null = null;
+        if (host.provider_session_id !== obj.id) reason = 'session_mismatch';
+        else if (String(obj.currency ?? '').toUpperCase() !== host.currency)
+          reason = 'currency_mismatch';
+        else if (obj.amount_total !== host.due_now_cents)
+          reason = 'amount_mismatch';
+        if (reason) {
+          await record(host.id, `rejected:${reason}`).run();
+          console.error('host stripe webhook rejected', {
+            eventId,
+            hostId: host.id,
+            reason,
+          });
+          break;
+        }
+        if (host.status === 'paid') {
+          await record(host.id, 'ignored:already_paid').run();
+          break;
+        }
+        if (host.status === 'refunded') {
+          await record(host.id, 'ignored:status_refunded').run();
+          break;
+        }
+        const tableNo = await confirmHostPayment(
+          env,
+          deps.now(),
+          host,
+          typeof obj.payment_intent === 'string' ? obj.payment_intent : null,
+        );
+        await record(
+          host.id,
+          tableNo === null ? 'applied:paid_without_table' : 'applied',
+        ).run();
+        break;
+      }
       if (obj.payment_status !== 'paid') {
         await record(
           obj.client_reference_id ?? null,
@@ -807,6 +1063,20 @@ async function stripeWebhook(
       break;
     }
     case 'checkout.session.expired': {
+      const host = await hostForSession(obj);
+      if (host) {
+        if (host.provider_session_id !== obj.id) {
+          await record(host.id, 'rejected:session_mismatch').run();
+          break;
+        }
+        if (host.status === 'pending') {
+          await expireHostCheckout(env, host.id, deps.now());
+          await record(host.id, 'applied').run();
+        } else {
+          await record(host.id, `ignored:status_${host.status}`).run();
+        }
+        break;
+      }
       const { orderId } = await orderFor(obj);
       await env.ORDERS.batch([
         record(orderId, 'applied'),
@@ -818,6 +1088,20 @@ async function stripeWebhook(
       break;
     }
     case 'checkout.session.async_payment_failed': {
+      const host = await hostForSession(obj);
+      if (host) {
+        if (host.provider_session_id !== obj.id) {
+          await record(host.id, 'rejected:session_mismatch').run();
+          break;
+        }
+        if (host.status === 'pending') {
+          await markHostRegistrationFailed(env, host.id, deps.now(), 'failed');
+          await record(host.id, 'applied').run();
+        } else {
+          await record(host.id, `ignored:status_${host.status}`).run();
+        }
+        break;
+      }
       const { orderId } = await orderFor(obj);
       await env.ORDERS.batch([
         record(orderId, 'applied'),
@@ -830,6 +1114,29 @@ async function stripeWebhook(
     case 'charge.refunded': {
       if (obj.refunded !== true) {
         await record(null, 'ignored:partial_refund').run();
+        break;
+      }
+      let hostRefund: HostRegistrationRow | null = null;
+      if (typeof obj.payment_intent === 'string') {
+        try {
+          hostRefund = await findHostRegistrationByPayment(
+            env,
+            obj.payment_intent,
+          );
+        } catch {
+          hostRefund = null;
+        }
+      }
+      if (hostRefund) {
+        if (hostRefund.status === 'paid') {
+          await refundHostRegistration(env, hostRefund, deps.now());
+          await record(hostRefund.id, 'applied').run();
+        } else {
+          await record(
+            hostRefund.id,
+            `ignored:status_${hostRefund.status}`,
+          ).run();
+        }
         break;
       }
       await env.ORDERS.batch([
@@ -920,6 +1227,35 @@ async function adminCsv(request: Request, env: OrdersEnv): Promise<Response> {
   });
 }
 
+async function adminHostCsv(
+  request: Request,
+  env: OrdersEnv,
+): Promise<Response> {
+  if (!env.ADMIN_TOKEN) return json({ error: 'not_found' }, 404);
+  const auth = request.headers.get('Authorization') ?? '';
+  if (!timingSafeEqual(auth, `Bearer ${env.ADMIN_TOKEN}`))
+    return json({ error: 'unauthorized' }, 401);
+  const { results } = await env.ORDERS.prepare(
+    `SELECT id,event_id,status,table_no,customer_name,email,contact_method,contact_value,
+            game_title,format,media_package,deposit_requested,total_cents,due_now_cents,
+            amount_paid_cents,remaining_cents,currency,hold_expires_at,
+            provider_session_id,provider_payment_id,created_at,paid_at
+     FROM host_registrations ORDER BY created_at`,
+  ).all<Record<string, unknown>>();
+  const cols = results.length ? Object.keys(results[0]) : [];
+  const csv = [
+    cols.join(','),
+    ...results.map((r) => cols.map((c) => csvCell(r[c])).join(',')),
+  ].join('\n');
+  return new Response(csv, {
+    headers: {
+      'Content-Type': 'text/csv; charset=utf-8',
+      'Content-Disposition': 'attachment; filename="rost-host-registrations.csv"',
+      'Cache-Control': 'no-store',
+    },
+  });
+}
+
 // ---------- router ----------
 export async function handleApi(
   request: Request,
@@ -955,6 +1291,19 @@ export async function handleApi(
     if (request.method !== 'POST') return json({ error: 'method' }, 405);
     return createOrder(request, env, deps);
   }
+  if (pathname === '/api/host-registrations') {
+    if (request.method !== 'POST') return json({ error: 'method' }, 405);
+    return createHostRegistration(request, env, deps);
+  }
+  if (pathname === '/api/host-registrations/availability') {
+    if (request.method !== 'GET') return json({ error: 'method' }, 405);
+    return hostAvailability(env, deps);
+  }
+  const hostStatus = pathname.match(
+    /^\/api\/host-registrations\/([0-9a-f-]{36})$/i,
+  );
+  if (hostStatus)
+    return hostRegistrationStatus(request, env, deps, hostStatus[1]);
   if (pathname === '/api/paypal/return')
     return paypalReturn(request, env, ctx, deps);
   if (pathname === '/api/paypal/cancel')
@@ -965,5 +1314,10 @@ export async function handleApi(
     return stripeWebhook(request, env, ctx, deps);
   if (pathname === '/api/admin/orders.csv' && request.method === 'GET')
     return adminCsv(request, env);
+  if (
+    pathname === '/api/admin/host-registrations.csv' &&
+    request.method === 'GET'
+  )
+    return adminHostCsv(request, env);
   return json({ error: 'not_found' }, 404);
 }
