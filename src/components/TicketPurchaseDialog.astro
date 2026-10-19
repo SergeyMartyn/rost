@@ -1,0 +1,685 @@
+---
+import { routes, type Language } from '../lib/site';
+
+export interface PurchaseTicket {
+  key: string;
+  title: string;
+  summary: string;
+}
+
+const { lang, tickets } = Astro.props as {
+  lang: Language;
+  tickets: PurchaseTicket[];
+};
+const copy =
+  lang === 'ru'
+    ? {
+        contactStep: 'Шаг 1 из 2 · Контакт',
+        paymentStep: 'Шаг 2 из 2 · Оплата',
+        close: 'Закрыть форму',
+        name: 'Как к вам обращаться?',
+        namePlaceholder: 'Ваше имя',
+        channel: 'Где вам удобно написать?',
+        contactLabel: 'Ваш аккаунт в Telegram',
+        contactPlaceholder: '@username или номер телефона',
+        contactUse: 'Используем контакт, чтобы сообщить детали встречи.',
+        whatsappType: 'Как связаться с вами в WhatsApp?',
+        whatsappPhone: 'По номеру',
+        whatsappUsername: 'По нику',
+        contactFor: 'Для',
+        termsBefore: 'Я согласен с',
+        termsLink: 'условиями участия',
+        privacyBefore: 'и ознакомился с',
+        privacyLink: 'политикой конфиденциальности',
+        continue: 'Продолжить →',
+        choosePayment: 'Выберите, как вам удобнее оплатить.',
+        stripe: 'Картой через Stripe',
+        paypal: 'Через PayPal',
+        previewNote:
+          'Оплата картой проходит на защищённой странице Stripe. Данные карты нам не передаются.',
+        back: '← Изменить контакт',
+      }
+    : {
+        contactStep: 'Schritt 1 von 2 · Kontakt',
+        paymentStep: 'Schritt 2 von 2 · Zahlung',
+        close: 'Formular schließen',
+        name: 'Wie dürfen wir dich nennen?',
+        namePlaceholder: 'Dein Name',
+        channel: 'Wo können wir dich erreichen?',
+        contactLabel: 'Dein Telegram-Konto',
+        contactPlaceholder: '@username oder Telefonnummer',
+        contactUse:
+          'Wir nutzen deinen Kontakt, um dir die Details zum Treffen mitzuteilen.',
+        whatsappType: 'Wie erreichen wir dich auf WhatsApp?',
+        whatsappPhone: 'Per Telefonnummer',
+        whatsappUsername: 'Per Benutzername',
+        contactFor: 'Für',
+        termsBefore: 'Ich stimme den',
+        termsLink: 'Teilnahmebedingungen',
+        privacyBefore: 'zu und habe die',
+        privacyLink: 'Datenschutzerklärung',
+        continue: 'Weiter →',
+        choosePayment: 'Wähle, wie du bezahlen möchtest.',
+        stripe: 'Mit Karte über Stripe',
+        paypal: 'Mit PayPal',
+        previewNote:
+          'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Kartendaten erhalten wir nicht.',
+        back: '← Kontakt ändern',
+      };
+const catalog = Object.fromEntries(
+  tickets.map((ticket) => [ticket.key, [ticket.title, ticket.summary]]),
+);
+---
+
+<div
+  id="payment-return"
+  role="status"
+  class="fixed inset-x-4 top-4 z-50 mx-auto hidden max-w-md items-start gap-3 rounded-2xl border border-brand/20 bg-white px-4 py-3 text-left text-sm font-semibold leading-relaxed text-brand shadow-lg"
+>
+  <span id="payment-return-message" class="flex-1"></span>
+  <button
+    id="payment-return-close"
+    type="button"
+    aria-label={lang === 'ru' ? 'Закрыть сообщение' : 'Mitteilung schließen'}
+    class="-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-2xl font-normal leading-none text-brand transition hover:bg-brand/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+  >
+    ×
+  </button>
+</div>
+
+<script type="application/json" id="ticket-catalog" set:html={JSON.stringify(catalog)}></script>
+
+<dialog
+  id="ticket-dialog"
+  data-lang={lang}
+  aria-labelledby="ticket-title"
+  class="m-auto w-[min(calc(100%-2rem),480px)] max-h-[calc(100dvh-2rem)] rounded-4xl border-0 bg-white p-0 text-brand shadow-2xl backdrop:bg-brand/65"
+>
+  <div class="max-h-[calc(100dvh-2rem)] overflow-y-auto p-6 sm:p-8">
+    <div class="flex items-start justify-between gap-6">
+      <div>
+        <p
+          id="ticket-step"
+          class="text-xs font-bold uppercase tracking-[0.16em] text-accent"
+        >
+          {copy.contactStep}
+        </p>
+        <h2 id="ticket-title" class="mt-3 font-display text-3xl leading-tight">
+          {tickets[0]?.title}
+        </h2>
+        <p id="ticket-summary" class="mt-2 text-sm text-muted">
+          {tickets[0]?.summary}
+        </p>
+      </div>
+      <button
+        id="ticket-close"
+        type="button"
+        aria-label={copy.close}
+        class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand bg-brand-surface p-0 hover:bg-hero-end"
+      >
+        <svg
+          aria-hidden="true"
+          viewBox="0 0 24 24"
+          class="h-4 w-4"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <path d="M5 5 19 19M19 5 5 19" />
+        </svg>
+      </button>
+    </div>
+    <form id="ticket-form" class="mt-7 space-y-5">
+      <label class="block">
+        <span class="mb-2 block text-sm font-bold">{copy.name}</span>
+        <input
+          name="name"
+          autocomplete="name"
+          required
+          placeholder={copy.namePlaceholder}
+          class="w-full rounded-xl border border-line px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+        />
+      </label>
+      <fieldset>
+        <legend class="mb-2 text-sm font-bold">{copy.channel}</legend>
+        <div class="grid grid-cols-3 gap-2 text-center text-sm">
+          <label>
+            <input
+              type="radio"
+              name="channel"
+              value="Telegram"
+              checked
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              Telegram
+            </span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="channel"
+              value="WhatsApp"
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              WhatsApp
+            </span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="channel"
+              value="Instagram"
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              Instagram
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <fieldset id="whatsapp-type" class="hidden">
+        <legend class="mb-2 text-sm font-bold">{copy.whatsappType}</legend>
+        <div class="grid grid-cols-2 gap-2 text-center text-sm">
+          <label>
+            <input
+              type="radio"
+              name="whatsapp-type"
+              value="phone"
+              checked
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              {copy.whatsappPhone}
+            </span>
+          </label>
+          <label>
+            <input
+              type="radio"
+              name="whatsapp-type"
+              value="username"
+              class="peer sr-only"
+            />
+            <span class="block cursor-pointer rounded-xl border border-line px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+              {copy.whatsappUsername}
+            </span>
+          </label>
+        </div>
+      </fieldset>
+      <label class="block">
+        <span id="contact-label" class="mb-2 block text-sm font-bold">
+          {copy.contactLabel}
+        </span>
+        <input
+          name="contact"
+          required
+          placeholder={copy.contactPlaceholder}
+          aria-describedby="contact-hint contact-error"
+          aria-invalid="false"
+          class="w-full rounded-xl border border-line px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+        />
+      </label>
+      <p id="contact-hint" class="-mt-3 text-xs leading-relaxed text-muted"></p>
+      <p
+        id="contact-error"
+        role="alert"
+        class="-mt-3 hidden text-xs font-semibold leading-relaxed text-red-700"
+      ></p>
+      <p class="text-xs leading-relaxed text-muted">{copy.contactUse}</p>
+      <button
+        type="submit"
+        class="w-full rounded-2xl bg-brand px-6 py-4 font-bold text-white hover:bg-accent"
+      >
+        {copy.continue}
+      </button>
+    </form>
+    <div id="ticket-payment" class="mt-7 hidden space-y-3">
+      <div class="pb-2 text-center">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
+          {copy.contactFor}
+        </p>
+        <p
+          id="ticket-person"
+          class="mt-1 break-words font-display text-3xl"
+        ></p>
+        <p
+          id="ticket-contact"
+          class="mt-1 break-all text-sm font-semibold text-accent"
+        ></p>
+      </div>
+      <label class="flex items-start gap-3 rounded-xl bg-brand-surface p-3 text-xs leading-relaxed text-brand">
+        <input
+          id="ticket-privacy"
+          type="checkbox"
+          class="mt-0.5 h-4 w-4 shrink-0"
+        />
+        <span>
+          {copy.termsBefore}{' '}
+          <a
+            href={routes.terms[lang]}
+            target="_blank"
+            rel="noopener"
+            class="font-semibold underline underline-offset-2"
+          >
+            {copy.termsLink}
+          </a>{' '}
+          {copy.privacyBefore}{' '}
+          <a
+            href={routes.privacy[lang]}
+            target="_blank"
+            rel="noopener"
+            class="font-semibold underline underline-offset-2"
+          >
+            {copy.privacyLink}
+          </a>
+          {lang === 'de' ? ' gelesen.' : '.'}
+        </span>
+      </label>
+      <p class="text-sm text-muted">{copy.choosePayment}</p>
+      <button
+        type="button"
+        data-payment="stripe"
+        disabled
+        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {copy.stripe} <span>→</span>
+      </button>
+      <button
+        type="button"
+        data-payment="paypal"
+        disabled
+        class="hidden w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {copy.paypal} <span>→</span>
+      </button>
+      <p
+        id="ticket-error"
+        role="alert"
+        class="hidden rounded-xl bg-red-50 p-3 text-sm text-red-800"
+      ></p>
+      <p
+        id="ticket-preview-note"
+        class="pt-2 text-xs leading-relaxed text-muted"
+      >
+        {copy.previewNote}
+      </p>
+      <button
+        id="ticket-back"
+        type="button"
+        class="text-sm font-semibold underline underline-offset-4"
+      >
+        {copy.back}
+      </button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+  import { contactMode, normalizeContact } from '../lib/contact';
+
+  const dialog = document.querySelector<HTMLDialogElement>('#ticket-dialog');
+  const form = document.querySelector<HTMLFormElement>('#ticket-form');
+  const payment = document.querySelector<HTMLElement>('#ticket-payment');
+  const step = document.querySelector<HTMLElement>('#ticket-step');
+  const title = document.querySelector<HTMLElement>('#ticket-title');
+  const summary = document.querySelector<HTMLElement>('#ticket-summary');
+  const contactLabel = document.querySelector<HTMLElement>('#contact-label');
+  const contactInput = form?.querySelector<HTMLInputElement>(
+    'input[name="contact"]',
+  );
+  const nameInput = form?.querySelector<HTMLInputElement>('input[name="name"]');
+  const contactHint = document.querySelector<HTMLElement>('#contact-hint');
+  const contactError = document.querySelector<HTMLElement>('#contact-error');
+  const whatsappType = document.querySelector<HTMLElement>('#whatsapp-type');
+  const privacy = document.querySelector<HTMLInputElement>('#ticket-privacy');
+  const previewNote = document.querySelector<HTMLElement>(
+    '#ticket-preview-note',
+  );
+  const isRu = dialog?.dataset.lang === 'ru';
+  const catalog = JSON.parse(
+    document.querySelector<HTMLScriptElement>('#ticket-catalog')?.textContent ||
+      '{}',
+  ) as Record<string, [string, string]>;
+  let paymentProviders = { stripe: false, paypal: false };
+  let paymentsEnabled = false;
+  const paymentButtons =
+    document.querySelectorAll<HTMLButtonElement>('[data-payment]');
+  const contactStep = isRu
+    ? 'Шаг 1 из 2 · Контакт'
+    : 'Schritt 1 von 2 · Kontakt';
+  const paymentStep = isRu ? 'Шаг 2 из 2 · Оплата' : 'Schritt 2 von 2 · Zahlung';
+  const contactCopy = {
+    Telegram: {
+      label: isRu ? 'Ваш аккаунт в Telegram' : 'Dein Telegram-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Латинские буквы, цифры и _. @ можно не писать.'
+        : 'Lateinische Buchstaben, Ziffern und _. @ ist optional.',
+      error: isRu
+        ? 'Введите имя Telegram латиницей: 5–27 букв, цифр или _. Первым символом должна быть буква.'
+        : 'Bitte gib einen Telegram-Namen mit 5–27 lateinischen Buchstaben, Ziffern oder _ ein. Er muss mit einem Buchstaben beginnen.',
+      maxLength: 28,
+      inputMode: 'text',
+    },
+    Instagram: {
+      label: isRu ? 'Ваш аккаунт в Instagram' : 'Dein Instagram-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Латинские буквы, цифры, точки и _. @ можно не писать.'
+        : 'Lateinische Buchstaben, Ziffern, Punkte und _. @ ist optional.',
+      error: isRu
+        ? 'Введите имя Instagram латиницей: до 30 букв, цифр, точек или _.'
+        : 'Bitte gib einen Instagram-Namen mit bis zu 30 lateinischen Buchstaben, Ziffern, Punkten oder _ ein.',
+      maxLength: 31,
+      inputMode: 'text',
+    },
+    'WhatsApp-phone': {
+      label: isRu ? 'Ваш номер в WhatsApp' : 'Deine WhatsApp-Nummer',
+      placeholder: isRu
+        ? '+49 176 12345678 или 0176 12345678'
+        : '+49 176 12345678 oder 0176 12345678',
+      hint: isRu
+        ? 'Номер с + и кодом страны или немецкий номер с 0.'
+        : 'Mit + und Ländervorwahl oder als deutsche Nummer mit 0.',
+      error: isRu
+        ? 'Проверьте номер: например, +49 176 12345678 или 0176 12345678.'
+        : 'Prüfe die Nummer: zum Beispiel +49 176 12345678 oder 0176 12345678.',
+      maxLength: 24,
+      inputMode: 'tel',
+    },
+    'WhatsApp-username': {
+      label: isRu
+        ? 'Ваше имя пользователя WhatsApp'
+        : 'Dein WhatsApp-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Имя пользователя доступно в WhatsApp постепенно. Проверьте, что у вас оно уже работает.'
+        : 'WhatsApp-Benutzernamen werden schrittweise eingeführt. Prüfe, ob deiner bereits funktioniert.',
+      error: isRu
+        ? 'Введите имя пользователя латиницей, без пробелов и русских букв.'
+        : 'Bitte gib einen Benutzernamen mit lateinischen Zeichen ein, ohne Leerzeichen.',
+      maxLength: 31,
+      inputMode: 'text',
+    },
+  } as const;
+
+  const selectedChannel = () =>
+    form?.querySelector<HTMLInputElement>('input[name="channel"]:checked')
+      ?.value || 'Telegram';
+  const selectedWhatsAppType = () =>
+    form?.querySelector<HTMLInputElement>('input[name="whatsapp-type"]:checked')
+      ?.value || 'phone';
+  const mode = () => contactMode(selectedChannel(), selectedWhatsAppType());
+
+  const clearContactError = () => {
+    if (!contactInput || !contactError || !contactHint) return;
+    contactInput.setCustomValidity('');
+    contactInput.setAttribute('aria-invalid', 'false');
+    contactError.textContent = '';
+    contactError.classList.add('hidden');
+    contactHint.classList.remove('hidden');
+  };
+
+  const validateContact = (showError: boolean) => {
+    if (!contactInput) return false;
+    const value = contactInput.value.trim();
+    const valid = normalizeContact(mode(), value) !== null;
+    if (valid || !value) {
+      clearContactError();
+      return valid;
+    }
+    if (showError && contactError) {
+      const message = contactCopy[mode() as keyof typeof contactCopy].error;
+      contactInput.setCustomValidity(message);
+      contactInput.setAttribute('aria-invalid', 'true');
+      contactError.textContent = message;
+      contactError.classList.remove('hidden');
+      contactHint?.classList.add('hidden');
+    }
+    return false;
+  };
+
+  const updateContactMode = () => {
+    if (!contactInput || !contactLabel || !contactHint || !whatsappType) return;
+    const config = contactCopy[mode() as keyof typeof contactCopy];
+    whatsappType.classList.toggle('hidden', selectedChannel() !== 'WhatsApp');
+    contactLabel.textContent = config.label;
+    contactInput.placeholder = config.placeholder;
+    contactInput.maxLength = config.maxLength;
+    contactInput.inputMode = config.inputMode;
+    contactHint.textContent = config.hint;
+    contactInput.value = '';
+    clearContactError();
+  };
+
+  const refreshPaymentButtons = () => {
+    paymentButtons.forEach((button) => {
+      const provider = button.dataset.payment as 'stripe' | 'paypal';
+      if (provider === 'paypal') {
+        button.classList.toggle('hidden', !paymentProviders.paypal);
+        button.classList.toggle('flex', paymentProviders.paypal);
+      }
+      button.disabled = !privacy?.checked || !paymentProviders[provider];
+    });
+  };
+
+  fetch('/api/config')
+    .then(
+      (response) =>
+        (response.ok ? response.json() : null) as Promise<{
+          paymentsEnabled?: boolean;
+          mode?: string;
+          stripe?: boolean;
+          paypal?: boolean;
+        } | null>,
+    )
+    .then((config) => {
+      paymentsEnabled = !!config?.paymentsEnabled;
+      paymentProviders = {
+        stripe: config?.stripe ?? paymentsEnabled,
+        paypal: config?.paypal === true,
+      };
+      if (previewNote) {
+        if (!paymentsEnabled)
+          previewNote.textContent = isRu
+            ? 'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.'
+            : 'Online-Zahlung derzeit nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.';
+        else if (config?.mode === 'test')
+          previewNote.textContent = isRu
+            ? 'Тестовый режим оплаты. Настоящие деньги не списываются.'
+            : 'Testmodus für Zahlungen. Es wird kein echtes Geld abgebucht.';
+        else if (paymentProviders.paypal)
+          previewNote.textContent = isRu
+            ? 'Оплата проходит на защищённой странице Stripe или PayPal.'
+            : 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe oder PayPal.';
+      }
+      refreshPaymentButtons();
+    })
+    .catch(() => {});
+
+  let currentTicket = '';
+  updateContactMode();
+
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-ticket]')
+    .forEach((button) => {
+      button.addEventListener('click', () => {
+        const group = button.dataset.ticketGroup;
+        const selected = group
+          ? document.querySelector<HTMLInputElement>(
+              `input[name="${group}"]:checked`,
+            )?.value
+          : undefined;
+        const key = selected || button.dataset.ticket || '';
+        const ticket = catalog[key];
+        if (!dialog || !ticket || !title || !summary || !step || !form || !payment)
+          return;
+        currentTicket = key;
+        document.querySelector<HTMLElement>('#ticket-error')?.classList.add('hidden');
+        title.textContent = ticket[0];
+        summary.textContent = ticket[1];
+        step.textContent = contactStep;
+        form.classList.remove('hidden');
+        payment.classList.add('hidden');
+        form.reset();
+        if (privacy) privacy.checked = false;
+        paymentButtons.forEach((button) => (button.disabled = true));
+        updateContactMode();
+        dialog.showModal();
+      });
+    });
+
+  document
+    .querySelector('#ticket-close')
+    ?.addEventListener('click', () => dialog?.close());
+  dialog?.addEventListener('click', (event) => {
+    if (event.target === dialog) dialog.close();
+  });
+  form
+    ?.querySelectorAll<HTMLInputElement>(
+      'input[name="channel"], input[name="whatsapp-type"]',
+    )
+    .forEach((radio) => radio.addEventListener('change', updateContactMode));
+  contactInput?.addEventListener('input', () => validateContact(true));
+  const person = document.querySelector<HTMLElement>('#ticket-person');
+  const shownContact = document.querySelector<HTMLElement>('#ticket-contact');
+  form?.addEventListener('submit', (event) => {
+    event.preventDefault();
+    validateContact(true);
+    if (
+      !form.reportValidity() ||
+      !payment ||
+      !step ||
+      !person ||
+      !shownContact ||
+      !nameInput ||
+      !contactInput
+    )
+      return;
+    const contact = contactInput.value.trim();
+    const normalizedContact =
+      mode() === 'WhatsApp-phone'
+        ? (() => {
+            const digits = contact.replace(/[\s()-]/g, '');
+            return digits.startsWith('0') ? `+49${digits.slice(1)}` : digits;
+          })()
+        : contact;
+    person.textContent = nameInput.value.trim();
+    shownContact.textContent = `${selectedChannel()} · ${
+      mode() === 'WhatsApp-phone'
+        ? normalizedContact
+        : `@${contact.replace(/^@/, '')}`
+    }`;
+    form.classList.add('hidden');
+    payment.classList.remove('hidden');
+    step.textContent = paymentStep;
+    privacy?.focus();
+  });
+  privacy?.addEventListener('change', refreshPaymentButtons);
+
+  const orderErrors = isRu
+    ? {
+        disabled:
+          'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
+        generic:
+          'Не удалось перейти к оплате. Попробуйте ещё раз или напишите нам.',
+      }
+    : {
+        disabled:
+          'Die Online-Zahlung ist noch nicht verfügbar. Schreib uns, wir regeln es.',
+        generic:
+          'Weiterleitung zur Zahlung fehlgeschlagen. Bitte versuche es erneut oder schreib uns.',
+      };
+  const errorBox = document.querySelector<HTMLElement>('#ticket-error');
+  paymentButtons.forEach((button) =>
+    button.addEventListener('click', async (event) => {
+      const button = event.currentTarget as HTMLButtonElement;
+      const provider = button.dataset.payment as 'stripe' | 'paypal';
+      if (!currentTicket || !nameInput || !contactInput || !privacy?.checked)
+        return;
+      errorBox?.classList.add('hidden');
+      button.disabled = true;
+      let message = orderErrors.generic;
+      try {
+        const response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            ticket: currentTicket,
+            name: nameInput.value.trim(),
+            channel: mode(),
+            contact: contactInput.value.trim(),
+            lang: isRu ? 'ru' : 'de',
+            consent: true,
+            provider,
+          }),
+        });
+        const data: unknown = await response.json().catch(() => ({}));
+        if (
+          response.ok &&
+          typeof data === 'object' &&
+          data !== null &&
+          'url' in data &&
+          typeof data.url === 'string'
+        ) {
+          location.href = data.url;
+          return;
+        }
+        if (response.status === 403 || response.status === 503)
+          message = orderErrors.disabled;
+      } catch {
+        /* network error: generic message */
+      }
+      if (errorBox) {
+        errorBox.textContent = message;
+        errorBox.classList.remove('hidden');
+      }
+      refreshPaymentButtons();
+    }),
+  );
+
+  const returned = new URLSearchParams(location.search).get('payment');
+  const returnBox = document.querySelector<HTMLElement>('#payment-return');
+  const returnMessage = document.querySelector<HTMLElement>(
+    '#payment-return-message',
+  );
+  document
+    .querySelector('#payment-return-close')
+    ?.addEventListener('click', () => {
+      returnBox?.classList.add('hidden');
+      returnBox?.classList.remove('flex');
+    });
+  if (
+    returnBox &&
+    returnMessage &&
+    (returned === 'success' || returned === 'cancelled' || returned === 'error')
+  ) {
+    returnMessage.textContent =
+      returned === 'success'
+        ? isRu
+          ? 'Спасибо! Проверяем подтверждение оплаты. После подтверждения свяжемся с вами.'
+          : 'Danke! Wir prüfen die Zahlungsbestätigung und melden uns danach bei dir.'
+        : returned === 'error'
+          ? isRu
+            ? 'Не удалось подтвердить оплату. Если деньги списались, напишите нам — мы проверим платёж.'
+            : 'Die Zahlung konnte nicht bestätigt werden. Falls Geld abgebucht wurde, schreib uns bitte.'
+          : isRu
+            ? 'Оплата отменена. Билет не оформлен, деньги не списаны.'
+            : 'Zahlung abgebrochen. Es wurde nichts berechnet.';
+    returnBox.classList.remove('hidden');
+    returnBox.classList.add('flex');
+    history.replaceState(null, '', location.pathname);
+    setTimeout(() => {
+      returnBox.classList.add('hidden');
+      returnBox.classList.remove('flex');
+    }, 12000);
+  }
+  document.querySelector('#ticket-back')?.addEventListener('click', () => {
+    form?.classList.remove('hidden');
+    payment?.classList.add('hidden');
+    if (step) step.textContent = contactStep;
+    form?.querySelector<HTMLInputElement>('input[name="name"]')?.focus();
+  });
+</script>

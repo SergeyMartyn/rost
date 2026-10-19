@@ -11,6 +11,7 @@ import Team from '../components/Team.astro';
 import PageHero from '../components/PageHero.astro';
 import ParticipationTerms from '../components/ParticipationTerms.astro';
 import HostRegistration from '../components/HostRegistration.astro';
+import TiGamesPage from '../components/TiGamesPage.astro';
 import {
   routes,
   languages,
@@ -51,6 +52,8 @@ const legalText =
     </>
   ) : page === 'events' ? (
     <EventPage lang={lang} />
+  ) : page === 'tiGames' ? (
+    <TiGamesPage lang={lang} />
   ) : page === 'archive' ? (
     <ArchiveIndex lang={lang} />
   ) : page === 'archiveRegensburg' ? (

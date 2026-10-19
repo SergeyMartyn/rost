@@ -28,6 +28,10 @@
       "de": "/de/veranstaltungen/",
       "ru": "/ru/meropriyatiya/"
     },
+    "tiGames": {
+      "de": "/de/veranstaltungen/transformationsspiele/",
+      "ru": "/ru/meropriyatiya/transformatsionnye-igry/"
+    },
     "archive": {
       "de": "/de/veranstaltungsarchiv/",
       "ru": "/ru/arkhiv-meropriyatiy/"

@@ -19,6 +19,9 @@
 - [Мероприятия](https://rost.community/ru/meropriyatiya/) /
   [Veranstaltungen](https://rost.community/de/veranstaltungen/): встречи и игры
   с датами, адресами и ценами.
+- [Трансформационные игры в Мюнхене](https://rost.community/ru/meropriyatiya/transformatsionnye-igry/) /
+  [Transformationsspiele München](https://rost.community/de/veranstaltungen/transformationsspiele/):
+  программа, игропрактики, билеты и условия участия.
 - [О нас](https://rost.community/ru/o-nas/) /
   [Über uns](https://rost.community/de/ueber-uns/): смысл сообщества и команда.
 - [Контакты](https://rost.community/ru/kontakty/) /

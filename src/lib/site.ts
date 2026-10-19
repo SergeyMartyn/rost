@@ -10,6 +10,7 @@ export const text = {
   de: {
     home: 'Startseite',
     events: 'Veranstaltungen',
+    tiGames: 'Transformationsspiele München',
     archive: 'Veranstaltungsarchiv',
     archiveRegensburg: 'Kennenlerntreffen in Regensburg',
     about: 'Über uns',
@@ -36,6 +37,7 @@ export const text = {
   ru: {
     home: 'Главная',
     events: 'Мероприятия',
+    tiGames: 'Трансформационные игры в Мюнхене',
     archive: 'Архив мероприятий',
     archiveRegensburg: 'Встреча-знакомство в Регенсбурге',
     about: 'О нас',
