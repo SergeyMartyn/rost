@@ -281,6 +281,53 @@ test('Nuremberg details open accessibly and lead to its ticket form', async ({
   }
 });
 
+test('Munich programme opens accessibly and leads to its ticket form', async ({
+  page,
+}) => {
+  for (const [lang, path] of [
+    ['ru', '/ru/meropriyatiya/'],
+    ['de', '/de/veranstaltungen/'],
+  ] as const) {
+    for (const width of [390, 768, 1440]) {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto(path);
+      const trigger = page.locator('#games-details-open');
+      const details = page.locator('#games-details-dialog');
+      await trigger.click();
+      await expect(details).toBeVisible();
+      await expect(details.locator('h2')).toContainText(
+        lang === 'ru' ? 'Мюнхене' : 'München',
+      );
+      await expect(details).toContainText('09:30–10:00');
+      await expect(details).toContainText(
+        lang === 'ru' ? 'С кем можно сыграть' : 'Mit wem du spielen kannst',
+      );
+      await expect(details.locator('section').last()).toContainText(
+        lang === 'ru' ? 'Пик трансформации' : 'Gipfel der Transformation',
+      );
+      expect(
+        await details.evaluate((element) => {
+          const rect = element.getBoundingClientRect();
+          return (
+            rect.left >= 0 &&
+            rect.right <= innerWidth &&
+            rect.bottom <= innerHeight
+          );
+        }),
+      ).toBe(true);
+      await page.keyboard.press('Escape');
+      await expect(details).not.toBeVisible();
+      await expect(trigger).toBeFocused();
+      await trigger.click();
+      await page.locator('#games-details-buy').click();
+      await expect(details).not.toBeVisible();
+      await expect(page.locator('#ticket-dialog')).toBeVisible();
+      await expect(page.locator('#ticket-summary')).toContainText('180 €');
+      await page.locator('#ticket-close').click();
+    }
+  }
+});
+
 test('contact errors replace hints, local WhatsApp numbers normalize, and terms links resolve', async ({
   page,
   request,
