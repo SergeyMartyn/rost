@@ -118,6 +118,11 @@ test('games date and venue agree across pages and ticket summary', async ({
         path: 'test-results/games-venue-ru.png',
       });
     }
+    await page.goto(
+      lang === 'ru'
+        ? '/ru/meropriyatiya/transformatsionnye-igry/'
+        : '/de/veranstaltungen/transformationsspiele/',
+    );
     await page.locator('[data-ticket="guest"]').click();
     await expect(page.locator('#ticket-summary')).toContainText(
       lang === 'ru' ? '7 ноября' : '7. November',

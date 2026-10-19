@@ -281,50 +281,31 @@ test('Nuremberg details open accessibly and lead to its ticket form', async ({
   }
 });
 
-test('Munich programme opens accessibly and leads to its ticket form', async ({
+test('Munich programme link leads to the dedicated TI page', async ({
   page,
 }) => {
-  for (const [lang, path] of [
-    ['ru', '/ru/meropriyatiya/'],
-    ['de', '/de/veranstaltungen/'],
+  for (const [lang, path, target] of [
+    [
+      'ru',
+      '/ru/meropriyatiya/',
+      '/ru/meropriyatiya/transformatsionnye-igry/',
+    ],
+    [
+      'de',
+      '/de/veranstaltungen/',
+      '/de/veranstaltungen/transformationsspiele/',
+    ],
   ] as const) {
-    for (const width of [390, 768, 1440]) {
-      await page.setViewportSize({ width, height: 844 });
-      await page.goto(path);
-      const trigger = page.locator('#games-details-open');
-      const details = page.locator('#games-details-dialog');
-      await trigger.click();
-      await expect(details).toBeVisible();
-      await expect(details.locator('h2')).toContainText(
-        lang === 'ru' ? 'Мюнхене' : 'München',
-      );
-      await expect(details).toContainText('09:30–10:00');
-      await expect(details).toContainText(
-        lang === 'ru' ? 'С кем можно сыграть' : 'Mit wem du spielen kannst',
-      );
-      await expect(details.locator('section').last()).toContainText(
-        lang === 'ru' ? 'Пик трансформации' : 'Gipfel der Transformation',
-      );
-      expect(
-        await details.evaluate((element) => {
-          const rect = element.getBoundingClientRect();
-          return (
-            rect.left >= 0 &&
-            rect.right <= innerWidth &&
-            rect.bottom <= innerHeight
-          );
-        }),
-      ).toBe(true);
-      await page.keyboard.press('Escape');
-      await expect(details).not.toBeVisible();
-      await expect(trigger).toBeFocused();
-      await trigger.click();
-      await page.locator('#games-details-buy').click();
-      await expect(details).not.toBeVisible();
-      await expect(page.locator('#ticket-dialog')).toBeVisible();
-      await expect(page.locator('#ticket-summary')).toContainText('180 €');
-      await page.locator('#ticket-close').click();
-    }
+    await page.goto(path);
+    await page.locator('#games-details-open').click();
+    await expect(page).toHaveURL(new RegExp(`${target}$`));
+    await expect(page.locator('#ti-program')).toContainText('09:30–10:00');
+    await expect(page.locator('#ti-program')).toContainText(
+      lang === 'ru' ? 'VIP' : 'VIP',
+    );
+    await expect(page.locator('#ti-practitioners-title')).toContainText(
+      lang === 'ru' ? 'С кем можно сыграть' : 'Mit wem du spielen kannst',
+    );
   }
 });
 
@@ -377,6 +358,10 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     const home = lang === 'ru' ? '/ru/' : '/de/';
     const events =
       lang === 'ru' ? '/ru/meropriyatiya/' : '/de/veranstaltungen/';
+    const tiGames =
+      lang === 'ru'
+        ? '/ru/meropriyatiya/transformatsionnye-igry/'
+        : '/de/veranstaltungen/transformationsspiele/';
     await page.goto(home);
     await page
       .locator('.faq__question-text')
@@ -401,18 +386,18 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await expect(answer).toContainText('80 €');
     await expect(answer).toContainText('180 €');
 
-    await page.goto(events);
-    await expect(page.locator('input[name="games-ticket"][value="guest_peak"]')).toBeChecked();
+    await page.goto(tiGames);
+    await expect(
+      page.locator('input[name="games-ticket"][value="guest_peak"]'),
+    ).toBeChecked();
     await page.locator('[data-ticket="guest"]').click();
     await expect(page.locator('#ticket-summary')).toContainText('180 €');
     await page.locator('#ticket-close').click();
-    for (const [ticket, price] of [
-      ['nuremberg_meetup', '29 €'],
-    ] as const) {
-      await page.locator(`[data-ticket="${ticket}"]`).click();
-      await expect(page.locator('#ticket-summary')).toContainText(price);
-      await page.locator('#ticket-close').click();
-    }
+    await page.goto(events);
+    await page.locator('[data-ticket="nuremberg_meetup"]').click();
+    await expect(page.locator('#ticket-summary')).toContainText('29 €');
+    await page.locator('#ticket-close').click();
+    await page.goto(tiGames);
     await page
       .locator('input[name="games-ticket"][value="guest"]')
       .check({ force: true });
@@ -425,7 +410,7 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await page.locator('[data-ticket="guest"]').click();
     await expect(page.locator('#ticket-summary')).toContainText('180 €');
     await page.locator('#ticket-close').click();
-    await expect(page.locator('[data-ticket="host"]')).toBeHidden();
+    await expect(page.locator('[data-ticket="host"]')).toHaveCount(0);
     await page.goto(
       lang === 'ru' ? '/ru/usloviya-uchastiya/' : '/de/teilnahmebedingungen/',
     );
@@ -521,6 +506,7 @@ test('requested FAQ order and purchase hover colors', async ({ page }) => {
     'color',
     'rgb(240, 207, 99)',
   );
+  await page.goto('/ru/meropriyatiya/transformatsionnye-igry/');
   await page.locator('[data-ticket="guest"]').hover();
   await expect(page.locator('[data-ticket="guest"]')).toHaveCSS(
     'background-color',
