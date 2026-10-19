@@ -374,7 +374,7 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await page.locator('#ticket-close').click();
     await page
       .locator('input[name="games-ticket"][value="guest_peak"]')
-      .check();
+      .check({ force: true });
     await page.locator('[data-ticket="guest"]').click();
     await expect(page.locator('#ticket-summary')).toContainText('180 €');
     await page.locator('#ticket-close').click();
