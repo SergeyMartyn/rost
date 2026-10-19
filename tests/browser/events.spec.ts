@@ -114,7 +114,7 @@ test('event photographs fill the cards and open uncropped in both languages', as
       }
       await expect(page.locator('.events__link').first()).toHaveAttribute(
         'href',
-        new RegExp(`/${lang}/.*#regensburg$`),
+        new RegExp(`/${lang}/.*#games$`),
       );
     }
   }
@@ -352,22 +352,37 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
       .locator('..');
     await expect(answer).toContainText('29 €');
     await expect(answer).toContainText('80 €');
-    await expect(answer).toContainText('99 €');
+    await expect(answer).toContainText('180 €');
 
     await page.goto(events);
+    await expect(page.locator('input[name="games-ticket"][value="guest_peak"]')).toBeChecked();
+    await page.locator('[data-ticket="guest"]').click();
+    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await page.locator('#ticket-close').click();
     for (const [ticket, price] of [
       ['nuremberg_meetup', '29 €'],
-      ['guest', '80 €'],
     ] as const) {
       await page.locator(`[data-ticket="${ticket}"]`).click();
       await expect(page.locator('#ticket-summary')).toContainText(price);
       await page.locator('#ticket-close').click();
     }
+    await page
+      .locator('input[name="games-ticket"][value="guest"]')
+      .check({ force: true });
+    await page.locator('[data-ticket="guest"]').click();
+    await expect(page.locator('#ticket-summary')).toContainText('80 €');
+    await page.locator('#ticket-close').click();
+    await page
+      .locator('input[name="games-ticket"][value="guest_peak"]')
+      .check();
+    await page.locator('[data-ticket="guest"]').click();
+    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await page.locator('#ticket-close').click();
     await expect(page.locator('[data-ticket="host"]')).toBeHidden();
     await page.goto(
       lang === 'ru' ? '/ru/usloviya-uchastiya/' : '/de/teilnahmebedingungen/',
     );
-    for (const price of ['29 €', '80 €', '99 €'])
+    for (const price of ['29 €', '80 €', '180 €'])
       await expect(page.locator('main')).toContainText(price);
   }
 });
@@ -400,7 +415,9 @@ test('archive navigation and Regensburg retrospective work in both languages', a
       await page.locator(`a[href="${detailPath}"]`).last().click();
       await expect(page).toHaveURL(new RegExp(`${detailPath}$`));
       await expect(page.locator('main h1')).toContainText(
-        lang === 'ru' ? 'Встреча-знакомство в Регенсбурге' : 'Kennenlerntreffen in Regensburg',
+        lang === 'ru'
+          ? 'Встреча-знакомство в Регенсбурге'
+          : 'Kennenlerntreffen in Regensburg',
       );
       await expect(page.locator('main')).not.toContainText('29 €');
       await expect(

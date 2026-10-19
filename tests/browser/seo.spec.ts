@@ -51,9 +51,12 @@ test('structured data, canonical and social metadata on every page', async ({
     expect(organization.name, path).toBe(site.name);
     const website = graph.find((node) => node['@type'] === 'WebSite')!;
     expect(website.inLanguage, path).toBe(lang);
-    const socialPage = ['home', 'events', 'about', 'contacts'].includes(page)
-      ? page
-      : 'home';
+    const socialPage =
+      page === 'archive' || page === 'archiveRegensburg'
+        ? 'events'
+        : ['home', 'events', 'about', 'contacts'].includes(page)
+          ? page
+          : 'home';
     const imageFile =
       socialPage === 'about'
         ? `about-${lang}-v2.png`

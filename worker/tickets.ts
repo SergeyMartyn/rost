@@ -1,6 +1,11 @@
 // Server-side ticket catalogue. Prices are decided HERE, never taken from the browser.
 export type TicketKey =
-  'meetup' | 'nuremberg_meetup' | 'guest_early' | 'guest' | 'host';
+  | 'meetup'
+  | 'nuremberg_meetup'
+  | 'guest_early'
+  | 'guest'
+  | 'guest_peak'
+  | 'host';
 
 export interface Ticket {
   eventId: string;
@@ -34,10 +39,19 @@ export const TICKETS: Record<TicketKey, Ticket> = {
   },
   guest: {
     eventId: 'munich-games-2026-11-07',
-    amountCents: 9900,
+    amountCents: 8000,
     label: {
-      de: 'R.O.S.T. Spiele München, Ticket für Teilnehmende',
-      ru: 'R.O.S.T. Игры в Мюнхене, билет участника',
+      de: 'R.O.S.T. Spiele München, Ticket „Basisimpuls“',
+      ru: 'R.O.S.T. Игры в Мюнхене, билет «Базовый импульс»',
+    },
+    sheetTab: '07.11.2026 - TI_München',
+  },
+  guest_peak: {
+    eventId: 'munich-games-2026-11-07',
+    amountCents: 18000,
+    label: {
+      de: 'R.O.S.T. Spiele München, Ticket „Gipfel der Transformation“',
+      ru: 'R.O.S.T. Игры в Мюнхене, билет «Пик трансформации»',
     },
     sheetTab: '07.11.2026 - TI_München',
   },

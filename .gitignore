@@ -8,3 +8,5 @@ wrangler.generated.json
 test-results/
 playwright-report/
 .copy-check/
+__pycache__/
+*.pyc

@@ -144,7 +144,8 @@ const paidSession = (
 
 for (const [ticket, cents] of [
   ['nuremberg_meetup', 2900],
-  ['guest', 9900],
+  ['guest', 8000],
+  ['guest_peak', 18000],
   ['host', 24900],
 ] as const) {
   test(`ticket ${ticket}: server-side price ${cents / 100} EUR, pending → paid`, async () => {
@@ -223,7 +224,7 @@ test('early participant price is enforced at the Berlin deadline', async () => {
   assert.equal(regular.status, 200);
   assert.equal(
     t.stripeCalls[1].body.get('line_items[0][price_data][unit_amount]'),
-    '9900',
+    '8000',
   );
 });
 
@@ -249,7 +250,7 @@ test('repeated webhook: no duplicate, no second change, no second sheet row', as
   const ev = () =>
     signedEvent(
       'checkout.session.completed',
-      paidSession(id, session, 9900),
+      paidSession(id, session, 8000),
       'evt_same',
     );
   assert.equal((await t.api(ev())).status, 200);
@@ -266,7 +267,7 @@ test('repeated webhook: no duplicate, no second change, no second sheet row', as
   await t.api(
     signedEvent(
       'checkout.session.async_payment_succeeded',
-      paidSession(id, session, 9900),
+      paidSession(id, session, 8000),
       'evt_other',
     ),
   );

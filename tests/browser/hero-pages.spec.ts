@@ -95,7 +95,7 @@ test('games date and venue agree across pages and ticket summary', async ({
 }) => {
   for (const [lang, routes] of Object.entries(paths)) {
     await page.goto(routes[0]);
-    await expect(page.locator('.events__date').last()).toHaveAttribute(
+    await expect(page.locator('.events__date').first()).toHaveAttribute(
       'datetime',
       '2026-11-07',
     );

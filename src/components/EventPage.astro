@@ -1,11 +1,9 @@
 ---
 import { routes, type Language } from '../lib/site';
-import { isEarlyBirdActive } from '../lib/early-bird';
 import VideoFacade from './VideoFacade.astro';
 import ArchiveLink from './ArchiveLink.astro';
 
 const { lang } = Astro.props as { lang: Language };
-const earlyBirdInitially = isEarlyBirdActive(Date.now());
 const copy =
   lang === 'ru'
     ? {
@@ -53,7 +51,11 @@ const copy =
         gamesBody:
           'День, в котором можно попробовать новый формат, посмотреть на свои вопросы с другой стороны и пообщаться с людьми.',
         guest: 'Купить билет участника',
-        earlyBirdUntil: 'Ранняя цена до 15 октября',
+        chooseTicket: 'Выберите билет участника',
+        basicTicket: 'Базовый импульс',
+        peakTicket: 'Пик трансформации',
+        basicIncludes: 'Игры, общие зоны, напитки и фото',
+        peakIncludes: 'Всё из базового, Zoom, фото, ужин и консультация',
         host: 'Хочу провести игру',
         questions: 'Есть вопросы перед встречей?',
         questionsBody:
@@ -130,7 +132,11 @@ const copy =
         gamesBody:
           'Ein Tag, an dem du ein neues Format ausprobieren, deine Fragen aus einer anderen Perspektive betrachten und Menschen kennenlernen kannst.',
         guest: 'Ticket für Teilnehmende kaufen',
-        earlyBirdUntil: 'Frühbucherpreis bis 15. Oktober',
+        chooseTicket: 'Wähle dein Ticket',
+        basicTicket: 'Basisimpuls',
+        peakTicket: 'Gipfel der Transformation',
+        basicIncludes: 'Spiele, Gemeinschaftsbereiche, Getränke und Foto',
+        peakIncludes: 'Basistarif, Zoom, Fotos, Abendessen und Beratung',
         host: 'Ich möchte ein Spiel leiten',
         questions: 'Noch Fragen zum Treffen?',
         questionsBody:
@@ -246,41 +252,64 @@ const copy =
           </div>
         </div>
         <div class="p-7">
+          <fieldset id="games-ticket-options">
+            <legend class="mb-3 font-bold text-brand">
+              {copy.chooseTicket}
+            </legend>
+            <div class="space-y-3">
+              <label class="block cursor-pointer">
+                <input
+                  type="radio"
+                  name="games-ticket"
+                  value="guest"
+                  class="peer sr-only"
+                />
+                <span class="flex min-h-24 items-start gap-3 rounded-2xl border border-line bg-white p-4 transition peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+                  <span class="mt-1 text-brand" aria-hidden="true">
+                    ○
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <strong class="block text-sm">{copy.basicTicket}</strong>
+                    <span class="mt-1 block text-xs leading-snug text-muted">
+                      {copy.basicIncludes}
+                    </span>
+                  </span>
+                  <strong class="shrink-0 font-display text-2xl font-normal">
+                    80 €
+                  </strong>
+                </span>
+              </label>
+              <label class="block cursor-pointer">
+                <input
+                  type="radio"
+                  name="games-ticket"
+                  value="guest_peak"
+                  checked
+                  class="peer sr-only"
+                />
+                <span class="flex min-h-24 items-start gap-3 rounded-2xl border border-line bg-white p-4 transition peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+                  <span class="mt-1 text-brand" aria-hidden="true">
+                    ○
+                  </span>
+                  <span class="min-w-0 flex-1">
+                    <strong class="block text-sm">{copy.peakTicket}</strong>
+                    <span class="mt-1 block text-xs leading-snug text-muted">
+                      {copy.peakIncludes}
+                    </span>
+                  </span>
+                  <strong class="shrink-0 font-display text-2xl font-normal">
+                    180 €
+                  </strong>
+                </span>
+              </label>
+            </div>
+          </fieldset>
           <button
             type="button"
             data-ticket="guest"
-            class="w-full rounded-2xl bg-brand px-6 py-4 text-center text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="mt-4 w-full rounded-2xl bg-brand px-6 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
-            <span class="block">
-              <span class="block font-bold">{copy.guest}</span>
-              <span
-                id="guest-offer-note"
-                class:list={[
-                  'mt-1 block text-xs leading-snug opacity-80',
-                  { hidden: !earlyBirdInitially },
-                ]}
-              >
-                {copy.earlyBirdUntil}
-              </span>
-            </span>
-            <span class="mt-2 inline-flex items-baseline justify-center gap-2 whitespace-nowrap">
-              <s
-                id="guest-old-price"
-                aria-hidden="true"
-                class:list={[
-                  'text-sm opacity-65',
-                  { hidden: !earlyBirdInitially },
-                ]}
-              >
-                99 €
-              </s>
-              <strong
-                id="guest-current-price"
-                class="font-display text-2xl font-normal"
-              >
-                {earlyBirdInitially ? '80 €' : '99 €'}
-              </strong>
-            </span>
+            {copy.guest}
           </button>
           <a
             href={routes.host[lang]}
@@ -694,8 +723,6 @@ const copy =
 </dialog>
 
 <script>
-  import { isEarlyBirdActive } from '../lib/early-bird';
-
   const detailsDialog = document.querySelector<HTMLDialogElement>(
     '#meet-details-dialog',
   );
@@ -743,39 +770,6 @@ const copy =
     '#ticket-preview-note',
   );
   const noteRu = dialog?.dataset.lang === 'ru';
-  const guestButton = document.querySelector<HTMLButtonElement>(
-    '[data-ticket="guest"]',
-  );
-  const guestCurrentPrice = document.querySelector<HTMLElement>(
-    '#guest-current-price',
-  );
-  const guestOldPrice = document.querySelector<HTMLElement>('#guest-old-price');
-  const guestOfferNote =
-    document.querySelector<HTMLElement>('#guest-offer-note');
-  let serverClockOffsetMs = 0;
-  const effectiveNow = () => Date.now() + serverClockOffsetMs;
-  const refreshGuestOffer = () => {
-    const early = isEarlyBirdActive(effectiveNow());
-    if (guestCurrentPrice)
-      guestCurrentPrice.textContent = early ? '80 €' : '99 €';
-    guestOldPrice?.classList.toggle('hidden', !early);
-    guestOfferNote?.classList.toggle('hidden', !early);
-    guestButton?.setAttribute(
-      'aria-label',
-      noteRu
-        ? early
-          ? 'Купить билет участника. Ранняя цена 80 евро до 15 октября, затем 99 евро'
-          : 'Купить билет участника. Цена 99 евро'
-        : early
-          ? 'Ticket für Teilnehmende kaufen. Frühbucherpreis 80 Euro bis 15. Oktober, danach 99 Euro'
-          : 'Ticket für Teilnehmende kaufen. Preis 99 Euro',
-    );
-  };
-  refreshGuestOffer();
-  window.setInterval(refreshGuestOffer, 30_000);
-  document.addEventListener('visibilitychange', () => {
-    if (!document.hidden) refreshGuestOffer();
-  });
   let paymentsEnabled = false;
   let providers = { stripe: false, paypal: false };
   const paymentButtons =
@@ -798,14 +792,9 @@ const copy =
           mode?: string;
           stripe?: boolean;
           paypal?: boolean;
-          serverTime?: number;
         } | null>,
     )
     .then((cfg) => {
-      if (typeof cfg?.serverTime === 'number') {
-        serverClockOffsetMs = cfg.serverTime - Date.now();
-        refreshGuestOffer();
-      }
       paymentsEnabled = !!cfg?.paymentsEnabled;
       providers = {
         stripe: cfg?.stripe ?? paymentsEnabled,
@@ -843,7 +832,8 @@ const copy =
     ? {
         nuremberg_meetup: ['Билет на встречу', '12 декабря · Нюрнберг · 29 €'],
         guest_early: ['Билет участника', '7 ноября · Мюнхен · 80 €'],
-        guest: ['Билет участника', '7 ноября · Мюнхен · 99 €'],
+        guest: ['Базовый импульс', '7 ноября · Мюнхен · 80 €'],
+        guest_peak: ['Пик трансформации', '7 ноября · Мюнхен · 180 €'],
       }
     : {
         nuremberg_meetup: [
@@ -854,7 +844,11 @@ const copy =
           'Ticket für Teilnehmende',
           '7. November · München · 80 €',
         ],
-        guest: ['Ticket für Teilnehmende', '7. November · München · 99 €'],
+        guest: ['Basisimpuls', '7. November · München · 80 €'],
+        guest_peak: [
+          'Gipfel der Transformation',
+          '7. November · München · 180 €',
+        ],
       };
 
   const selectedChannel = () =>
@@ -986,10 +980,11 @@ const copy =
     .querySelectorAll<HTMLButtonElement>('[data-ticket]')
     .forEach((button) => {
       button.addEventListener('click', () => {
-        refreshGuestOffer();
         const selectedTicket =
-          button.dataset.ticket === 'guest' && isEarlyBirdActive(effectiveNow())
-            ? 'guest_early'
+          button.dataset.ticket === 'guest'
+            ? document.querySelector<HTMLInputElement>(
+                'input[name="games-ticket"]:checked',
+              )?.value || 'guest'
             : button.dataset.ticket;
         const ticket = tickets[selectedTicket as keyof typeof tickets];
         if (
@@ -1068,40 +1063,19 @@ const copy =
           'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
         generic:
           'Не удалось перейти к оплате. Попробуйте ещё раз или напишите нам.',
-        offerEnded:
-          'Ранняя цена закончилась. Билет участника теперь стоит 99 €. Проверьте сумму и нажмите оплату ещё раз.',
       }
     : {
         disabled:
           'Die Online-Zahlung ist noch nicht verfügbar. Schreib uns, wir regeln es.',
         generic:
           'Weiterleitung zur Zahlung fehlgeschlagen. Bitte versuche es erneut oder schreib uns.',
-        offerEnded:
-          'Der Frühbucherpreis ist abgelaufen. Das Ticket für Teilnehmende kostet jetzt 99 €. Bitte prüfe den Preis und starte die Zahlung erneut.',
       };
-  const showOfferEnded = () => {
-    currentTicket = 'guest';
-    if (summary) summary.textContent = tickets.guest[1];
-    refreshGuestOffer();
-    if (errorBox) {
-      errorBox.textContent = orderErrors.offerEnded;
-      errorBox.classList.remove('hidden');
-    }
-    refreshPaymentButtons();
-  };
   paymentButtons.forEach((button) =>
     button.addEventListener('click', async (event) => {
       const button = event.currentTarget as HTMLButtonElement;
       const provider = button.dataset.payment as 'stripe' | 'paypal';
       if (!currentTicket || !nameInput || !contactInput || !privacy?.checked)
         return;
-      if (
-        currentTicket === 'guest_early' &&
-        !isEarlyBirdActive(effectiveNow())
-      ) {
-        showOfferEnded();
-        return;
-      }
       errorBox?.classList.add('hidden');
       button.disabled = true;
       let message = orderErrors.generic;
@@ -1128,18 +1102,6 @@ const copy =
           typeof data.url === 'string'
         ) {
           location.href = data.url;
-          return;
-        }
-        if (
-          response.status === 409 &&
-          typeof data === 'object' &&
-          data !== null &&
-          'error' in data &&
-          data.error === 'offer_ended'
-        ) {
-          if ('serverTime' in data && typeof data.serverTime === 'number')
-            serverClockOffsetMs = data.serverTime - Date.now();
-          showOfferEnded();
           return;
         }
         if (response.status === 403 || response.status === 503)

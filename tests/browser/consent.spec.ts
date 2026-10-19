@@ -301,7 +301,9 @@ test('events page: address shown as text, no map embed or external requests', as
 }) => {
   const external = trackExternal(page);
   await page.goto(site.routes.events.de);
-  await expect(page.getByText('St. Katharinenplatz 5').first()).toBeVisible();
+  await expect(
+    page.getByText('Die Adresse geben wir noch bekannt').first(),
+  ).toBeVisible();
   await expect(page.locator('a[href*="google.com/maps"]')).toHaveCount(0);
   await expect(page.locator('a[href*="maps.google"]')).toHaveCount(0);
   const gamesAddress = page.locator('main p', {
