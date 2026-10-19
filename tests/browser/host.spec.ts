@@ -137,3 +137,27 @@ test('a cancelled checkout never claims a confirmed place', async ({ page }) => 
     );
   }
 });
+
+test('the manual switch disables the payment button', async ({ page }) => {
+  await page.route('**/api/host-registrations/availability', (route) =>
+    route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        registrationOpen: false,
+        freeTables: 7,
+        totalTables: 7,
+        holdMinutes: 30,
+        serverTime: Date.now(),
+      }),
+    }),
+  );
+  for (const item of pages) {
+    await page.goto(item.path);
+    await expect(page.locator('#host-submit')).toBeDisabled();
+    await expect(page.locator('#host-closed-note')).toBeVisible();
+    await expect(page.locator('#host-closed-note')).toContainText(
+      item.lang === 'ru' ? 'Регистрация ведущих закрыта' : 'Anmeldung für Spielleitende ist geschlossen',
+    );
+  }
+});

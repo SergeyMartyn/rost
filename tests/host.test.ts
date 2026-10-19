@@ -343,6 +343,7 @@ test('an unpaid hold expires after 30 minutes, frees the table and keeps the app
   ).json()) as any;
   assert.equal(availability.freeTables, 6);
   assert.equal(availability.totalTables, 7);
+  assert.equal(availability.registrationOpen, true);
 });
 
 test('amount, currency and session mismatches leave the application pending', async () => {
@@ -510,6 +511,23 @@ test('host registration is unavailable without a matching Stripe test key', asyn
     t.d1.db.prepare('SELECT COUNT(*) c FROM host_registrations').get()!.c,
     0,
   );
+});
+
+test('the manual switch closes new applications and disables availability', async () => {
+  const t = setup({ HOST_REGISTRATION_OPEN: 'false' });
+  const res = await t.api(hostReq(goodBody()));
+  assert.equal(res.status, 409);
+  assert.equal(((await res.json()) as any).error, 'registration_closed');
+  assert.equal(
+    t.d1.db.prepare('SELECT COUNT(*) c FROM host_registrations').get()!.c,
+    0,
+  );
+  assert.equal(t.stripeCalls.length, 0);
+  const availability = (await (
+    await t.api(new Request(`${HOST}/api/host-registrations/availability`))
+  ).json()) as any;
+  assert.equal(availability.registrationOpen, false);
+  assert.equal(availability.freeTables, 7);
 });
 
 test('status endpoint does not reveal unknown registrations', async () => {

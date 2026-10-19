@@ -60,6 +60,8 @@ const copy =
         now: 'Сейчас',
         later: 'Позже',
         depositNote: `${formatEuro(HOST_DEPOSIT_CENTS)} входят в стоимость. Остаток организаторы попросят оплатить отдельной ссылкой; автоматически он не списывается.`,
+        closedNote:
+          'Регистрация ведущих закрыта. Напишите нам, если хотите участвовать.',
         formEyebrow: 'Регистрация',
         flowTitle: 'Регистрация → оплата → стол',
         flowBody:
@@ -96,7 +98,7 @@ const copy =
           },
           {
             title: 'Предоплата и остаток',
-            body: `Предоплата ${formatEuro(HOST_DEPOSIT_CENTS)} не увеличивает стоимость, а входит в неё. Если вы отмечаете предоплату, сейчас оплачивается ${formatEuro(HOST_DEPOSIT_CENTS)}, остаток — позже по отдельной ссылке от организаторов. Без предоплаты сейчас оплачивается полная сумма. Срок оплаты остатка и условия отмены организаторы согласуют с вами отдельно.`,
+            body: `Предоплата ${formatEuro(HOST_DEPOSIT_CENTS)} не увеличивает стоимость, а входит в неё. Если вы отмечаете предоплату, сейчас оплачивается ${formatEuro(HOST_DEPOSIT_CENTS)}, остаток — позже по отдельной ссылке от организаторов. Без предоплаты сейчас оплачивается полная сумма.`,
           },
           {
             title: 'Бронь стола',
@@ -104,7 +106,11 @@ const copy =
           },
           {
             title: 'Оплата и подтверждение',
-            body: 'Оплата проходит на защищённой странице Stripe. Возврат со страницы оплаты без серверного подтверждения платежа не считается оплатой. После подтверждённой оплаты отдельное одобрение организатора не требуется.',
+            body: 'Оплата проходит на защищённой странице Stripe. Возврат со страницы оплаты без серверного подтверждения платежа не считается оплатой. После подтверждённой оплаты отдельное одобрение организатора не требуется. НДС не начисляется в соответствии с § 19 UStG.',
+          },
+          {
+            title: 'Отмена и возврат',
+            body: 'Для потребителей в отношении досуговых мероприятий на определённую дату законное право отказа не предусмотрено (§ 312g абз. 2 п. 9 BGB). Если мероприятие отменяет организатор, мы возвращаем полную уплаченную сумму. В остальных случаях напишите нам заранее: возврат или перенос рассматриваются индивидуально в рамках законодательства Германии.',
           },
         ],
         privacyLabel: 'Политика конфиденциальности',
@@ -176,6 +182,8 @@ const copy =
         now: 'Jetzt',
         later: 'Später',
         depositNote: `Die ${formatEuro(HOST_DEPOSIT_CENTS)} sind Teil der Gesamtkosten. Den Rest fordern die Organisatorinnen später über einen separaten Link an; er wird nicht automatisch abgebucht.`,
+        closedNote:
+          'Die Anmeldung für Spielleitende ist geschlossen. Schreiben Sie uns, wenn Sie teilnehmen möchten.',
         formEyebrow: 'Anmeldung',
         flowTitle: 'Anmeldung → Zahlung → Tisch',
         flowBody:
@@ -212,7 +220,7 @@ const copy =
           },
           {
             title: 'Anzahlung und Restbetrag',
-            body: `Die Anzahlung von ${formatEuro(HOST_DEPOSIT_CENTS)} erhöht die Kosten nicht, sondern ist darin enthalten. Mit Anzahlung zahlen Sie jetzt ${formatEuro(HOST_DEPOSIT_CENTS)}, den Rest später über einen separaten Link der Organisatorinnen. Ohne Anzahlung zahlen Sie jetzt den vollen Betrag. Die Frist für den Restbetrag und die Stornobedingungen stimmen die Organisatorinnen individuell mit Ihnen ab.`,
+            body: `Die Anzahlung von ${formatEuro(HOST_DEPOSIT_CENTS)} erhöht die Kosten nicht, sondern ist darin enthalten. Mit Anzahlung zahlen Sie jetzt ${formatEuro(HOST_DEPOSIT_CENTS)}, den Rest später über einen separaten Link der Organisatorinnen. Ohne Anzahlung zahlen Sie jetzt den vollen Betrag.`,
           },
           {
             title: 'Tischreservierung',
@@ -220,7 +228,11 @@ const copy =
           },
           {
             title: 'Zahlung und Bestätigung',
-            body: 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Eine Rückkehr von der Zahlungsseite ohne serverseitige Zahlungsbestätigung gilt nicht als Zahlung. Nach bestätigter Zahlung ist keine zusätzliche Freigabe durch die Organisatorinnen erforderlich.',
+            body: 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Eine Rückkehr von der Zahlungsseite ohne serverseitige Zahlungsbestätigung gilt nicht als Zahlung. Nach bestätigter Zahlung ist keine zusätzliche Freigabe durch die Organisatorinnen erforderlich. Gemäß § 19 UStG wird keine Umsatzsteuer erhoben.',
+          },
+          {
+            title: 'Stornierung und Erstattung',
+            body: 'Für Verbraucher besteht bei Freizeitveranstaltungen zu einem bestimmten Termin kein gesetzliches Widerrufsrecht (§ 312g Abs. 2 Nr. 9 BGB). Sagt die Veranstalterin ab, erstatten wir den vollen gezahlten Betrag. In allen anderen Fällen schreiben Sie uns bitte rechtzeitig; eine Erstattung oder Umbuchung prüfen wir im Einzelfall im Rahmen des deutschen Rechts.',
           },
         ],
         privacyLabel: 'Datenschutzerklärung',
@@ -276,7 +288,9 @@ const isRu = lang === 'ru';
           {copy.heroCta}
         </a>
         <div class="mt-4 space-y-1 text-sm leading-relaxed text-muted">
-          {copy.heroNote.map((line) => <p>{line}</p>)}
+          {copy.heroNote.map((line, index) => (
+            <p id={index === 0 ? 'host-tables-note' : undefined}>{line}</p>
+          ))}
         </div>
       </div>
       <div class="hidden overflow-hidden rounded-4xl border-[6px] border-white bg-hero-end/60 shadow-xl lg:block">
@@ -552,11 +566,17 @@ const isRu = lang === 'ru';
           <span class="text-sm font-semibold text-muted">{copy.later}</span>
           <strong id="host-summary-remaining" class="text-xl">{formatEuro(initial.remainingCents)}</strong>
         </div>
+        <p
+          id="host-closed-note"
+          role="status"
+          hidden
+          class="mt-5 rounded-xl bg-brand-surface p-3 text-sm font-semibold leading-relaxed text-brand"
+        ></p>
         <button
           id="host-submit"
           type="submit"
           form="host-registration-form"
-          class="mt-6 w-full rounded-2xl bg-brand px-6 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold"
+          class="mt-6 w-full rounded-2xl bg-brand px-6 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold disabled:cursor-not-allowed disabled:opacity-50"
         >
           {copy.submit}
         </button>
@@ -631,6 +651,55 @@ const isRu = lang === 'ru';
   const contactHint = document.querySelector<HTMLElement>('#host-contact-hint');
   const contactError = document.querySelector<HTMLElement>('#host-contact-error');
   const whatsappType = document.querySelector<HTMLElement>('#host-whatsapp-type');
+  const tablesNote = document.querySelector<HTMLElement>('#host-tables-note');
+  const closedNote = document.querySelector<HTMLElement>('#host-closed-note');
+  let hostOpen = true;
+  const closeRegistration = (message: string) => {
+    hostOpen = false;
+    if (submit) submit.disabled = true;
+    if (closedNote) {
+      closedNote.textContent = message;
+      closedNote.hidden = false;
+    }
+  };
+  fetch('/api/host-registrations/availability')
+    .then((response) =>
+      response.ok
+        ? (response.json() as Promise<{
+            registrationOpen?: boolean;
+            freeTables?: number;
+            totalTables?: number;
+            holdMinutes?: number;
+          }>)
+        : null,
+    )
+    .then((data) => {
+      if (!data) return;
+      if (
+        typeof data.freeTables === 'number' &&
+        typeof data.totalTables === 'number' &&
+        typeof data.holdMinutes === 'number' &&
+        tablesNote
+      ) {
+        tablesNote.textContent = isRu
+          ? `Свободно столов: ${data.freeTables} из ${data.totalTables} · бронь на ${data.holdMinutes} минут`
+          : `Freie Tische: ${data.freeTables} von ${data.totalTables} · Reservierung für ${data.holdMinutes} Minuten`;
+      }
+      if (data.registrationOpen === false) {
+        closeRegistration(
+          isRu
+            ? 'Регистрация ведущих закрыта. Напишите нам, если хотите участвовать.'
+            : 'Die Anmeldung für Spielleitende ist geschlossen. Schreiben Sie uns, wenn Sie teilnehmen möchten.',
+        );
+      } else if (data.freeTables === 0) {
+        closeRegistration(
+          isRu
+            ? 'Все столы сейчас заняты. Напишите нам — сообщим, если место освободится.'
+            : 'Alle Tische sind derzeit belegt. Schreiben Sie uns — wir melden uns, falls ein Platz frei wird.',
+        );
+      }
+    })
+    .catch(() => {});
 
   const contactCopy = {
     Telegram: {
@@ -762,6 +831,8 @@ const isRu = lang === 'ru';
           sold_out:
             'Все столы сейчас заняты. Напишите нам — сообщим, если место освободится.',
           payments: 'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
+          closed:
+            'Регистрация ведущих закрыта. Напишите нам, если хотите участвовать.',
           contact: 'Проверьте контакт: нужен корректный ник или номер.',
           email: 'Проверьте адрес электронной почты.',
           generic: 'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам.',
@@ -771,6 +842,8 @@ const isRu = lang === 'ru';
             'Alle Tische sind derzeit belegt. Schreiben Sie uns — wir melden uns, falls ein Platz frei wird.',
           payments:
             'Die Online-Zahlung ist noch nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.',
+          closed:
+            'Die Anmeldung für Spielleitende ist geschlossen. Schreiben Sie uns, wenn Sie teilnehmen möchten.',
           contact: 'Bitte prüfen Sie den Kontakt: Benutzername oder Nummer ist nicht gültig.',
           email: 'Bitte prüfen Sie die E-Mail-Adresse.',
           generic:
@@ -779,6 +852,7 @@ const isRu = lang === 'ru';
 
   form?.addEventListener('submit', async (event) => {
     event.preventDefault();
+    if (!hostOpen) return;
     validateContact(true);
     if (!form.reportValidity() || !contactInput || !submit) return;
     const checked = form.querySelector<HTMLInputElement>('input[name="host-format"]:checked');
@@ -822,8 +896,13 @@ const isRu = lang === 'ru';
         typeof data === 'object' && data !== null && 'error' in data
           ? String(data.error)
           : '';
-      if (response.status === 409 || error === 'sold_out') message = messages.sold_out;
-      else if (response.status === 403 || response.status === 503) message = messages.payments;
+      if (error === 'registration_closed') {
+        message = messages.closed;
+        closeRegistration(message);
+      } else if (response.status === 409 || error === 'sold_out') {
+        message = messages.sold_out;
+        closeRegistration(message);
+      } else if (response.status === 403 || response.status === 503) message = messages.payments;
       else if (error === 'bad_contact') message = messages.contact;
       else if (error === 'bad_email') message = messages.email;
     } catch {
@@ -834,7 +913,7 @@ const isRu = lang === 'ru';
       errorBox.classList.remove('hidden');
       errorBox.focus();
     }
-    submit.disabled = false;
+    if (hostOpen) submit.disabled = false;
   });
 
   const statusBox = document.querySelector<HTMLElement>('#host-status');

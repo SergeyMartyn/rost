@@ -41,6 +41,7 @@ export interface OrdersEnv {
   PAYPAL_CLIENT_SECRET?: string;
   PAYPAL_PAYEE_EMAIL?: string;
   PAYPAL_WEBHOOK_ID?: string;
+  HOST_REGISTRATION_OPEN?: string;
 }
 
 export interface Deps {
@@ -116,6 +117,9 @@ function stripeKey(env: OrdersEnv): string | null {
   const ok = live ? /^(sk|rk)_live_/.test(key) : /^(sk|rk)_test_/.test(key);
   return ok ? key : null;
 }
+
+const hostRegistrationOpen = (env: OrdersEnv) =>
+  env.HOST_REGISTRATION_OPEN !== 'false';
 
 function paymentsAllowed(url: URL, env: OrdersEnv): boolean {
   if (env.PAYMENTS_ENABLED !== 'true') return false;
@@ -385,6 +389,8 @@ async function createHostRegistration(
   deps: Deps,
 ): Promise<Response> {
   const url = new URL(request.url);
+  if (!hostRegistrationOpen(env))
+    return json({ error: 'registration_closed' }, 409);
   if (!paymentsAllowed(url, env))
     return json({ error: 'payments_disabled' }, 403);
   const origin = request.headers.get('Origin');
@@ -562,6 +568,7 @@ async function hostAvailability(env: OrdersEnv, deps: Deps): Promise<Response> {
     .bind(HOST_TABLE_COUNT)
     .first<{ free: number }>();
   return json({
+    registrationOpen: hostRegistrationOpen(env),
     freeTables: Number(row?.free ?? 0),
     totalTables: HOST_TABLE_COUNT,
     holdMinutes: HOST_HOLD_MINUTES,
