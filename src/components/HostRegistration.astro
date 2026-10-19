@@ -1,0 +1,916 @@
+---
+import { routes, type Language } from '../lib/site';
+import {
+  HOST_DEPOSIT_CENTS,
+  HOST_FORMATS,
+  HOST_HOLD_MINUTES,
+  HOST_MEDIA_CENTS,
+  HOST_TABLE_COUNT,
+  formatEuro,
+  hostPrice,
+} from '../lib/host';
+
+const { lang } = Astro.props as { lang: Language };
+const initial = hostPrice('standard', false, false);
+const copy =
+  lang === 'ru'
+    ? {
+        eyebrow: 'Мюнхен / для ведущих',
+        date: '7 ноября · Мюнхен',
+        title: ['Проведите', 'свою игру', 'на встрече R.O.S.T.'],
+        intro:
+          'Две игровые линейки, новые знакомства и поддержка команды. Расскажите о своей игре и выберите условия участия.',
+        heroCta: 'Зарегистрироваться и занять стол',
+        heroNote: [
+          `${HOST_TABLE_COUNT} столов для ведущих · бронь на ${HOST_HOLD_MINUTES} минут`,
+          'После подтверждённой оплаты стол закрепляется за вами.',
+        ],
+        formatEyebrow: 'Формат',
+        formatTitle: ['Ваша игра —', 'в центре дня'],
+        features: [
+          ['Две игровые линейки', 'Две сессии по два часа'],
+          ['Знакомство с участниками', 'Короткое представление на сцене'],
+          ['Поддержка команды', 'Поможем с организацией и логистикой'],
+          ['Пространство и продвижение', 'Профиль на сайте и анонсы'],
+        ],
+        termsEyebrow: 'Условия',
+        termsTitle: 'Форматы участия',
+        formats: [
+          {
+            id: 'standard',
+            title: 'Стандартное',
+            amount: HOST_FORMATS.standard.amountCents,
+            body: 'Проведение, профиль, анонсы, сертификат',
+            condition:
+              'Условие: публиковать приглашение в своих соцсетях не реже раза в неделю',
+          },
+          {
+            id: 'expanded',
+            title: 'Расширенное',
+            amount: HOST_FORMATS.expanded.amountCents,
+            body: 'Всё из стандартного + дополнительное продвижение команды R.O.S.T.',
+            condition: 'Больше времени на подготовку игры',
+          },
+        ],
+        mediaTitle: 'Фото и видео',
+        mediaBody: '10 профессиональных фото и один рилс',
+        depositTitle: `Внести предоплату ${formatEuro(HOST_DEPOSIT_CENTS)}`,
+        depositBody: 'Остаток оплатите позже по отдельной ссылке',
+        total: 'Стоимость участия',
+        now: 'Сейчас',
+        later: 'Позже',
+        depositNote: `${formatEuro(HOST_DEPOSIT_CENTS)} входят в стоимость. Остаток организаторы попросят оплатить отдельной ссылкой; автоматически он не списывается.`,
+        formEyebrow: 'Регистрация',
+        flowTitle: 'Регистрация → оплата → стол',
+        flowBody:
+          'Заполните данные и перейдите к оплате. Стол резервируется на 30 минут. После подтверждённой оплаты участие и место закрепляются, дополнительное одобрение не требуется.',
+        formTitle: 'Данные для заявки',
+        name: 'Как к вам обращаться?',
+        namePlaceholder: 'Имя и фамилия',
+        email: 'Электронная почта',
+        emailPlaceholder: 'name@example.com',
+        channel: 'Где вам удобно получать сообщения?',
+        contact: 'Контакт',
+        whatsappType: 'Как связаться в WhatsApp?',
+        whatsappPhone: 'По номеру',
+        whatsappUsername: 'По нику',
+        gameTitle: 'Название игры',
+        gameTitlePlaceholder: 'Например, «Путь к себе»',
+        gameDescription: 'Коротко опишите игру',
+        gameDescriptionPlaceholder:
+          'Для кого игра, что происходит на встрече и что важно знать участникам. Достаточно нескольких предложений.',
+        termsBefore: 'Я принимаю',
+        termsLink: 'условия для ведущих',
+        privacyBefore: 'и ознакомлен с',
+        privacyLink: 'политикой конфиденциальности',
+        submit: 'Зарегистрироваться и занять стол',
+        dueNote: 'К оплате сейчас',
+        paymentNote:
+          'Оплата картой проходит на защищённой странице Stripe. Данные карты нам не передаются.',
+        conditionsEyebrow: 'Для ведущих',
+        conditionsTitle: 'Условия участия в играх',
+        conditions: [
+          {
+            title: 'Стоимость и состав',
+            body: `Стандартное участие — ${formatEuro(HOST_FORMATS.standard.amountCents)}: две игровые линейки по два часа, профиль на сайте, представление на сцене, продвижение и сертификат. Расширенное участие — ${formatEuro(HOST_FORMATS.expanded.amountCents)}: стандартный состав и дополнительное продвижение командой R.O.S.T. Пакет «Фото и видео» стоит ${formatEuro(HOST_MEDIA_CENTS)}: 10 профессиональных фотографий и один рилс.`,
+          },
+          {
+            title: 'Предоплата и остаток',
+            body: `Предоплата ${formatEuro(HOST_DEPOSIT_CENTS)} не увеличивает стоимость, а входит в неё. Если вы отмечаете предоплату, сейчас оплачивается ${formatEuro(HOST_DEPOSIT_CENTS)}, остаток — позже по отдельной ссылке от организаторов. Без предоплаты сейчас оплачивается полная сумма. Срок оплаты остатка и условия отмены организаторы согласуют с вами отдельно.`,
+          },
+          {
+            title: 'Бронь стола',
+            body: `После отправки заявки один из ${HOST_TABLE_COUNT} столов резервируется за вами на ${HOST_HOLD_MINUTES} минут. Место закрепляется только после подтверждённой оплаты. Если оплата не подтверждена, бронь освобождается, но данные заявки сохраняются.`,
+          },
+          {
+            title: 'Оплата и подтверждение',
+            body: 'Оплата проходит на защищённой странице Stripe. Возврат со страницы оплаты без серверного подтверждения платежа не считается оплатой. После подтверждённой оплаты отдельное одобрение организатора не требуется.',
+          },
+        ],
+        privacyLabel: 'Политика конфиденциальности',
+        contactsLabel: 'Остались вопросы? Напишите нам',
+        statusClose: 'Закрыть сообщение',
+        statusSuccess: 'Оплата подтверждена. Стол закреплён за вами.',
+        statusPaidNoTable:
+          'Оплата подтверждена. Организаторы свяжутся с вами по поводу стола.',
+        statusPending:
+          'Оплата ещё не подтверждена. Мы проверяем платёж; обновите страницу через минуту.',
+        statusExpired:
+          'Бронь истекла. Заявка сохранена; чтобы занять стол, отправьте её снова.',
+        statusCancelled: 'Оплата отменена. Заявка сохранена.',
+        statusRefunded: 'Платёж возвращён. Если это неожиданно, напишите нам.',
+        statusUnknown:
+          'Не удалось проверить статус оплаты. Если деньги списались, напишите нам.',
+        errSoldOut:
+          'Все столы сейчас заняты. Напишите нам — сообщим, если место освободится.',
+        errPayments:
+          'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
+        errContact: 'Проверьте контакт: нужен корректный ник или номер.',
+        errEmail: 'Проверьте адрес электронной почты.',
+        errGeneric:
+          'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам.',
+      }
+    : {
+        eyebrow: 'München / für Spielleitende',
+        date: '7. November · München',
+        title: ['Bringen Sie', 'Ihr Spiel', 'zu R.O.S.T.'],
+        intro:
+          'Zwei Spielrunden, neue Begegnungen und Unterstützung durch das Team. Stellen Sie Ihre Idee vor und wählen Sie Ihre Teilnahmebedingungen.',
+        heroCta: 'Anmelden und Tisch sichern',
+        heroNote: [
+          `${HOST_TABLE_COUNT} Tische für Spielleitende · Reservierung für ${HOST_HOLD_MINUTES} Minuten`,
+          'Nach bestätigter Zahlung wird der Tisch für Sie reserviert.',
+        ],
+        formatEyebrow: 'Format',
+        formatTitle: ['Ihr Spiel —', 'im Mittelpunkt des Tages'],
+        features: [
+          ['Zwei Spielrunden', 'Zwei Sessions von je zwei Stunden'],
+          ['Begegnung mit Teilnehmenden', 'Kurze Vorstellung auf der Bühne'],
+          ['Unterstützung durch das Team', 'Hilfe bei Organisation und Logistik'],
+          ['Raum und Sichtbarkeit', 'Profil auf der Website und Ankündigungen'],
+        ],
+        termsEyebrow: 'Bedingungen',
+        termsTitle: 'Teilnahmeformate',
+        formats: [
+          {
+            id: 'standard',
+            title: 'Standard',
+            amount: HOST_FORMATS.standard.amountCents,
+            body: 'Durchführung, Profil, Ankündigungen, Zertifikat',
+            condition:
+              'Bedingung: mindestens einmal pro Woche eine Einladung in Ihren sozialen Netzwerken veröffentlichen',
+          },
+          {
+            id: 'expanded',
+            title: 'Erweitert',
+            amount: HOST_FORMATS.expanded.amountCents,
+            body: 'Alles aus Standard + zusätzliche Bewerbung durch das R.O.S.T.-Team',
+            condition: 'Mehr Zeit für die Vorbereitung Ihres Spiels',
+          },
+        ],
+        mediaTitle: 'Foto und Video',
+        mediaBody: '10 professionelle Fotos und ein Reel',
+        depositTitle: `Anzahlung ${formatEuro(HOST_DEPOSIT_CENTS)} leisten`,
+        depositBody: 'Den Rest zahlen Sie später über einen separaten Link',
+        total: 'Teilnahmekosten',
+        now: 'Jetzt',
+        later: 'Später',
+        depositNote: `Die ${formatEuro(HOST_DEPOSIT_CENTS)} sind Teil der Gesamtkosten. Den Rest fordern die Organisatorinnen später über einen separaten Link an; er wird nicht automatisch abgebucht.`,
+        formEyebrow: 'Anmeldung',
+        flowTitle: 'Anmeldung → Zahlung → Tisch',
+        flowBody:
+          'Füllen Sie die Daten aus und gehen Sie zur Zahlung. Der Tisch wird für 30 Minuten reserviert. Nach bestätigter Zahlung sind Teilnahme und Platz gesichert; eine zusätzliche Freigabe ist nicht nötig.',
+        formTitle: 'Angaben zur Anmeldung',
+        name: 'Wie dürfen wir Sie ansprechen?',
+        namePlaceholder: 'Vor- und Nachname',
+        email: 'E-Mail-Adresse',
+        emailPlaceholder: 'name@example.com',
+        channel: 'Wo möchten Sie Nachrichten erhalten?',
+        contact: 'Kontakt',
+        whatsappType: 'Wie erreichen wir Sie auf WhatsApp?',
+        whatsappPhone: 'Per Telefonnummer',
+        whatsappUsername: 'Per Benutzername',
+        gameTitle: 'Name des Spiels',
+        gameTitlePlaceholder: 'Zum Beispiel „Der Weg zu mir“',
+        gameDescription: 'Beschreiben Sie Ihr Spiel kurz',
+        gameDescriptionPlaceholder:
+          'Für wen ist das Spiel, was passiert in der Runde und was sollten Teilnehmende wissen? Einige Sätze genügen.',
+        termsBefore: 'Ich akzeptiere die',
+        termsLink: 'Bedingungen für Spielleitende',
+        privacyBefore: 'und habe die',
+        privacyLink: 'Datenschutzerklärung',
+        submit: 'Anmelden und Tisch sichern',
+        dueNote: 'Jetzt zu zahlen',
+        paymentNote:
+          'Die Kartenzahlung erfolgt auf der gesicherten Seite von Stripe. Kartendaten erhalten wir nicht.',
+        conditionsEyebrow: 'Für Spielleitende',
+        conditionsTitle: 'Teilnahmebedingungen für Spiele',
+        conditions: [
+          {
+            title: 'Kosten und Leistungen',
+            body: `Standardteilnahme — ${formatEuro(HOST_FORMATS.standard.amountCents)}: zwei Spielrunden von je zwei Stunden, Profil auf der Website, Vorstellung auf der Bühne, Bewerbung und Zertifikat. Erweiterte Teilnahme — ${formatEuro(HOST_FORMATS.expanded.amountCents)}: Standardumfang plus zusätzliche Bewerbung durch das R.O.S.T.-Team. Das Paket „Foto und Video“ kostet ${formatEuro(HOST_MEDIA_CENTS)}: 10 professionelle Fotos und ein Reel.`,
+          },
+          {
+            title: 'Anzahlung und Restbetrag',
+            body: `Die Anzahlung von ${formatEuro(HOST_DEPOSIT_CENTS)} erhöht die Kosten nicht, sondern ist darin enthalten. Mit Anzahlung zahlen Sie jetzt ${formatEuro(HOST_DEPOSIT_CENTS)}, den Rest später über einen separaten Link der Organisatorinnen. Ohne Anzahlung zahlen Sie jetzt den vollen Betrag. Die Frist für den Restbetrag und die Stornobedingungen stimmen die Organisatorinnen individuell mit Ihnen ab.`,
+          },
+          {
+            title: 'Tischreservierung',
+            body: `Nach dem Absenden der Anmeldung wird einer von ${HOST_TABLE_COUNT} Tischen für ${HOST_HOLD_MINUTES} Minuten für Sie reserviert. Der Platz wird erst nach bestätigter Zahlung gesichert. Ohne Zahlungsbestätigung wird die Reservierung freigegeben, die Anmeldedaten bleiben jedoch gespeichert.`,
+          },
+          {
+            title: 'Zahlung und Bestätigung',
+            body: 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Eine Rückkehr von der Zahlungsseite ohne serverseitige Zahlungsbestätigung gilt nicht als Zahlung. Nach bestätigter Zahlung ist keine zusätzliche Freigabe durch die Organisatorinnen erforderlich.',
+          },
+        ],
+        privacyLabel: 'Datenschutzerklärung',
+        contactsLabel: 'Noch Fragen? Schreiben Sie uns',
+        statusClose: 'Mitteilung schließen',
+        statusSuccess: 'Zahlung bestätigt. Der Tisch ist für Sie reserviert.',
+        statusPaidNoTable:
+          'Zahlung bestätigt. Die Organisatorinnen melden sich wegen des Tisches bei Ihnen.',
+        statusPending:
+          'Die Zahlung ist noch nicht bestätigt. Wir prüfen sie; laden Sie die Seite in einer Minute neu.',
+        statusExpired:
+          'Die Reservierung ist abgelaufen. Die Anmeldung bleibt gespeichert; senden Sie sie erneut, um einen Tisch zu sichern.',
+        statusCancelled: 'Zahlung abgebrochen. Die Anmeldung bleibt gespeichert.',
+        statusRefunded:
+          'Die Zahlung wurde erstattet. Wenn das unerwartet ist, schreiben Sie uns.',
+        statusUnknown:
+          'Der Zahlungsstatus konnte nicht geprüft werden. Falls Geld abgebucht wurde, schreiben Sie uns.',
+        errSoldOut:
+          'Alle Tische sind derzeit belegt. Schreiben Sie uns — wir melden uns, falls ein Platz frei wird.',
+        errPayments:
+          'Die Online-Zahlung ist noch nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.',
+        errContact:
+          'Bitte prüfen Sie den Kontakt: Benutzername oder Nummer ist nicht gültig.',
+        errEmail: 'Bitte prüfen Sie die E-Mail-Adresse.',
+        errGeneric:
+          'Die Anmeldung konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie uns.',
+      };
+const isRu = lang === 'ru';
+---
+
+<div class="font-hero-sans text-brand">
+  <section class="hero hero--events" aria-labelledby="host-title">
+    <div class="hero__inner site-container">
+      <div class="hero__content">
+        <div class="flex flex-wrap items-center gap-3">
+          <p class="hero__eyebrow">{copy.eyebrow}</p>
+          <span class="rounded-full bg-brand px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-brand-gold">
+            {copy.date}
+          </span>
+        </div>
+        <h1 class="hero__title" id="host-title">
+          {copy.title[0]}
+          <br />
+          {copy.title[1]}
+          <br />
+          <span class="text-accent">{copy.title[2]}</span>
+        </h1>
+        <p class="hero__description">{copy.intro}</p>
+        <a
+          href="#host-registration"
+          class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold"
+        >
+          {copy.heroCta}
+        </a>
+        <div class="mt-4 space-y-1 text-sm leading-relaxed text-muted">
+          {copy.heroNote.map((line) => <p>{line}</p>)}
+        </div>
+      </div>
+      <div class="hidden overflow-hidden rounded-4xl border-[6px] border-white bg-hero-end/60 shadow-xl lg:block">
+        <img
+          src="/images/rost-ti-preview.webp"
+          alt={isRu ? 'Участники трансформационных игр' : 'Teilnehmende der Transformationsspiele'}
+          width="900"
+          height="1200"
+          class="h-full max-h-[430px] w-full object-cover"
+        />
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-white py-18 md:py-26">
+    <div class="site-container">
+      <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
+        {copy.formatEyebrow}
+      </p>
+      <h2 class="mt-4 max-w-3xl font-display text-[clamp(2rem,5vw,4.2rem)] leading-tight">
+        {copy.formatTitle[0]}
+        <br />
+        {copy.formatTitle[1]}
+      </h2>
+      <div class="mt-10 grid gap-4 sm:grid-cols-2">
+        {copy.features.map(([title, body]) => (
+          <div class="rounded-3xl bg-brand-surface p-6">
+            <h3 class="font-bold">{title}</h3>
+            <p class="mt-2 text-sm leading-relaxed text-muted">{body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="host-registration" class="scroll-mt-24 bg-brand-surface py-18 md:py-26">
+    <div class="site-container grid gap-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-14">
+      <div class="min-w-0">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
+          {copy.formEyebrow}
+        </p>
+        <h2 class="mt-4 font-display text-[clamp(1.8rem,4vw,3.4rem)] leading-tight">
+          {copy.flowTitle}
+        </h2>
+        <p class="mt-4 max-w-2xl leading-relaxed text-muted">{copy.flowBody}</p>
+
+        <form id="host-registration-form" class="mt-8 space-y-7">
+          <fieldset>
+            <legend class="mb-3 font-bold">{copy.termsTitle}</legend>
+            <div class="space-y-3">
+              {copy.formats.map((format, index) => (
+                <label class="block cursor-pointer">
+                  <input
+                    type="radio"
+                    name="host-format"
+                    value={format.id}
+                    checked={index === 0}
+                    class="peer sr-only"
+                  />
+                  <span class="flex min-h-28 items-start gap-3 rounded-2xl border border-line bg-white p-4 transition peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+                    <span class="mt-1 text-brand" aria-hidden="true">○</span>
+                    <span class="min-w-0 flex-1">
+                      <strong class="block">{format.title}</strong>
+                      <span class="mt-1 block text-sm leading-snug text-muted">
+                        {format.body}
+                      </span>
+                      <span class="mt-2 block text-xs leading-snug text-brand">
+                        {format.condition}
+                      </span>
+                    </span>
+                    <strong class="shrink-0 font-display text-2xl font-normal">
+                      {formatEuro(format.amount)}
+                    </strong>
+                  </span>
+                </label>
+              ))}
+            </div>
+            <label class="mt-3 flex cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4">
+              <input id="host-media" type="checkbox" class="mt-1 h-5 w-5 shrink-0" />
+              <span class="min-w-0 flex-1">
+                <span class="flex items-baseline justify-between gap-4">
+                  <strong>{copy.mediaTitle}</strong>
+                  <strong class="shrink-0 font-display text-xl font-normal">
+                    +{formatEuro(HOST_MEDIA_CENTS)}
+                  </strong>
+                </span>
+                <span class="mt-1 block text-sm text-muted">{copy.mediaBody}</span>
+              </span>
+            </label>
+            <label class="mt-3 flex cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4">
+              <input id="host-deposit" type="checkbox" class="mt-1 h-5 w-5 shrink-0" />
+              <span class="min-w-0 flex-1">
+                <strong>{copy.depositTitle}</strong>
+                <span class="mt-1 block text-sm text-muted">{copy.depositBody}</span>
+              </span>
+            </label>
+            <p
+              id="host-deposit-note"
+              class="mt-3 hidden rounded-2xl bg-white p-4 text-xs leading-relaxed text-muted"
+            >
+              {copy.depositNote}
+            </p>
+          </fieldset>
+
+          <div class="rounded-3xl bg-white p-5">
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="text-sm font-semibold text-muted">{copy.total}</span>
+              <strong id="host-total" class="font-display text-2xl font-normal">
+                {formatEuro(initial.totalCents)}
+              </strong>
+            </div>
+            <div class="mt-2 flex items-baseline justify-between gap-4">
+              <span class="text-sm font-semibold text-muted">{copy.now}</span>
+              <strong id="host-due" class="font-display text-3xl font-normal">
+                {formatEuro(initial.dueNowCents)}
+              </strong>
+            </div>
+            <div id="host-remaining-row" class="mt-2 flex items-baseline justify-between gap-4" hidden>
+              <span class="text-sm font-semibold text-muted">{copy.later}</span>
+              <strong id="host-remaining" class="text-xl">{formatEuro(initial.remainingCents)}</strong>
+            </div>
+          </div>
+
+          <fieldset class="space-y-5">
+            <legend class="mb-3 font-bold">{copy.formTitle}</legend>
+            <label class="block">
+              <span class="mb-2 block text-sm font-bold">{copy.name}</span>
+              <input
+                name="name"
+                autocomplete="name"
+                required
+                minlength="2"
+                maxlength="80"
+                placeholder={copy.namePlaceholder}
+                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+              />
+            </label>
+            <label class="block">
+              <span class="mb-2 block text-sm font-bold">{copy.email}</span>
+              <input
+                name="email"
+                type="email"
+                autocomplete="email"
+                required
+                maxlength="160"
+                placeholder={copy.emailPlaceholder}
+                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+              />
+            </label>
+            <fieldset>
+              <legend class="mb-2 text-sm font-bold">{copy.channel}</legend>
+              <div class="grid grid-cols-3 gap-2 text-center text-sm">
+                {['Telegram', 'WhatsApp', 'Instagram'].map((channel, index) => (
+                  <label>
+                    <input
+                      type="radio"
+                      name="channel"
+                      value={channel}
+                      checked={index === 0}
+                      class="peer sr-only"
+                    />
+                    <span class="block cursor-pointer rounded-xl border border-line bg-white px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
+                      {channel}
+                    </span>
+                  </label>
+                ))}
+              </div>
+            </fieldset>
+            <fieldset id="host-whatsapp-type" class="hidden">
+              <legend class="mb-2 text-sm font-bold">{copy.whatsappType}</legend>
+              <div class="grid grid-cols-2 gap-2 text-center text-sm">
+                <label>
+                  <input type="radio" name="whatsapp-type" value="phone" checked class="peer sr-only" />
+                  <span class="block cursor-pointer rounded-xl border border-line bg-white px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface">
+                    {copy.whatsappPhone}
+                  </span>
+                </label>
+                <label>
+                  <input type="radio" name="whatsapp-type" value="username" class="peer sr-only" />
+                  <span class="block cursor-pointer rounded-xl border border-line bg-white px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface">
+                    {copy.whatsappUsername}
+                  </span>
+                </label>
+              </div>
+            </fieldset>
+            <label class="block">
+              <span id="host-contact-label" class="mb-2 block text-sm font-bold">{copy.contact}</span>
+              <input
+                name="contact"
+                required
+                aria-describedby="host-contact-hint host-contact-error"
+                aria-invalid="false"
+                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+              />
+            </label>
+            <p id="host-contact-hint" class="-mt-3 text-xs leading-relaxed text-muted"></p>
+            <p
+              id="host-contact-error"
+              role="alert"
+              class="-mt-3 hidden text-xs font-semibold leading-relaxed text-red-700"
+            ></p>
+            <label class="block">
+              <span class="mb-2 block text-sm font-bold">{copy.gameTitle}</span>
+              <input
+                name="gameTitle"
+                required
+                minlength="3"
+                maxlength="120"
+                placeholder={copy.gameTitlePlaceholder}
+                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+              />
+            </label>
+            <label class="block">
+              <span class="mb-2 block text-sm font-bold">{copy.gameDescription}</span>
+              <textarea
+                name="gameDescription"
+                required
+                minlength="10"
+                maxlength="800"
+                rows="5"
+                placeholder={copy.gameDescriptionPlaceholder}
+                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"></textarea>
+            </label>
+          </fieldset>
+
+          <div class="space-y-3 rounded-2xl bg-white p-4 text-sm leading-relaxed">
+            <label class="flex items-start gap-3">
+              <input name="terms" type="checkbox" required class="mt-1 h-5 w-5 shrink-0" />
+              <span>
+                {copy.termsBefore}{' '}
+                <a href="#host-conditions" class="font-semibold underline underline-offset-2">
+                  {copy.termsLink}
+                </a>
+              </span>
+            </label>
+            <label class="flex items-start gap-3">
+              <input name="privacy" type="checkbox" required class="mt-1 h-5 w-5 shrink-0" />
+              <span>
+                {copy.privacyBefore}{' '}
+                <a
+                  href={routes.privacy[lang]}
+                  target="_blank"
+                  rel="noopener"
+                  class="font-semibold underline underline-offset-2"
+                >
+                  {copy.privacyLink}
+                </a>
+              </span>
+            </label>
+          </div>
+
+          <p id="host-form-error" role="alert" tabindex="-1" class="hidden rounded-xl bg-red-50 p-3 text-sm text-red-800"></p>
+        </form>
+      </div>
+
+      <aside class="min-w-0 self-start rounded-4xl border border-brand/10 bg-white p-7 shadow-xl lg:sticky lg:top-28">
+        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
+          {copy.formEyebrow}
+        </p>
+        <div class="mt-4 flex items-baseline justify-between gap-4">
+          <span class="text-sm font-semibold text-muted">{copy.total}</span>
+          <strong id="host-summary-total" class="font-display text-2xl font-normal">
+            {formatEuro(initial.totalCents)}
+          </strong>
+        </div>
+        <div class="mt-2 flex items-baseline justify-between gap-4">
+          <span class="text-sm font-semibold text-muted">{copy.now}</span>
+          <strong id="host-summary-due" class="font-display text-4xl font-normal">
+            {formatEuro(initial.dueNowCents)}
+          </strong>
+        </div>
+        <div id="host-summary-remaining-row" class="mt-2 flex items-baseline justify-between gap-4" hidden>
+          <span class="text-sm font-semibold text-muted">{copy.later}</span>
+          <strong id="host-summary-remaining" class="text-xl">{formatEuro(initial.remainingCents)}</strong>
+        </div>
+        <button
+          id="host-submit"
+          type="submit"
+          form="host-registration-form"
+          class="mt-6 w-full rounded-2xl bg-brand px-6 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold"
+        >
+          {copy.submit}
+        </button>
+        <p class="mt-3 text-center text-sm font-semibold text-brand">
+          {copy.dueNote} — <span id="host-cta-due">{formatEuro(initial.dueNowCents)}</span>
+        </p>
+        <p class="mt-4 text-xs leading-relaxed text-muted">{copy.paymentNote}</p>
+      </aside>
+    </div>
+  </section>
+
+  <section id="host-conditions" class="scroll-mt-24 bg-white py-18 md:py-26">
+    <div class="site-container max-w-3xl">
+      <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
+        {copy.conditionsEyebrow}
+      </p>
+      <h2 class="mt-4 break-words font-display text-3xl md:text-4xl">{copy.conditionsTitle}</h2>
+      <div class="mt-8 space-y-7">
+        {copy.conditions.map((section) => (
+          <section>
+            <h3 class="font-display text-2xl">{section.title}</h3>
+            <p class="mt-2 leading-relaxed text-muted">{section.body}</p>
+          </section>
+        ))}
+      </div>
+      <div class="mt-8 flex flex-wrap gap-6 font-semibold">
+        <a href={routes.privacy[lang]} class="underline underline-offset-4">{copy.privacyLabel}</a>
+        <a href={routes.contacts[lang]} class="underline underline-offset-4">{copy.contactsLabel}</a>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div
+  id="host-status"
+  role="status"
+  class="fixed inset-x-4 top-4 z-50 mx-auto hidden max-w-md items-start gap-3 rounded-2xl border border-brand/20 bg-white px-4 py-3 text-left text-sm font-semibold leading-relaxed text-brand shadow-lg"
+>
+  <span id="host-status-message" class="flex-1"></span>
+  <button
+    id="host-status-close"
+    type="button"
+    aria-label={copy.statusClose}
+    class="-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-2xl font-normal leading-none text-brand transition hover:bg-brand/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+  >
+    ×
+  </button>
+</div>
+
+<script>
+  import { contactMode, normalizeContact } from '../lib/contact';
+  import { formatEuro, hostPrice, type HostFormat } from '../lib/host';
+
+  const isRu = document.documentElement.lang === 'ru';
+  const form = document.querySelector<HTMLFormElement>('#host-registration-form');
+  const submit = document.querySelector<HTMLButtonElement>('#host-submit');
+  const total = document.querySelector<HTMLElement>('#host-total');
+  const due = document.querySelector<HTMLElement>('#host-due');
+  const remaining = document.querySelector<HTMLElement>('#host-remaining');
+  const remainingRow = document.querySelector<HTMLElement>('#host-remaining-row');
+  const summaryTotal = document.querySelector<HTMLElement>('#host-summary-total');
+  const summaryDue = document.querySelector<HTMLElement>('#host-summary-due');
+  const summaryRemaining = document.querySelector<HTMLElement>('#host-summary-remaining');
+  const summaryRemainingRow = document.querySelector<HTMLElement>('#host-summary-remaining-row');
+  const ctaDue = document.querySelector<HTMLElement>('#host-cta-due');
+  const depositNote = document.querySelector<HTMLElement>('#host-deposit-note');
+  const media = document.querySelector<HTMLInputElement>('#host-media');
+  const deposit = document.querySelector<HTMLInputElement>('#host-deposit');
+  const errorBox = document.querySelector<HTMLElement>('#host-form-error');
+  const contactInput = form?.querySelector<HTMLInputElement>('input[name="contact"]');
+  const contactLabel = document.querySelector<HTMLElement>('#host-contact-label');
+  const contactHint = document.querySelector<HTMLElement>('#host-contact-hint');
+  const contactError = document.querySelector<HTMLElement>('#host-contact-error');
+  const whatsappType = document.querySelector<HTMLElement>('#host-whatsapp-type');
+
+  const contactCopy = {
+    Telegram: {
+      label: isRu ? 'Ваш аккаунт в Telegram' : 'Ihr Telegram-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Латинские буквы, цифры и _. @ можно не писать.'
+        : 'Lateinische Buchstaben, Ziffern und _. @ ist optional.',
+      error: isRu
+        ? 'Введите имя Telegram латиницей: 5–27 букв, цифр или _. Первым символом должна быть буква.'
+        : 'Bitte geben Sie einen Telegram-Namen mit 5–27 lateinischen Buchstaben, Ziffern oder _ ein. Er muss mit einem Buchstaben beginnen.',
+      maxLength: 28,
+      inputMode: 'text',
+    },
+    Instagram: {
+      label: isRu ? 'Ваш аккаунт в Instagram' : 'Ihr Instagram-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Латинские буквы, цифры, точки и _. @ можно не писать.'
+        : 'Lateinische Buchstaben, Ziffern, Punkte und _. @ ist optional.',
+      error: isRu
+        ? 'Введите имя Instagram латиницей: до 30 букв, цифр, точек или _.'
+        : 'Bitte geben Sie einen Instagram-Namen mit bis zu 30 lateinischen Buchstaben, Ziffern, Punkten oder _ ein.',
+      maxLength: 31,
+      inputMode: 'text',
+    },
+    'WhatsApp-phone': {
+      label: isRu ? 'Ваш номер в WhatsApp' : 'Ihre WhatsApp-Nummer',
+      placeholder: '+49 176 12345678 / 0176 12345678',
+      hint: isRu
+        ? 'Номер с + и кодом страны или немецкий номер с 0.'
+        : 'Mit + und Ländervorwahl oder als deutsche Nummer mit 0.',
+      error: isRu
+        ? 'Проверьте номер: например, +49 176 12345678 или 0176 12345678.'
+        : 'Bitte prüfen Sie die Nummer: zum Beispiel +49 176 12345678 oder 0176 12345678.',
+      maxLength: 24,
+      inputMode: 'tel',
+    },
+    'WhatsApp-username': {
+      label: isRu ? 'Ваше имя пользователя WhatsApp' : 'Ihr WhatsApp-Benutzername',
+      placeholder: '@username',
+      hint: isRu
+        ? 'Имя пользователя доступно в WhatsApp постепенно. Проверьте, что оно уже работает.'
+        : 'WhatsApp-Benutzernamen werden schrittweise eingeführt. Prüfen Sie, ob Ihrer bereits funktioniert.',
+      error: isRu
+        ? 'Введите имя пользователя латиницей, без пробелов и русских букв.'
+        : 'Bitte geben Sie einen Benutzernamen mit lateinischen Zeichen ohne Leerzeichen ein.',
+      maxLength: 31,
+      inputMode: 'text',
+    },
+  } as const;
+
+  const selectedChannel = () =>
+    form?.querySelector<HTMLInputElement>('input[name="channel"]:checked')?.value || 'Telegram';
+  const selectedWhatsAppType = () =>
+    form?.querySelector<HTMLInputElement>('input[name="whatsapp-type"]:checked')?.value || 'phone';
+  const mode = () => contactMode(selectedChannel(), selectedWhatsAppType());
+
+  const clearContactError = () => {
+    if (!contactInput || !contactError || !contactHint) return;
+    contactInput.setCustomValidity('');
+    contactInput.setAttribute('aria-invalid', 'false');
+    contactError.textContent = '';
+    contactError.classList.add('hidden');
+    contactHint.classList.remove('hidden');
+  };
+
+  const validateContact = (showError: boolean) => {
+    if (!contactInput) return false;
+    const value = contactInput.value.trim();
+    const valid = normalizeContact(mode(), value) !== null;
+    if (valid || !value) {
+      clearContactError();
+      return valid;
+    }
+    if (showError && contactError) {
+      const message = contactCopy[mode() as keyof typeof contactCopy].error;
+      contactInput.setCustomValidity(message);
+      contactInput.setAttribute('aria-invalid', 'true');
+      contactError.textContent = message;
+      contactError.classList.remove('hidden');
+      contactHint?.classList.add('hidden');
+    }
+    return false;
+  };
+
+  const updateContactMode = () => {
+    if (!contactInput || !contactLabel || !contactHint || !whatsappType) return;
+    const config = contactCopy[mode() as keyof typeof contactCopy];
+    whatsappType.classList.toggle('hidden', selectedChannel() !== 'WhatsApp');
+    contactLabel.textContent = config.label;
+    contactInput.placeholder = config.placeholder;
+    contactInput.maxLength = config.maxLength;
+    contactInput.inputMode = config.inputMode;
+    contactHint.textContent = config.hint;
+    contactInput.value = '';
+    clearContactError();
+  };
+
+  const updatePrice = () => {
+    const checked = form?.querySelector<HTMLInputElement>('input[name="host-format"]:checked');
+    const format = (checked?.value === 'expanded' ? 'expanded' : 'standard') as HostFormat;
+    const price = hostPrice(format, !!media?.checked, !!deposit?.checked);
+    if (total) total.textContent = formatEuro(price.totalCents);
+    if (due) due.textContent = formatEuro(price.dueNowCents);
+    if (remaining) remaining.textContent = formatEuro(price.remainingCents);
+    if (summaryTotal) summaryTotal.textContent = formatEuro(price.totalCents);
+    if (summaryDue) summaryDue.textContent = formatEuro(price.dueNowCents);
+    if (summaryRemaining) summaryRemaining.textContent = formatEuro(price.remainingCents);
+    if (ctaDue) ctaDue.textContent = formatEuro(price.dueNowCents);
+    if (remainingRow) remainingRow.hidden = !deposit?.checked;
+    if (summaryRemainingRow) summaryRemainingRow.hidden = !deposit?.checked;
+    if (depositNote) depositNote.classList.toggle('hidden', !deposit?.checked);
+  };
+
+  updateContactMode();
+  updatePrice();
+  form
+    ?.querySelectorAll<HTMLInputElement>('input[name="channel"], input[name="whatsapp-type"]')
+    .forEach((radio) => radio.addEventListener('change', updateContactMode));
+  contactInput?.addEventListener('input', () => validateContact(true));
+  form
+    ?.querySelectorAll<HTMLInputElement>('input[name="host-format"], #host-media, #host-deposit')
+    .forEach((input) => input.addEventListener('change', updatePrice));
+
+  const errorMessages = () =>
+    isRu
+      ? {
+          sold_out:
+            'Все столы сейчас заняты. Напишите нам — сообщим, если место освободится.',
+          payments: 'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
+          contact: 'Проверьте контакт: нужен корректный ник или номер.',
+          email: 'Проверьте адрес электронной почты.',
+          generic: 'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам.',
+        }
+      : {
+          sold_out:
+            'Alle Tische sind derzeit belegt. Schreiben Sie uns — wir melden uns, falls ein Platz frei wird.',
+          payments:
+            'Die Online-Zahlung ist noch nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.',
+          contact: 'Bitte prüfen Sie den Kontakt: Benutzername oder Nummer ist nicht gültig.',
+          email: 'Bitte prüfen Sie die E-Mail-Adresse.',
+          generic:
+            'Die Anmeldung konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie uns.',
+        };
+
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    validateContact(true);
+    if (!form.reportValidity() || !contactInput || !submit) return;
+    const checked = form.querySelector<HTMLInputElement>('input[name="host-format"]:checked');
+    const format = (checked?.value === 'expanded' ? 'expanded' : 'standard') as HostFormat;
+    const body = {
+      format,
+      media: !!media?.checked,
+      deposit: !!deposit?.checked,
+      name: (form.querySelector<HTMLInputElement>('input[name="name"]')?.value || '').trim(),
+      email: (form.querySelector<HTMLInputElement>('input[name="email"]')?.value || '').trim(),
+      channel: mode(),
+      contact: contactInput.value.trim(),
+      gameTitle: (form.querySelector<HTMLInputElement>('input[name="gameTitle"]')?.value || '').trim(),
+      gameDescription: (form.querySelector<HTMLTextAreaElement>('textarea[name="gameDescription"]')?.value || '').trim(),
+      terms: form.querySelector<HTMLInputElement>('input[name="terms"]')?.checked === true,
+      privacy: form.querySelector<HTMLInputElement>('input[name="privacy"]')?.checked === true,
+      lang: isRu ? 'ru' : 'de',
+    };
+    const messages = errorMessages();
+    errorBox?.classList.add('hidden');
+    submit.disabled = true;
+    let message = messages.generic;
+    try {
+      const response = await fetch('/api/host-registrations', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+      const data: unknown = await response.json().catch(() => ({}));
+      if (
+        response.ok &&
+        typeof data === 'object' &&
+        data !== null &&
+        'url' in data &&
+        typeof data.url === 'string'
+      ) {
+        location.href = data.url;
+        return;
+      }
+      const error =
+        typeof data === 'object' && data !== null && 'error' in data
+          ? String(data.error)
+          : '';
+      if (response.status === 409 || error === 'sold_out') message = messages.sold_out;
+      else if (response.status === 403 || response.status === 503) message = messages.payments;
+      else if (error === 'bad_contact') message = messages.contact;
+      else if (error === 'bad_email') message = messages.email;
+    } catch {
+      message = messages.generic;
+    }
+    if (errorBox) {
+      errorBox.textContent = message;
+      errorBox.classList.remove('hidden');
+      errorBox.focus();
+    }
+    submit.disabled = false;
+  });
+
+  const statusBox = document.querySelector<HTMLElement>('#host-status');
+  const statusMessage = document.querySelector<HTMLElement>('#host-status-message');
+  document.querySelector('#host-status-close')?.addEventListener('click', () => {
+    statusBox?.classList.add('hidden');
+    statusBox?.classList.remove('flex');
+  });
+  const showStatus = (message: string) => {
+    if (!statusBox || !statusMessage) return;
+    statusMessage.textContent = message;
+    statusBox.classList.remove('hidden');
+    statusBox.classList.add('flex');
+  };
+  const params = new URLSearchParams(location.search);
+  const payment = params.get('payment');
+  const registration = params.get('registration');
+  if (payment) {
+    history.replaceState(null, '', location.pathname);
+    if (payment === 'cancelled') {
+      showStatus(
+        isRu
+          ? 'Оплата отменена. Заявка сохранена.'
+          : 'Zahlung abgebrochen. Die Anmeldung bleibt gespeichert.',
+      );
+    } else if (payment === 'success' && registration) {
+      void (async () => {
+        try {
+          const response = await fetch(
+            `/api/host-registrations/${encodeURIComponent(registration)}`,
+          );
+          if (!response.ok) throw new Error('status');
+          const data = (await response.json()) as {
+            status?: string;
+            tableNo?: number | null;
+            placeConfirmed?: boolean;
+          };
+          if (data.status === 'paid' && data.placeConfirmed && data.tableNo) {
+            showStatus(
+              isRu
+                ? `Оплата подтверждена. Стол №${data.tableNo} закреплён за вами.`
+                : `Zahlung bestätigt. Tisch Nr. ${data.tableNo} ist für Sie reserviert.`,
+            );
+          } else if (data.status === 'paid') {
+            showStatus(
+              isRu
+                ? 'Оплата подтверждена. Организаторы свяжутся с вами по поводу стола.'
+                : 'Zahlung bestätigt. Die Organisatorinnen melden sich wegen des Tisches bei Ihnen.',
+            );
+          } else if (data.status === 'expired') {
+            showStatus(
+              isRu
+                ? 'Бронь истекла. Заявка сохранена; чтобы занять стол, отправьте её снова.'
+                : 'Die Reservierung ist abgelaufen. Die Anmeldung bleibt gespeichert; senden Sie sie erneut, um einen Tisch zu sichern.',
+            );
+          } else if (data.status === 'refunded') {
+            showStatus(
+              isRu
+                ? 'Платёж возвращён. Если это неожиданно, напишите нам.'
+                : 'Die Zahlung wurde erstattet. Wenn das unerwartet ist, schreiben Sie uns.',
+            );
+          } else {
+            showStatus(
+              isRu
+                ? 'Оплата ещё не подтверждена. Мы проверяем платёж; обновите страницу через минуту.'
+                : 'Die Zahlung ist noch nicht bestätigt. Wir prüfen sie; laden Sie die Seite in einer Minute neu.',
+            );
+          }
+        } catch {
+          showStatus(
+            isRu
+              ? 'Не удалось проверить статус оплаты. Если деньги списались, напишите нам.'
+              : 'Der Zahlungsstatus konnte nicht geprüft werden. Falls Geld abgebucht wurde, schreiben Sie uns.',
+          );
+        }
+      })();
+    }
+  }
+</script>

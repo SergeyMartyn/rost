@@ -54,7 +54,7 @@ const copy =
           'День, в котором можно попробовать новый формат, посмотреть на свои вопросы с другой стороны и пообщаться с людьми.',
         guest: 'Купить билет участника',
         earlyBirdUntil: 'Ранняя цена до 15 октября',
-        host: 'Я ведущий игр',
+        host: 'Хочу провести игру',
         questions: 'Есть вопросы перед встречей?',
         questionsBody:
           'Порядок участия и время начала уточним перед мероприятием.',
@@ -131,7 +131,7 @@ const copy =
           'Ein Tag, an dem du ein neues Format ausprobieren, deine Fragen aus einer anderen Perspektive betrachten und Menschen kennenlernen kannst.',
         guest: 'Ticket für Teilnehmende kaufen',
         earlyBirdUntil: 'Frühbucherpreis bis 15. Oktober',
-        host: 'Ich leite Spiele',
+        host: 'Ich möchte ein Spiel leiten',
         questions: 'Noch Fragen zum Treffen?',
         questionsBody:
           'Details zum Ablauf und zur Anfangszeit teilen wir vor der Veranstaltung mit.',
@@ -282,15 +282,13 @@ const copy =
               </strong>
             </span>
           </button>
-          <button
-            type="button"
-            data-ticket="host"
-            hidden
-            class="hidden w-full items-center justify-between rounded-2xl border border-brand/20 px-5 py-4 text-left transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          <a
+            href={routes.host[lang]}
+            class="mt-3 inline-flex w-full items-center justify-between rounded-2xl border border-brand/30 bg-white px-5 py-4 text-left font-bold transition hover:border-brand hover:bg-brand hover:text-brand-gold focus-visible:bg-brand focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
-            <span class="font-bold">{copy.host}</span>
-            <strong class="font-display text-2xl font-normal">249 €</strong>
-          </button>
+            <span>{copy.host}</span>
+            <span aria-hidden="true">→</span>
+          </a>
         </div>
       </aside>
     </div>
@@ -846,7 +844,6 @@ const copy =
         nuremberg_meetup: ['Билет на встречу', '12 декабря · Нюрнберг · 29 €'],
         guest_early: ['Билет участника', '7 ноября · Мюнхен · 80 €'],
         guest: ['Билет участника', '7 ноября · Мюнхен · 99 €'],
-        host: ['Билет ведущего игр', '7 ноября · Мюнхен · 249 €'],
       }
     : {
         nuremberg_meetup: [
@@ -858,7 +855,6 @@ const copy =
           '7. November · München · 80 €',
         ],
         guest: ['Ticket für Teilnehmende', '7. November · München · 99 €'],
-        host: ['Ticket für Spielleitende', '7. November · München · 249 €'],
       };
 
   const selectedChannel = () =>
