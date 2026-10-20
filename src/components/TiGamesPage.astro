@@ -18,9 +18,9 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
 ---
 
 <div class="font-hero-sans text-brand">
-  <div class="bg-gradient-to-r from-hero-start to-hero-end pb-16 pt-32 md:pb-20 md:pt-36">
-    <div class="site-container lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-12">
-      <div id="ti-games-hero" class="min-w-0 lg:col-start-1 lg:row-start-1">
+  <div class="ti-lead bg-gradient-to-r from-hero-start to-hero-end pt-32 md:pt-36">
+    <div class="site-container lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-x-12">
+      <div id="ti-games-hero" class="min-w-0 pb-16 md:pb-20 lg:col-start-1 lg:row-start-1 lg:min-h-[750px]">
         <p class="text-xs font-bold uppercase tracking-[0.13em] text-brand md:text-[13px]">
           {content.eyebrow}
         </p>
@@ -32,28 +32,15 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
             <span class="block">{line}</span>
           ))}
         </h1>
+        <div class="mt-8 h-1 w-40 bg-brand-gold md:w-64" aria-hidden="true"></div>
         <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
           {content.intro}
         </p>
-        <div class="mt-8 flex flex-wrap gap-3">
-          <a
-            href="#ti-ticket-card"
-            class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 py-4 font-bold text-white transition hover:bg-accent hover:text-brand-gold"
-          >
-            {content.buyTicket}
-          </a>
-          <a
-            href="#ti-program"
-            class="inline-flex min-h-14 items-center justify-center rounded-2xl border border-brand/25 bg-white px-7 py-4 font-bold text-brand transition hover:border-brand hover:bg-brand hover:text-white"
-          >
-            {content.programEyebrow}
-          </a>
-        </div>
       </div>
 
       <aside
         id="ti-ticket-card"
-        class="mt-10 min-w-0 self-start overflow-hidden lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:sticky lg:top-28"
+        class="relative z-10 mt-0 min-w-0 self-start overflow-hidden pb-10 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:sticky lg:top-28"
       >
         <div class="overflow-hidden rounded-4xl border border-brand/10 bg-white shadow-xl">
           <div class="relative flex items-end gap-3 overflow-hidden bg-hero-end/60 p-7 text-brand">
@@ -65,15 +52,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
             </span>
           </div>
           <div class="p-6 sm:p-7">
-            <div class="rounded-2xl bg-brand-surface p-4">
-              <p class="text-xs font-bold uppercase tracking-[0.14em] text-muted">
-                {content.when}
-              </p>
-              <p class="mt-2 font-display text-xl">{content.date}</p>
-              <p class="mt-1 text-sm text-muted">
-                {content.venue} · {content.address}
-              </p>
-            </div>
+            <p class="text-sm text-muted">{content.venue} · {content.address}</p>
             <fieldset class="mt-5">
               <legend class="mb-3 font-bold text-brand">
                 {content.chooseTicket}
@@ -145,7 +124,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
       </aside>
 
       <section
-        class="mt-14 min-w-0 rounded-4xl bg-white p-6 shadow-sm lg:col-start-1 lg:row-start-2 md:p-8"
+        class="ti-about min-w-0 py-18 md:py-26 lg:col-start-1 lg:row-start-2"
         aria-labelledby="ti-about-title"
       >
         <p class="text-xs font-bold uppercase tracking-[0.13em] text-accent">
@@ -162,13 +141,10 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         <p class="mt-5 max-w-2xl leading-relaxed text-muted">
           {content.aboutBody}
         </p>
-        <div class="mt-7 grid gap-3 sm:grid-cols-3">
+        <div class="mt-7 grid gap-5 sm:grid-cols-3 sm:gap-3">
           {content.features.map((feature, index) => (
-            <div class="rounded-2xl bg-brand-surface p-4">
-              <p class="text-xs font-bold tracking-[0.12em] text-accent">
-                0{index + 1}
-              </p>
-              <h3 class="mt-2 font-bold">{feature.title}</h3>
+            <div class:list={['sm:rounded-2xl sm:bg-brand-surface sm:p-4', { 'hidden sm:block': index === 2 }]}>
+              <h3 class="font-bold"><span class="mr-2 text-brand-gold sm:hidden" aria-hidden="true">●</span><span class="hidden text-xs tracking-[0.12em] text-accent sm:inline">0{index + 1} </span>{feature.title}</h3>
               <p class="mt-1 text-sm leading-relaxed text-muted">
                 {feature.body}
               </p>
@@ -179,7 +155,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
 
       <section
         id="ti-program"
-        class="mt-10 min-w-0 scroll-mt-24 lg:col-start-1 lg:row-start-3"
+        class="ti-program min-w-0 scroll-mt-24 py-18 md:py-26 lg:col-start-1 lg:row-start-3"
         aria-labelledby="ti-program-title"
       >
         <p class="text-xs font-bold uppercase tracking-[0.13em] text-accent">
@@ -191,13 +167,13 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         >
           {content.programTitle}
         </h2>
-        <div class="mt-6 grid gap-3 sm:grid-cols-2">
+        <div class="mt-6 grid gap-x-8 sm:grid-cols-2">
           {content.program.map((item) => (
-            <div class="rounded-2xl bg-white p-4">
+            <div class="border-b border-brand/15 py-4 sm:flex sm:items-baseline sm:gap-4">
               <p class="text-xs font-bold tracking-[0.08em] text-accent">
                 {item.time}
               </p>
-              <p class="mt-1 text-sm font-semibold text-brand">
+              <p class="mt-1 text-sm text-muted sm:mt-0">
                 {item.label}
               </p>
             </div>
@@ -218,11 +194,11 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
       >
         {content.practitionersTitle}
       </h2>
-      <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-5">
+      <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {content.practitioners.map((person, index) => (
           <button
             type="button"
-            class="group min-w-0 rounded-3xl border-0 bg-transparent p-2 text-center transition hover:bg-brand-surface focus-visible:bg-brand-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="group flex min-w-0 items-center gap-4 rounded-3xl border-0 bg-transparent p-2 text-left transition hover:bg-brand-surface focus-visible:bg-brand-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand sm:block sm:text-center"
             data-practitioner={index}
             aria-haspopup="dialog"
             aria-controls="practitioner-dialog"
@@ -234,13 +210,11 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
               height="160"
               loading="lazy"
               decoding="async"
-              class="mx-auto h-32 w-32 rounded-full border-4 border-white object-cover shadow-md transition group-hover:scale-[1.03]"
+              class="h-16 w-16 shrink-0 rounded-full border-4 border-white object-cover shadow-md transition group-hover:scale-[1.03] sm:mx-auto sm:h-32 sm:w-32"
             />
-            <span class="mt-4 block font-display text-xl leading-tight text-brand">
-              {person.name}
-            </span>
-            <span class="mt-1 block text-sm font-semibold text-accent">
-              {person.game}
+            <span class="block min-w-0">
+              <span class="block font-display text-lg leading-tight text-brand sm:mt-4 sm:text-xl">{person.name}</span>
+              <span class="mt-1 block text-sm font-semibold text-accent">{person.game}</span>
             </span>
           </button>
         ))}
@@ -275,10 +249,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
             </div>
             <ul class="mt-5 space-y-2">
               {ticket.includes.map((item) => (
-                <li class="flex gap-2 text-sm leading-relaxed text-muted">
-                  <span class="text-accent" aria-hidden="true">✓</span>
-                  <span>{item}</span>
-                </li>
+                <li class="text-sm leading-relaxed text-muted">{item}</li>
               ))}
             </ul>
           </article>
@@ -297,7 +268,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
       </div>
       <a
         href={routes.contacts[lang]}
-        class="rounded-2xl border border-white/40 px-6 py-4 font-bold transition hover:bg-white hover:text-brand"
+        class="rounded-2xl bg-white px-6 py-4 font-bold text-brand transition hover:bg-brand-gold"
       >
         {content.contactLink}
       </a>
@@ -616,3 +587,33 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
       ?.click();
   });
 </script>
+
+<style>
+  .ti-lead {
+    isolation: isolate;
+    overflow-x: clip;
+  }
+
+  .ti-about,
+  .ti-program {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .ti-about::before,
+  .ti-program::before {
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 200vw;
+    background: white;
+    content: '';
+    transform: translateX(-50%);
+  }
+
+  .ti-program::before {
+    background: var(--color-brand-surface);
+  }
+</style>

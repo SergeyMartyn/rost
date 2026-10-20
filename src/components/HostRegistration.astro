@@ -264,21 +264,19 @@ const isRu = lang === 'ru';
 ---
 
 <div class="font-hero-sans text-brand">
-  <section class="hero hero--events" aria-labelledby="host-title">
+  <section class="hero hero--host" aria-labelledby="host-title">
     <div class="hero__inner site-container">
       <div class="hero__content">
-        <div class="flex flex-wrap items-center gap-3">
+        <div>
           <p class="hero__eyebrow">{copy.eyebrow}</p>
-          <span class="rounded-full bg-brand px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-brand-gold">
+          <span class="mt-5 inline-flex rounded-full bg-brand-gold px-5 py-2 text-xs font-bold uppercase tracking-[0.13em] text-brand">
             {copy.date}
           </span>
         </div>
         <h1 class="hero__title" id="host-title">
-          {copy.title[0]}
-          <br />
-          {copy.title[1]}
-          <br />
-          <span class="text-accent">{copy.title[2]}</span>
+          <span class="block lg:inline">{copy.title[0]} </span>
+          <span class="block lg:inline">{copy.title[1]} </span>
+          <span class="block text-accent lg:inline">{copy.title[2]}</span>
         </h1>
         <p class="hero__description">{copy.intro}</p>
         <a
@@ -293,13 +291,13 @@ const isRu = lang === 'ru';
           ))}
         </div>
       </div>
-      <div class="hidden overflow-hidden rounded-4xl border-[6px] border-white bg-hero-end/60 shadow-xl lg:block">
+      <div class="hidden self-start rounded-4xl bg-hero-end p-8 lg:grid lg:place-items-center">
         <img
-          src="/images/rost-ti-preview.webp"
-          alt={isRu ? 'Участники трансформационных игр' : 'Teilnehmende der Transformationsspiele'}
-          width="900"
-          height="1200"
-          class="h-full max-h-[430px] w-full object-cover"
+          src="/images/ti-games/kristina.webp"
+          alt={isRu ? 'Кристина Бауэр' : 'Kristina Bauer'}
+          width="320"
+          height="320"
+          class="aspect-square w-full max-w-80 rounded-full object-cover"
         />
       </div>
     </div>
@@ -310,14 +308,13 @@ const isRu = lang === 'ru';
       <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
         {copy.formatEyebrow}
       </p>
-      <h2 class="mt-4 max-w-3xl font-display text-[clamp(2rem,5vw,4.2rem)] leading-tight">
-        {copy.formatTitle[0]}
-        <br />
-        {copy.formatTitle[1]}
+      <h2 class="mt-4 font-display text-[clamp(2rem,5vw,4.2rem)] leading-tight">
+        <span class="block lg:inline">{copy.formatTitle[0]} </span>
+        <span class="block lg:inline">{copy.formatTitle[1]}</span>
       </h2>
       <div class="mt-10 grid gap-4 sm:grid-cols-2">
-        {copy.features.map(([title, body]) => (
-          <div class="rounded-3xl bg-brand-surface p-6">
+        {copy.features.map(([title, body], index) => (
+          <div class:list={['sm:rounded-3xl sm:bg-brand-surface sm:p-6', { 'hidden sm:block': index === 3 }]}>
             <h3 class="font-bold">{title}</h3>
             <p class="mt-2 text-sm leading-relaxed text-muted">{body}</p>
           </div>

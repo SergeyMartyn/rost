@@ -336,6 +336,20 @@
     pointer-events: none;
   }
 
+  .hero--host .hero__inner {
+    min-height: 0;
+    align-items: start;
+  }
+
+  .hero--host {
+    background: var(--color-brand-surface);
+  }
+
+  .hero--host .hero__content > a {
+    align-self: flex-start;
+    margin-top: var(--hero-space-actions);
+  }
+
   @media (min-width: 64rem) {
     .hero--contacts .hero__description {
       max-width: none;
@@ -375,6 +389,21 @@
     .hero__content {
       align-items: center;
       text-align: center;
+    }
+
+    .hero--host {
+      --hero-space-heading: 24px;
+      --hero-space-copy: 28px;
+      --hero-space-actions: 40px;
+    }
+
+    .hero--host .hero__content {
+      align-items: flex-start;
+      text-align: left;
+    }
+
+    .hero--host .hero__description {
+      align-self: flex-start;
     }
 
     .hero__eyebrow {
