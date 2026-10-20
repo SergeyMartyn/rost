@@ -95,17 +95,17 @@ const photos = [
     <div class="events__grid">
       {copy.events.map((event, index) => (
         <article class="events__item">
-          <button
+          <a
             class:list={[
               'events__frame',
-              'events__photo-trigger',
+              { 'events__photo-trigger': index === 1 },
               { 'events__frame--game': index === 0 },
             ]}
-            type="button"
-            data-photo-full={photos[index].full}
-            data-photo-avif={photos[index].fullAvif}
-            data-photo-alt={event.photoAlt}
-            aria-label={event.openPhoto}
+            href={index === 0 ? routes.tiGames[lang] : photos[index].full}
+            data-photo-full={index === 1 ? photos[index].full : undefined}
+            data-photo-avif={index === 1 ? photos[index].fullAvif : undefined}
+            data-photo-alt={index === 1 ? event.photoAlt : undefined}
+            aria-label={index === 0 ? event.name : event.openPhoto}
           >
             <div
               class:list={[
@@ -134,10 +134,12 @@ const photos = [
                 />
               </picture>
             </div>
-            <span class="events__plus" aria-hidden="true">
-              +
-            </span>
-          </button>
+            {index === 1 && (
+              <span class="events__plus" aria-hidden="true">
+                +
+              </span>
+            )}
+          </a>
           <a
             class="events__link"
             href={`${routes.events[lang]}#${event.anchor}`}
@@ -195,15 +197,15 @@ const photos = [
     document.querySelector<HTMLSourceElement>('#event-photo-webp');
 
   document
-    .querySelectorAll<HTMLButtonElement>('[data-photo-full]')
-    .forEach((button) => {
-      button.addEventListener('click', () => {
-        if (!photoDialog || !fullPhoto || !button.dataset.photoFull) return;
-        if (fullPhotoAvif)
-          fullPhotoAvif.srcset = button.dataset.photoAvif || '';
-        if (fullPhotoWebp) fullPhotoWebp.srcset = button.dataset.photoFull;
-        fullPhoto.src = button.dataset.photoFull;
-        fullPhoto.alt = button.dataset.photoAlt || '';
+    .querySelectorAll<HTMLAnchorElement>('[data-photo-full]')
+    .forEach((link) => {
+      link.addEventListener('click', (event) => {
+        if (!photoDialog || !fullPhoto || !link.dataset.photoFull) return;
+        event.preventDefault();
+        if (fullPhotoAvif) fullPhotoAvif.srcset = link.dataset.photoAvif || '';
+        if (fullPhotoWebp) fullPhotoWebp.srcset = link.dataset.photoFull;
+        fullPhoto.src = link.dataset.photoFull;
+        fullPhoto.alt = link.dataset.photoAlt || '';
         photoDialog.showModal();
       });
     });

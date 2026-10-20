@@ -64,7 +64,7 @@ test('events section keeps shared spacing and equal card widths', async ({
   });
 });
 
-test('event photographs fill the cards and open uncropped in both languages', async ({
+test('Munich photo links to TI; Nuremberg photo opens uncropped in both languages', async ({
   page,
 }) => {
   for (const lang of ['ru', 'de']) {
@@ -85,33 +85,45 @@ test('event photographs fill the cards and open uncropped in both languages', as
           .toBe(true);
         await expect(image).toHaveCSS('object-fit', 'cover');
       }
-      for (const index of [0, 1]) {
-        await page.locator('.events__photo-trigger').nth(index).click();
-        await expect(page.locator('#event-photo-dialog')).toBeVisible();
-        await expect
-          .poll(() =>
-            page
-              .locator('#event-photo-full')
-              .evaluate(
-                (element: HTMLImageElement) =>
-                  element.complete && element.naturalWidth > 0,
-              ),
-          )
-          .toBe(true);
-        await expect(page.locator('#event-photo-full')).toHaveCSS(
-          'object-fit',
-          'contain',
-        );
-        const fits = await page
-          .locator('#event-photo-full')
-          .evaluate((element) => {
-            const box = element.getBoundingClientRect();
-            return box.width <= innerWidth && box.height <= innerHeight;
-          });
-        expect(fits).toBe(true);
-        await page.keyboard.press('Escape');
-        await expect(page.locator('#event-photo-dialog')).not.toBeVisible();
-      }
+      const tiPath =
+        lang === 'ru'
+          ? '/ru/meropriyatiya/transformatsionnye-igry/'
+          : '/de/veranstaltungen/transformationsspiele/';
+      await expect(page.locator('.events__frame').first()).toHaveAttribute(
+        'href',
+        tiPath,
+      );
+      await expect(
+        page.locator('.events__frame').first().locator('.events__plus'),
+      ).toHaveCount(0);
+      await page.locator('.events__photo-trigger').click();
+      await expect(page.locator('#event-photo-dialog')).toBeVisible();
+      await expect
+        .poll(() =>
+          page
+            .locator('#event-photo-full')
+            .evaluate(
+              (element: HTMLImageElement) =>
+                element.complete && element.naturalWidth > 0,
+            ),
+        )
+        .toBe(true);
+      await expect(page.locator('#event-photo-full')).toHaveCSS(
+        'object-fit',
+        'contain',
+      );
+      const fits = await page
+        .locator('#event-photo-full')
+        .evaluate((element) => {
+          const box = element.getBoundingClientRect();
+          return box.width <= innerWidth && box.height <= innerHeight;
+        });
+      expect(fits).toBe(true);
+      await page.keyboard.press('Escape');
+      await expect(page.locator('#event-photo-dialog')).not.toBeVisible();
+      await page.locator('.events__frame').first().click();
+      await expect(page).toHaveURL(new RegExp(`${tiPath}$`));
+      await page.goBack();
       await expect(page.locator('.events__link').first()).toHaveAttribute(
         'href',
         new RegExp(`/${lang}/.*#games$`),
@@ -285,11 +297,7 @@ test('Munich programme link leads to the dedicated TI page', async ({
   page,
 }) => {
   for (const [lang, path, target] of [
-    [
-      'ru',
-      '/ru/meropriyatiya/',
-      '/ru/meropriyatiya/transformatsionnye-igry/',
-    ],
+    ['ru', '/ru/meropriyatiya/', '/ru/meropriyatiya/transformatsionnye-igry/'],
     [
       'de',
       '/de/veranstaltungen/',
@@ -394,6 +402,25 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await expect(page.locator('#ticket-summary')).toContainText('180 €');
     await page.locator('#ticket-close').click();
     await page.goto(events);
+    await expect(
+      page.locator('input[name="events-games-ticket"][value="guest_peak"]'),
+    ).toBeChecked();
+    if (lang === 'ru')
+      await page.locator('#games').screenshot({ path: 'test-results/games-card-ru.png' });
+    await page.locator('#games [data-ticket="guest"]').click();
+    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await page.locator('#ticket-close').click();
+    await page
+      .locator('input[name="events-games-ticket"][value="guest"]')
+      .check();
+    await page.locator('#games [data-ticket="guest"]').click();
+    await expect(page.locator('#ticket-summary')).toContainText('80 €');
+    await page.locator('#ticket-close').click();
+    await expect(page.locator('#games')).toContainText(
+      lang === 'ru'
+        ? 'Программа и подробности встречи →'
+        : 'Programm und Details →',
+    );
     await page.locator('[data-ticket="nuremberg_meetup"]').click();
     await expect(page.locator('#ticket-summary')).toContainText('29 €');
     await page.locator('#ticket-close').click();

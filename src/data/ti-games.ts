@@ -8,7 +8,10 @@ export interface TiPractitioner {
   game: string;
   tagline: string;
   body: string;
+  facts: string[];
   fit: string[];
+  results: string[];
+  otherGame?: { name: string; fit: string[]; results: string[] };
   note: string;
 }
 
@@ -55,6 +58,8 @@ export interface TiGamesContent {
   practitionerCounter: string;
   gameLabel: string;
   fitLabel: string;
+  factsLabel: string;
+  resultsLabel: string;
   otherPractitioners: string;
   allPractitioners: string;
   close: string;
@@ -100,23 +105,58 @@ const practitionersRu: TiPractitioner[] = [
     id: 'kristina',
     image: '/images/ti-games/kristina.webp',
     name: 'Кристина Бауэр',
-    qualification: 'Коуч и тренер эмоциональных состояний',
+    qualification: 'Неопсихолог, коуч и тренер эмоциональных состояний',
     game: 'AinSof',
     tagline: 'Увидеть новые возможности и найти следующий шаг',
     body: 'На встрече можно исследовать свой запрос, заметить ограничения и найти ресурсы для движения к цели.',
-    fit: ['Если нужна ясность и мотивация', 'Если хотите увидеть новые возможности'],
-    note: 'Опыт игры не требуется',
+    facts: [
+      'Более четырёх лет практики, свыше 500 клиентов в индивидуальных и групповых сессиях.',
+      'По данным страницы мероприятия, 98% участников отмечают перемены уже после первой встречи.',
+      'Сооснователь пространства R.O.S.T. в Мюнхене, которое посетили более 300 человек.',
+      'Сертифицированная ведущая игры AinSof в Германии.',
+    ],
+    fit: [
+      'Хотите понять, куда двигаться дальше.',
+      'Мешают страхи или внутренние ограничения.',
+      'Ищете ресурсы и мотивацию для достижения цели.',
+      'Уже знаете цель, но хотите быстрее к ней прийти.',
+    ],
+    results: [
+      'По-новому посмотрите на свои ресурсы и возможности.',
+      'Увидите установки, которые мешают действовать.',
+      'Найдёте новые стратегии и потренируете принятие решений.',
+      'Исследуете свой подход к финансам и личным целям.',
+    ],
+    note: 'AinSof помогает исследовать свой запрос и увидеть новые варианты действий.',
   },
   {
     id: 'katharina',
     image: '/images/ti-games/katharina.webp',
     name: 'Катарина Базаль',
-    qualification: 'Интегративный аромапрактик, проводник трансформационных процессов',
+    qualification:
+      'Интегративный аромапрактик, проводник трансформационных процессов',
     game: 'Вопрос в эфире. Круг трансформаций',
     tagline: 'Посмотреть на ситуацию под новым углом',
     body: 'Через ароматы и интуитивные практики исследовать запрос, увидеть скрытые причины и найти внутреннюю опору.',
-    fit: ['Если стоите на пороге перемен', 'Если ищете ясность в своём запросе'],
-    note: 'Опыт игры не требуется',
+    facts: [
+      'Соединяет ароматерапию, интуитивные практики и работу с подсознанием.',
+      'Использует ароматы как способ обратиться к эмоциям, памяти и внутренним ресурсам.',
+      'Помогает искать ответы, когда привычная логика не даёт ясности.',
+    ],
+    fit: [
+      'Стоите на пороге перемен.',
+      'Чувствуете тупик и хотите посмотреть на ситуацию иначе.',
+      'Ищете ресурс и внутреннюю опору для следующего шага.',
+      'Открыты к мягкой работе через ощущения и ароматы.',
+      'Хотите услышать ответы, которые трудно найти одной логикой.',
+    ],
+    results: [
+      'Точнее сформулируете свой запрос.',
+      'Замечаете скрытые причины и уже доступные вам ресурсы.',
+      'Найдёте возможный следующий шаг; в завершение получите ресурсный аромат.',
+      'Поисследуете связь ароматов, воспоминаний и эмоциональных состояний.',
+    ],
+    note: 'Игра «Вопрос в эфире. Круг трансформаций» приглашает задать важный для вас вопрос.',
   },
   {
     id: 'elena',
@@ -127,11 +167,26 @@ const practitionersRu: TiPractitioner[] = [
     game: 'Путь Желаний',
     tagline: 'Разобраться, какие желания ваши',
     body: 'Отделить свои желания от навязанных ожиданий и найти опору для действия.',
-    fit: [
-      'Если хочется перемен в работе или своём деле',
-      'Если устали подстраиваться под чужие ожидания',
+    facts: [
+      'Обучалась у создателей игры на её мировой премьере в Дубае.',
+      'Провела более 50 игровых сессий и свыше 70 часов работы с метафорическими картами.',
+      'Разработала обучающие программы, которые за пять лет прошли более 4500 человек.',
+      'Сочетает глубину работы с ясной и бережной атмосферой.',
     ],
-    note: 'Опыт игры не требуется',
+    fit: [
+      'Чувствуете, что пора что-то менять в работе или своём деле.',
+      'Страх и сомнения мешают начать.',
+      'Устали подстраиваться под чужие ожидания.',
+      'Хотите яснее услышать собственные желания.',
+      'Давно откладываете личную мечту как «слишком смелую».',
+    ],
+    results: [
+      'Отделите свои желания от навязанных.',
+      'Найдёте мотивацию для движения к важной для вас цели.',
+      'Увидите внутренние блоки и возможные действия.',
+      'Почувствуете больше энергии для своих планов.',
+    ],
+    note: '«Путь Желаний» — возможность снова прислушаться к себе.',
   },
   {
     id: 'zinaida',
@@ -141,11 +196,26 @@ const practitionersRu: TiPractitioner[] = [
     game: 'Путь к себе — волшебство самооценки',
     tagline: 'Вернуть уверенность и внутреннюю опору',
     body: 'Поговорить об уверенности, самоценности и выборе следующего шага.',
-    fit: [
-      'Если устали от тревоги и ощущения «я потерялась»',
-      'Если хотите выбрать себя',
+    facts: [
+      'Сертифицированный коуч Академии 5 Prism, практический психолог.',
+      'Два года сопровождает клиентов индивидуально.',
+      'Более 80 клиентов прошли с ней коучинг, трансформационные сессии и игровые практики.',
+      'Работает с самооценкой, идентичностью и поиском внутренней силы.',
     ],
-    note: 'Опыт игры не требуется',
+    fit: [
+      'Хотите вернуть уверенность и внутреннюю опору.',
+      'Чувствуете тревогу или потеряли ощущение себя.',
+      'Стоите на перепутье и хотите понять свои желания.',
+      'Хотите разобраться со страхами и личными ограничениями.',
+      'Готовы снова поставить собственные потребности на первое место.',
+    ],
+    results: [
+      'Лучше поймёте, что мешает двигаться вперёд.',
+      'Услышите свои желания и почувствуете больше ясности.',
+      'Найдёте внутреннюю поддержку для дальнейших действий.',
+      'Поищете способ действовать из уверенности, а не из страха.',
+    ],
+    note: '«Путь к себе — волшебство самооценки» помогает взглянуть на себя по-новому.',
   },
   {
     id: 'alla',
@@ -156,11 +226,37 @@ const practitionersRu: TiPractitioner[] = [
     game: 'Секс, Деньги и Любовь · Дивергент',
     tagline: 'Исследовать отношения, роли и перемены',
     body: 'Исследовать отношения, внутренние роли, принятие и перемены в жизни.',
-    fit: [
-      'Если чувствуете внутренние запреты на любовь, удовольствие и деньги',
-      'Если переживаете смену жизненного этапа',
+    facts: [
+      '23 года практики в психологии и психотерапии.',
+      'Более 20 000 индивидуальных и групповых консультаций.',
+      'Автор программ посттравматического роста; провела более 30 трансформационных игр.',
+      'Соединяет психологию, медицину, телесные и творческие методы.',
     ],
-    note: 'Опыт игры не требуется',
+    fit: [
+      'Чувствуете внутренние запреты на любовь, удовольствие или деньги.',
+      'Сложно доверять и строить отношения.',
+      'Хотите соединить материальное и эмоциональное без стыда и напряжения.',
+    ],
+    results: [
+      'Замечаете установки, влияющие на отношения и достаток.',
+      'Исследуете старые роли и ограничивающие привычки.',
+      'Поищете опору для нового этапа жизни.',
+      'Исследуете связь с телом, чувственностью и самоценностью.',
+    ],
+    otherGame: {
+      name: 'Дивергент',
+      fit: [
+        'Переживаете переезд, кризис или профессиональный переход.',
+        'Узнаёте в себе роли спасателя, перфекциониста или «выжившего».',
+        'Хотите меньше выгорать и работать с большей радостью.',
+      ],
+      results: [
+        'Увидите, как старые роли влияют на нынешние решения.',
+        'Поищете более подходящие способы действовать.',
+        'Найдёте направление для следующего жизненного этапа.',
+      ],
+    },
+    note: 'Алла проводит две игры: «Секс, Деньги и Любовь» и «Дивергент».',
   },
 ];
 
@@ -169,12 +265,30 @@ const practitionersDe: TiPractitioner[] = [
     id: 'kristina',
     image: '/images/ti-games/kristina.webp',
     name: 'Kristina Bauer',
-    qualification: 'Coach und Trainerin für emotionale Zustände',
+    qualification:
+      'Neopsychologin, Coach und Trainerin für emotionale Zustände',
     game: 'AinSof',
     tagline: 'Neue Möglichkeiten sehen und den nächsten Schritt finden',
     body: 'In der Runde kannst du dein Anliegen untersuchen, Begrenzungen bemerken und Ressourcen für deinen Weg finden.',
-    fit: ['Wenn du Klarheit und Motivation suchst', 'Wenn du neue Möglichkeiten sehen möchtest'],
-    note: 'Spielerfahrung ist nicht nötig',
+    facts: [
+      'Mehr als vier Jahre Praxis und über 500 Klientinnen und Klienten in Einzel- und Gruppensitzungen.',
+      'Laut der Veranstaltungsseite berichten 98 % der Teilnehmenden nach dem ersten Treffen von Veränderungen.',
+      'Mitgründerin des R.O.S.T.-Raums in München, den mehr als 300 Menschen besucht haben.',
+      'Zertifizierte Spielleiterin für AinSof in Deutschland.',
+    ],
+    fit: [
+      'Du möchtest wissen, wie es für dich weitergeht.',
+      'Ängste oder innere Hürden halten dich zurück.',
+      'Du suchst Ressourcen und Motivation für dein Ziel.',
+      'Du kennst dein Ziel und möchtest schneller vorankommen.',
+    ],
+    results: [
+      'Du siehst deine Ressourcen und Möglichkeiten aus einer neuen Perspektive.',
+      'Du erkennst Überzeugungen, die dich bremsen.',
+      'Du entwickelst mögliche Strategien und übst Entscheidungen.',
+      'Du erkundest deinen Umgang mit Geld und persönlichen Zielen.',
+    ],
+    note: 'AinSof hilft dir, dein Anliegen zu erkunden und neue Handlungsmöglichkeiten zu sehen.',
   },
   {
     id: 'katharina',
@@ -185,8 +299,25 @@ const practitionersDe: TiPractitioner[] = [
     game: 'Frage im Äther. Kreis der Transformationen',
     tagline: 'Die Situation aus einem neuen Blickwinkel betrachten',
     body: 'Mit Aromen und intuitiven Praktiken dein Anliegen erforschen, verborgene Ursachen sehen und innere Stabilität finden.',
-    fit: ['Wenn du an der Schwelle zu Veränderungen stehst', 'Wenn du Klarheit in deinem Anliegen suchst'],
-    note: 'Spielerfahrung ist nicht nötig',
+    facts: [
+      'Verbindet Aromatherapie, intuitive Methoden und die Arbeit mit dem Unterbewusstsein.',
+      'Nutzt Düfte als Zugang zu Emotionen, Erinnerungen und inneren Ressourcen.',
+      'Begleitet Menschen bei Fragen, auf die reine Logik keine Antwort gibt.',
+    ],
+    fit: [
+      'Du stehst vor einer Veränderung.',
+      'Du fühlst dich festgefahren und möchtest anders auf die Situation schauen.',
+      'Du suchst Kraft und innere Orientierung für deinen nächsten Schritt.',
+      'Du bist offen für eine behutsame Arbeit mit Düften und Wahrnehmung.',
+      'Du suchst Antworten jenseits der gewohnten Logik.',
+    ],
+    results: [
+      'Du formulierst dein Anliegen genauer.',
+      'Du erkennst mögliche Ursachen und vorhandene Ressourcen.',
+      'Du findest einen möglichen nächsten Schritt und erhältst zum Schluss einen persönlichen Ressourcenduft.',
+      'Du erkundest die Verbindung zwischen Düften, Erinnerungen und Gefühlen.',
+    ],
+    note: '„Frage im Äther. Kreis der Transformationen“ lädt dich ein, deine wichtige Frage zu stellen.',
   },
   {
     id: 'elena',
@@ -197,11 +328,26 @@ const practitionersDe: TiPractitioner[] = [
     game: 'Der Weg der Wünsche',
     tagline: 'Herausfinden, welche Wünsche die eigenen sind',
     body: 'Eigene Wünsche von übernommenen Erwartungen trennen und eine Grundlage für Handeln finden.',
-    fit: [
-      'Wenn du Veränderung in der Arbeit oder im eigenen Projekt möchtest',
-      'Wenn du es leid bist, dich an fremden Erwartungen auszurichten',
+    facts: [
+      'Lernte bei den Entwicklerinnen und Entwicklern des Spiels während seiner Weltpremiere in Dubai.',
+      'Leitete über 50 Spielrunden und arbeitete mehr als 70 Stunden mit metaphorischen Karten.',
+      'Entwickelte Lernprogramme, an denen in fünf Jahren über 4500 Menschen teilnahmen.',
+      'Verbindet tiefgehende Arbeit mit einer klaren, behutsamen Atmosphäre.',
     ],
-    note: 'Spielerfahrung ist nicht nötig',
+    fit: [
+      'Du möchtest etwas in deiner Arbeit oder deinem Projekt ändern.',
+      'Angst und Zweifel hindern dich am Anfang.',
+      'Du bist müde davon, dich nach fremden Erwartungen zu richten.',
+      'Du möchtest deine eigenen Wünsche deutlicher spüren.',
+      'Du schiebst einen persönlichen Traum als „zu kühn“ auf.',
+    ],
+    results: [
+      'Du unterscheidest eigene Wünsche von übernommenen.',
+      'Du findest Motivation für dein persönliches Ziel.',
+      'Du erkennst innere Hürden und mögliche Schritte.',
+      'Du gewinnst neue Energie für deine Pläne.',
+    ],
+    note: '„Der Weg der Wünsche“ ist eine Gelegenheit, wieder auf dich selbst zu hören.',
   },
   {
     id: 'zinaida',
@@ -211,11 +357,26 @@ const practitionersDe: TiPractitioner[] = [
     game: 'Der Weg zu sich selbst — die Magie des Selbstwerts',
     tagline: 'Selbstvertrauen und innere Stabilität zurückgewinnen',
     body: 'Über Selbstvertrauen, Selbstwert und den nächsten Schritt sprechen.',
-    fit: [
-      'Wenn du unter Unruhe und dem Gefühl „ich habe mich verloren“ leidest',
-      'Wenn du dich selbst wählen möchtest',
+    facts: [
+      'Zertifizierter Coach der 5-Prism-Akademie und praktische Psychologin.',
+      'Begleitet Menschen seit zwei Jahren individuell.',
+      'Mehr als 80 Menschen nahmen bei ihr an Coaching, Transformationssitzungen und Spielmethoden teil.',
+      'Arbeitet mit Selbstwert, Identität und innerer Stärke.',
     ],
-    note: 'Spielerfahrung ist nicht nötig',
+    fit: [
+      'Du möchtest Selbstvertrauen und innere Stabilität zurückgewinnen.',
+      'Du fühlst Unruhe oder hast das Gefühl, dich selbst verloren zu haben.',
+      'Du stehst an einer Weggabelung und möchtest deine Wünsche verstehen.',
+      'Du möchtest Ängste und persönliche Grenzen erkunden.',
+      'Du bist bereit, deine eigenen Bedürfnisse wieder ernst zu nehmen.',
+    ],
+    results: [
+      'Du verstehst besser, was dich bisher aufgehalten hat.',
+      'Du hörst deine Wünsche deutlicher und gewinnst Klarheit.',
+      'Du findest innere Unterstützung für deine nächsten Schritte.',
+      'Du suchst einen Weg, aus Zuversicht statt aus Angst zu handeln.',
+    ],
+    note: '„Der Weg zu sich selbst – die Magie des Selbstwerts“ eröffnet einen neuen Blick auf dich selbst.',
   },
   {
     id: 'alla',
@@ -226,11 +387,37 @@ const practitionersDe: TiPractitioner[] = [
     game: 'Sex, Geld und Liebe · Divergent',
     tagline: 'Beziehungen, Rollen und Veränderungen erforschen',
     body: 'Beziehungen, innere Rollen, Annahme und Veränderungen im Leben erforschen.',
-    fit: [
-      'Wenn du innere Verbote gegenüber Liebe, Freude und Geld spürst',
-      'Wenn du einen neuen Lebensabschnitt beginnst',
+    facts: [
+      '23 Jahre Erfahrung in Psychologie und Psychotherapie.',
+      'Mehr als 20 000 Einzel- und Gruppengespräche.',
+      'Entwicklerin von Programmen für posttraumatisches Wachstum; leitete über 30 Transformationsspiele.',
+      'Verbindet Psychologie und Medizin mit körperorientierten und kreativen Methoden.',
     ],
-    note: 'Spielerfahrung ist nicht nötig',
+    fit: [
+      'Du spürst innere Verbote gegenüber Liebe, Freude oder Geld.',
+      'Vertrauen und Beziehungen fallen dir schwer.',
+      'Du möchtest Materielles und Emotionales ohne Scham miteinander verbinden.',
+    ],
+    results: [
+      'Du bemerkst Überzeugungen rund um Beziehungen und Geld.',
+      'Du erkundest alte Rollen und begrenzende Muster.',
+      'Du suchst Halt für eine neue Lebensphase.',
+      'Du erkundest Körpergefühl, Sinnlichkeit und Selbstwert.',
+    ],
+    otherGame: {
+      name: 'Divergent',
+      fit: [
+        'Du erlebst einen Umzug, eine Krise oder einen beruflichen Übergang.',
+        'Du erkennst dich in Rollen wie Retter, Perfektionistin oder Überlebende wieder.',
+        'Du möchtest Erschöpfung vermeiden und mit mehr Freude arbeiten.',
+      ],
+      results: [
+        'Du erkennst, wie alte Rollen deine heutigen Entscheidungen beeinflussen.',
+        'Du suchst passendere Wege zu handeln.',
+        'Du findest eine Richtung für deinen nächsten Lebensabschnitt.',
+      ],
+    },
+    note: 'Alla leitet zwei Spiele: „Sex, Geld und Liebe“ und „Divergent“.',
   },
 ];
 
@@ -240,7 +427,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
     datePill: '7 ноября · Мюнхен',
     title: ['День', 'трансформационных', 'игр в Мюнхене'],
     intro:
-      'Две игровые сессии, нетворкинг и время, чтобы познакомиться с людьми ближе.',
+      'Две игровые линейки и живое общение. Выберите билет и познакомьтесь с ведущими.',
     when: 'Когда',
     where: 'Где',
     date: '7 ноября 2026',
@@ -271,7 +458,9 @@ export const tiGames: Record<Language, TiGamesContent> = {
     practitioners: practitionersRu,
     practitionerCounter: 'Игропрактик · 1 из 5',
     gameLabel: 'Игра',
+    factsLabel: 'О ведущей',
     fitLabel: 'Подойдёт, если',
+    resultsLabel: 'Что можно получить от игры',
     otherPractitioners: 'Другие ведущие',
     allPractitioners: 'Все игропрактики',
     close: 'Закрыть описание игропрактика',
@@ -310,7 +499,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
     datePill: '7. November · München',
     title: ['Tag der', 'Transformationsspiele', 'in München'],
     intro:
-      'Zwei Spielrunden, Networking und Zeit, um Menschen näher kennenzulernen.',
+      'Zwei Spielrunden und persönliche Begegnungen. Wähle dein Ticket und lerne die Spielleitenden kennen.',
     when: 'Wann',
     where: 'Wo',
     date: '7. November 2026',
@@ -341,7 +530,9 @@ export const tiGames: Record<Language, TiGamesContent> = {
     practitioners: practitionersDe,
     practitionerCounter: 'Spielleitende · 1 von 5',
     gameLabel: 'Spiel',
+    factsLabel: 'Über die Spielleiterin',
     fitLabel: 'Passt, wenn',
+    resultsLabel: 'Was du aus dem Spiel mitnehmen kannst',
     otherPractitioners: 'Weitere Spielleitende',
     allPractitioners: 'Alle Spielleitenden',
     close: 'Beschreibung schließen',

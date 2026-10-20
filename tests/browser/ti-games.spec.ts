@@ -51,6 +51,10 @@ test('TI page renders all mockup sections without horizontal overflow', async ({
       );
       await expect(page.locator('#ti-ticket-card')).toContainText('80 €');
       await expect(page.locator('#ti-ticket-card')).toContainText('180 €');
+      if (item.lang === 'ru' && (width === 390 || width === 1440))
+        await page.screenshot({
+          path: `test-results/ti-games-ru-${width}.png`,
+        });
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
@@ -113,14 +117,42 @@ test('practitioner cards open an accessible overlay and switch between people', 
     await expect(page.locator('#practitioner-dialog')).toBeVisible();
     await expect(page.locator('#practitioner-name')).toHaveText(item.firstName);
     await expect(page.locator('#practitioner-qualification')).not.toBeEmpty();
+    await expect(page.locator('#practitioner-facts li')).not.toHaveCount(0);
     await expect(page.locator('#practitioner-fit li')).not.toHaveCount(0);
+    await expect(page.locator('#practitioner-results li')).not.toHaveCount(0);
     await expect(page.locator('#practitioner-note')).not.toBeEmpty();
+    if (item.lang === 'ru')
+      await page
+        .locator('#practitioner-dialog')
+        .screenshot({ path: 'test-results/practitioner-dialog-ru.png' });
     await page.locator('#practitioner-nav button').first().click();
-    await expect(page.locator('#practitioner-name')).toHaveText(item.secondName);
+    await expect(page.locator('#practitioner-name')).toHaveText(
+      item.secondName,
+    );
+    await expect(page.locator('#practitioner-facts li')).not.toHaveCount(0);
     await page.keyboard.press('Escape');
     await expect(page.locator('#practitioner-dialog')).not.toBeVisible();
     await expect(first).toBeFocused();
   }
+});
+
+test('long practitioner details remain scrollable on a phone', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 760 });
+  await page.goto('/ru/meropriyatiya/transformatsionnye-igry/');
+  await page.locator('[data-practitioner="4"]').click();
+  await expect(page.locator('#practitioner-name')).toHaveText(
+    'Алла Афанасенко',
+  );
+  await expect(page.locator('#practitioner-other-name')).toHaveText(
+    'Дивергент',
+  );
+  await expect(page.locator('#practitioner-other-fit li')).toHaveCount(3);
+  await page.locator('#practitioner-other-results').scrollIntoViewIfNeeded();
+  await expect(page.locator('#practitioner-other-results')).toBeInViewport();
+  await page.locator('#practitioner-close').click();
+  await expect(page.locator('#practitioner-dialog')).not.toBeVisible();
 });
 
 test('mobile sticky ticket bar opens the tariff sheet and continues to purchase', async ({

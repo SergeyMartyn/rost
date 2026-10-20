@@ -281,6 +281,22 @@ const copy =
       };
 const eventTickets = [
   {
+    key: 'guest',
+    title: lang === 'ru' ? 'Базовый импульс' : 'Basisimpuls',
+    summary:
+      lang === 'ru'
+        ? '7 ноября · Мюнхен · 80 €'
+        : '7. November · München · 80 €',
+  },
+  {
+    key: 'guest_peak',
+    title: lang === 'ru' ? 'Пик трансформации' : 'Gipfel der Transformation',
+    summary:
+      lang === 'ru'
+        ? '7 ноября · Мюнхен · 180 €'
+        : '7. November · München · 180 €',
+  },
+  {
     key: 'nuremberg_meetup',
     title: lang === 'ru' ? 'Билет на встречу' : 'Ticket für das Treffen',
     summary:
@@ -365,41 +381,71 @@ const eventTickets = [
         </div>
       </div>
       <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-white shadow-xl lg:sticky lg:top-28">
-        <div class="relative flex h-40 items-end overflow-hidden bg-hero-end/60 p-7">
-          <div
-            aria-hidden="true"
-            class="absolute -right-8 -top-16 h-60 w-60 rounded-full border-[2.5rem] border-white/40"
-          ></div>
-          <div class="relative flex items-end gap-3 text-brand">
-            <strong class="font-display text-7xl leading-none">7</strong>
-            <span class="pb-2 text-lg font-semibold leading-tight">
-              {copy.gamesMonth}
-              <br />
-              2026
-            </span>
-          </div>
+        <div class="bg-hero-end px-7 py-5 text-brand">
+          <p class="text-xs font-bold uppercase tracking-[0.13em]">
+            {copy.when}
+          </p>
+          <p class="mt-3 font-display text-3xl">{copy.gamesDate}</p>
         </div>
         <div class="p-7">
-          <p class="text-sm font-semibold text-muted">
-            {lang === 'ru' ? 'Билеты участника' : 'Tickets für Teilnehmende'}
+          <p class="text-sm text-muted">
+            {copy.gamesVenue} · Perchtinger Straße 12
           </p>
-          <p class="mt-2 font-display text-4xl">80 € · 180 €</p>
-          <a
-            href={routes.tiGames[lang]}
-            class="mt-7 inline-flex min-h-14 w-full items-center justify-center rounded-2xl bg-brand px-6 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          <fieldset class="mt-5">
+            <legend class="mb-3 font-bold">{copy.chooseTicket}</legend>
+            <div class="space-y-3">
+              <label class="flex min-h-24 cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4 transition has-[:checked]:border-brand has-[:checked]:bg-brand-surface">
+                <input
+                  type="radio"
+                  name="events-games-ticket"
+                  value="guest"
+                  class="mt-1 h-4 w-4 shrink-0 accent-brand"
+                />
+                <span class="min-w-0 flex-1">
+                  <strong class="block text-sm">{copy.basicTicket}</strong>
+                  <span class="mt-1 block text-xs leading-snug text-muted">
+                    {copy.basicIncludes}
+                  </span>
+                </span>
+                <strong class="shrink-0 font-display text-2xl font-normal">
+                  80 €
+                </strong>
+              </label>
+              <label class="flex min-h-24 cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4 transition has-[:checked]:border-brand has-[:checked]:bg-brand-surface">
+                <input
+                  type="radio"
+                  name="events-games-ticket"
+                  value="guest_peak"
+                  checked
+                  class="mt-1 h-4 w-4 shrink-0 accent-brand"
+                />
+                <span class="min-w-0 flex-1">
+                  <strong class="block text-sm">{copy.peakTicket}</strong>
+                  <span class="mt-1 block text-xs leading-snug text-muted">
+                    {copy.peakIncludes}
+                  </span>
+                </span>
+                <strong class="shrink-0 font-display text-2xl font-normal">
+                  180 €
+                </strong>
+              </label>
+            </div>
+          </fieldset>
+          <button
+            type="button"
+            data-ticket="guest"
+            data-ticket-group="events-games-ticket"
+            class="mt-3 min-h-14 w-full rounded-2xl bg-brand px-6 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
           >
-            {copy.gamesDetailsLink}
-          </a>
+            {copy.gamesDetailsBuy}
+          </button>
           <a
             href={routes.host[lang]}
-            class="mt-3 inline-flex w-full items-center justify-between rounded-2xl border border-brand/30 bg-brand-surface px-5 py-4 text-left font-bold transition hover:border-brand hover:bg-brand hover:text-brand-gold"
+            class="mt-3 inline-flex w-full items-center justify-between rounded-2xl border border-brand/30 bg-white px-5 py-4 text-left font-bold transition hover:border-brand hover:bg-brand hover:text-brand-gold"
           >
             <span>{copy.host}</span>
             <span aria-hidden="true">→</span>
           </a>
-          <p class="mt-4 text-center text-xs leading-relaxed text-muted">
-            {copy.beforePayment}
-          </p>
         </div>
       </aside>
     </div>
@@ -561,10 +607,7 @@ const eventTickets = [
   </div>
 </dialog>
 
-<TicketPurchaseDialog
-  lang={lang}
-  tickets={eventTickets}
-/>
+<TicketPurchaseDialog lang={lang} tickets={eventTickets} />
 
 <script>
   const detailsDialog = document.querySelector<HTMLDialogElement>(

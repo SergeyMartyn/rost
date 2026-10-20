@@ -18,21 +18,27 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
 ---
 
 <div class="font-hero-sans text-brand">
-  <div class="ti-lead bg-gradient-to-r from-hero-start to-hero-end pt-32 md:pt-36">
+  <div class="ti-lead bg-gradient-to-r from-hero-start to-hero-end pt-32">
     <div class="site-container lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-x-12">
-      <div id="ti-games-hero" class="min-w-0 pb-16 md:pb-20 lg:col-start-1 lg:row-start-1 lg:min-h-[750px]">
+      <div
+        id="ti-games-hero"
+        class="min-w-0 pb-16 md:pb-20 lg:col-start-1 lg:row-start-1 lg:min-h-[750px]"
+      >
         <p class="text-xs font-bold uppercase tracking-[0.13em] text-brand md:text-[13px]">
           {content.eyebrow}
         </p>
         <p class="mt-5 inline-flex min-h-10 items-center rounded-full bg-brand-gold px-5 text-xs font-bold tracking-[0.08em] text-brand">
           {content.datePill}
         </p>
-        <h1 class="mt-8 break-words font-display hyphens-auto text-[clamp(2rem,6vw,5rem)] leading-[1.05] tracking-[-0.02em]">
+        <h1 class="mt-4 break-words font-display hyphens-auto text-[clamp(2.25rem,5vw,3.5rem)] leading-[1.05] tracking-[-0.02em]">
           {content.title.map((line) => (
             <span class="block">{line}</span>
           ))}
         </h1>
-        <div class="mt-8 h-1 w-40 bg-brand-gold md:w-64" aria-hidden="true"></div>
+        <div
+          class="mt-8 h-1 w-40 bg-brand-gold md:w-64 lg:mt-20 lg:w-90"
+          aria-hidden="true"
+        ></div>
         <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
           {content.intro}
         </p>
@@ -43,32 +49,33 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         class="relative z-10 mt-0 min-w-0 self-start overflow-hidden pb-10 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:sticky lg:top-28"
       >
         <div class="overflow-hidden rounded-4xl border border-brand/10 bg-white shadow-xl">
-          <div class="relative flex items-end gap-3 overflow-hidden bg-hero-end/60 p-7 text-brand">
-            <strong class="relative font-display text-7xl leading-none">7</strong>
-            <span class="relative pb-2 text-lg font-semibold leading-tight">
-              {lang === 'ru' ? 'ноября' : 'November'}
-              <br />
-              2026
-            </span>
+          <div class="bg-hero-end px-7 py-5 text-brand">
+            <p class="text-xs font-bold uppercase tracking-[0.13em]">
+              {content.when}
+            </p>
+            <p class="mt-3 font-display text-3xl">{content.date}</p>
           </div>
           <div class="p-6 sm:p-7">
-            <p class="text-sm text-muted">{content.venue} · {content.address}</p>
+            <p class="text-sm text-muted">
+              {content.venue} · Perchtinger Straße 12
+            </p>
             <fieldset class="mt-5">
               <legend class="mb-3 font-bold text-brand">
                 {content.chooseTicket}
               </legend>
               <div class="space-y-3">
-                <label class="block cursor-pointer">
+                <label class="flex min-h-24 cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4 transition has-[:checked]:border-brand has-[:checked]:bg-brand-surface">
                   <input
                     type="radio"
                     name="games-ticket"
                     value="guest"
-                    class="peer sr-only"
+                    class="mt-1 h-4 w-4 shrink-0 accent-brand"
                   />
-                  <span class="flex min-h-24 items-start gap-3 rounded-2xl border border-line bg-white p-4 transition peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
-                    <span class="mt-1 text-brand" aria-hidden="true">○</span>
+                  <span class="flex min-w-0 flex-1 items-start gap-3">
                     <span class="min-w-0 flex-1">
-                      <strong class="block text-sm">{content.basicTicket}</strong>
+                      <strong class="block text-sm">
+                        {content.basicTicket}
+                      </strong>
                       <span class="mt-1 block text-xs leading-snug text-muted">
                         {content.basicIncludes}
                       </span>
@@ -78,18 +85,19 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
                     </strong>
                   </span>
                 </label>
-                <label class="block cursor-pointer">
+                <label class="flex min-h-24 cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4 transition has-[:checked]:border-brand has-[:checked]:bg-brand-surface">
                   <input
                     type="radio"
                     name="games-ticket"
                     value="guest_peak"
                     checked
-                    class="peer sr-only"
+                    class="mt-1 h-4 w-4 shrink-0 accent-brand"
                   />
-                  <span class="flex min-h-24 items-start gap-3 rounded-2xl border border-line bg-white p-4 transition peer-checked:border-brand peer-checked:bg-brand-surface peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
-                    <span class="mt-1 text-brand" aria-hidden="true">○</span>
+                  <span class="flex min-w-0 flex-1 items-start gap-3">
                     <span class="min-w-0 flex-1">
-                      <strong class="block text-sm">{content.peakTicket}</strong>
+                      <strong class="block text-sm">
+                        {content.peakTicket}
+                      </strong>
                       <span class="mt-1 block text-xs leading-snug text-muted">
                         {content.peakIncludes}
                       </span>
@@ -143,8 +151,21 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         </p>
         <div class="mt-7 grid gap-5 sm:grid-cols-3 sm:gap-3">
           {content.features.map((feature, index) => (
-            <div class:list={['sm:rounded-2xl sm:bg-brand-surface sm:p-4', { 'hidden sm:block': index === 2 }]}>
-              <h3 class="font-bold"><span class="mr-2 text-brand-gold sm:hidden" aria-hidden="true">●</span><span class="hidden text-xs tracking-[0.12em] text-accent sm:inline">0{index + 1} </span>{feature.title}</h3>
+            <div
+              class:list={[
+                'sm:rounded-2xl sm:bg-brand-surface sm:p-4',
+                { 'hidden sm:block': index === 2 },
+              ]}
+            >
+              <h3 class="font-bold">
+                <span class="mr-2 text-brand-gold sm:hidden" aria-hidden="true">
+                  ●
+                </span>
+                <span class="hidden text-xs tracking-[0.12em] text-accent sm:inline">
+                  0{index + 1}{' '}
+                </span>
+                {feature.title}
+              </h3>
               <p class="mt-1 text-sm leading-relaxed text-muted">
                 {feature.body}
               </p>
@@ -173,9 +194,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
               <p class="text-xs font-bold tracking-[0.08em] text-accent">
                 {item.time}
               </p>
-              <p class="mt-1 text-sm text-muted sm:mt-0">
-                {item.label}
-              </p>
+              <p class="mt-1 text-sm text-muted sm:mt-0">{item.label}</p>
             </div>
           ))}
         </div>
@@ -183,7 +202,10 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     </div>
   </div>
 
-  <section class="bg-white py-18 md:py-26" aria-labelledby="ti-practitioners-title">
+  <section
+    class="bg-white py-18 md:py-26"
+    aria-labelledby="ti-practitioners-title"
+  >
     <div class="site-container">
       <p class="text-xs font-bold uppercase tracking-[0.13em] text-accent">
         {content.practitionersEyebrow}
@@ -213,8 +235,12 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
               class="h-16 w-16 shrink-0 rounded-full border-4 border-white object-cover shadow-md transition group-hover:scale-[1.03] sm:mx-auto sm:h-32 sm:w-32"
             />
             <span class="block min-w-0">
-              <span class="block font-display text-lg leading-tight text-brand sm:mt-4 sm:text-xl">{person.name}</span>
-              <span class="mt-1 block text-sm font-semibold text-accent">{person.game}</span>
+              <span class="block font-display text-lg leading-tight text-brand sm:mt-4 sm:text-xl">
+                {person.name}
+              </span>
+              <span class="mt-1 block text-sm font-semibold text-accent">
+                {person.game}
+              </span>
             </span>
           </button>
         ))}
@@ -222,7 +248,10 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     </div>
   </section>
 
-  <section class="bg-brand-surface py-18 md:py-26" aria-labelledby="ti-tickets-title">
+  <section
+    class="bg-brand-surface py-18 md:py-26"
+    aria-labelledby="ti-tickets-title"
+  >
     <div class="site-container">
       <p class="text-xs font-bold uppercase tracking-[0.13em] text-accent">
         {content.ticketsEyebrow}
@@ -310,26 +339,39 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
       </button>
     </div>
     <fieldset class="mt-5 space-y-3">
-      <label class="block cursor-pointer">
-        <input type="radio" name="ti-mobile-ticket" value="guest" class="peer sr-only" />
-        <span class="flex min-h-24 items-start gap-3 rounded-2xl border border-line bg-white p-4 peer-checked:border-brand peer-checked:bg-brand-surface">
-          <span class="mt-1 text-brand" aria-hidden="true">○</span>
+      <label class="flex min-h-24 cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4 has-[:checked]:border-brand has-[:checked]:bg-brand-surface">
+        <input
+          type="radio"
+          name="ti-mobile-ticket"
+          value="guest"
+          class="mt-1 h-4 w-4 shrink-0 accent-brand"
+        />
+        <span class="flex min-w-0 flex-1 items-start gap-3">
           <span class="min-w-0 flex-1">
             <strong class="block">{content.basicTicket}</strong>
-            <span class="mt-1 block text-xs text-muted">{content.basicIncludes}</span>
+            <span class="mt-1 block text-xs text-muted">
+              {content.basicIncludes}
+            </span>
           </span>
           <strong class="shrink-0 font-display text-xl font-normal">
             {ticketByKey.guest.price}
           </strong>
         </span>
       </label>
-      <label class="block cursor-pointer">
-        <input type="radio" name="ti-mobile-ticket" value="guest_peak" checked class="peer sr-only" />
-        <span class="flex min-h-24 items-start gap-3 rounded-2xl border border-line bg-white p-4 peer-checked:border-brand peer-checked:bg-brand-surface">
-          <span class="mt-1 text-brand" aria-hidden="true">○</span>
+      <label class="flex min-h-24 cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4 has-[:checked]:border-brand has-[:checked]:bg-brand-surface">
+        <input
+          type="radio"
+          name="ti-mobile-ticket"
+          value="guest_peak"
+          checked
+          class="mt-1 h-4 w-4 shrink-0 accent-brand"
+        />
+        <span class="flex min-w-0 flex-1 items-start gap-3">
           <span class="min-w-0 flex-1">
             <strong class="block">{content.peakTicket}</strong>
-            <span class="mt-1 block text-xs text-muted">{content.peakIncludes}</span>
+            <span class="mt-1 block text-xs text-muted">
+              {content.peakIncludes}
+            </span>
           </span>
           <strong class="shrink-0 font-display text-xl font-normal">
             {ticketByKey.guest_peak.price}
@@ -354,8 +396,11 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
   class="m-auto h-[calc(100dvh-1rem)] w-[calc(100%-1rem)] max-h-[calc(100dvh-1rem)] max-w-none overflow-hidden rounded-4xl border-0 bg-white p-0 text-brand shadow-2xl backdrop:bg-brand/65 sm:h-auto sm:max-h-[min(90dvh,900px)] sm:w-[min(calc(100%-2rem),980px)]"
 >
   <div class="flex h-full max-h-[calc(100dvh-1rem)] min-h-0 flex-col sm:max-h-[min(90dvh,900px)]">
-    <div class="flex shrink-0 items-start justify-between gap-4 border-b border-brand/10 bg-brand-surface px-5 py-4 sm:px-8 sm:py-5">
-      <p id="practitioner-counter" class="text-xs font-bold uppercase tracking-[0.14em] text-accent"></p>
+    <div class="flex shrink-0 items-start justify-between gap-4 bg-white px-5 py-4 sm:px-8 sm:py-5">
+      <p
+        id="practitioner-counter"
+        class="text-xs font-bold uppercase tracking-[0.14em] text-accent"
+      ></p>
       <button
         id="practitioner-close"
         type="button"
@@ -376,14 +421,65 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
           class="mx-auto h-48 w-48 rounded-full border-4 border-white object-cover shadow-lg sm:h-64 sm:w-64"
         />
         <div class="min-w-0">
-          <h2 id="practitioner-name" class="font-display text-3xl leading-tight sm:text-4xl"></h2>
-          <p id="practitioner-qualification" class="mt-2 text-sm leading-relaxed text-muted"></p>
-          <p id="practitioner-game" class="mt-5 text-xs font-bold uppercase tracking-[0.14em] text-accent"></p>
-          <p id="practitioner-tagline" class="mt-4 font-display text-2xl leading-snug text-brand"></p>
+          <h2
+            id="practitioner-name"
+            class="font-display text-3xl leading-tight sm:text-4xl"
+          ></h2>
+          <p
+            id="practitioner-qualification"
+            class="mt-2 text-sm leading-relaxed text-muted"
+          ></p>
+          <div class="mt-5 h-0.5 w-full bg-brand-gold" aria-hidden="true"></div>
+          <p
+            id="practitioner-game"
+            class="mt-5 text-xs font-bold uppercase tracking-[0.14em] text-accent"
+          ></p>
+          <p
+            id="practitioner-tagline"
+            class="mt-4 font-display text-2xl leading-snug text-brand"
+          ></p>
           <p id="practitioner-body" class="mt-4 leading-relaxed text-muted"></p>
-          <p id="practitioner-fit-label" class="mt-6 text-sm font-bold text-brand"></p>
-          <ul id="practitioner-fit" class="mt-2 space-y-1 text-sm leading-relaxed text-muted"></ul>
-          <p id="practitioner-note" class="mt-5 rounded-xl bg-brand-surface p-3 text-sm font-semibold text-brand"></p>
+          <section class="mt-7">
+            <h3 class="text-sm font-bold">{content.factsLabel}</h3>
+            <ul
+              id="practitioner-facts"
+              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-brand-gold"
+            ></ul>
+          </section>
+          <section class="mt-7">
+            <h3 class="text-sm font-bold">{content.fitLabel}</h3>
+            <ul
+              id="practitioner-fit"
+              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-brand-gold"
+            ></ul>
+          </section>
+          <section class="mt-7">
+            <h3 class="text-sm font-bold">{content.resultsLabel}</h3>
+            <ul
+              id="practitioner-results"
+              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-brand-gold"
+            ></ul>
+          </section>
+          <section
+            id="practitioner-other-game"
+            class="mt-8 hidden border-t border-brand/15 pt-6"
+          >
+            <h3 id="practitioner-other-name" class="font-display text-2xl"></h3>
+            <p class="mt-5 text-sm font-bold">{content.fitLabel}</p>
+            <ul
+              id="practitioner-other-fit"
+              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-brand-gold"
+            ></ul>
+            <p class="mt-6 text-sm font-bold">{content.resultsLabel}</p>
+            <ul
+              id="practitioner-other-results"
+              class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-muted marker:text-brand-gold"
+            ></ul>
+          </section>
+          <p
+            id="practitioner-note"
+            class="mt-7 rounded-2xl bg-brand-surface p-4 text-sm font-semibold leading-relaxed text-brand"
+          ></p>
         </div>
       </div>
     </div>
@@ -396,7 +492,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         <button
           id="practitioner-all"
           type="button"
-          class="ml-auto text-sm font-semibold underline underline-offset-4"
+          class="ml-auto border-0 bg-transparent px-2 py-2 text-sm font-semibold text-brand underline underline-offset-4 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
         >
           {content.allPractitioners}
         </button>
@@ -405,7 +501,11 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
   </div>
 </dialog>
 
-<script type="application/json" id="practitioner-data" set:html={JSON.stringify(content.practitioners)}></script>
+<script
+  type="application/json"
+  id="practitioner-data"
+  set:html={JSON.stringify(content.practitioners)}
+></script>
 
 <TicketPurchaseDialog lang={lang} tickets={purchaseTickets} />
 
@@ -420,55 +520,76 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     image: string;
     tagline: string;
     body: string;
+    facts: string[];
     fit: string[];
+    results: string[];
+    otherGame?: { name: string; fit: string[]; results: string[] };
     note: string;
   }>;
   const practitionerDialog = document.querySelector<HTMLDialogElement>(
     '#practitioner-dialog',
   );
-  const practitionerName = document.querySelector<HTMLElement>(
-    '#practitioner-name',
-  );
+  const practitionerName =
+    document.querySelector<HTMLElement>('#practitioner-name');
   const practitionerQualification = document.querySelector<HTMLElement>(
     '#practitioner-qualification',
   );
-  const practitionerGame = document.querySelector<HTMLElement>(
-    '#practitioner-game',
-  );
+  const practitionerGame =
+    document.querySelector<HTMLElement>('#practitioner-game');
   const practitionerTagline = document.querySelector<HTMLElement>(
     '#practitioner-tagline',
   );
-  const practitionerBody = document.querySelector<HTMLElement>(
-    '#practitioner-body',
+  const practitionerBody =
+    document.querySelector<HTMLElement>('#practitioner-body');
+  const practitionerFacts = document.querySelector<HTMLElement>(
+    '#practitioner-facts',
   );
-  const practitionerFitLabel = document.querySelector<HTMLElement>(
-    '#practitioner-fit-label',
+  const practitionerFit =
+    document.querySelector<HTMLElement>('#practitioner-fit');
+  const practitionerResults = document.querySelector<HTMLElement>(
+    '#practitioner-results',
   );
-  const practitionerFit = document.querySelector<HTMLElement>(
-    '#practitioner-fit',
+  const practitionerOtherGame = document.querySelector<HTMLElement>(
+    '#practitioner-other-game',
   );
-  const practitionerNote = document.querySelector<HTMLElement>(
-    '#practitioner-note',
+  const practitionerOtherName = document.querySelector<HTMLElement>(
+    '#practitioner-other-name',
   );
+  const practitionerOtherFit = document.querySelector<HTMLElement>(
+    '#practitioner-other-fit',
+  );
+  const practitionerOtherResults = document.querySelector<HTMLElement>(
+    '#practitioner-other-results',
+  );
+  const practitionerNote =
+    document.querySelector<HTMLElement>('#practitioner-note');
   const practitionerImage = document.querySelector<HTMLImageElement>(
     '#practitioner-image',
   );
   const practitionerCounter = document.querySelector<HTMLElement>(
     '#practitioner-counter',
   );
-  const practitionerNav = document.querySelector<HTMLElement>(
-    '#practitioner-nav',
-  );
+  const practitionerNav =
+    document.querySelector<HTMLElement>('#practitioner-nav');
   const closePractitioner = document.querySelector<HTMLButtonElement>(
     '#practitioner-close',
   );
-  const allPractitioners = document.querySelector<HTMLButtonElement>(
-    '#practitioner-all',
-  );
+  const allPractitioners =
+    document.querySelector<HTMLButtonElement>('#practitioner-all');
   const isRu = document.documentElement.lang === 'ru';
   const gameLabel = isRu ? 'Игра' : 'Spiel';
-  const fitLabel = isRu ? 'Подойдёт, если' : 'Passt, wenn';
   let practitionerTrigger: HTMLElement | null = null;
+
+  const renderList = (element: HTMLElement | null, items: string[]) => {
+    if (!element) return;
+    element.replaceChildren(
+      ...items.map((item) => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        return li;
+      }),
+    );
+  };
 
   const renderPractitioner = (index: number) => {
     const person = practitioners[index];
@@ -478,15 +599,16 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
       practitionerQualification.textContent = person.qualification;
     if (practitionerGame)
       practitionerGame.textContent = `${gameLabel} · ${person.game}`;
-    if (practitionerTagline)
-      practitionerTagline.textContent = person.tagline;
+    if (practitionerTagline) practitionerTagline.textContent = person.tagline;
     if (practitionerBody) practitionerBody.textContent = person.body;
-    if (practitionerFitLabel)
-      practitionerFitLabel.textContent = fitLabel;
-    if (practitionerFit)
-      practitionerFit.innerHTML = person.fit
-        .map((item) => `<li>• ${item}</li>`)
-        .join('');
+    renderList(practitionerFacts, person.facts);
+    renderList(practitionerFit, person.fit);
+    renderList(practitionerResults, person.results);
+    practitionerOtherGame?.classList.toggle('hidden', !person.otherGame);
+    if (practitionerOtherName)
+      practitionerOtherName.textContent = person.otherGame?.name || '';
+    renderList(practitionerOtherFit, person.otherGame?.fit || []);
+    renderList(practitionerOtherResults, person.otherGame?.results || []);
     if (practitionerNote) practitionerNote.textContent = person.note;
     if (practitionerImage) {
       practitionerImage.src = person.image;
@@ -503,7 +625,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         const button = document.createElement('button');
         button.type = 'button';
         button.className =
-          'rounded-full border border-line px-3 py-2 text-sm font-semibold hover:border-brand hover:bg-brand-surface';
+          'border-0 bg-transparent px-1 py-2 text-sm text-muted hover:text-brand hover:underline focus-visible:outline-2 focus-visible:outline-brand';
         button.textContent = other.name;
         button.addEventListener('click', () => renderPractitioner(otherIndex));
         practitionerNav.appendChild(button);
@@ -511,8 +633,9 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     }
   };
 
-  document.querySelectorAll<HTMLButtonElement>('[data-practitioner]').forEach(
-    (button) => {
+  document
+    .querySelectorAll<HTMLButtonElement>('[data-practitioner]')
+    .forEach((button) => {
       button.addEventListener('click', () => {
         practitionerTrigger = button;
         const index = Number(button.dataset.practitioner || 0);
@@ -520,9 +643,10 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         practitionerDialog?.showModal();
         closePractitioner?.focus();
       });
-    },
+    });
+  closePractitioner?.addEventListener('click', () =>
+    practitionerDialog?.close(),
   );
-  closePractitioner?.addEventListener('click', () => practitionerDialog?.close());
   practitionerDialog?.addEventListener('click', (event) => {
     if (event.target === practitionerDialog) practitionerDialog.close();
   });
@@ -530,7 +654,9 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     practitionerTrigger?.focus();
     practitionerTrigger = null;
   });
-  allPractitioners?.addEventListener('click', () => practitionerDialog?.close());
+  allPractitioners?.addEventListener('click', () =>
+    practitionerDialog?.close(),
+  );
 
   const stickyBuy = document.querySelector<HTMLButtonElement>('#ti-sticky-buy');
   const hero = document.querySelector<HTMLElement>('#ti-games-hero');
@@ -558,7 +684,8 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
   window.addEventListener('resize', updateStickyBuy);
 
   const sheet = document.querySelector<HTMLDialogElement>('#ti-ticket-sheet');
-  const sheetClose = document.querySelector<HTMLButtonElement>('#ti-sheet-close');
+  const sheetClose =
+    document.querySelector<HTMLButtonElement>('#ti-sheet-close');
   const sheetContinue =
     document.querySelector<HTMLButtonElement>('#ti-sheet-continue');
   stickyBuy?.addEventListener('click', () => {

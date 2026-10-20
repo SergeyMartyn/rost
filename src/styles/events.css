@@ -66,12 +66,16 @@
     border-radius: var(--radius-4xl);
     background: var(--color-events-photo-meetup);
     text-align: left;
-    cursor: zoom-in;
+    cursor: pointer;
     transition: transform 260ms ease;
   }
 
   .events__frame--game {
     background: var(--color-events-photo-game);
+  }
+
+  .events__photo-trigger {
+    cursor: zoom-in;
   }
 
   .events__photo {
@@ -116,12 +120,12 @@
   }
 
   .events__item:hover .events__frame,
-  .events__photo-trigger:focus-visible {
+  .events__frame:focus-visible {
     transform: translateY(-8px);
   }
 
   .events__item:hover .events__photo,
-  .events__photo-trigger:focus-visible .events__photo {
+  .events__frame:focus-visible .events__photo {
     transform: translateY(-16px) scale(1.04);
   }
 
