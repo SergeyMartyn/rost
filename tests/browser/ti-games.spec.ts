@@ -155,7 +155,7 @@ test('long practitioner details remain scrollable on a phone', async ({
   await expect(page.locator('#practitioner-dialog')).not.toBeVisible();
 });
 
-test('mobile sticky ticket bar opens the tariff sheet and continues to purchase', async ({
+test('mobile sticky ticket bar opens purchase for the selected tariff', async ({
   page,
 }) => {
   for (const item of pages) {
@@ -165,11 +165,18 @@ test('mobile sticky ticket bar opens the tariff sheet and continues to purchase'
     await page.locator('#ti-program').scrollIntoViewIfNeeded();
     await expect(page.locator('#ti-sticky-buy')).toBeVisible();
     await page.locator('#ti-sticky-buy').click();
-    await expect(page.locator('#ti-ticket-sheet')).toBeVisible();
+    await expect(page.locator('#ticket-dialog')).toBeVisible();
+    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await page.locator('#ticket-close').click();
     await page
-      .locator('input[name="ti-mobile-ticket"][value="guest"]')
+      .locator('input[name="games-ticket-details"][value="guest"]')
       .check({ force: true });
-    await page.locator('#ti-sheet-continue').click();
+    if (item.lang === 'ru')
+      await page.screenshot({ path: 'test-results/ti-tickets-ru-390.png' });
+    await expect(
+      page.locator('input[name="games-ticket"][value="guest"]'),
+    ).toBeChecked();
+    await page.locator('#ti-sticky-buy').click();
     await expect(page.locator('#ticket-dialog')).toBeVisible();
     await expect(page.locator('#ticket-summary')).toContainText('80 €');
     await page.locator('#ticket-close').click();
