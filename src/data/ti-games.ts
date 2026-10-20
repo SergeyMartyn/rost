@@ -32,6 +32,7 @@ export interface TiGamesContent {
   datePill: string;
   title: string[];
   intro: string;
+  heroHighlights: string[];
   when: string;
   where: string;
   date: string;
@@ -427,7 +428,12 @@ export const tiGames: Record<Language, TiGamesContent> = {
     datePill: '7 ноября · Мюнхен',
     title: ['День', 'трансформационных', 'игр в Мюнхене'],
     intro:
-      'Две игровые линейки и живое общение. Выберите билет и познакомьтесь с ведущими.',
+      'Познакомьтесь с ведущими и участниками, выберите игры для двух игровых линеек и проведите день в хорошей компании.',
+    heroHighlights: [
+      'С 10:10 — нетворкинг и знакомства',
+      'В 11:45 и 15:30 — игровые линейки',
+      'Чай и кофе включены в оба билета',
+    ],
     when: 'Когда',
     where: 'Где',
     date: '7 ноября 2026',
@@ -499,7 +505,12 @@ export const tiGames: Record<Language, TiGamesContent> = {
     datePill: '7. November · München',
     title: ['Tag der', 'Transformationsspiele', 'in München'],
     intro:
-      'Zwei Spielrunden und persönliche Begegnungen. Wähle dein Ticket und lerne die Spielleitenden kennen.',
+      'Lerne die Spielleitenden und andere Teilnehmende kennen, wähle Spiele aus zwei Spielrunden und verbringe den Tag in guter Gesellschaft.',
+    heroHighlights: [
+      'Ab 10:10 Uhr: Networking und Kennenlernen',
+      'Um 11:45 und 15:30 Uhr: Spielrunden',
+      'Tee und Kaffee in beiden Tickets enthalten',
+    ],
     when: 'Wann',
     where: 'Wo',
     date: '7. November 2026',

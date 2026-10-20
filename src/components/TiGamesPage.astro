@@ -22,7 +22,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     <div class="site-container lg:grid lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-x-12">
       <div
         id="ti-games-hero"
-        class="min-w-0 pb-16 md:pb-20 lg:col-start-1 lg:row-start-1 lg:min-h-[750px]"
+        class="min-w-0 pb-12 md:pb-16 lg:col-start-1 lg:row-start-1"
       >
         <p class="text-xs font-bold uppercase tracking-[0.13em] text-brand md:text-[13px]">
           {content.eyebrow}
@@ -36,12 +36,19 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
           ))}
         </h1>
         <div
-          class="mt-8 h-1 w-40 bg-brand-gold md:w-64 lg:mt-20 lg:w-90"
+          class="mt-8 h-1 w-40 bg-brand-gold md:w-64 lg:mt-10 lg:w-90"
           aria-hidden="true"
         ></div>
         <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-xl">
           {content.intro}
         </p>
+        <ul class="mt-7 grid max-w-2xl gap-3 text-sm text-brand sm:grid-cols-3 sm:gap-4">
+          {content.heroHighlights.map((highlight) => (
+            <li class="flex gap-2 border-l-2 border-brand-gold pl-3 leading-snug">
+              {highlight}
+            </li>
+          ))}
+        </ul>
       </div>
 
       <aside
@@ -742,5 +749,11 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
 
   .ti-program::before {
     background: var(--color-brand-surface);
+  }
+
+  @media (min-width: 64rem) {
+    .ti-about::before {
+      top: 6rem;
+    }
   }
 </style>
