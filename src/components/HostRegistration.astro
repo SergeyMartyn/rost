@@ -27,11 +27,13 @@ const copy =
         ],
         formatEyebrow: 'Формат',
         formatTitle: ['Ваша игра —', 'в центре дня'],
+        formatIntro:
+          'Мы помогаем представить вас и вашу игру до встречи и на площадке. Вы проводите игру, знакомитесь с участниками и коллегами, а организацию дня берёт на себя команда R.O.S.T.',
         features: [
-          ['Две игровые линейки', 'Две сессии по два часа'],
-          ['Знакомство с участниками', 'Короткое представление на сцене'],
-          ['Поддержка команды', 'Поможем с организацией и логистикой'],
-          ['Пространство и продвижение', 'Профиль на сайте и анонсы'],
+          ['Ваша практика в деле', 'Две игровые сессии по два часа и короткое представление на сцене.'],
+          ['Вас узнают до встречи', 'Прямой эфир и день в сторис R.O.S.T., профиль с описанием игры на сайте.'],
+          ['Контакты на площадке', 'Знакомство с участниками и коллегами; профиль и QR-код на экранах.'],
+          ['Поддержка команды', 'Подготовим пространство, скоординируем день и выдадим сертификат участия.'],
         ],
         termsEyebrow: 'Условия',
         termsTitle: 'Форматы участия',
@@ -40,7 +42,7 @@ const copy =
             id: 'standard',
             title: 'Стандартное',
             amount: HOST_FORMATS.standard.amountCents,
-            body: 'Проведение, профиль, анонсы, сертификат',
+            body: 'Две игры, эфир и сторис R.O.S.T., профиль на сайте, сцена, сертификат',
             condition:
               'Условие: публиковать приглашение в своих соцсетях не реже раза в неделю',
           },
@@ -49,7 +51,7 @@ const copy =
             title: 'Расширенное',
             amount: HOST_FORMATS.expanded.amountCents,
             body: 'Всё из стандартного + дополнительное продвижение команды R.O.S.T.',
-            condition: 'Больше времени на подготовку игры',
+            condition: 'Сосредоточьтесь на подготовке и проведении игры',
           },
         ],
         mediaTitle: 'Фото и видео',
@@ -149,11 +151,13 @@ const copy =
         ],
         formatEyebrow: 'Format',
         formatTitle: ['Ihr Spiel —', 'im Mittelpunkt des Tages'],
+        formatIntro:
+          'Wir stellen Sie und Ihr Spiel vor der Veranstaltung und vor Ort vor. Sie leiten Ihr Spiel und lernen Teilnehmende und Kolleginnen und Kollegen kennen; das R.O.S.T.-Team organisiert den Tag.',
         features: [
-          ['Zwei Spielrunden', 'Zwei Sessions von je zwei Stunden'],
-          ['Begegnung mit Teilnehmenden', 'Kurze Vorstellung auf der Bühne'],
-          ['Unterstützung durch das Team', 'Hilfe bei Organisation und Logistik'],
-          ['Raum und Sichtbarkeit', 'Profil auf der Website und Ankündigungen'],
+          ['Ihre Praxis im Mittelpunkt', 'Zwei Spielrunden von je zwei Stunden und eine kurze Vorstellung auf der Bühne.'],
+          ['Sichtbarkeit vor dem Treffen', 'Instagram-Live und ein Tag in den R.O.S.T.-Storys; Ihr Spielprofil auf der Website.'],
+          ['Kontakte vor Ort', 'Austausch mit Teilnehmenden und anderen Spielleitenden; Profil und QR-Code auf den Bildschirmen.'],
+          ['Unterstützung durch das Team', 'Wir bereiten den Raum vor, koordinieren den Tag und stellen eine Teilnahmebescheinigung aus.'],
         ],
         termsEyebrow: 'Bedingungen',
         termsTitle: 'Teilnahmeformate',
@@ -162,7 +166,7 @@ const copy =
             id: 'standard',
             title: 'Standard',
             amount: HOST_FORMATS.standard.amountCents,
-            body: 'Durchführung, Profil, Ankündigungen, Zertifikat',
+            body: 'Zwei Spielrunden, Instagram-Live und Storys, Website-Profil, Bühne, Teilnahmebescheinigung',
             condition:
               'Bedingung: mindestens einmal pro Woche eine Einladung in Ihren sozialen Netzwerken veröffentlichen',
           },
@@ -171,7 +175,7 @@ const copy =
             title: 'Erweitert',
             amount: HOST_FORMATS.expanded.amountCents,
             body: 'Alles aus Standard + zusätzliche Bewerbung durch das R.O.S.T.-Team',
-            condition: 'Mehr Zeit für die Vorbereitung Ihres Spiels',
+            condition: 'Konzentrieren Sie sich auf die Vorbereitung und Durchführung Ihres Spiels',
           },
         ],
         mediaTitle: 'Foto und Video',
@@ -303,18 +307,21 @@ const isRu = lang === 'ru';
     </div>
   </section>
 
-  <section class="bg-white py-18 md:py-26">
+  <section id="host-benefits" class="bg-white py-18 md:py-26" aria-labelledby="host-benefits-title">
     <div class="site-container">
       <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
         {copy.formatEyebrow}
       </p>
-      <h2 class="mt-4 font-display text-[clamp(2rem,5vw,4.2rem)] leading-tight">
+      <h2 id="host-benefits-title" class="mt-4 font-display text-[clamp(2rem,5vw,4.2rem)] leading-tight">
         <span class="block lg:inline">{copy.formatTitle[0]} </span>
         <span class="block lg:inline">{copy.formatTitle[1]}</span>
       </h2>
+      <p class="mt-5 max-w-3xl text-base leading-relaxed text-muted md:text-lg">
+        {copy.formatIntro}
+      </p>
       <div class="mt-10 grid gap-4 sm:grid-cols-2">
-        {copy.features.map(([title, body], index) => (
-          <div class:list={['sm:rounded-3xl sm:bg-brand-surface sm:p-6', { 'hidden sm:block': index === 3 }]}>
+        {copy.features.map(([title, body]) => (
+          <div class="rounded-3xl bg-brand-surface p-5 sm:p-6">
             <h3 class="font-bold">{title}</h3>
             <p class="mt-2 text-sm leading-relaxed text-muted">{body}</p>
           </div>

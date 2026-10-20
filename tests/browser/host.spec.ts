@@ -35,6 +35,14 @@ test('host page is reachable from the participant purchase block', async ({
     await link.click();
     await expect(page).toHaveURL(new RegExp(`${item.path}$`));
     await expect(page.locator('#host-registration-form')).toBeVisible();
+    await expect(page.locator('#host-benefits')).toContainText(
+      item.lang === 'ru' ? 'QR-код' : 'QR-Code',
+    );
+    await expect(page.locator('#host-benefits')).toContainText(
+      item.lang === 'ru' ? 'сторис R.O.S.T.' : 'R.O.S.T.-Storys',
+    );
+    if (item.lang === 'ru')
+      await page.locator('#host-benefits').screenshot({ path: 'test-results/host-benefits-ru.png' });
   }
 });
 
