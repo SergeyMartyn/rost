@@ -49,6 +49,13 @@ test('host page shows all four totals and the deposit switches only the amount d
       await expect(page.locator('#host-registration')).toBeVisible();
       await expect(page.locator('#host-submit')).toHaveCount(1);
       await expect(page.locator('#host-submit')).toHaveText(item.submit);
+      const formatRadio = page.locator('input[name="host-format"][value="standard"]');
+      const radioBox = await formatRadio.boundingBox();
+      expect(radioBox?.width).toBeGreaterThanOrEqual(16);
+      if (item.lang === 'ru' && width === 390) {
+        await formatRadio.scrollIntoViewIfNeeded();
+        await page.screenshot({ path: 'test-results/host-formats-ru-390.png' });
+      }
       expect(
         await page.evaluate(
           () => document.documentElement.scrollWidth <= innerWidth,
