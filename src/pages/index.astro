@@ -1,4 +1,5 @@
 ---
+import Heading from '../components/ui/Heading.astro';
 import { routes } from '../lib/site';
 import '../styles/global.css';
 ---
@@ -13,9 +14,9 @@ import '../styles/global.css';
   </head>
   <body>
     <main class="max-w-3xl mx-auto p-8">
-      <h1 class="text-3xl mb-8">
+      <Heading as="h1" variant="page" class="text-brand mb-8">
         Sprache wählen / <span lang="ru">Выберите язык</span>
-      </h1>
+      </Heading>
       <nav class="flex flex-wrap gap-8">
         <a href={routes.home.de} lang="de">
           Deutsch

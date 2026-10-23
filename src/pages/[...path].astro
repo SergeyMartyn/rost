@@ -1,4 +1,5 @@
 ---
+import Heading from '../components/ui/Heading.astro';
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 import Events from '../components/Events.astro';
@@ -40,7 +41,7 @@ const legalText =
   page={page}
   title={title}
   description={
-    page === 'home' ? t.description : `${t[page]} — ${site.name || t.legal}`
+    page === 'home' ? t.description : `${t[page]}: ${site.name || t.legal}`
   }
 >
   {page === 'home' ? (
@@ -70,11 +71,11 @@ const legalText =
   ) : page === 'host' ? (
     <HostRegistration lang={lang} />
   ) : (
-    <div class="font-hero-sans">
+    <div class="font-hero-sans ui-prose">
       {!legalText && <p class="text-brand mb-5">{t.legal}</p>}
-      <h1 class="font-display text-2xl md:text-5xl lg:text-6xl leading-tight text-brand mb-8">
+      <Heading as="h1" variant="page" class="text-brand mb-8">
         {title}
-      </h1>
+      </Heading>
       {!legalText && <p class="mb-8 text-muted">{t.legalNote}</p>}
       <dl class="space-y-5">
         {(page === 'imprint'

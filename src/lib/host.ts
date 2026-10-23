@@ -1,6 +1,8 @@
 export const HOST_EVENT_ID = 'munich-games-2026-11-07';
 export const HOST_TABLE_COUNT = 7;
 export const HOST_HOLD_MINUTES = 30;
+// One minute of grace before an unpaid table can be allocated again.
+export const HOST_RELEASE_MINUTES = HOST_HOLD_MINUTES + 1;
 export const HOST_DEPOSIT_CENTS = 5000;
 export const HOST_MEDIA_CENTS = 7900;
 
@@ -36,4 +38,4 @@ export function hostPrice(
   };
 }
 
-export const formatEuro = (cents: number) => `${cents / 100} €`;
+export const formatEuro = (cents: number) => `€${cents / 100}`;

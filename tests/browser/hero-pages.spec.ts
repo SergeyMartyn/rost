@@ -5,7 +5,7 @@ const paths = {
   de: ['/de/', '/de/veranstaltungen/', '/de/ueber-uns/', '/de/kontakt/'],
 };
 
-test('all four heroes share spacing and type at every viewport', async ({
+test('all four heroes share type and bottom spacing with navigation above inner pages', async ({
   page,
 }) => {
   for (const [lang, routes] of Object.entries(paths)) {
@@ -20,7 +20,7 @@ test('all four heroes share spacing and type at every viewport', async ({
         );
         expect(
           await page
-            .locator('.hero')
+            .locator('#main')
             .evaluate((element) =>
               Math.round(element.getBoundingClientRect().top),
             ),
@@ -38,7 +38,6 @@ test('all four heroes share spacing and type at every viewport', async ({
             const title = element.querySelector('.hero__title')!;
             const copy = element.querySelector('.hero__description')!;
             return [
-              getComputedStyle(inner).paddingTop,
               getComputedStyle(inner).paddingBottom,
               getComputedStyle(eyebrow).fontSize,
               getComputedStyle(title).fontSize,
@@ -51,7 +50,14 @@ test('all four heroes share spacing and type at every viewport', async ({
             await page
               .locator('.hero__video')
               .evaluate((element) =>
-                Math.round(element.getBoundingClientRect().top),
+                Math.round(
+                  element.getBoundingClientRect().top -
+                    element.closest('.hero')!.getBoundingClientRect().top -
+                    parseFloat(
+                      getComputedStyle(element.closest('.hero__inner')!)
+                        .paddingTop,
+                    ),
+                ),
               ),
           );
         }

@@ -1,4 +1,5 @@
 ---
+import Heading from './ui/Heading.astro';
 import type { Language } from '../lib/site';
 
 const { lang } = Astro.props as { lang: Language };
@@ -30,7 +31,7 @@ const copy =
           {
             eyebrow: 'Путешествуем',
             heading: 'Совместные поездки и отдых',
-            body: 'Открываем новые места, отдыхаем и проводим время вместе — так знакомства становятся ближе.',
+            body: 'Открываем новые места, отдыхаем и проводим время вместе: так знакомства становятся ближе.',
           },
         ],
       }
@@ -70,9 +71,14 @@ const copy =
     <div class="formats__intro">
       <div>
         <p class="formats__eyebrow">{copy.eyebrow}</p>
-        <h2 class="formats__heading" id="formats-title">
+        <Heading
+          as="h2"
+          variant="section"
+          class="formats__heading"
+          id="formats-title"
+        >
           {copy.heading}
-        </h2>
+        </Heading>
       </div>
       <p class="formats__lead">{copy.intro}</p>
     </div>
@@ -92,7 +98,9 @@ const copy =
       {copy.cards.map((card) => (
         <article class="formats__card">
           <p class="formats__card-eyebrow">{card.eyebrow}</p>
-          <h3 class="formats__card-heading">{card.heading}</h3>
+          <Heading as="h3" variant="card" class="formats__card-heading">
+            {card.heading}
+          </Heading>
           <p class="formats__card-body">{card.body}</p>
         </article>
       ))}

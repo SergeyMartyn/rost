@@ -1,4 +1,7 @@
 ---
+import PageIntro from './ui/PageIntro.astro';
+import Button from './ui/Button.astro';
+import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 import VideoFacade from './VideoFacade.astro';
 
@@ -7,7 +10,7 @@ const { lang } = Astro.props as { lang: Language };
 const copy =
   lang === 'ru'
     ? {
-        eyebrow: 'R.O.S.T. — русскоязычное сообщество в Германии',
+        eyebrow: 'R.O.S.T.: русскоязычное сообщество в Германии',
         lines: [
           'Сообщество людей,',
           'с которыми интересно',
@@ -15,13 +18,13 @@ const copy =
           'развиваться вместе.',
         ],
         description: [
-          'Находите своё окружение — людей,',
+          'Находите своё окружение: людей,',
           'с которыми захочется встретиться снова.',
         ],
         join: 'Принять участие',
       }
     : {
-        eyebrow: 'R.O.S.T. — russischsprachige Gemeinschaft in Deutschland',
+        eyebrow: 'R.O.S.T.: russischsprachige Gemeinschaft in Deutschland',
         lines: [
           'Eine Gemeinschaft,',
           'in der Menschen sich',
@@ -38,9 +41,9 @@ const copy =
 
 <section class="hero" aria-labelledby="hero-title">
   <div class="hero__inner site-container">
-    <div class="hero__content">
+    <PageIntro class="hero__content">
       <p class="hero__eyebrow">{copy.eyebrow}</p>
-      <h1 class="hero__title" id="hero-title">
+      <Heading as="h1" variant="page" class="hero__title" id="hero-title">
         {copy.lines.map((line, index) => (
           <span
             class:list={[
@@ -51,16 +54,21 @@ const copy =
             {line}
           </span>
         ))}
-      </h1>
+      </Heading>
       <p class="hero__description">
         {copy.description.map((line) => (
           <span class="hero__description-line">{line} </span>
         ))}
       </p>
-      <a class="hero__cta" href={routes.events[lang]}>
+      <Button
+        variant="primary"
+        size="regular"
+        class="hero__cta"
+        href={routes.events[lang]}
+      >
         {copy.join}
-      </a>
-    </div>
+      </Button>
+    </PageIntro>
 
     <VideoFacade lang={lang} page="home" />
   </div>

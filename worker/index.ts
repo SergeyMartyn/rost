@@ -1,6 +1,7 @@
 import { routes, type Language } from '../src/lib/site';
 import { handleApi, type OrdersEnv } from './orders';
 import { releaseExpiredHostHolds } from './host';
+import { reconcileSheetPayments } from './sheets';
 export function chooseLanguage(header: string, fallback: Language): Language {
   const ranges = header.split(',').map((part, index) => {
     const [tag, ...params] = part.trim().toLowerCase().split(';');
@@ -66,5 +67,11 @@ export default {
     ctx: ExecutionContext,
   ): Promise<void> {
     ctx.waitUntil(releaseExpiredHostHolds(env, Date.now()));
+    ctx.waitUntil(
+      reconcileSheetPayments(env, {
+        fetch: (...args) => fetch(...args),
+        now: () => Date.now(),
+      }),
+    );
   },
 };

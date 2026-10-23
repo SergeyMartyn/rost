@@ -1,4 +1,5 @@
 ---
+import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 
 const { lang } = Astro.props as { lang: Language };
@@ -82,9 +83,14 @@ const photos = [
 <section class="events" aria-labelledby="events-title">
   <div class="events__inner site-container">
     <div class="events__intro">
-      <h2 class="events__heading" id="events-title">
+      <Heading
+        as="h2"
+        variant="section"
+        class="events__heading"
+        id="events-title"
+      >
         {copy.heading}
-      </h2>
+      </Heading>
       <p class="events__value">
         {copy.value.map((line) => (
           <span>{line}</span>
@@ -98,14 +104,14 @@ const photos = [
           <a
             class:list={[
               'events__frame',
-              { 'events__photo-trigger': index === 1 },
               { 'events__frame--game': index === 0 },
             ]}
-            href={index === 0 ? routes.tiGames[lang] : photos[index].full}
-            data-photo-full={index === 1 ? photos[index].full : undefined}
-            data-photo-avif={index === 1 ? photos[index].fullAvif : undefined}
-            data-photo-alt={index === 1 ? event.photoAlt : undefined}
-            aria-label={index === 0 ? event.name : event.openPhoto}
+            href={
+              index === 0
+                ? routes.tiGames[lang]
+                : `${routes.events[lang]}#${event.anchor}`
+            }
+            aria-label={event.name}
           >
             <div
               class:list={[
@@ -134,17 +140,14 @@ const photos = [
                 />
               </picture>
             </div>
-            {index === 1 && (
-              <span class="events__plus" aria-hidden="true">
-                +
-              </span>
-            )}
           </a>
           <a
             class="events__link"
             href={`${routes.events[lang]}#${event.anchor}`}
           >
-            <h3 class="events__name">{event.name}</h3>
+            <Heading as="h3" variant="card" class="events__name">
+              {event.name}
+            </Heading>
             <time class="events__date" datetime={event.datetime}>
               {event.date}
             </time>
@@ -154,71 +157,3 @@ const photos = [
     </div>
   </div>
 </section>
-
-<dialog
-  id="event-photo-dialog"
-  class="events__lightbox"
-  aria-label={lang === 'ru' ? 'Фотография мероприятия' : 'Veranstaltungsfoto'}
->
-  <div class="events__lightbox-content">
-    <button
-      class="events__lightbox-close"
-      type="button"
-      aria-label={lang === 'ru' ? 'Закрыть фотографию' : 'Foto schließen'}
-    >
-      <svg
-        aria-hidden="true"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        stroke-linecap="round"
-      >
-        <path d="M5 5 19 19M19 5 5 19" />
-      </svg>
-    </button>
-    <picture>
-      <source id="event-photo-avif" type="image/avif" />
-      <source id="event-photo-webp" type="image/webp" />
-      <img id="event-photo-full" alt="" />
-    </picture>
-  </div>
-</dialog>
-
-<script>
-  const photoDialog = document.querySelector<HTMLDialogElement>(
-    '#event-photo-dialog',
-  );
-  const fullPhoto =
-    document.querySelector<HTMLImageElement>('#event-photo-full');
-  const fullPhotoAvif =
-    document.querySelector<HTMLSourceElement>('#event-photo-avif');
-  const fullPhotoWebp =
-    document.querySelector<HTMLSourceElement>('#event-photo-webp');
-
-  document
-    .querySelectorAll<HTMLAnchorElement>('[data-photo-full]')
-    .forEach((link) => {
-      link.addEventListener('click', (event) => {
-        if (!photoDialog || !fullPhoto || !link.dataset.photoFull) return;
-        event.preventDefault();
-        if (fullPhotoAvif) fullPhotoAvif.srcset = link.dataset.photoAvif || '';
-        if (fullPhotoWebp) fullPhotoWebp.srcset = link.dataset.photoFull;
-        fullPhoto.src = link.dataset.photoFull;
-        fullPhoto.alt = link.dataset.photoAlt || '';
-        photoDialog.showModal();
-      });
-    });
-
-  photoDialog
-    ?.querySelector('.events__lightbox-close')
-    ?.addEventListener('click', () => photoDialog.close());
-  photoDialog?.addEventListener('click', (event) => {
-    if (event.target === photoDialog) photoDialog.close();
-  });
-  photoDialog?.addEventListener('close', () => {
-    if (fullPhoto) fullPhoto.removeAttribute('src');
-    fullPhotoAvif?.removeAttribute('srcset');
-    fullPhotoWebp?.removeAttribute('srcset');
-  });
-</script>

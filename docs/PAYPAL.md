@@ -1,8 +1,33 @@
 # PayPal Checkout for R.O.S.T. tickets
 
-The recipient is Margarita Martyn (`mail@margaritamartyn.com`). PayPal is an
-additional provider for the existing 29/99/249 EUR ticket form. Subscriptions
-for Margarita's own channels are a separate future integration.
+## Current account transition, 2026-10-20
+
+Production uses Timur for new sales. The coordinated release is version
+`8294cf76-07e8-4e5e-a189-14975a431368`; mode is live and the original production
+D1 database is preserved. See `PAYMENT_ACCOUNT_TRANSITION.md` for preparation
+history and verification evidence. No new paid transaction was performed.
+
+New orders select the account with `PAYPAL_ACCOUNT_OWNER` (`timur` in live
+deployments, `margarita` for local sandbox fixtures). Timur uses `PAYPAL_TIMUR_CLIENT_ID`,
+`PAYPAL_TIMUR_CLIENT_SECRET`, `PAYPAL_TIMUR_PAYEE_EMAIL` and
+`PAYPAL_TIMUR_WEBHOOK_ID`. Keep the original settings for existing purchases.
+The separate endpoint is `/api/paypal/timur/webhook`; the original endpoint
+continues validating events with the original app's webhook ID. Browser returns
+choose credentials from the order's persisted `payment_account`, not the
+current selector for new sales. Migration `0004_payment_account.sql` was applied
+with the coordinated release. New PayPal API configuration must be checked on
+both `/api/config` and `/api/payments/config`.
+
+Do not print tokens or decrypted credentials. Do not create a real paid
+transaction without separate user authorization. Successful OAuth and webhook
+configuration are not proof of a completed buyer payment or received callback.
+
+## Legacy production purchases
+
+Existing purchases retain Margarita Martyn and the original credentials below.
+Do not replace the legacy payee setting: the stored account chooses the correct
+recipient for pending browser returns, captures and webhook verification.
+Current participant prices come from the server catalog, not this document.
 
 ## Flow
 
@@ -22,7 +47,7 @@ for Margarita's own channels are a separate future integration.
    `GET /api/config` advertises PayPal only when fully configured; until then the
    button stays hidden.
 
-## Required configuration
+## Legacy configuration (retain for existing orders)
 
 Cloudflare Worker `rost` → Settings → Variables and Secrets:
 

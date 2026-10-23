@@ -1,4 +1,8 @@
 ---
+import CtaSection from './ui/CtaSection.astro';
+import PageIntro from './ui/PageIntro.astro';
+import Button from './ui/Button.astro';
+import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 
 const { lang } = Astro.props as { lang: Language };
@@ -48,34 +52,24 @@ const copy =
       aria-hidden="true"
       class="pointer-events-none absolute -right-24 top-10 h-[450px] w-[450px] rounded-full border-[80px] border-hero-end/70"
     ></div>
-    <div class="site-container relative pb-14 pt-32 md:pb-20 md:pt-36 lg:pb-24">
-      <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
-        {copy.eyebrow}
-      </p>
-      <h1 class="mt-10 max-w-5xl font-display text-[clamp(2.8rem,6vw,4.5rem)] leading-[1.1]">
+    <PageIntro class="site-container relative pb-12 ui-page-top md:pb-16">
+      <p class="ui-eyebrow">{copy.eyebrow}</p>
+      <Heading as="h1" variant="page" class="max-w-5xl">
         {copy.title}
-      </h1>
-      <p class="mt-7 max-w-3xl text-lg leading-relaxed text-muted md:text-2xl">
-        {copy.intro}
-      </p>
+      </Heading>
+      <p class="ui-lead mt-6 max-w-3xl text-muted">{copy.intro}</p>
       <p class="mt-9 inline-flex min-h-10 items-center rounded-full bg-white px-5 text-xs font-bold tracking-[0.12em]">
         {copy.count}
       </p>
-    </div>
+    </PageIntro>
   </section>
 
-  <section
-    class="bg-white py-16 md:py-20 lg:py-24"
-    aria-labelledby="archive-month"
-  >
+  <section class="ui-section bg-white" aria-labelledby="archive-month">
     <div class="site-container">
-      <h2
-        id="archive-month"
-        class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]"
-      >
+      <h2 id="archive-month" class="ui-eyebrow">
         {copy.month}
       </h2>
-      <article class="mt-9 grid overflow-hidden rounded-4xl bg-brand-surface p-4 md:p-8 lg:grid-cols-[540px_minmax(0,1fr)] lg:gap-12">
+      <article class="mt-9 grid overflow-hidden rounded-4xl bg-brand-surface p-4 md:p-8 lg:grid-cols-2 lg:gap-12">
         <a
           href={routes.archiveRegensburg[lang]}
           class="block overflow-hidden rounded-3xl bg-hero-end"
@@ -104,44 +98,33 @@ const copy =
           </picture>
         </a>
         <div class="flex flex-col items-start justify-center px-3 pb-5 pt-8 md:px-0 lg:py-6">
-          <time
-            datetime="2026-10-10"
-            class="text-xs font-bold uppercase tracking-[0.13em]"
-          >
+          <time datetime="2026-10-10" class="ui-eyebrow">
             {copy.meta}
           </time>
-          <h3 class="mt-6 max-w-xl font-display text-[clamp(2rem,3.5vw,2.625rem)] leading-[1.12]">
+          <Heading as="h3" variant="card" class="mt-6 max-w-xl">
             {copy.event}
-          </h3>
+          </Heading>
           <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
             {copy.description}
           </p>
-          <a
+          <Button
+            variant="primary"
+            size="regular"
             href={routes.archiveRegensburg[lang]}
-            class="mt-7 inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="mt-7"
           >
             {copy.eventLink}
-          </a>
+          </Button>
         </div>
       </article>
     </div>
   </section>
 
-  <section class="bg-brand py-14 text-white md:py-16">
-    <div class="site-container flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-[0.13em] text-brand-gold">
-          {copy.nextEyebrow}
-        </p>
-        <h2 class="mt-5 font-display text-3xl md:text-5xl">{copy.nextTitle}</h2>
-        <p class="mt-4 text-white/80">{copy.nextDescription}</p>
-      </div>
-      <a
-        href={routes.events[lang]}
-        class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-white px-7 font-bold text-brand transition hover:bg-hero-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-      >
-        {copy.nextLink}
-      </a>
-    </div>
-  </section>
+  <CtaSection
+    title={copy.nextTitle}
+    description={copy.nextDescription}
+    eyebrow={copy.nextEyebrow}
+    href={routes.events[lang]}
+    label={copy.nextLink}
+  />
 </div>

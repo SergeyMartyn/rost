@@ -1,0 +1,5383 @@
+{
+  "method": "SVG text attributes; identical text/attributes within each board deduplicated (export repeats text in markup). Not a count of distinct UI components.",
+  "boards": [
+    {
+      "id": "550a1583-af88-8013-8008-d077d3710c47",
+      "name": "TI Games / Desktop 1440",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "186",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Мероприятия О нас Контакты",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "665",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Принять участие",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1213",
+          "y": "50.9",
+          "spacing": ".5"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ТРАНСФОРМАЦИОННЫЕ ИГРЫ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "130",
+          "spacing": "1.5"
+        },
+        {
+          "text": "7 НОЯБРЯ · МЮНХЕН",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "235",
+          "y": "186.2",
+          "spacing": ".5"
+        },
+        {
+          "text": "День\nтрансформационных\nигр в Мюнхене",
+          "font": "Marmelad, Georgia, serif",
+          "size": "61",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "268",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые сессии, нетворкинг и время,\nчтобы познакомиться с людьми ближе.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "553",
+          "spacing": "0"
+        },
+        {
+          "text": "КОГДА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "988",
+          "y": "148",
+          "spacing": "1.8"
+        },
+        {
+          "text": "7 ноября 2026",
+          "font": "Marmelad, Georgia, serif",
+          "size": "31",
+          "weight": "400",
+          "anchor": "start",
+          "x": "988",
+          "y": "199",
+          "spacing": "0"
+        },
+        {
+          "text": "Мюнхен · Perchtinger Straße 12",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "988",
+          "y": "268",
+          "spacing": "0"
+        },
+        {
+          "text": "Выберите билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "988",
+          "y": "307",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "1021",
+          "y": "367",
+          "spacing": "0"
+        },
+        {
+          "text": "80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1290",
+          "y": "367",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры · общие зоны · напитки · фото",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "1021",
+          "y": "392",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "1021",
+          "y": "453",
+          "spacing": "0"
+        },
+        {
+          "text": "180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1290",
+          "y": "453",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + Zoom, фото, ужин",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "1021",
+          "y": "478",
+          "spacing": "0"
+        },
+        {
+          "text": "Купить билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1141",
+          "y": "539.1",
+          "spacing": "0"
+        },
+        {
+          "text": "Хочу провести игру",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "998",
+          "y": "601",
+          "spacing": "0"
+        },
+        {
+          "text": "↗",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1285",
+          "y": "601",
+          "spacing": "0"
+        },
+        {
+          "text": "Состав билетов — ниже на странице",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "1141",
+          "y": "655",
+          "spacing": "0"
+        },
+        {
+          "text": "О МЕРОПРИЯТИИ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "836",
+          "spacing": "1.8"
+        },
+        {
+          "text": "Провести день с пользой\nи в хорошей компании",
+          "font": "Marmelad, Georgia, serif",
+          "size": "45",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "904",
+          "spacing": "0"
+        },
+        {
+          "text": "Вы выбираете игру, знакомитесь с ведущими и участниками,\nа затем пробуете новые взгляды на свой запрос в небольших группах.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "18",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "1045",
+          "spacing": "0"
+        },
+        {
+          "text": "01 Знакомства",
+          "font": "Marmelad, Georgia, serif",
+          "size": "19",
+          "weight": "400",
+          "anchor": "start",
+          "x": "140",
+          "y": "1210",
+          "spacing": "0"
+        },
+        {
+          "text": "Модерируемый нетворкинг",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "140",
+          "y": "1250",
+          "spacing": "0"
+        },
+        {
+          "text": "02 Игры",
+          "font": "Marmelad, Georgia, serif",
+          "size": "19",
+          "weight": "400",
+          "anchor": "start",
+          "x": "410",
+          "y": "1210",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "410",
+          "y": "1250",
+          "spacing": "0"
+        },
+        {
+          "text": "03 Общение",
+          "font": "Marmelad, Georgia, serif",
+          "size": "19",
+          "weight": "400",
+          "anchor": "start",
+          "x": "680",
+          "y": "1210",
+          "spacing": "0"
+        },
+        {
+          "text": "Перерывы, обед и новые связи",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "680",
+          "y": "1250",
+          "spacing": "0"
+        },
+        {
+          "text": "ПРОГРАММА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "1527",
+          "spacing": "1.8"
+        },
+        {
+          "text": "Как пройдёт день",
+          "font": "Marmelad, Georgia, serif",
+          "size": "45",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "1592",
+          "spacing": "0"
+        },
+        {
+          "text": "09:30–10:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "1650",
+          "spacing": "0"
+        },
+        {
+          "text": "Регистрация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "242",
+          "y": "1650",
+          "spacing": "0"
+        },
+        {
+          "text": "10:00–10:10",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "1722",
+          "spacing": "0"
+        },
+        {
+          "text": "Открытие дня",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "242",
+          "y": "1722",
+          "spacing": "0"
+        },
+        {
+          "text": "10:10–11:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "1794",
+          "spacing": "0"
+        },
+        {
+          "text": "Нетворкинг",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "242",
+          "y": "1794",
+          "spacing": "0"
+        },
+        {
+          "text": "11:30–11:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "1866",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "242",
+          "y": "1866",
+          "spacing": "0"
+        },
+        {
+          "text": "11:45–14:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "1938",
+          "spacing": "0"
+        },
+        {
+          "text": "Первая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "242",
+          "y": "1938",
+          "spacing": "0"
+        },
+        {
+          "text": "14:00–15:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "530",
+          "y": "1650",
+          "spacing": "0"
+        },
+        {
+          "text": "Обед",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "652",
+          "y": "1650",
+          "spacing": "0"
+        },
+        {
+          "text": "15:15–15:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "530",
+          "y": "1722",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "652",
+          "y": "1722",
+          "spacing": "0"
+        },
+        {
+          "text": "15:30–17:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "530",
+          "y": "1794",
+          "spacing": "0"
+        },
+        {
+          "text": "Вторая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "652",
+          "y": "1794",
+          "spacing": "0"
+        },
+        {
+          "text": "17:45–18:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "530",
+          "y": "1866",
+          "spacing": "0"
+        },
+        {
+          "text": "Награждение и розыгрыш",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "652",
+          "y": "1866",
+          "spacing": "0"
+        },
+        {
+          "text": "18:30–22:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "530",
+          "y": "1938",
+          "spacing": "0"
+        },
+        {
+          "text": "Ужин VIP · тариф «Пик трансформации»",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "652",
+          "y": "1938",
+          "spacing": "0"
+        },
+        {
+          "text": "ИГРОПРАКТИКИ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "2157",
+          "spacing": "1.8"
+        },
+        {
+          "text": "С кем можно сыграть",
+          "font": "Marmelad, Georgia, serif",
+          "size": "45",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "2223",
+          "spacing": "0"
+        },
+        {
+          "text": "Кристина Бауэр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "210",
+          "y": "2450",
+          "spacing": "0"
+        },
+        {
+          "text": "AinSof",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "210",
+          "y": "2480",
+          "spacing": "0"
+        },
+        {
+          "text": "Катарина Базаль",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "452",
+          "y": "2450",
+          "spacing": "0"
+        },
+        {
+          "text": "Вопрос в эфире",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "452",
+          "y": "2480",
+          "spacing": "0"
+        },
+        {
+          "text": "Елена Гельмель",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "694",
+          "y": "2450",
+          "spacing": "0"
+        },
+        {
+          "text": "Путь Желаний",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "694",
+          "y": "2480",
+          "spacing": "0"
+        },
+        {
+          "text": "Зинаида Ланглитц",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "936",
+          "y": "2450",
+          "spacing": "0"
+        },
+        {
+          "text": "Путь к себе",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "936",
+          "y": "2480",
+          "spacing": "0"
+        },
+        {
+          "text": "Алла Афанасенко",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1178",
+          "y": "2450",
+          "spacing": "0"
+        },
+        {
+          "text": "Секс, Деньги и Любовь · Дивергент",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "1178",
+          "y": "2480",
+          "spacing": "0"
+        },
+        {
+          "text": "БИЛЕТЫ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "2673",
+          "spacing": "1.8"
+        },
+        {
+          "text": "Что входит в участие",
+          "font": "Marmelad, Georgia, serif",
+          "size": "45",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "2740",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс · 80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "27",
+          "weight": "400",
+          "anchor": "start",
+          "x": "150",
+          "y": "2843",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации · 180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "27",
+          "weight": "400",
+          "anchor": "start",
+          "x": "740",
+          "y": "2843",
+          "spacing": "0"
+        },
+        {
+          "text": "Участие в играх\nДоступ к общим зонам\nВода, чай, кофе\nОбщая фотография участников",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "400",
+          "anchor": "start",
+          "x": "150",
+          "y": "2895",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё из «Базового импульса»\nГрупповой Zoom и профессиональные фото\nЗакрытый чат, ужин с ведущими\nПриоритет места и консультация 15–20 минут",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "400",
+          "anchor": "start",
+          "x": "740",
+          "y": "2895",
+          "spacing": "0"
+        },
+        {
+          "text": "Есть вопросы перед встречей?",
+          "font": "Marmelad, Georgia, serif",
+          "size": "33",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "3270",
+          "spacing": "0"
+        },
+        {
+          "text": "Напишите нам — поможем выбрать формат участия.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "3312",
+          "spacing": "0"
+        },
+        {
+          "text": "Связаться с нами →",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1165",
+          "y": "3282.6",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 219
+    },
+    {
+      "id": "550a1583-af88-8013-8008-d077e73a1a26",
+      "name": "TI Games / Tablet 768",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "91",
+          "y": "47",
+          "spacing": "0"
+        },
+        {
+          "text": "☰",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "706",
+          "y": "48",
+          "spacing": "0"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ТРАНСФОРМАЦИОННЫЕ ИГРЫ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "123",
+          "spacing": "1.3"
+        },
+        {
+          "text": "7 НОЯБРЯ · МЮНХЕН",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "140",
+          "y": "173.2",
+          "spacing": ".5"
+        },
+        {
+          "text": "День трансформационных\nигр в Мюнхене",
+          "font": "Marmelad, Georgia, serif",
+          "size": "49",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "242",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые сессии, нетворкинг и время\nдля новых знакомств.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "19",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "376",
+          "spacing": "0"
+        },
+        {
+          "text": "КОГДА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "220",
+          "y": "484",
+          "spacing": "1.8"
+        },
+        {
+          "text": "7 ноября 2026",
+          "font": "Marmelad, Georgia, serif",
+          "size": "28",
+          "weight": "400",
+          "anchor": "start",
+          "x": "220",
+          "y": "535",
+          "spacing": "0"
+        },
+        {
+          "text": "Мюнхен · Perchtinger Straße 12",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "220",
+          "y": "604",
+          "spacing": "0"
+        },
+        {
+          "text": "Выберите билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "220",
+          "y": "643",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "253",
+          "y": "703",
+          "spacing": "0"
+        },
+        {
+          "text": "80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "544",
+          "y": "703",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры · общие зоны · напитки · фото",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "253",
+          "y": "728",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "253",
+          "y": "789",
+          "spacing": "0"
+        },
+        {
+          "text": "180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "544",
+          "y": "789",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + Zoom, фото, ужин",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "253",
+          "y": "814",
+          "spacing": "0"
+        },
+        {
+          "text": "Купить билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "384",
+          "y": "875.1",
+          "spacing": "0"
+        },
+        {
+          "text": "Хочу провести игру",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "230",
+          "y": "937",
+          "spacing": "0"
+        },
+        {
+          "text": "↗",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "end",
+          "x": "539",
+          "y": "937",
+          "spacing": "0"
+        },
+        {
+          "text": "Состав билетов — ниже на странице",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "384",
+          "y": "991",
+          "spacing": "0"
+        },
+        {
+          "text": "О МЕРОПРИЯТИИ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "1123",
+          "spacing": "1.5"
+        },
+        {
+          "text": "Провести день с пользой\nи в хорошей компании",
+          "font": "Marmelad, Georgia, serif",
+          "size": "39",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "1185",
+          "spacing": "0"
+        },
+        {
+          "text": "Вы выбираете игру, знакомитесь с ведущими и участниками,\nа затем пробуете новые взгляды на свой запрос в группах.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "1300",
+          "spacing": "0"
+        },
+        {
+          "text": "ПРОГРАММА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "1480",
+          "spacing": "1.5"
+        },
+        {
+          "text": "Как пройдёт день",
+          "font": "Marmelad, Georgia, serif",
+          "size": "39",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "1535",
+          "spacing": "0"
+        },
+        {
+          "text": "09:30–10:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "1593",
+          "spacing": "0"
+        },
+        {
+          "text": "Регистрация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "1618",
+          "spacing": "0"
+        },
+        {
+          "text": "10:00–10:10",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "1681",
+          "spacing": "0"
+        },
+        {
+          "text": "Открытие дня",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "1706",
+          "spacing": "0"
+        },
+        {
+          "text": "10:10–11:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "1769",
+          "spacing": "0"
+        },
+        {
+          "text": "Нетворкинг",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "1794",
+          "spacing": "0"
+        },
+        {
+          "text": "11:30–11:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "1857",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "1882",
+          "spacing": "0"
+        },
+        {
+          "text": "11:45–14:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "1945",
+          "spacing": "0"
+        },
+        {
+          "text": "Первая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "1970",
+          "spacing": "0"
+        },
+        {
+          "text": "14:00–15:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "402",
+          "y": "1593",
+          "spacing": "0"
+        },
+        {
+          "text": "Обед",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "402",
+          "y": "1618",
+          "spacing": "0"
+        },
+        {
+          "text": "15:15–15:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "402",
+          "y": "1681",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "402",
+          "y": "1706",
+          "spacing": "0"
+        },
+        {
+          "text": "15:30–17:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "402",
+          "y": "1769",
+          "spacing": "0"
+        },
+        {
+          "text": "Вторая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "402",
+          "y": "1794",
+          "spacing": "0"
+        },
+        {
+          "text": "17:45–18:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "402",
+          "y": "1857",
+          "spacing": "0"
+        },
+        {
+          "text": "Награждение и розыгрыш",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "402",
+          "y": "1882",
+          "spacing": "0"
+        },
+        {
+          "text": "18:30–22:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "402",
+          "y": "1945",
+          "spacing": "0"
+        },
+        {
+          "text": "Ужин VIP · тариф «Пик трансформации»",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "402",
+          "y": "1970",
+          "spacing": "0"
+        },
+        {
+          "text": "ИГРОПРАКТИКИ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "2150",
+          "spacing": "1.5"
+        },
+        {
+          "text": "С кем можно сыграть",
+          "font": "Marmelad, Georgia, serif",
+          "size": "39",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "2205",
+          "spacing": "0"
+        },
+        {
+          "text": "Кристина Бауэр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "90",
+          "y": "2255",
+          "spacing": "0"
+        },
+        {
+          "text": "AinSof",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "90",
+          "y": "2275",
+          "spacing": "0"
+        },
+        {
+          "text": "Катарина Базаль",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "450",
+          "y": "2255",
+          "spacing": "0"
+        },
+        {
+          "text": "Вопрос в эфире",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "450",
+          "y": "2275",
+          "spacing": "0"
+        },
+        {
+          "text": "Елена Гельмель",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "90",
+          "y": "2319",
+          "spacing": "0"
+        },
+        {
+          "text": "Путь Желаний",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "90",
+          "y": "2339",
+          "spacing": "0"
+        },
+        {
+          "text": "Зинаида Ланглитц",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "450",
+          "y": "2319",
+          "spacing": "0"
+        },
+        {
+          "text": "Путь к себе",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "450",
+          "y": "2339",
+          "spacing": "0"
+        },
+        {
+          "text": "Алла Афанасенко",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "90",
+          "y": "2383",
+          "spacing": "0"
+        },
+        {
+          "text": "Секс, Деньги и Любовь · Дивергент",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "90",
+          "y": "2403",
+          "spacing": "0"
+        },
+        {
+          "text": "БИЛЕТЫ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "32",
+          "y": "2539",
+          "spacing": "1.5"
+        },
+        {
+          "text": "Что входит в участие",
+          "font": "Marmelad, Georgia, serif",
+          "size": "39",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "2597",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс · 80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "start",
+          "x": "50",
+          "y": "2675",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры, общие зоны, напитки,\nобщая фотография участников",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "50",
+          "y": "2710",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации · 180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "start",
+          "x": "401",
+          "y": "2675",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + Zoom, фото, чат, ужин,\nприоритет места и консультация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "401",
+          "y": "2710",
+          "spacing": "0"
+        },
+        {
+          "text": "Есть вопросы перед встречей?",
+          "font": "Marmelad, Georgia, serif",
+          "size": "31",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "2914",
+          "spacing": "0"
+        },
+        {
+          "text": "Напишите нам — поможем выбрать формат.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "32",
+          "y": "2950",
+          "spacing": "0"
+        },
+        {
+          "text": "Связаться с нами →",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "606",
+          "y": "2930.9",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 198
+    },
+    {
+      "id": "550a1583-af88-8013-8008-d077eb8d3aef",
+      "name": "TI Games / Mobile 390",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "47",
+          "spacing": "0"
+        },
+        {
+          "text": "☰",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "344",
+          "y": "48",
+          "spacing": "0"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ИГРЫ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "113",
+          "spacing": "1.4"
+        },
+        {
+          "text": "7 НОЯБРЯ · МЮНХЕН",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "114",
+          "y": "158.85",
+          "spacing": ".5"
+        },
+        {
+          "text": "День\nтрансформационных\nигр в Мюнхене",
+          "font": "Marmelad, Georgia, serif",
+          "size": "35",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "220",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые сессии, нетворкинг\nи время для новых знакомств.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "363",
+          "spacing": "0"
+        },
+        {
+          "text": "КОГДА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "46",
+          "y": "464",
+          "spacing": "1.8"
+        },
+        {
+          "text": "7 ноября 2026",
+          "font": "Marmelad, Georgia, serif",
+          "size": "28",
+          "weight": "400",
+          "anchor": "start",
+          "x": "46",
+          "y": "515",
+          "spacing": "0"
+        },
+        {
+          "text": "Мюнхен · Perchtinger Straße 12",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "46",
+          "y": "584",
+          "spacing": "0"
+        },
+        {
+          "text": "Выберите билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "46",
+          "y": "623",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "79",
+          "y": "683",
+          "spacing": "0"
+        },
+        {
+          "text": "80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "340",
+          "y": "683",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры · общие зоны · напитки · фото",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "79",
+          "y": "708",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "79",
+          "y": "769",
+          "spacing": "0"
+        },
+        {
+          "text": "180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "340",
+          "y": "769",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + Zoom, фото, ужин",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "79",
+          "y": "794",
+          "spacing": "0"
+        },
+        {
+          "text": "Купить билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "855.1",
+          "spacing": "0"
+        },
+        {
+          "text": "Хочу провести игру",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "56",
+          "y": "917",
+          "spacing": "0"
+        },
+        {
+          "text": "↗",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "end",
+          "x": "335",
+          "y": "917",
+          "spacing": "0"
+        },
+        {
+          "text": "Состав билетов — ниже на странице",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "195",
+          "y": "971",
+          "spacing": "0"
+        },
+        {
+          "text": "О МЕРОПРИЯТИИ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1106",
+          "spacing": "1.6"
+        },
+        {
+          "text": "День с пользой\nи в хорошей\nкомпании",
+          "font": "Marmelad, Georgia, serif",
+          "size": "33",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1158",
+          "spacing": "0"
+        },
+        {
+          "text": "Выбирайте игру, знакомьтесь с\nведущими и участниками. Игры\nпроходят в небольших группах.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1306",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомства",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "54",
+          "y": "1390",
+          "spacing": "0"
+        },
+        {
+          "text": "Модерируемый нетворкинг",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "54",
+          "y": "1412",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "54",
+          "y": "1455",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "54",
+          "y": "1477",
+          "spacing": "0"
+        },
+        {
+          "text": "ПРОГРАММА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1576",
+          "spacing": "1.6"
+        },
+        {
+          "text": "Как пройдёт день",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1628",
+          "spacing": "0"
+        },
+        {
+          "text": "09:30–10:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1681",
+          "spacing": "0"
+        },
+        {
+          "text": "Регистрация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1704",
+          "spacing": "0"
+        },
+        {
+          "text": "10:00–10:10",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1756",
+          "spacing": "0"
+        },
+        {
+          "text": "Открытие дня",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1779",
+          "spacing": "0"
+        },
+        {
+          "text": "10:10–11:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1831",
+          "spacing": "0"
+        },
+        {
+          "text": "Нетворкинг",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1854",
+          "spacing": "0"
+        },
+        {
+          "text": "11:30–11:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1906",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1929",
+          "spacing": "0"
+        },
+        {
+          "text": "11:45–14:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1981",
+          "spacing": "0"
+        },
+        {
+          "text": "Первая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2004",
+          "spacing": "0"
+        },
+        {
+          "text": "14:00–15:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "2056",
+          "spacing": "0"
+        },
+        {
+          "text": "Обед",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2079",
+          "spacing": "0"
+        },
+        {
+          "text": "15:15–15:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "2131",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2154",
+          "spacing": "0"
+        },
+        {
+          "text": "15:30–17:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "2206",
+          "spacing": "0"
+        },
+        {
+          "text": "Вторая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2229",
+          "spacing": "0"
+        },
+        {
+          "text": "17:45–18:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "2281",
+          "spacing": "0"
+        },
+        {
+          "text": "Награждение и розыгрыш",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2304",
+          "spacing": "0"
+        },
+        {
+          "text": "18:30–22:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "2356",
+          "spacing": "0"
+        },
+        {
+          "text": "Ужин VIP · тариф «Пик трансформации»",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2379",
+          "spacing": "0"
+        },
+        {
+          "text": "ИГРОПРАКТИКИ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "2501",
+          "spacing": "1.6"
+        },
+        {
+          "text": "С кем можно сыграть",
+          "font": "Marmelad, Georgia, serif",
+          "size": "31",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2551",
+          "spacing": "0"
+        },
+        {
+          "text": "Кристина Бауэр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "74",
+          "y": "2601",
+          "spacing": "0"
+        },
+        {
+          "text": "AinSof",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "74",
+          "y": "2621",
+          "spacing": "0"
+        },
+        {
+          "text": "Катарина Базаль",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "74",
+          "y": "2659",
+          "spacing": "0"
+        },
+        {
+          "text": "Вопрос в эфире",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "74",
+          "y": "2679",
+          "spacing": "0"
+        },
+        {
+          "text": "Елена Гельмель",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "74",
+          "y": "2717",
+          "spacing": "0"
+        },
+        {
+          "text": "Путь Желаний",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "74",
+          "y": "2737",
+          "spacing": "0"
+        },
+        {
+          "text": "Зинаида Ланглитц",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "74",
+          "y": "2775",
+          "spacing": "0"
+        },
+        {
+          "text": "Путь к себе",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "74",
+          "y": "2795",
+          "spacing": "0"
+        },
+        {
+          "text": "Алла Афанасенко",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "74",
+          "y": "2833",
+          "spacing": "0"
+        },
+        {
+          "text": "Секс, Деньги и Любовь · Дивергент",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "74",
+          "y": "2853",
+          "spacing": "0"
+        },
+        {
+          "text": "БИЛЕТЫ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "2945",
+          "spacing": "1.6"
+        },
+        {
+          "text": "Что входит",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2995",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс · 80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "3071",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры и общие зоны\nВода, чай, кофе\nОбщая фотография участников",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "3111",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации · 180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "3285",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё из базового тарифа\nZoom, фото, закрытый чат\nУжин, приоритет места\nКонсультация 15–20 минут",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "3324",
+          "spacing": "0"
+        },
+        {
+          "text": "Остались вопросы?",
+          "font": "Marmelad, Georgia, serif",
+          "size": "28",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "3544",
+          "spacing": "0"
+        },
+        {
+          "text": "Напишите нам — подскажем.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "3576",
+          "spacing": "0"
+        },
+        {
+          "text": "Связаться с нами →",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "3632.9",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 210
+    },
+    {
+      "id": "550a1583-af88-8013-8008-d077f00df7de",
+      "name": "TI Games / Mobile scrolled 390",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "47",
+          "spacing": "0"
+        },
+        {
+          "text": "☰",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "344",
+          "y": "48",
+          "spacing": "0"
+        },
+        {
+          "text": "ПРОГРАММА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "128",
+          "spacing": "1.6"
+        },
+        {
+          "text": "Как пройдёт день",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "185",
+          "spacing": "0"
+        },
+        {
+          "text": "09:30–10:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "252",
+          "spacing": "0"
+        },
+        {
+          "text": "Регистрация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "275",
+          "spacing": "0"
+        },
+        {
+          "text": "10:00–10:10",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "334",
+          "spacing": "0"
+        },
+        {
+          "text": "Открытие дня",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "357",
+          "spacing": "0"
+        },
+        {
+          "text": "10:10–11:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "416",
+          "spacing": "0"
+        },
+        {
+          "text": "Нетворкинг",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "439",
+          "spacing": "0"
+        },
+        {
+          "text": "11:30–11:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "498",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "521",
+          "spacing": "0"
+        },
+        {
+          "text": "11:45–14:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "580",
+          "spacing": "0"
+        },
+        {
+          "text": "Первая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "603",
+          "spacing": "0"
+        },
+        {
+          "text": "14:00–15:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "662",
+          "spacing": "0"
+        },
+        {
+          "text": "Обед",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "685",
+          "spacing": "0"
+        },
+        {
+          "text": "Купить билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "802.6",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 51
+    },
+    {
+      "id": "550a1583-af88-8013-8008-d0893a174bad",
+      "name": "TI Games / Mobile choose ticket 390",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "47",
+          "spacing": "0"
+        },
+        {
+          "text": "☰",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "344",
+          "y": "48",
+          "spacing": "0"
+        },
+        {
+          "text": "ПРОГРАММА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "128",
+          "spacing": "1.6"
+        },
+        {
+          "text": "Как пройдёт день",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "185",
+          "spacing": "0"
+        },
+        {
+          "text": "09:30–10:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "252",
+          "spacing": "0"
+        },
+        {
+          "text": "Регистрация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "275",
+          "spacing": "0"
+        },
+        {
+          "text": "10:00–10:10",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "334",
+          "spacing": "0"
+        },
+        {
+          "text": "Открытие дня",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "357",
+          "spacing": "0"
+        },
+        {
+          "text": "10:10–11:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "416",
+          "spacing": "0"
+        },
+        {
+          "text": "Нетворкинг",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "439",
+          "spacing": "0"
+        },
+        {
+          "text": "11:30–11:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "498",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "521",
+          "spacing": "0"
+        },
+        {
+          "text": "11:45–14:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "580",
+          "spacing": "0"
+        },
+        {
+          "text": "Первая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "603",
+          "spacing": "0"
+        },
+        {
+          "text": "14:00–15:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "662",
+          "spacing": "0"
+        },
+        {
+          "text": "Обед",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "685",
+          "spacing": "0"
+        },
+        {
+          "text": "Купить билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "802.6",
+          "spacing": "0"
+        },
+        {
+          "text": "БИЛЕТЫ · 7 НОЯБРЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "24",
+          "y": "309",
+          "spacing": "1.4"
+        },
+        {
+          "text": "Выберите билет",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "24",
+          "y": "355",
+          "spacing": "0"
+        },
+        {
+          "text": "×",
+          "font": "Onest, Arial, sans-serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "350",
+          "y": "315",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "62",
+          "y": "424",
+          "spacing": "0"
+        },
+        {
+          "text": "80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "end",
+          "x": "350",
+          "y": "424",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры, общие зоны, напитки и фото",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "62",
+          "y": "453",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "62",
+          "y": "553",
+          "spacing": "0"
+        },
+        {
+          "text": "180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "end",
+          "x": "350",
+          "y": "553",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё из базового тарифа, Zoom и фото,\nужин, приоритет места и консультация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "62",
+          "y": "583",
+          "spacing": "0"
+        },
+        {
+          "text": "Состав тарифов указан на странице мероприятия.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "24",
+          "y": "689",
+          "spacing": "0"
+        },
+        {
+          "text": "Продолжить",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "780.6",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 84
+    },
+    {
+      "id": "550a1583-af88-8013-8008-d089439716f8",
+      "name": "TI Games / Desktop scroll boundary 1440",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "186",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Мероприятия О нас Контакты",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "665",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Принять участие",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1213",
+          "y": "50.9",
+          "spacing": ".5"
+        },
+        {
+          "text": "ПРОГРАММА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "152",
+          "spacing": "1.8"
+        },
+        {
+          "text": "Как пройдёт день",
+          "font": "Marmelad, Georgia, serif",
+          "size": "45",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "217",
+          "spacing": "0"
+        },
+        {
+          "text": "09:30–10:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "290",
+          "spacing": "0"
+        },
+        {
+          "text": "Регистрация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "280",
+          "y": "290",
+          "spacing": "0"
+        },
+        {
+          "text": "10:00–10:10",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "370",
+          "spacing": "0"
+        },
+        {
+          "text": "Открытие дня",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "280",
+          "y": "370",
+          "spacing": "0"
+        },
+        {
+          "text": "10:10–11:30",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "450",
+          "spacing": "0"
+        },
+        {
+          "text": "Нетворкинг",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "280",
+          "y": "450",
+          "spacing": "0"
+        },
+        {
+          "text": "11:30–11:45",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "530",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с ведущими",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "280",
+          "y": "530",
+          "spacing": "0"
+        },
+        {
+          "text": "11:45–14:00",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "610",
+          "spacing": "0"
+        },
+        {
+          "text": "Первая линейка игр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "280",
+          "y": "610",
+          "spacing": "0"
+        },
+        {
+          "text": "14:00–15:15",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "690",
+          "spacing": "0"
+        },
+        {
+          "text": "Обед",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "280",
+          "y": "690",
+          "spacing": "0"
+        },
+        {
+          "text": "КОГДА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "988",
+          "y": "148",
+          "spacing": "1.8"
+        },
+        {
+          "text": "7 ноября 2026",
+          "font": "Marmelad, Georgia, serif",
+          "size": "31",
+          "weight": "400",
+          "anchor": "start",
+          "x": "988",
+          "y": "199",
+          "spacing": "0"
+        },
+        {
+          "text": "Мюнхен · Perchtinger Straße 12",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "988",
+          "y": "268",
+          "spacing": "0"
+        },
+        {
+          "text": "Выберите билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "988",
+          "y": "307",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "1021",
+          "y": "367",
+          "spacing": "0"
+        },
+        {
+          "text": "80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1290",
+          "y": "367",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры · общие зоны · напитки · фото",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "1021",
+          "y": "392",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "1021",
+          "y": "453",
+          "spacing": "0"
+        },
+        {
+          "text": "180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1290",
+          "y": "453",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + Zoom, фото, ужин",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "1021",
+          "y": "478",
+          "spacing": "0"
+        },
+        {
+          "text": "Купить билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1141",
+          "y": "539.1",
+          "spacing": "0"
+        },
+        {
+          "text": "Хочу провести игру",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "998",
+          "y": "601",
+          "spacing": "0"
+        },
+        {
+          "text": "↗",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1285",
+          "y": "601",
+          "spacing": "0"
+        },
+        {
+          "text": "Состав билетов — ниже на странице",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "1141",
+          "y": "655",
+          "spacing": "0"
+        },
+        {
+          "text": "ИГРОПРАКТИКИ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "927",
+          "spacing": "1.8"
+        },
+        {
+          "text": "С кем можно сыграть",
+          "font": "Marmelad, Georgia, serif",
+          "size": "45",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "994",
+          "spacing": "0"
+        },
+        {
+          "text": "Кристина Бауэр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "210",
+          "y": "1190",
+          "spacing": "0"
+        },
+        {
+          "text": "AinSof",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "210",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "Катарина Базаль",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "452",
+          "y": "1190",
+          "spacing": "0"
+        },
+        {
+          "text": "Вопрос в эфире",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "452",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "Елена Гельмель",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "694",
+          "y": "1190",
+          "spacing": "0"
+        },
+        {
+          "text": "Путь Желаний",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "694",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "Зинаида Ланглитц",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "936",
+          "y": "1190",
+          "spacing": "0"
+        },
+        {
+          "text": "Путь к себе",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "936",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "Алла Афанасенко",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1178",
+          "y": "1190",
+          "spacing": "0"
+        },
+        {
+          "text": "Секс, Деньги и Любовь · Дивергент",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "1178",
+          "y": "1218",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 129
+    },
+    {
+      "id": "2a426d77-c973-8027-8008-d0a7817750cc",
+      "name": "TI Games / Ticket v2 mobile 390",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "47",
+          "spacing": "0"
+        },
+        {
+          "text": "☰",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "344",
+          "y": "48",
+          "spacing": "0"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ИГРЫ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "112",
+          "spacing": "1.3"
+        },
+        {
+          "text": "КОГДА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "42",
+          "y": "178",
+          "spacing": "1.5"
+        },
+        {
+          "text": "7 ноября 2026",
+          "font": "Marmelad, Georgia, serif",
+          "size": "29",
+          "weight": "400",
+          "anchor": "start",
+          "x": "42",
+          "y": "225",
+          "spacing": "0"
+        },
+        {
+          "text": "Мюнхен · Perchtinger Straße 12",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "42",
+          "y": "291",
+          "spacing": "0"
+        },
+        {
+          "text": "Выберите билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "42",
+          "y": "326",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "373",
+          "spacing": "0"
+        },
+        {
+          "text": "80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "end",
+          "x": "342",
+          "y": "373",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры · общие зоны · напитки · фото",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "75",
+          "y": "398",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "453",
+          "spacing": "0"
+        },
+        {
+          "text": "180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "end",
+          "x": "342",
+          "y": "453",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + Zoom, ужин, консультация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "75",
+          "y": "478",
+          "spacing": "0"
+        },
+        {
+          "text": "Купить билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "537.6",
+          "spacing": "0"
+        },
+        {
+          "text": "Хочу провести игру",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "55",
+          "y": "598",
+          "spacing": "0"
+        },
+        {
+          "text": "↗",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "end",
+          "x": "334",
+          "y": "598",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 48
+    },
+    {
+      "id": "2a426d77-c973-8027-8008-d0a78c7dbcd9",
+      "name": "TI Games / Ticket v2 desktop 1440",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "186",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Мероприятия О нас Контакты",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "665",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Принять участие",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1213",
+          "y": "50.9",
+          "spacing": ".5"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ТРАНСФОРМАЦИОННЫЕ ИГРЫ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "140",
+          "spacing": "1.4"
+        },
+        {
+          "text": "7 НОЯБРЯ · МЮНХЕН",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "227.5",
+          "y": "191.2",
+          "spacing": ".5"
+        },
+        {
+          "text": "День\nтрансформационных\nигр в Мюнхене",
+          "font": "Marmelad, Georgia, serif",
+          "size": "59",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "265",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки и живое общение.\nВыберите билет и познакомьтесь с ведущими.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "19",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "544",
+          "spacing": "0"
+        },
+        {
+          "text": "КОГДА",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "984",
+          "y": "146",
+          "spacing": "1.5"
+        },
+        {
+          "text": "7 ноября 2026",
+          "font": "Marmelad, Georgia, serif",
+          "size": "29",
+          "weight": "400",
+          "anchor": "start",
+          "x": "984",
+          "y": "193",
+          "spacing": "0"
+        },
+        {
+          "text": "Мюнхен · Perchtinger Straße 12",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "984",
+          "y": "259",
+          "spacing": "0"
+        },
+        {
+          "text": "Выберите билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "984",
+          "y": "294",
+          "spacing": "0"
+        },
+        {
+          "text": "Базовый импульс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "1017",
+          "y": "341",
+          "spacing": "0"
+        },
+        {
+          "text": "80 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1292",
+          "y": "341",
+          "spacing": "0"
+        },
+        {
+          "text": "Игры · общие зоны · напитки · фото",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "1017",
+          "y": "366",
+          "spacing": "0"
+        },
+        {
+          "text": "Пик трансформации",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "1017",
+          "y": "421",
+          "spacing": "0"
+        },
+        {
+          "text": "180 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1292",
+          "y": "421",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + Zoom, ужин, консультация",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "400",
+          "anchor": "start",
+          "x": "1017",
+          "y": "446",
+          "spacing": "0"
+        },
+        {
+          "text": "Купить билет участника",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1141",
+          "y": "505.6",
+          "spacing": "0"
+        },
+        {
+          "text": "Хочу провести игру",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "997",
+          "y": "566",
+          "spacing": "0"
+        },
+        {
+          "text": "↗",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1284",
+          "y": "566",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 60
+    },
+    {
+      "id": "2a426d77-c973-8027-8008-d0a790a09d8b",
+      "name": "TI Games / Practitioner overlay desktop 1440",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "186",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Мероприятия О нас Контакты",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "665",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Принять участие",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1213",
+          "y": "50.9",
+          "spacing": ".5"
+        },
+        {
+          "text": "ИГРОПРАКТИКИ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "145",
+          "spacing": "1.6"
+        },
+        {
+          "text": "С кем можно сыграть",
+          "font": "Marmelad, Georgia, serif",
+          "size": "45",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "210",
+          "spacing": "0"
+        },
+        {
+          "text": "Кристина Бауэр",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "205",
+          "y": "478",
+          "spacing": "0"
+        },
+        {
+          "text": "Катарина Базаль",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "450",
+          "y": "478",
+          "spacing": "0"
+        },
+        {
+          "text": "Елена Гельмель",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "695",
+          "y": "478",
+          "spacing": "0"
+        },
+        {
+          "text": "Зинаида Ланглитц",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "940",
+          "y": "478",
+          "spacing": "0"
+        },
+        {
+          "text": "Алла Афанасенко",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1185",
+          "y": "478",
+          "spacing": "0"
+        },
+        {
+          "text": "ИГРОПРАКТИК · 1 ИЗ 5",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "245",
+          "y": "137",
+          "spacing": "1.6"
+        },
+        {
+          "text": "×",
+          "font": "Onest, Arial, sans-serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "1187",
+          "y": "132",
+          "spacing": "0"
+        },
+        {
+          "text": "Другие ведущие",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "245",
+          "y": "568",
+          "spacing": "0"
+        },
+        {
+          "text": "← Катарина · Елена · Зинаида · Алла",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "245",
+          "y": "612",
+          "spacing": "0"
+        },
+        {
+          "text": "Кристина Бауэр",
+          "font": "Marmelad, Georgia, serif",
+          "size": "40",
+          "weight": "400",
+          "anchor": "start",
+          "x": "614",
+          "y": "211",
+          "spacing": "0"
+        },
+        {
+          "text": "Неопсихолог, коуч и тренер эмоциональных состояний",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "614",
+          "y": "248",
+          "spacing": "0"
+        },
+        {
+          "text": "ИГРА · AINSOF",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "614",
+          "y": "315",
+          "spacing": "1.3"
+        },
+        {
+          "text": "Для тех, кто хочет увидеть новые\nвозможности и двигаться к цели.",
+          "font": "Marmelad, Georgia, serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "start",
+          "x": "614",
+          "y": "359",
+          "spacing": "0"
+        },
+        {
+          "text": "На встрече можно исследовать свой запрос,\nзаметить ограничения и найти ресурсы\nдля следующего шага.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "400",
+          "anchor": "start",
+          "x": "614",
+          "y": "448",
+          "spacing": "0"
+        },
+        {
+          "text": "Подойдёт, если вы ищете ясность и мотивацию",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "start",
+          "x": "638",
+          "y": "604",
+          "spacing": "0"
+        },
+        {
+          "text": "Опыт игры не требуется",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "638",
+          "y": "632",
+          "spacing": "0"
+        },
+        {
+          "text": "← Все игропрактики",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "614",
+          "y": "738",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 66
+    },
+    {
+      "id": "2a426d77-c973-8027-8008-d0a79a1b878a",
+      "name": "TI Games / Practitioner overlay mobile 390",
+      "texts": [
+        {
+          "text": "ИГРОПРАКТИК · 1 ИЗ 5",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "45",
+          "spacing": "1.3"
+        },
+        {
+          "text": "×",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "353",
+          "y": "43",
+          "spacing": "0"
+        },
+        {
+          "text": "Кристина Бауэр",
+          "font": "Marmelad, Georgia, serif",
+          "size": "34",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "354",
+          "spacing": "0"
+        },
+        {
+          "text": "Неопсихолог, коуч и тренер\nэмоциональных состояний",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "390",
+          "spacing": "0"
+        },
+        {
+          "text": "ИГРА · AINSOF",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "483",
+          "spacing": "1.3"
+        },
+        {
+          "text": "Увидеть возможности\nи найти следующий шаг",
+          "font": "Marmelad, Georgia, serif",
+          "size": "24",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "526",
+          "spacing": "0"
+        },
+        {
+          "text": "Игра поможет исследовать свой запрос,\nзаметить ограничения и найти ресурсы\nдля движения к цели.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "613",
+          "spacing": "0"
+        },
+        {
+          "text": "Подойдёт, если вам нужна ясность",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "start",
+          "x": "36",
+          "y": "734",
+          "spacing": "0"
+        },
+        {
+          "text": "Опыт игры не требуется",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "36",
+          "y": "754",
+          "spacing": "0"
+        },
+        {
+          "text": "← Все ведущие →",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "818",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 30
+    },
+    {
+      "id": "2a426d77-c973-8027-8008-d0a7a06e1e2c",
+      "name": "TI Games / Host landing desktop 1440",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "186",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Мероприятия О нас Контакты",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "665",
+          "y": "51",
+          "spacing": "0"
+        },
+        {
+          "text": "Принять участие",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "1213",
+          "y": "50.9",
+          "spacing": ".5"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ДЛЯ ВЕДУЩИХ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "142",
+          "spacing": "1.5"
+        },
+        {
+          "text": "7 НОЯБРЯ · МЮНХЕН",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "223",
+          "y": "195.2",
+          "spacing": ".5"
+        },
+        {
+          "text": "Проведите свою игру\nна встрече R.O.S.T.",
+          "font": "Marmelad, Georgia, serif",
+          "size": "58",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "282",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки, знакомство с участниками\nи поддержка команды на каждом этапе.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "442",
+          "spacing": "0"
+        },
+        {
+          "text": "Зарегистрироваться и занять стол",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "305",
+          "y": "587.6",
+          "spacing": "0"
+        },
+        {
+          "text": "7 столов для ведущих · бронирование на 30 минут",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "646",
+          "spacing": "0"
+        },
+        {
+          "text": "ФОРМАТ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "795",
+          "spacing": "1.5"
+        },
+        {
+          "text": "Ваша игра — в центре дня",
+          "font": "Marmelad, Georgia, serif",
+          "size": "44",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "856",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки",
+          "font": "Marmelad, Georgia, serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "start",
+          "x": "144",
+          "y": "962",
+          "spacing": "0"
+        },
+        {
+          "text": "Проведите две сессии по два часа.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "144",
+          "y": "995",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство со всеми",
+          "font": "Marmelad, Georgia, serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "start",
+          "x": "754",
+          "y": "962",
+          "spacing": "0"
+        },
+        {
+          "text": "Коротко представьте себя и свою игру.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "754",
+          "y": "995",
+          "spacing": "0"
+        },
+        {
+          "text": "Поддержка команды",
+          "font": "Marmelad, Georgia, serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "start",
+          "x": "144",
+          "y": "1088",
+          "spacing": "0"
+        },
+        {
+          "text": "Пространство, координация и продвижение.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "144",
+          "y": "1121",
+          "spacing": "0"
+        },
+        {
+          "text": "Профиль на сайте",
+          "font": "Marmelad, Georgia, serif",
+          "size": "20",
+          "weight": "400",
+          "anchor": "start",
+          "x": "754",
+          "y": "1088",
+          "spacing": "0"
+        },
+        {
+          "text": "Участники смогут узнать о вас заранее.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "754",
+          "y": "1121",
+          "spacing": "0"
+        },
+        {
+          "text": "УСЛОВИЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "1320",
+          "spacing": "1.5"
+        },
+        {
+          "text": "Выберите формат участия",
+          "font": "Marmelad, Georgia, serif",
+          "size": "44",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "1387",
+          "spacing": "0"
+        },
+        {
+          "text": "Стандартное участие",
+          "font": "Onest, Arial, sans-serif",
+          "size": "24",
+          "weight": "700",
+          "anchor": "start",
+          "x": "178",
+          "y": "1491",
+          "spacing": "0"
+        },
+        {
+          "text": "249 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "29",
+          "weight": "400",
+          "anchor": "end",
+          "x": "675",
+          "y": "1491",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игры, профиль, самопрезентация, продвижение и сертификат.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "178",
+          "y": "1543",
+          "spacing": "0"
+        },
+        {
+          "text": "Приглашение в ваших соцсетях раз в неделю.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "148",
+          "y": "1631",
+          "spacing": "0"
+        },
+        {
+          "text": "Расширенное участие",
+          "font": "Onest, Arial, sans-serif",
+          "size": "24",
+          "weight": "700",
+          "anchor": "start",
+          "x": "788",
+          "y": "1491",
+          "spacing": "0"
+        },
+        {
+          "text": "349 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "29",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1285",
+          "y": "1491",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё из стандартного формата и дополнительное продвижение R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "788",
+          "y": "1543",
+          "spacing": "0"
+        },
+        {
+          "text": "Можно сосредоточиться на подготовке игры.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "758",
+          "y": "1631",
+          "spacing": "0"
+        },
+        {
+          "text": "Добавить фото и видео",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "184",
+          "y": "1769",
+          "spacing": "0"
+        },
+        {
+          "text": "+79 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "end",
+          "x": "1290",
+          "y": "1769",
+          "spacing": "0"
+        },
+        {
+          "text": "10 профессиональных фотографий и один рилс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "184",
+          "y": "1800",
+          "spacing": "0"
+        },
+        {
+          "text": "Внести предоплату 50 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "184",
+          "y": "1875",
+          "spacing": "0"
+        },
+        {
+          "text": "Отметьте, чтобы сейчас оплатить 50 € вместо полной стоимости.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "184",
+          "y": "1902",
+          "spacing": "0"
+        },
+        {
+          "text": "Стоимость участия: 249 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "1964",
+          "spacing": "0"
+        },
+        {
+          "text": "К оплате сейчас: 249 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "24",
+          "weight": "700",
+          "anchor": "end",
+          "x": "1320",
+          "y": "1964",
+          "spacing": "0"
+        },
+        {
+          "text": "КАК ПРИСОЕДИНИТЬСЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "700",
+          "anchor": "start",
+          "x": "120",
+          "y": "2100",
+          "spacing": "1.5"
+        },
+        {
+          "text": "Регистрация → оплата → ваш стол",
+          "font": "Marmelad, Georgia, serif",
+          "size": "38",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "2159",
+          "spacing": "0"
+        },
+        {
+          "text": "Заполните данные и выберите способ оплаты. Стол резервируется на 30 минут.\nПосле оплаты участие подтверждается. При предоплате остаток — по отдельной ссылке.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "2220",
+          "spacing": "0"
+        },
+        {
+          "text": "Зарегистрироваться и занять стол",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "305",
+          "y": "2384.6",
+          "spacing": "0"
+        },
+        {
+          "text": "К оплате сейчас — 249 € · предоплата 50 € доступна по галочке выше",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "400",
+          "anchor": "start",
+          "x": "120",
+          "y": "2432",
+          "spacing": "0"
+        },
+        {
+          "text": "Вопросы? Напишите Кристине в Telegram ↗",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "520",
+          "y": "2385",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 126
+    },
+    {
+      "id": "2a426d77-c973-8027-8008-d0a7a856814f",
+      "name": "TI Games / Host landing mobile 390",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "47",
+          "spacing": "0"
+        },
+        {
+          "text": "☰",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "344",
+          "y": "48",
+          "spacing": "0"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ДЛЯ ВЕДУЩИХ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "112",
+          "spacing": "1.2"
+        },
+        {
+          "text": "7 НОЯБРЯ · МЮНХЕН",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "115",
+          "y": "157.85",
+          "spacing": ".5"
+        },
+        {
+          "text": "Проведите\nсвою игру\nна встрече\nR.O.S.T.",
+          "font": "Marmelad, Georgia, serif",
+          "size": "36",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "220",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки, новые\nзнакомства и поддержка команды.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "388",
+          "spacing": "0"
+        },
+        {
+          "text": "Зарегистрироваться и занять стол",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "509.25",
+          "spacing": "0"
+        },
+        {
+          "text": "7 столов для ведущих · бронь на 30 минут\nПосле оплаты стол закрепится за вами.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "563",
+          "spacing": "0"
+        },
+        {
+          "text": "ФОРМАТ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "704",
+          "spacing": "1.3"
+        },
+        {
+          "text": "Ваша игра —\nв центре дня",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "756",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "837",
+          "spacing": "0"
+        },
+        {
+          "text": "Две сессии по два часа",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "859",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с участниками",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "895",
+          "spacing": "0"
+        },
+        {
+          "text": "Представление на сцене",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "917",
+          "spacing": "0"
+        },
+        {
+          "text": "Поддержка команды",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "953",
+          "spacing": "0"
+        },
+        {
+          "text": "Пространство и продвижение",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "975",
+          "spacing": "0"
+        },
+        {
+          "text": "УСЛОВИЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1084",
+          "spacing": "1.3"
+        },
+        {
+          "text": "Форматы участия",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1138",
+          "spacing": "0"
+        },
+        {
+          "text": "Стандартное",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "69",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "249 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "end",
+          "x": "352",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "Проведение, профиль, анонсы, сертификат",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "69",
+          "y": "1257",
+          "spacing": "0"
+        },
+        {
+          "text": "Ваш анонс в соцсетях раз в неделю",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "1307",
+          "spacing": "0"
+        },
+        {
+          "text": "Расширенное",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "69",
+          "y": "1404",
+          "spacing": "0"
+        },
+        {
+          "text": "349 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "end",
+          "x": "352",
+          "y": "1404",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + продвижение команды",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "69",
+          "y": "1443",
+          "spacing": "0"
+        },
+        {
+          "text": "Больше времени на подготовку игры",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "1493",
+          "spacing": "0"
+        },
+        {
+          "text": "Фото и видео",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "70",
+          "y": "1604",
+          "spacing": "0"
+        },
+        {
+          "text": "+79 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "end",
+          "x": "350",
+          "y": "1604",
+          "spacing": "0"
+        },
+        {
+          "text": "10 фото и один рилс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "70",
+          "y": "1637",
+          "spacing": "0"
+        },
+        {
+          "text": "Внести предоплату 50 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "70",
+          "y": "1709",
+          "spacing": "0"
+        },
+        {
+          "text": "Остаток оплатите позже по ссылке",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "70",
+          "y": "1735",
+          "spacing": "0"
+        },
+        {
+          "text": "Стоимость участия: 249 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1793",
+          "spacing": "0"
+        },
+        {
+          "text": "Сейчас: 249 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1831",
+          "spacing": "0"
+        },
+        {
+          "text": "КАК ПРИСОЕДИНИТЬСЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1933",
+          "spacing": "1.2"
+        },
+        {
+          "text": "Регистрация → оплата → стол",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1975",
+          "spacing": "0"
+        },
+        {
+          "text": "Заполните данные и выберите оплату.\nСтол резервируется на 30 минут.\nПосле оплаты участие подтверждается.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2020",
+          "spacing": "0"
+        },
+        {
+          "text": "Зарегистрироваться и занять стол",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "2152.25",
+          "spacing": "0"
+        },
+        {
+          "text": "К оплате сейчас — 249 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2202",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 114
+    },
+    {
+      "id": "2368b80c-411a-80ad-8008-d0ad6f5e3c4f",
+      "name": "TI Games / Host expanded + media + deposit 390",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "47",
+          "spacing": "0"
+        },
+        {
+          "text": "☰",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "344",
+          "y": "48",
+          "spacing": "0"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ДЛЯ ВЕДУЩИХ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "112",
+          "spacing": "1.2"
+        },
+        {
+          "text": "7 НОЯБРЯ · МЮНХЕН",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "115",
+          "y": "157.85",
+          "spacing": ".5"
+        },
+        {
+          "text": "Проведите\nсвою игру\nна встрече\nR.O.S.T.",
+          "font": "Marmelad, Georgia, serif",
+          "size": "36",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "220",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки, новые\nзнакомства и поддержка команды.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "388",
+          "spacing": "0"
+        },
+        {
+          "text": "Зарегистрироваться и занять стол",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "509.25",
+          "spacing": "0"
+        },
+        {
+          "text": "7 столов для ведущих · бронь на 30 минут\nПосле оплаты стол закрепится за вами.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "563",
+          "spacing": "0"
+        },
+        {
+          "text": "ФОРМАТ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "704",
+          "spacing": "1.3"
+        },
+        {
+          "text": "Ваша игра —\nв центре дня",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "756",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "837",
+          "spacing": "0"
+        },
+        {
+          "text": "Две сессии по два часа",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "859",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с участниками",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "895",
+          "spacing": "0"
+        },
+        {
+          "text": "Представление на сцене",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "917",
+          "spacing": "0"
+        },
+        {
+          "text": "Поддержка команды",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "953",
+          "spacing": "0"
+        },
+        {
+          "text": "Пространство и продвижение",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "975",
+          "spacing": "0"
+        },
+        {
+          "text": "УСЛОВИЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1084",
+          "spacing": "1.3"
+        },
+        {
+          "text": "Форматы участия",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1138",
+          "spacing": "0"
+        },
+        {
+          "text": "Стандартное",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "69",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "249 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "end",
+          "x": "352",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "Проведение, профиль, анонсы, сертификат",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "69",
+          "y": "1257",
+          "spacing": "0"
+        },
+        {
+          "text": "Ваш анонс в соцсетях раз в неделю",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "1307",
+          "spacing": "0"
+        },
+        {
+          "text": "Расширенное",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "69",
+          "y": "1404",
+          "spacing": "0"
+        },
+        {
+          "text": "349 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "end",
+          "x": "352",
+          "y": "1404",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + продвижение команды",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "69",
+          "y": "1443",
+          "spacing": "0"
+        },
+        {
+          "text": "Больше времени на подготовку игры",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "1493",
+          "spacing": "0"
+        },
+        {
+          "text": "✓",
+          "font": "Onest, Arial, sans-serif",
+          "size": "19",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "48",
+          "y": "1611",
+          "spacing": "0"
+        },
+        {
+          "text": "Фото и видео",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "70",
+          "y": "1604",
+          "spacing": "0"
+        },
+        {
+          "text": "+79 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "end",
+          "x": "350",
+          "y": "1604",
+          "spacing": "0"
+        },
+        {
+          "text": "10 фото и один рилс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "70",
+          "y": "1637",
+          "spacing": "0"
+        },
+        {
+          "text": "✓",
+          "font": "Onest, Arial, sans-serif",
+          "size": "19",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "48",
+          "y": "1721",
+          "spacing": "0"
+        },
+        {
+          "text": "Внести предоплату 50 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "70",
+          "y": "1709",
+          "spacing": "0"
+        },
+        {
+          "text": "Остаток оплатите позже по ссылке",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "70",
+          "y": "1735",
+          "spacing": "0"
+        },
+        {
+          "text": "Стоимость участия: 428 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1793",
+          "spacing": "0"
+        },
+        {
+          "text": "Сейчас: 50 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1831",
+          "spacing": "0"
+        },
+        {
+          "text": "Позже: 378 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "400",
+          "anchor": "end",
+          "x": "370",
+          "y": "1831",
+          "spacing": "0"
+        },
+        {
+          "text": "КАК ПРИСОЕДИНИТЬСЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1933",
+          "spacing": "1.2"
+        },
+        {
+          "text": "Регистрация → оплата → стол",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1975",
+          "spacing": "0"
+        },
+        {
+          "text": "Заполните данные и выберите оплату.\nСтол резервируется на 30 минут.\nПосле оплаты участие подтверждается.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2020",
+          "spacing": "0"
+        },
+        {
+          "text": "Зарегистрироваться и занять стол",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "2152.25",
+          "spacing": "0"
+        },
+        {
+          "text": "К оплате сейчас — 50 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2202",
+          "spacing": "0"
+        },
+        {
+          "text": "50 € входят в стоимость · позже 378 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2228",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 126
+    },
+    {
+      "id": "2368b80c-411a-80ad-8008-d0b744d7781c",
+      "name": "TI Games / Host standard + deposit 390",
+      "texts": [
+        {
+          "text": "R.O.S.T.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "75",
+          "y": "47",
+          "spacing": "0"
+        },
+        {
+          "text": "☰",
+          "font": "Onest, Arial, sans-serif",
+          "size": "22",
+          "weight": "400",
+          "anchor": "middle",
+          "x": "344",
+          "y": "48",
+          "spacing": "0"
+        },
+        {
+          "text": "МЕРОПРИЯТИЯ / ДЛЯ ВЕДУЩИХ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "112",
+          "spacing": "1.2"
+        },
+        {
+          "text": "7 НОЯБРЯ · МЮНХЕН",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "115",
+          "y": "157.85",
+          "spacing": ".5"
+        },
+        {
+          "text": "Проведите\nсвою игру\nна встрече\nR.O.S.T.",
+          "font": "Marmelad, Georgia, serif",
+          "size": "36",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "220",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки, новые\nзнакомства и поддержка команды.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "388",
+          "spacing": "0"
+        },
+        {
+          "text": "Зарегистрироваться и занять стол",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "509.25",
+          "spacing": "0"
+        },
+        {
+          "text": "7 столов для ведущих · бронь на 30 минут\nПосле оплаты стол закрепится за вами.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "563",
+          "spacing": "0"
+        },
+        {
+          "text": "ФОРМАТ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "704",
+          "spacing": "1.3"
+        },
+        {
+          "text": "Ваша игра —\nв центре дня",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "756",
+          "spacing": "0"
+        },
+        {
+          "text": "Две игровые линейки",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "837",
+          "spacing": "0"
+        },
+        {
+          "text": "Две сессии по два часа",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "859",
+          "spacing": "0"
+        },
+        {
+          "text": "Знакомство с участниками",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "895",
+          "spacing": "0"
+        },
+        {
+          "text": "Представление на сцене",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "917",
+          "spacing": "0"
+        },
+        {
+          "text": "Поддержка команды",
+          "font": "Onest, Arial, sans-serif",
+          "size": "14",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "953",
+          "spacing": "0"
+        },
+        {
+          "text": "Пространство и продвижение",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "975",
+          "spacing": "0"
+        },
+        {
+          "text": "УСЛОВИЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1084",
+          "spacing": "1.3"
+        },
+        {
+          "text": "Форматы участия",
+          "font": "Marmelad, Georgia, serif",
+          "size": "32",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1138",
+          "spacing": "0"
+        },
+        {
+          "text": "Стандартное",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "69",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "249 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "end",
+          "x": "352",
+          "y": "1218",
+          "spacing": "0"
+        },
+        {
+          "text": "Проведение, профиль, анонсы, сертификат",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "69",
+          "y": "1257",
+          "spacing": "0"
+        },
+        {
+          "text": "Ваш анонс в соцсетях раз в неделю",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "1307",
+          "spacing": "0"
+        },
+        {
+          "text": "Расширенное",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "69",
+          "y": "1404",
+          "spacing": "0"
+        },
+        {
+          "text": "349 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "23",
+          "weight": "400",
+          "anchor": "end",
+          "x": "352",
+          "y": "1404",
+          "spacing": "0"
+        },
+        {
+          "text": "Всё выше + продвижение команды",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "69",
+          "y": "1443",
+          "spacing": "0"
+        },
+        {
+          "text": "Больше времени на подготовку игры",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "38",
+          "y": "1493",
+          "spacing": "0"
+        },
+        {
+          "text": "Фото и видео",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "70",
+          "y": "1604",
+          "spacing": "0"
+        },
+        {
+          "text": "+79 €",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "end",
+          "x": "350",
+          "y": "1604",
+          "spacing": "0"
+        },
+        {
+          "text": "10 фото и один рилс",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "70",
+          "y": "1637",
+          "spacing": "0"
+        },
+        {
+          "text": "✓",
+          "font": "Onest, Arial, sans-serif",
+          "size": "19",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "48",
+          "y": "1721",
+          "spacing": "0"
+        },
+        {
+          "text": "Внести предоплату 50 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "17",
+          "weight": "700",
+          "anchor": "start",
+          "x": "70",
+          "y": "1709",
+          "spacing": "0"
+        },
+        {
+          "text": "Остаток оплатите позже по ссылке",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "70",
+          "y": "1735",
+          "spacing": "0"
+        },
+        {
+          "text": "Стоимость участия: 249 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1793",
+          "spacing": "0"
+        },
+        {
+          "text": "Сейчас: 50 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "20",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1831",
+          "spacing": "0"
+        },
+        {
+          "text": "Позже: 199 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "16",
+          "weight": "400",
+          "anchor": "end",
+          "x": "370",
+          "y": "1831",
+          "spacing": "0"
+        },
+        {
+          "text": "КАК ПРИСОЕДИНИТЬСЯ",
+          "font": "Onest, Arial, sans-serif",
+          "size": "11",
+          "weight": "700",
+          "anchor": "start",
+          "x": "20",
+          "y": "1933",
+          "spacing": "1.2"
+        },
+        {
+          "text": "Регистрация → оплата → стол",
+          "font": "Marmelad, Georgia, serif",
+          "size": "21",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "1975",
+          "spacing": "0"
+        },
+        {
+          "text": "Заполните данные и выберите оплату.\nСтол резервируется на 30 минут.\nПосле оплаты участие подтверждается.",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2020",
+          "spacing": "0"
+        },
+        {
+          "text": "Зарегистрироваться и занять стол",
+          "font": "Onest, Arial, sans-serif",
+          "size": "15",
+          "weight": "700",
+          "anchor": "middle",
+          "x": "195",
+          "y": "2152.25",
+          "spacing": "0"
+        },
+        {
+          "text": "К оплате сейчас — 50 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "13",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2202",
+          "spacing": "0"
+        },
+        {
+          "text": "50 € входят в стоимость · позже 199 €",
+          "font": "Onest, Arial, sans-serif",
+          "size": "12",
+          "weight": "400",
+          "anchor": "start",
+          "x": "20",
+          "y": "2228",
+          "spacing": "0"
+        }
+      ],
+      "exportedTextElements": 123
+    }
+  ]
+}

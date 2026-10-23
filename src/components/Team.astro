@@ -1,4 +1,5 @@
 ---
+import Heading from './ui/Heading.astro';
 import type { Language } from '../lib/site';
 
 const { lang } = Astro.props as { lang: Language };
@@ -41,7 +42,7 @@ const copy =
         ],
         caption: [
           'У каждого из нас свой опыт и взгляд.',
-          'Нас объединяет желание помогать людям находить друг друга —',
+          'Нас объединяет желание помогать людям находить друг друга :',
           'для разговора, дружбы, новых совместных идей.',
         ],
         list: 'Участники команды R.O.S.T.',
@@ -82,7 +83,7 @@ const copy =
         ],
         caption: [
           'Jeder von uns bringt eigene Erfahrungen und Perspektiven mit.',
-          'Uns verbindet der Wunsch, Menschen zusammenzubringen —',
+          'Uns verbindet der Wunsch, Menschen zusammenzubringen :',
           'für Gespräche, Freundschaften und neue gemeinsame Ideen.',
         ],
         list: 'Das Team von R.O.S.T.',
@@ -93,9 +94,9 @@ const copy =
   <div class="site-container">
     <p class="team__eyebrow">{copy.eyebrow}</p>
     <div class="team__intro">
-      <h2 class="team__heading" id="team-title">
+      <Heading as="h2" variant="section" class="team__heading" id="team-title">
         {copy.heading} <span class="team__brand">R.O.S.T.</span>
-      </h2>
+      </Heading>
       <p class="team__description">
         {copy.description[0]}
         <br />
@@ -116,7 +117,9 @@ const copy =
               decoding="async"
             />
           </div>
-          <h3 class="team__name">{person.name}</h3>
+          <Heading as="h3" variant="card" class="team__name">
+            {person.name}
+          </Heading>
           <p class="team__role">{person.role}</p>
         </li>
       ))}

@@ -1,0 +1,26 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'h1'> {
+  as?: 'h1' | 'h2' | 'h3' | 'h4';
+  variant?: 'page' | 'section' | 'card' | 'panel' | 'action' | 'faq';
+}
+const {
+  as: Tag = 'h2',
+  variant = 'section',
+  class: className,
+  ...attributes
+} = Astro.props;
+---
+
+<Tag
+  class:list={[
+    'ui-heading',
+    `ui-heading--${variant}`,
+    { 'ui-section-heading': variant === 'section' },
+    className,
+  ]}
+  {...attributes}
+>
+  <slot />
+</Tag>

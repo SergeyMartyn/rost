@@ -1,4 +1,8 @@
 ---
+import CtaSection from './ui/CtaSection.astro';
+import PageIntro from './ui/PageIntro.astro';
+import Button from './ui/Button.astro';
+import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 import VideoFacade from './VideoFacade.astro';
 import ArchiveLink from './ArchiveLink.astro';
@@ -18,20 +22,20 @@ const copy =
         meetTitle: 'Встреча-знакомство',
         meetPlace: 'и рождественский рынок в Нюрнберге',
         meetBody:
-          'Встретимся, чтобы познакомиться лично и спокойно поговорить. После встречи вместе прогуляемся по Нюрнбергскому рождественскому рынку. Можно прийти одному — мы поможем включиться в разговор.',
+          'Встретимся, чтобы познакомиться лично и спокойно поговорить. После встречи вместе прогуляемся по Нюрнбергскому рождественскому рынку. Можно прийти одному: мы поможем включиться в разговор.',
         meetDetailsLink: 'Программа и подробности встречи →',
         meetDetailsTitle:
           'Встреча-знакомство и рождественский рынок в Нюрнберге',
         meetDetailsIntro:
           'Хотите расширить круг общения, найти компанию для совместных планов или познакомиться с людьми, близкими по интересам?',
         meetDetailsBody:
-          'Мы подготовили встречу, где знакомство не придётся брать на себя: ведущие организуют общение так, чтобы каждый познакомился с каждым. А командная игра с юмором поможет узнать людей ближе — через их идеи, опыт и то, как они проявляют себя в общем деле.',
+          'Мы подготовили встречу, где знакомство не придётся брать на себя: ведущие организуют общение так, чтобы каждый познакомился с каждым. А командная игра с юмором поможет узнать людей ближе: через их идеи, опыт и то, как они проявляют себя в общем деле.',
         meetDetailsEnd:
-          'В завершение каждый сможет рассказать, чем может быть полезен и кого или что сейчас ищет, — чтобы знакомства получили продолжение после встречи.',
+          'В завершение каждый сможет рассказать, чем может быть полезен и кого или что сейчас ищет,: чтобы знакомства получили продолжение после встречи.',
         meetDetailsClosing:
-          'Можно прийти одному или с компанией. Главное — желание познакомиться. О том, как начать разговор, позаботимся мы. После встречи вместе отправимся на Нюрнбергский рождественский рынок.',
+          'Можно прийти одному или с компанией. Главное: желание познакомиться. О том, как начать разговор, позаботимся мы. После встречи вместе отправимся на Нюрнбергский рождественский рынок.',
         meetDetailsClose: 'Закрыть описание встречи',
-        meetDetailsBuy: 'Купить билет · 29 €',
+        meetDetailsBuy: 'Купить билет · €29',
         when: 'Когда',
         where: 'Где',
         meetDate: '12 декабря 2026',
@@ -54,7 +58,7 @@ const copy =
         gamesDetailsLink: 'Программа и подробности встречи →',
         gamesDetailsTitle: 'День трансформационных игр в Мюнхене',
         gamesDetailsIntro:
-          'Две игровые линейки, нетворкинг и знакомство с ведущими. Ниже — программа дня и практики, с которыми можно сыграть.',
+          'Две игровые линейки, нетворкинг и знакомство с ведущими. Ниже: программа дня и практики, с которыми можно сыграть.',
         gamesProgramTitle: 'Программа',
         gamesProgram: [
           { time: '09:30–10:00', label: 'Регистрация' },
@@ -93,7 +97,7 @@ const copy =
           },
           {
             name: 'Зинаида Ланглитц',
-            game: 'Путь к себе — волшебство самооценки',
+            game: 'Путь к себе: волшебство самооценки',
             about:
               'Поговорить об уверенности, самоценности и выборе следующего шага.',
           },
@@ -166,7 +170,7 @@ const copy =
         meetDetailsClosing:
           'Du kannst allein oder in Begleitung kommen. Bring einfach Lust mit, neue Menschen kennenzulernen – wir helfen dir, ins Gespräch zu kommen. Danach besuchen wir gemeinsam den Nürnberger Christkindlesmarkt.',
         meetDetailsClose: 'Beschreibung des Treffens schließen',
-        meetDetailsBuy: 'Ticket kaufen · 29 €',
+        meetDetailsBuy: 'Ticket kaufen · €29',
         when: 'Wann',
         where: 'Wo',
         meetDate: '12. Dezember 2026',
@@ -229,7 +233,7 @@ const copy =
           },
           {
             name: 'Sinaida Langlitz',
-            game: 'Der Weg zu sich selbst — die Magie des Selbstwerts',
+            game: 'Der Weg zu sich selbst: die Magie des Selbstwerts',
             about:
               'Über Selbstvertrauen, Selbstwert und den nächsten Schritt sprechen.',
           },
@@ -284,25 +288,23 @@ const eventTickets = [
     key: 'guest',
     title: lang === 'ru' ? 'Базовый импульс' : 'Basisimpuls',
     summary:
-      lang === 'ru'
-        ? '7 ноября · Мюнхен · 80 €'
-        : '7. November · München · 80 €',
+      lang === 'ru' ? '7 ноября · Мюнхен · €80' : '7. November · München · €80',
   },
   {
     key: 'guest_peak',
     title: lang === 'ru' ? 'Пик трансформации' : 'Gipfel der Transformation',
     summary:
       lang === 'ru'
-        ? '7 ноября · Мюнхен · 180 €'
-        : '7. November · München · 180 €',
+        ? '7 ноября · Мюнхен · €180'
+        : '7. November · München · €180',
   },
   {
     key: 'nuremberg_meetup',
     title: lang === 'ru' ? 'Билет на встречу' : 'Ticket für das Treffen',
     summary:
       lang === 'ru'
-        ? '12 декабря · Нюрнберг · 29 €'
-        : '12. Dezember · Nürnberg · 29 €',
+        ? '12 декабря · Нюрнберг · €29'
+        : '12. Dezember · Nürnberg · €29',
   },
 ];
 ---
@@ -310,81 +312,71 @@ const eventTickets = [
 <div class="font-hero-sans text-brand">
   <section class="hero hero--events" aria-labelledby="hero-title">
     <div class="hero__inner site-container">
-      <div class="hero__content">
+      <PageIntro class="hero__content">
         <p class="hero__eyebrow">{copy.eyebrow}</p>
-        <h1 class="hero__title" id="hero-title">
+        <Heading as="h1" variant="page" class="hero__title" id="hero-title">
           {copy.title}
           <br />
           <span class="text-accent">R.O.S.T.</span>
-        </h1>
+        </Heading>
         <p class="hero__description">{copy.intro}</p>
         <div class="hero__links">
-          <a
-            href="#games"
-            class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
-          >
+          <Button variant="secondary" size="compact" href="#games">
             {copy.gamesShort}
-          </a>
-          <a
-            href="#nuremberg"
-            class="rounded-full border border-brand/15 bg-white px-5 py-3 transition hover:border-brand hover:bg-brand hover:text-white focus-visible:bg-brand focus-visible:text-white"
-          >
+          </Button>
+          <Button variant="secondary" size="compact" href="#nuremberg">
             {copy.meetShort}
-          </a>
+          </Button>
         </div>
-      </div>
+      </PageIntro>
       <VideoFacade lang={lang} page="events" />
     </div>
   </section>
 
-  <section id="games" class="scroll-mt-24 bg-brand-surface py-18 md:py-26">
+  <section id="games" class="ui-section scroll-mt-24 bg-brand-surface">
     <div class="site-container grid gap-9 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14">
       <div class="min-w-0">
         <div class="mb-8 flex flex-wrap items-center gap-3">
-          <span class="rounded-full bg-white px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-accent">
+          <span class="ui-eyebrow rounded-full bg-white px-4 py-2 text-accent">
             {copy.gamesTag}
           </span>
           <span class="text-sm font-semibold text-muted">
             {lang === 'ru' ? 'Мюнхен' : 'München'}
           </span>
         </div>
-        <h2 class="max-w-3xl font-display text-[clamp(1.75rem,5vw,5.2rem)] leading-[1.03] tracking-[-0.035em]">
+        <Heading as="h2" variant="section" class="max-w-3xl">
           {copy.gamesTitle}
           <br />
           {copy.gamesPlace}
-        </h2>
+        </Heading>
         <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
           {copy.gamesBody}
         </p>
-        <a
-          id="games-details-open"
-          href={routes.tiGames[lang]}
-          class="mt-6 inline-flex min-h-12 items-center rounded-xl border border-brand/20 bg-white px-5 py-3 font-semibold text-brand transition hover:border-brand hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-        >
-          {copy.gamesDetailsLink}
-        </a>
         <div class="mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
           <div class="rounded-3xl bg-white/75 p-6">
-            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
-              {copy.when}
-            </p>
+            <p class="ui-eyebrow text-muted">{copy.when}</p>
             <p class="mt-3 font-display text-2xl">{copy.gamesDate}</p>
             <p class="mt-2 text-sm text-muted">{copy.timeLater}</p>
           </div>
           <div class="rounded-3xl bg-white/75 p-6">
-            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
-              {copy.where}
-            </p>
+            <p class="ui-eyebrow text-muted">{copy.where}</p>
             <p class="mt-3 font-display text-2xl">{copy.gamesVenue}</p>
             <p class="mt-2 text-sm text-muted">{copy.gamesAddress}</p>
           </div>
         </div>
+        <Button
+          variant="secondary"
+          size="compact"
+          id="games-details-open"
+          href={routes.tiGames[lang]}
+          class="mt-6"
+        >
+          {copy.gamesDetailsLink}
+        </Button>
       </div>
       <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-white shadow-xl lg:sticky lg:top-28">
         <div class="bg-hero-end px-7 py-5 text-brand">
-          <p class="text-xs font-bold uppercase tracking-[0.13em]">
-            {copy.when}
-          </p>
+          <p class="ui-eyebrow">{copy.when}</p>
           <p class="mt-3 font-display text-3xl">{copy.gamesDate}</p>
         </div>
         <div class="p-7">
@@ -394,7 +386,7 @@ const eventTickets = [
           <fieldset class="mt-5">
             <legend class="mb-3 font-bold">{copy.chooseTicket}</legend>
             <div class="space-y-3">
-              <label class="flex min-h-24 cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4 transition has-[:checked]:border-brand has-[:checked]:bg-brand-surface">
+              <label class="ui-choice-card flex min-h-24 items-start gap-3">
                 <input
                   type="radio"
                   name="events-games-ticket"
@@ -408,10 +400,10 @@ const eventTickets = [
                   </span>
                 </span>
                 <strong class="shrink-0 font-display text-2xl font-normal">
-                  80 €
+                  €80
                 </strong>
               </label>
-              <label class="flex min-h-24 cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4 transition has-[:checked]:border-brand has-[:checked]:bg-brand-surface">
+              <label class="ui-choice-card flex min-h-24 items-start gap-3">
                 <input
                   type="radio"
                   name="events-games-ticket"
@@ -426,77 +418,79 @@ const eventTickets = [
                   </span>
                 </span>
                 <strong class="shrink-0 font-display text-2xl font-normal">
-                  180 €
+                  €180
                 </strong>
               </label>
             </div>
           </fieldset>
-          <button
+          <Button
+            variant="primary"
+            size="regular"
             type="button"
             data-ticket="guest"
             data-ticket-group="events-games-ticket"
-            class="mt-3 min-h-14 w-full rounded-2xl bg-brand px-6 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="mt-3 w-full"
           >
             {copy.gamesDetailsBuy}
-          </button>
-          <a
+          </Button>
+          <Button
+            variant="secondary"
+            size="compact"
             href={routes.host[lang]}
-            class="mt-3 inline-flex w-full items-center justify-between rounded-2xl border border-brand/30 bg-white px-5 py-4 text-left font-bold transition hover:border-brand hover:bg-brand hover:text-brand-gold"
+            class="mt-3 w-full"
           >
             <span>{copy.host}</span>
             <span aria-hidden="true">→</span>
-          </a>
+          </Button>
         </div>
       </aside>
     </div>
   </section>
 
-  <section id="nuremberg" class="scroll-mt-24 bg-white py-18 md:py-26">
+  <section id="nuremberg" class="ui-section scroll-mt-24 bg-white">
     <div class="site-container grid gap-9 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14">
       <div class="min-w-0">
         <div class="mb-8 flex flex-wrap items-center gap-3">
-          <span class="rounded-full bg-brand-surface px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-accent">
+          <span class="ui-eyebrow rounded-full bg-brand-surface px-4 py-2 text-accent">
             {copy.meetTag}
           </span>
           <span class="text-sm font-semibold text-muted">
             {lang === 'ru' ? 'Нюрнберг' : 'Nürnberg'}
           </span>
         </div>
-        <h2 class="max-w-3xl font-display text-[clamp(2.1rem,5vw,5.2rem)] leading-[1.03] tracking-[-0.035em]">
+        <Heading as="h2" variant="section" class="max-w-3xl">
           {copy.meetTitle}
           <br />
           {copy.meetPlace}
-        </h2>
+        </Heading>
         <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
           {copy.meetBody}
         </p>
-        <button
-          id="meet-details-open"
-          type="button"
-          aria-haspopup="dialog"
-          aria-controls="meet-details-dialog"
-          class="mt-6 inline-flex min-h-12 items-center rounded-xl border border-brand/20 bg-brand-surface px-5 py-3 font-semibold text-brand transition hover:border-brand hover:bg-brand hover:text-white focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-        >
-          {copy.meetDetailsLink}
-        </button>
         <div class="mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
           <div class="rounded-3xl bg-brand-surface p-6">
-            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
-              {copy.when}
-            </p>
+            <p class="ui-eyebrow text-muted">{copy.when}</p>
             <p class="mt-3 font-display text-2xl">{copy.meetDate}</p>
             <p class="mt-2 text-sm text-muted">{copy.meetRegistration}</p>
           </div>
           <div class="rounded-3xl bg-brand-surface p-6">
-            <p class="text-xs font-bold uppercase tracking-[0.16em] text-muted">
-              {copy.where}
-            </p>
+            <p class="ui-eyebrow text-muted">{copy.where}</p>
             <p class="mt-3 font-display text-2xl">
               {lang === 'ru' ? 'Нюрнберг' : 'Nürnberg'}
             </p>
             <p class="mt-2 text-sm text-muted">{copy.meetAddress}</p>
           </div>
         </div>
+        <Button
+          variant="secondary"
+          size="compact"
+          id="meet-details-open"
+          type="button"
+          aria-haspopup="dialog"
+          aria-controls="meet-details-dialog"
+          class="mt-6"
+        >
+          {copy.meetDetailsLink}
+        </Button>
       </div>
       <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-brand-surface shadow-xl lg:sticky lg:top-28">
         <div class="relative flex h-48 items-end overflow-hidden bg-hero-end/60 p-7">
@@ -515,14 +509,16 @@ const eventTickets = [
         </div>
         <div class="p-7">
           <p class="text-sm font-semibold text-muted">{copy.meetTicket}</p>
-          <p class="mt-2 font-display text-5xl">29 €</p>
-          <button
+          <p class="mt-2 font-display text-5xl">€29</p>
+          <Button
+            variant="primary"
+            size="regular"
             type="button"
             data-ticket="nuremberg_meetup"
-            class="mt-7 w-full rounded-2xl bg-brand px-6 py-4 text-base font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+            class="mt-7 w-full"
           >
             {copy.buyTicket}
-          </button>
+          </Button>
           <p class="mt-4 text-center text-xs leading-relaxed text-muted">
             {copy.beforePayment}
           </p>
@@ -533,20 +529,12 @@ const eventTickets = [
 
   <ArchiveLink lang={lang} />
 
-  <section class="bg-brand py-16 text-white md:py-20">
-    <div class="site-container flex flex-col items-start justify-between gap-8 md:flex-row md:items-center">
-      <div>
-        <h2 class="font-display text-3xl md:text-4xl">{copy.questions}</h2>
-        <p class="mt-3 max-w-xl text-white/75">{copy.questionsBody}</p>
-      </div>
-      <a
-        href={routes.contacts[lang]}
-        class="rounded-2xl border border-white/40 px-6 py-4 font-bold transition hover:bg-white hover:text-brand"
-      >
-        {copy.contactLink}
-      </a>
-    </div>
-  </section>
+  <CtaSection
+    title={copy.questions}
+    description={copy.questionsBody}
+    href={routes.contacts[lang]}
+    label={copy.contactLink}
+  />
 </div>
 
 <dialog
@@ -557,22 +545,17 @@ const eventTickets = [
   <div class="flex h-full max-h-[calc(100dvh-1rem)] min-h-0 flex-col sm:max-h-[min(88dvh,900px)]">
     <div class="flex shrink-0 items-start justify-between gap-4 border-b border-brand/10 bg-brand-surface px-5 py-5 sm:px-8 sm:py-6">
       <div class="min-w-0">
-        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
-          {copy.meetTag}
-        </p>
-        <h2
-          id="meet-details-title"
-          class="mt-2 font-display text-2xl leading-tight sm:text-3xl"
-        >
+        <p class="ui-eyebrow text-accent">{copy.meetTag}</p>
+        <Heading as="h2" variant="panel" id="meet-details-title" class="mt-2">
           {copy.meetDetailsTitle}
-        </h2>
-        <p class="mt-2 text-sm text-muted">{copy.meetDate} · 29 €</p>
+        </Heading>
+        <p class="mt-2 text-sm text-muted">{copy.meetDate} · €29</p>
       </div>
       <button
         id="meet-details-close"
         type="button"
         aria-label={copy.meetDetailsClose}
-        class="grid h-11 w-11 shrink-0 place-items-center rounded-full border border-brand bg-white p-0 transition hover:bg-hero-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        class="ui-icon-button"
       >
         <svg
           aria-hidden="true"
@@ -596,13 +579,15 @@ const eventTickets = [
       <p class="mt-7">{copy.meetDetailsClosing}</p>
     </div>
     <div class="shrink-0 border-t border-brand/10 bg-white px-5 py-4 sm:px-8">
-      <button
+      <Button
+        variant="primary"
+        size="regular"
         id="meet-details-buy"
         type="button"
-        class="w-full rounded-2xl bg-brand px-6 py-4 font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        class="w-full"
       >
         {copy.meetDetailsBuy}
-      </button>
+      </Button>
     </div>
   </div>
 </dialog>

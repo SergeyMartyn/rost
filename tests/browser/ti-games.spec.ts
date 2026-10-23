@@ -49,8 +49,8 @@ test('TI page renders all mockup sections without horizontal overflow', async ({
       await expect(page.locator('#ti-tickets-title')).toContainText(
         item.tickets,
       );
-      await expect(page.locator('#ti-ticket-card')).toContainText('80 €');
-      await expect(page.locator('#ti-ticket-card')).toContainText('180 €');
+      await expect(page.locator('#ti-ticket-card')).toContainText('€80');
+      await expect(page.locator('#ti-ticket-card')).toContainText('€180');
       if (item.lang === 'ru' && (width === 390 || width === 1440))
         await page.screenshot({
           path: `test-results/ti-games-ru-${width}.png`,
@@ -96,13 +96,13 @@ test('TI ticket selection opens the shared purchase dialog with the right price'
     ).toBeChecked();
     await page.locator('[data-ticket="guest"]').click();
     await expect(page.locator('#ticket-dialog')).toBeVisible();
-    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€180');
     await page.locator('#ticket-close').click();
     await page
       .locator('input[name="games-ticket"][value="guest"]')
       .check({ force: true });
     await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('80 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€80');
     await page.locator('#ticket-close').click();
   }
 });
@@ -166,7 +166,7 @@ test('mobile sticky ticket bar opens purchase for the selected tariff', async ({
     await expect(page.locator('#ti-sticky-buy')).toBeVisible();
     await page.locator('#ti-sticky-buy').click();
     await expect(page.locator('#ticket-dialog')).toBeVisible();
-    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€180');
     await page.locator('#ticket-close').click();
     await page
       .locator('input[name="games-ticket-details"][value="guest"]')
@@ -178,7 +178,7 @@ test('mobile sticky ticket bar opens purchase for the selected tariff', async ({
     ).toBeChecked();
     await page.locator('#ti-sticky-buy').click();
     await expect(page.locator('#ticket-dialog')).toBeVisible();
-    await expect(page.locator('#ticket-summary')).toContainText('80 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€80');
     await page.locator('#ticket-close').click();
   }
 });

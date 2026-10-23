@@ -7,7 +7,7 @@
  * Deploy → New deployment → Web app → Execute as: Me, Who has access: Anyone.
  * Put the resulting /exec URL into the Worker secret SHEETS_WEBHOOK_URL.
  */
-var HEADER = ['Оплачен (UTC)', 'ID заказа', 'Билет', 'Имя', 'Способ связи', 'Контакт', 'Email (Stripe)', 'Сумма, €', 'Статус'];
+var HEADER = ['Оплачен (UTC)', 'ID заказа', 'Билет', 'Имя', 'Способ связи', 'Контакт', 'Email (Stripe)', 'Сумма, €', 'Статус', 'Стоимость участия, €', 'Остаток, €', 'Стол', 'Тип оплаты', 'Формат ведущего', 'Медиапакет', 'Игра', 'Базовая цена, €', 'Скидка, %', 'Скидка, €', 'Промокод', 'Акция', 'Источник кода', 'Количество билетов', 'Второй участник'];
 
 function doPost(e) {
   var body = JSON.parse(e.postData.contents);
@@ -21,6 +21,11 @@ function doPost(e) {
     var ss = SpreadsheetApp.getActiveSpreadsheet();
     var sheet = ss.getSheetByName(body.tab) || ss.insertSheet(body.tab);
     if (sheet.getLastRow() === 0) sheet.appendRow(HEADER);
+    // Add new headers without overwriting existing columns or payment rows.
+    var existing = sheet.getRange(1, 1, 1, HEADER.length).getValues()[0];
+    for (var i = 9; i < HEADER.length; i++) {
+      if (!existing[i]) sheet.getRange(1, i + 1).setValue(HEADER[i]);
+    }
     var ids = sheet.getRange(1, 2, sheet.getLastRow(), 1).getValues().flat();
     if (ids.indexOf(body.row[1]) === -1) sheet.appendRow(body.row); // idempotent by order id
   } finally {

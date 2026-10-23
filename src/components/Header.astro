@@ -1,4 +1,5 @@
 ---
+import Button from './ui/Button.astro';
 import { routes, languages, type Language, type Page } from '../lib/site';
 
 const { lang, page } = Astro.props as { lang: Language; page: Page };
@@ -43,7 +44,7 @@ const socials = [
     <a
       class="site-header__brand"
       href={routes.home[lang]}
-      aria-label={`R.O.S.T. — ${copy.home}`}
+      aria-label={`R.O.S.T.: ${copy.home}`}
     >
       <span class="site-header__brand-mark">
         <img src="/brand-tree.png" alt="" width="38" height="38" />
@@ -76,9 +77,14 @@ const socials = [
           </a>
         ))}
       </nav>
-      <a class="site-header__cta" href={routes.events[lang]}>
+      <Button
+        variant="inverse"
+        size="compact"
+        class="site-header__cta"
+        href={routes.events[lang]}
+      >
         {copy.join}
-      </a>
+      </Button>
     </div>
 
     <button
@@ -110,12 +116,42 @@ const socials = [
   <div class="site-header__mobile-panel" id="site-mobile-menu" hidden>
     <nav class="site-header__mobile-nav" aria-label={copy.navigation}>
       {nav.map((item) => (
-        <a
-          href={item.href}
-          aria-current={page === item.page ? 'page' : undefined}
-        >
-          <span>{item.label}</span>
-        </a>
+        <>
+          <a
+            href={item.href}
+            aria-current={page === item.page ? 'page' : undefined}
+          >
+            <span>{item.label}</span>
+          </a>
+          {item.page === 'events' && (
+            <div class="site-header__event-links">
+              <a href={routes.tiGames[lang]}>
+                <strong>
+                  {lang === 'ru'
+                    ? 'Трансформационные игры'
+                    : 'Transformationsspiele'}
+                </strong>
+                <small>
+                  {lang === 'ru'
+                    ? 'Мюнхен · 7 ноября 2026'
+                    : 'München · 7. November 2026'}
+                </small>
+              </a>
+              <a href={`${routes.events[lang]}#nuremberg`}>
+                <strong>
+                  {lang === 'ru'
+                    ? 'Нетворкинг и рождественская ярмарка'
+                    : 'Networking und Weihnachtsmarkt'}
+                </strong>
+                <small>
+                  {lang === 'ru'
+                    ? 'Нюрнберг · 12 декабря 2026'
+                    : 'Nürnberg · 12. Dezember 2026'}
+                </small>
+              </a>
+            </div>
+          )}
+        </>
       ))}
     </nav>
     <div class="site-header__mobile-bottom">
@@ -132,12 +168,14 @@ const socials = [
           </a>
         ))}
       </nav>
-      <a
+      <Button
+        variant="inverse"
+        size="compact"
         class="site-header__cta site-header__cta--mobile"
         href={routes.events[lang]}
       >
         {copy.join}
-      </a>
+      </Button>
       <div class="site-header__socials" aria-hidden="true">
         {socials.map((social) => (
           <span class="site-header__social" title={social.name}>

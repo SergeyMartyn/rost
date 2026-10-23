@@ -1,4 +1,7 @@
 ---
+import PageIntro from './ui/PageIntro.astro';
+import Button from './ui/Button.astro';
+import Heading from './ui/Heading.astro';
 import { routes, site, type Language } from '../lib/site';
 import ContactChannels from './ContactChannels.astro';
 
@@ -69,11 +72,11 @@ const copy =
   aria-labelledby="hero-title"
 >
   <div class="hero__inner site-container">
-    <div class="hero__content">
+    <PageIntro class="hero__content">
       <p class="hero__eyebrow">{copy.eyebrow}</p>
-      <h1 class="hero__title" id="hero-title">
+      <Heading as="h1" variant="page" class="hero__title" id="hero-title">
         {title}
-      </h1>
+      </Heading>
       <p class="hero__description">
         {copy.lead[0]}
         {copy.lead[1] && (
@@ -93,9 +96,14 @@ const copy =
           </>
         )}
       </p>
-      <a class="hero__cta" href={copy.href}>
+      <Button
+        variant="primary"
+        size="regular"
+        class="hero__cta"
+        href={copy.href}
+      >
         {copy.action} →
-      </a>
-    </div>
+      </Button>
+    </PageIntro>
   </div>
 </section>

@@ -1,8 +1,13 @@
 ---
+import CtaSection from './ui/CtaSection.astro';
+import PageIntro from './ui/PageIntro.astro';
+import Button from './ui/Button.astro';
+import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 
 const { lang } = Astro.props as { lang: Language };
 const instagramPost = 'https://www.instagram.com/p/DeWzwDOqNv2/';
+const instagramProfile = 'https://www.instagram.com/group_r.o.s.t/';
 const copy =
   lang === 'ru'
     ? {
@@ -25,12 +30,12 @@ const copy =
           ['Общались', 'За чаем и кофе было время поговорить свободнее.'],
         ],
         galleryEyebrow: 'АТМОСФЕРА ВСТРЕЧИ',
-        galleryTitle: 'Несколько моментов',
-        galleryCopy: 'Короткое видео поможет вернуться в этот день.',
+        galleryTitle: 'Несколько моментов этого дня',
+        galleryCopy:
+          'Короткое видео поможет вернуться в этот день: вспомнить знакомые лица, разговоры и атмосферу встречи. А если вас с нами не было, посмотрите, как всё прошло.',
         video: 'ВИДЕО В INSTAGRAM',
-        instagramEyebrow: 'ПРОДОЛЖЕНИЕ ИСТОРИИ',
-        instagramTitle: 'Больше моментов — в Instagram R.O.S.T.',
-        instagramLink: 'Смотреть публикацию ↗',
+        instagramMore: 'Больше моментов:',
+        instagramLink: 'Открыть видео в Instagram',
         nextEyebrow: 'ВСТРЕТИМСЯ СНОВА',
         nextTitle: 'Приходите на следующую встречу',
         nextCopy: 'Узнайте, где и когда мы увидимся в следующий раз.',
@@ -56,12 +61,12 @@ const copy =
           ['Reden', 'Bei Tee und Kaffee blieb Zeit für entspannte Gespräche.'],
         ],
         galleryEyebrow: 'MOMENTE DES TREFFENS',
-        galleryTitle: 'Ein paar Eindrücke',
-        galleryCopy: 'Ein kurzes Video bringt uns zurück zu diesem Tag.',
+        galleryTitle: 'Ein paar Momente dieses Tages',
+        galleryCopy:
+          'Ein kurzes Video bringt die Begegnungen und die Atmosphäre dieses Tages zurück. Schau noch einmal hinein oder entdecke, wie unser Treffen war.',
         video: 'VIDEO AUF INSTAGRAM',
-        instagramEyebrow: 'DIE GESCHICHTE GEHT WEITER',
-        instagramTitle: 'Mehr Eindrücke auf Instagram R.O.S.T.',
-        instagramLink: 'Beitrag ansehen ↗',
+        instagramMore: 'Mehr Eindrücke:',
+        instagramLink: 'Video auf Instagram öffnen',
         nextEyebrow: 'WIR SEHEN UNS WIEDER',
         nextTitle: 'Komm zum nächsten Treffen',
         nextCopy: 'Erfahre, wo und wann wir uns das nächste Mal sehen.',
@@ -71,31 +76,29 @@ const copy =
 
 <div class="font-hero-sans text-brand">
   <section class="relative overflow-hidden bg-hero-start">
-    <div class="site-container relative grid gap-12 pb-16 pt-32 md:pt-36 lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center lg:pb-24">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
-          {copy.eyebrow}
-        </p>
-        <h1 class="mt-9 max-w-3xl font-display text-[clamp(2.2rem,5vw,4rem)] leading-[1.13]">
+    <div class="site-container relative grid gap-12 pb-16 ui-page-top lg:grid-cols-[minmax(0,1fr)_420px] lg:items-center lg:pb-24">
+      <PageIntro>
+        <p class="ui-eyebrow">{copy.eyebrow}</p>
+        <Heading as="h1" variant="page" class="max-w-3xl">
           {copy.title}
-        </h1>
-        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted md:text-2xl">
-          {copy.intro}
-        </p>
-        <p class="mt-7 inline-flex min-h-10 items-center justify-center rounded-full bg-white px-5 text-xs font-bold uppercase tracking-[0.12em]">
+        </Heading>
+        <p class="ui-lead mt-6 max-w-2xl text-muted">{copy.intro}</p>
+        <p class="ui-eyebrow mt-7 inline-flex min-h-10 items-center justify-center rounded-full bg-white px-5">
           {copy.status}
         </p>
         <p class="mt-6 text-lg font-semibold">
           <time datetime="2026-10-10">{copy.date}</time>
         </p>
         <p class="mt-2 text-muted">St. Katharinenplatz 5, 93059 Regensburg</p>
-        <a
+        <Button
+          variant="primary"
+          size="regular"
           href={routes.events[lang]}
-          class="mt-7 inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+          class="mt-7"
         >
           {copy.nextLink}
-        </a>
-      </div>
+        </Button>
+      </PageIntro>
       <div class="relative mx-auto w-full max-w-[420px] lg:mx-0">
         <div
           aria-hidden="true"
@@ -124,14 +127,14 @@ const copy =
     </div>
   </section>
 
-  <section class="bg-white py-18 md:py-24">
+  <section class="ui-section bg-white">
     <div class="site-container">
-      <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
-        {copy.storyEyebrow}
-      </p>
-      <h2 class="mt-6 font-display text-[clamp(2.2rem,4vw,3rem)] leading-tight">
-        {copy.storyTitle}
-      </h2>
+      <div class="ui-section-heading">
+        <p class="ui-eyebrow">{copy.storyEyebrow}</p>
+        <Heading as="h2" variant="section" class="mt-6">
+          {copy.storyTitle}
+        </Heading>
+      </div>
       <p class="mt-6 max-w-5xl text-lg leading-relaxed text-muted md:text-[22px]">
         {copy.story}
       </p>
@@ -141,7 +144,9 @@ const copy =
             <p class="text-lg text-events-placeholder-text">
               {String(index + 1).padStart(2, '0')}
             </p>
-            <h3 class="mt-6 font-display text-3xl">{title}</h3>
+            <Heading as="h3" variant="card" class="mt-6">
+              {title}
+            </Heading>
             <p class="mt-4 leading-relaxed text-muted">{description}</p>
           </article>
         ))}
@@ -149,73 +154,85 @@ const copy =
     </div>
   </section>
 
-  <section class="bg-brand-surface py-18 md:py-24">
-    <div class="site-container">
-      <p class="text-xs font-bold uppercase tracking-[0.13em] md:text-[13px]">
-        {copy.galleryEyebrow}
-      </p>
-      <h2 class="mt-5 font-display text-[clamp(2.2rem,4vw,3rem)]">
-        {copy.galleryTitle}
-      </h2>
-      <p class="mt-4 text-lg text-muted">{copy.galleryCopy}</p>
+  <section
+    class="ui-section bg-brand-surface"
+    aria-labelledby="archive-moments-title"
+  >
+    <div class="site-container grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14">
+      <div>
+        <div class="ui-section-heading">
+          <p class="ui-eyebrow">{copy.galleryEyebrow}</p>
+          <Heading
+            as="h2"
+            variant="section"
+            id="archive-moments-title"
+            class="mt-4"
+          >
+            {copy.galleryTitle}
+          </Heading>
+        </div>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-muted">
+          {copy.galleryCopy}
+        </p>
+        <div class="mt-7 flex flex-wrap items-center gap-3">
+          <p class="text-sm font-semibold text-muted">{copy.instagramMore}</p>
+          <Button
+            href={instagramProfile}
+            variant="primary"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Instagram R.O.S.T.
+          </Button>
+        </div>
+      </div>
       <a
         href={instagramPost}
         target="_blank"
         rel="noopener noreferrer"
-        class="mt-9 flex min-h-72 max-w-xl flex-col items-center justify-center gap-6 rounded-3xl bg-hero-end text-brand transition hover:bg-hero-placeholder focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+        class="group relative block w-full max-w-90 justify-self-center overflow-hidden rounded-3xl bg-brand shadow-lg focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand lg:justify-self-end"
         aria-label={copy.instagramLink}
       >
+        <picture>
+          <source
+            type="image/avif"
+            srcset="/images/events/regensburg/reel-cover-360.avif 360w, /images/events/regensburg/reel-cover-720.avif 720w"
+            sizes="(min-width: 400px) 360px, calc(100vw - 40px)"
+          />
+          <img
+            src="/images/events/regensburg/reel-cover-720.webp"
+            srcset="/images/events/regensburg/reel-cover-360.webp 360w, /images/events/regensburg/reel-cover-720.webp 720w"
+            sizes="(min-width: 400px) 360px, calc(100vw - 40px)"
+            alt={copy.photoAlt}
+            width="720"
+            height="1280"
+            loading="lazy"
+            decoding="async"
+            class="block h-auto w-full"
+          />
+        </picture>
         <span
           aria-hidden="true"
-          class="grid h-16 w-16 place-items-center rounded-full bg-brand text-white"
+          class="absolute inset-0 grid place-items-center bg-brand/5 transition group-hover:bg-brand/15"
         >
-          <svg width="25" height="25" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M8 5.5v13l10-6.5z" />
-          </svg>
+          <span class="grid h-18 w-18 place-items-center rounded-full bg-brand text-white shadow-lg transition group-hover:scale-105">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M8 5.5v13l10-6.5z" />
+            </svg>
+          </span>
         </span>
-        <span class="text-xs font-bold uppercase tracking-[0.13em]">
+        <span class="ui-eyebrow absolute inset-x-4 bottom-5 text-center text-white">
           {copy.video}
         </span>
       </a>
     </div>
   </section>
 
-  <section class="bg-formats-peach py-12">
-    <div class="site-container flex flex-col items-start justify-between gap-7 lg:flex-row lg:items-center">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-[0.13em]">
-          {copy.instagramEyebrow}
-        </p>
-        <h2 class="mt-4 font-display text-3xl md:text-4xl">
-          {copy.instagramTitle}
-        </h2>
-      </div>
-      <a
-        href={instagramPost}
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
-      >
-        {copy.instagramLink}
-      </a>
-    </div>
-  </section>
-
-  <section class="bg-brand py-14 text-white md:py-16">
-    <div class="site-container flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-center">
-      <div>
-        <p class="text-xs font-bold uppercase tracking-[0.13em] text-brand-gold">
-          {copy.nextEyebrow}
-        </p>
-        <h2 class="mt-5 font-display text-3xl md:text-5xl">{copy.nextTitle}</h2>
-        <p class="mt-4 text-white/80">{copy.nextCopy}</p>
-      </div>
-      <a
-        href={routes.events[lang]}
-        class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-white px-7 font-bold text-brand transition hover:bg-hero-end focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
-      >
-        {copy.nextLink}
-      </a>
-    </div>
-  </section>
+  <CtaSection
+    title={copy.nextTitle}
+    description={copy.nextCopy}
+    eyebrow={copy.nextEyebrow}
+    href={routes.events[lang]}
+    label={copy.nextLink}
+  />
 </div>

@@ -1,0 +1,41 @@
+---
+import Heading from './Heading.astro';
+import Button from './Button.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+  eyebrow?: string;
+  href: string;
+  label: string;
+  tone?: 'brand' | 'peach';
+  external?: boolean;
+}
+const {
+  title,
+  description,
+  eyebrow,
+  href,
+  label,
+  tone = 'brand',
+  external = false,
+} = Astro.props;
+---
+
+<section class:list={['ui-section ui-cta', `ui-cta--${tone}`]}>
+  <div class="site-container ui-cta__inner">
+    <div class="ui-section-heading">
+      {eyebrow && <p class="ui-eyebrow">{eyebrow}</p>}
+      <Heading variant="action">{title}</Heading>
+      {description && <p class="ui-cta__description">{description}</p>}
+    </div>
+    <Button
+      href={href}
+      variant={tone === 'brand' ? 'inverse' : 'primary'}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+    >
+      {label}
+    </Button>
+  </div>
+</section>

@@ -10,6 +10,13 @@ import { EARLY_BIRD_END_MS } from '../src/lib/early-bird';
 function makeD1() {
   const db = new DatabaseSync(':memory:');
   db.exec(readFileSync('migrations/0001_orders.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0002_host_registrations.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0003_sheet_exports.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0004_payment_account.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0005_promotions.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0006_promo_pairs.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0007_single_promotions.sql', 'utf8'));
+
   const stmt = (sql: string) => {
     let args: unknown[] = [];
     const s: any = {
@@ -103,6 +110,247 @@ const goodBody = (ticket: string, extra: object = {}) => ({
   ...extra,
 });
 
+const quoteRequest = (ticket: string, promoCode = '') =>
+  new Request(`${HOST}/api/orders/quote`, {
+    method: 'POST',
+    headers: { Origin: HOST, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ ticket, promoCode }),
+  });
+test('all fifteen codes preview the configured discount and quantity with the correct issuer and create no orders', async () => {
+  const t = setup();
+  for (const [suffix, name] of Object.entries({
+    T: 'Тимур',
+    K: 'Кристина',
+    S: 'Сергей',
+    M: 'Марго',
+    X: 'Максим',
+  })) {
+    for (const prefix of ['FAMILY10', 'FRIEND10', 'PROMO10']) {
+      const response = await t.api(
+        quoteRequest(
+          'guest',
+          ` ${prefix.toLowerCase()}${suffix.toLowerCase()} `,
+        ),
+      );
+      assert.equal(response.status, 200);
+      const q: any = await response.json();
+      const quantity = prefix === 'PROMO10' ? 1 : 2;
+      assert.equal(q.quantity, quantity);
+      assert.equal(q.baseAmountCents, 8000 * quantity);
+      assert.equal(q.discountCents, 800 * quantity);
+      assert.equal(q.amountCents, 7200 * quantity);
+      assert.equal(q.promoCode, prefix + suffix);
+      assert.equal(q.issuerCode, suffix);
+      assert.equal(q.issuerName, name);
+      assert.equal(
+        q.promotionKind,
+        prefix === 'FAMILY10'
+          ? 'family'
+          : prefix === 'FRIEND10'
+            ? 'referral'
+            : 'promo',
+      );
+    }
+  }
+  assert.equal(
+    (t.d1.db.prepare('SELECT count(*) n FROM orders').get() as any).n,
+    0,
+  );
+  assert.equal(t.stripeCalls.length, 0);
+});
+test('promo rejects VIP, hosts, archive, unknown suffix, stacked and inactive codes', async () => {
+  const t = setup();
+  for (const ticket of ['guest_peak', 'host', 'nuremberg_meetup'])
+    assert.equal((await t.api(quoteRequest(ticket, 'FAMILY10T'))).status, 400);
+  assert.equal((await t.api(quoteRequest('meetup', 'FAMILY10T'))).status, 410);
+  for (const code of ['FAMILY10', 'FAMILY10Q', 'FAMILY10T FRIEND10K'])
+    assert.equal((await t.api(quoteRequest('guest', code))).status, 400);
+  t.d1.db.exec("UPDATE discount_codes SET active=0 WHERE code='FAMILY10T'");
+  assert.equal((await t.api(quoteRequest('guest', 'FAMILY10T'))).status, 400);
+  t.d1.db.exec(
+    "UPDATE discount_campaigns SET starts_at=1790000000001 WHERE id='referral'",
+  );
+  assert.equal((await t.api(quoteRequest('guest', 'FRIEND10T'))).status, 400);
+  t.d1.db.exec(
+    "UPDATE discount_campaigns SET starts_at=NULL,ends_at=1790000000000 WHERE id='referral'",
+  );
+  assert.equal((await t.api(quoteRequest('guest', 'FRIEND10T'))).status, 400);
+});
+test('Nuremberg can be activated independently and uses eurocent rounding', async () => {
+  const t = setup();
+  t.d1.db.exec(
+    "UPDATE discount_scopes SET active=1 WHERE event_id='nuremberg-2026-12-12'",
+  );
+  const q: any = await (
+    await t.api(quoteRequest('nuremberg_meetup', 'FAMILY10M'))
+  ).json();
+  assert.equal(q.amountCents, 5220);
+  assert.equal(q.discountCents, 580);
+  assert.equal(
+    (await t.api(quoteRequest('guest_peak', 'FAMILY10M'))).status,
+    400,
+  );
+});
+test('stale or missing price confirmation cannot create a discounted checkout', async () => {
+  const t = setup();
+  assert.equal(
+    (
+      await t.api(
+        orderReq(goodBody('guest', { promoCode: 'FAMILY10T', amount: 1 })),
+      )
+    ).status,
+    409,
+  );
+  const q: any = await (await t.api(quoteRequest('guest', 'FAMILY10T'))).json();
+  t.d1.db.exec(
+    "UPDATE discount_campaigns SET discount_percent=5 WHERE id='family'",
+  );
+  const response = await t.api(
+    orderReq(
+      goodBody('guest', { promoCode: 'FAMILY10T', quoteKey: q.quoteKey }),
+    ),
+  );
+  assert.equal(response.status, 409);
+  assert.equal(((await response.json()) as any).quote.amountCents, 15200);
+  assert.equal(t.stripeCalls.length, 0);
+  t.d1.db.exec("UPDATE discount_campaigns SET active=0 WHERE id='family'");
+  assert.equal(
+    (
+      await t.api(
+        orderReq(
+          goodBody('guest', { promoCode: 'FAMILY10T', quoteKey: q.quoteKey }),
+        ),
+      )
+    ).status,
+    400,
+  );
+  assert.equal(
+    (t.d1.db.prepare('SELECT count(*) n FROM orders').get() as any).n,
+    0,
+  );
+});
+test('Stripe charges the discounted snapshot, rejects full-price confirmation and exports attribution once', async () => {
+  const t = setup();
+  const q: any = await (await t.api(quoteRequest('guest', 'family10s'))).json();
+  const response = await t.api(
+    orderReq(
+      goodBody('guest', {
+        promoCode: q.promoCode,
+        quoteKey: q.quoteKey,
+        secondParticipantName: 'Second Person',
+        amount: 1,
+      }),
+    ),
+  );
+  assert.equal(response.status, 200);
+  const order: any = t.d1.db.prepare('SELECT * FROM orders').get();
+  assert.equal(order.amount_cents, 14400);
+  assert.equal(order.base_amount_cents, 16000);
+  assert.equal(order.issuer_name, 'Сергей');
+  assert.equal(order.quantity, 2);
+  assert.equal(order.second_participant_name, 'Second Person');
+  assert.equal(t.stripeCalls[0].body.get('line_items[0][quantity]'), '2');
+  assert.equal(
+    t.stripeCalls[0].body.get('line_items[0][price_data][unit_amount]'),
+    '7200',
+  );
+  // Disabling the promotion after creation does not change the contracted price.
+  t.d1.db.exec('UPDATE discount_campaigns SET active=0');
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(order.id, order.provider_session_id, 8000),
+      'evt_wrong_full_price',
+    ),
+  );
+  assert.equal(row(t, order.id).status, 'pending');
+  const event = () =>
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(order.id, order.provider_session_id, 14400),
+      'evt_discount_paid',
+    );
+  await t.api(event());
+  await t.flush();
+  await t.api(event());
+  await t.flush();
+  assert.equal(row(t, order.id).status, 'paid');
+  assert.equal(t.sheetCalls.length, 1);
+  assert.equal(t.sheetCalls[0].row[7], 144);
+  assert.deepEqual(t.sheetCalls[0].row.slice(16), [
+    160,
+    10,
+    16,
+    'FAMILY10S',
+    'Семейная',
+    'Сергей',
+    2,
+    'Second Person',
+  ]);
+});
+
+test('promo pair requires a second name and never accepts a client-selected single quantity', async () => {
+  const t = setup();
+  const q: any = await (await t.api(quoteRequest('guest', 'FAMILY10T'))).json();
+  for (const secondParticipantName of [
+    undefined,
+    '',
+    ' ',
+    'A',
+    'A'.repeat(81),
+    123,
+  ]) {
+    const r = await t.api(
+      orderReq(
+        goodBody('guest', {
+          promoCode: 'FAMILY10T',
+          quoteKey: q.quoteKey,
+          secondParticipantName,
+        }),
+      ),
+    );
+    assert.equal(r.status, 400);
+    assert.equal(
+      ((await r.json()) as any).error,
+      'second_participant_required',
+    );
+  }
+  for (const quantity of [1, 3, '2', 0])
+    assert.equal(
+      (
+        await t.api(
+          orderReq(
+            goodBody('guest', {
+              promoCode: 'FAMILY10T',
+              quoteKey: q.quoteKey,
+              quantity,
+              secondParticipantName: 'Second Person',
+            }),
+          ),
+        )
+      ).status,
+      400,
+    );
+  assert.equal(t.stripeCalls.length, 0);
+  assert.equal(
+    (t.d1.db.prepare('SELECT count(*) n FROM orders').get() as any).n,
+    0,
+  );
+  // Without a code, stale second-name data never creates an extra ticket.
+  assert.equal(
+    (
+      await t.api(
+        orderReq(goodBody('guest', { secondParticipantName: 'Stale Name' })),
+      )
+    ).status,
+    200,
+  );
+  const order: any = t.d1.db.prepare('SELECT * FROM orders').get();
+  assert.equal(order.quantity, 1);
+  assert.equal(order.second_participant_name, null);
+  assert.equal(order.amount_cents, 8000);
+});
+
 function signedEvent(
   type: string,
   object: object,
@@ -120,6 +368,82 @@ function signedEvent(
 }
 const row = (t: ReturnType<typeof setup>, id: string): any =>
   t.d1.db.prepare('SELECT * FROM orders WHERE id=?').get(id);
+
+test('Stripe transition isolates sellers and preserves old checkouts, webhooks and refunds', async () => {
+  const t = setup({
+    ORDERS_ENV: 'live',
+    STRIPE_SECRET_KEY: 'rk_live_original',
+    STRIPE_TIMUR_SECRET_KEY: 'rk_live_timur',
+    STRIPE_TIMUR_WEBHOOK_SECRET: 'whsec_timur',
+  });
+  const old = await createOrder(t, 'guest');
+  t.env.STRIPE_ACCOUNT_OWNER = 'timur';
+  const current = await createOrder(t, 'guest');
+  assert.equal(
+    t.stripeCalls[0].headers.Authorization,
+    'Bearer rk_live_original',
+  );
+  assert.equal(t.stripeCalls[1].headers.Authorization, 'Bearer rk_live_timur');
+  assert.equal(row(t, old.id).payment_account, 'margarita');
+  assert.equal(row(t, current.id).payment_account, 'timur');
+  // Existing endpoint continues using the original signing secret even after
+  // the selector for new checkouts changes.
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(old.id, old.session, 8000),
+      'evt_shared',
+    ),
+  );
+  assert.equal(row(t, old.id).status, 'paid');
+  const wrong = await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(current.id, current.session, 8000),
+      'evt_wrong_account',
+    ),
+  );
+  assert.equal(wrong.status, 200);
+  assert.equal(row(t, current.id).status, 'pending');
+  const request = signedEvent(
+    'checkout.session.completed',
+    paidSession(current.id, current.session, 8000),
+    'evt_shared',
+    undefined,
+    'whsec_timur',
+  );
+  const reply = await t.api(
+    new Request(`${HOST}/api/stripe/timur/webhook`, {
+      method: 'POST',
+      headers: request.headers,
+      body: await request.text(),
+    }),
+  );
+  assert.equal(reply.status, 200);
+  assert.equal(row(t, current.id).status, 'paid');
+  await t.flush();
+  assert.equal(t.sheetCalls.length, 2);
+  await t.api(
+    signedEvent(
+      'charge.refunded',
+      { refunded: true, payment_intent: 'pi_1' },
+      'evt_old_refund',
+    ),
+  );
+  assert.equal(row(t, old.id).status, 'refunded');
+  assert.equal(row(t, current.id).status, 'paid');
+});
+
+test('selected Timur Stripe account never falls back to original credentials', async () => {
+  const t = setup({
+    ORDERS_ENV: 'live',
+    STRIPE_ACCOUNT_OWNER: 'timur',
+    STRIPE_SECRET_KEY: 'rk_live_original',
+  });
+  assert.equal((await t.api(orderReq(goodBody('guest')))).status, 503);
+  assert.equal(t.stripeCalls.length, 0);
+  assert.equal(t.d1.db.prepare('SELECT COUNT(*) n FROM orders').get()!.n, 0);
+});
 async function createOrder(t: ReturnType<typeof setup>, ticket: string) {
   const res = await t.api(orderReq(goodBody(ticket)));
   assert.equal(res.status, 200);
@@ -536,4 +860,85 @@ test('/api/config: enabled only with payments flag, matching key mode and allowe
     (await cfg(wrong, 'https://rost.community')).paymentsEnabled,
     false,
   );
+});
+
+test('single promo cannot buy a pair, ignores stale second name and exports a confirmed Stripe payment once', async () => {
+  const t = setup();
+  const q: any = await (await t.api(quoteRequest('guest', 'PROMO10K'))).json();
+  for (const quantity of [2, 0, 3, '1']) {
+    const r = await t.api(
+      orderReq(
+        goodBody('guest', {
+          promoCode: q.promoCode,
+          quoteKey: q.quoteKey,
+          quantity,
+        }),
+      ),
+    );
+    assert.equal(r.status, 400);
+    assert.equal(((await r.json()) as any).error, 'bad_quantity');
+  }
+  for (const ticket of ['guest_peak', 'host', 'nuremberg_meetup', 'meetup']) {
+    const r = await t.api(quoteRequest(ticket, 'PROMO10K'));
+    assert.ok(r.status >= 400);
+  }
+  for (const code of ['PROMO10', 'PROMO10Q', 'PROMO10K FAMILY10T'])
+    assert.equal((await t.api(quoteRequest('guest', code))).status, 400);
+  assert.equal(t.stripeCalls.length, 0);
+  const r = await t.api(
+    orderReq(
+      goodBody('guest', {
+        promoCode: q.promoCode,
+        quoteKey: q.quoteKey,
+        quantity: 1,
+        secondParticipantName: 'Алексей',
+        amount: 1,
+      }),
+    ),
+  );
+  assert.equal(r.status, 200);
+  const order: any = t.d1.db.prepare('SELECT * FROM orders').get();
+  assert.equal(order.quantity, 1);
+  assert.equal(order.second_participant_name, null);
+  assert.equal(order.amount_cents, 7200);
+  assert.equal(order.promotion_kind, 'promo');
+  assert.equal(t.stripeCalls[0].body.get('line_items[0][quantity]'), '1');
+  assert.equal(
+    t.stripeCalls[0].body.get('line_items[0][price_data][unit_amount]'),
+    '7200',
+  );
+  t.d1.db.exec("UPDATE discount_campaigns SET active=0 WHERE id='promo'");
+  assert.equal((await t.api(quoteRequest('guest', 'PROMO10K'))).status, 400);
+  assert.equal((await t.api(quoteRequest('guest', 'FAMILY10K'))).status, 200);
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(order.id, order.provider_session_id, 14400),
+      'evt_wrong_pair',
+    ),
+  );
+  assert.equal(row(t, order.id).status, 'pending');
+  for (let n = 0; n < 2; n++) {
+    await t.api(
+      signedEvent(
+        'checkout.session.completed',
+        paidSession(order.id, order.provider_session_id, 7200),
+        'evt_single_paid',
+      ),
+    );
+    await t.flush();
+  }
+  assert.equal(row(t, order.id).status, 'paid');
+  assert.equal(t.sheetCalls.length, 1);
+  assert.equal(t.sheetCalls[0].row[7], 72);
+  assert.deepEqual(t.sheetCalls[0].row.slice(16), [
+    80,
+    10,
+    8,
+    'PROMO10K',
+    'Одиночная скидка',
+    'Кристина',
+    1,
+    '',
+  ]);
 });

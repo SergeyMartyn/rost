@@ -1,7 +1,7 @@
 // Banner texts (Consent Banner 2, parts III.1–III.3). German is the legally
 // leading text (R-13.5); the Russian text must keep the same meaning (R-13.2).
 // Only categories with connected services are shown (R-5.2).
-import { routes, site } from './site';
+import { routes } from './site';
 import { activeCategories, services, type ConsentService } from './services';
 
 type Lang = 'de' | 'ru';
@@ -51,23 +51,19 @@ function serviceBlock(service: ConsentService, lang: Lang) {
 }
 
 export function buildTranslations() {
-  const operator = esc(site.legal.operator);
   const hasAnalytics = activeCategories.includes('analytics');
   const hasMarketing = activeCategories.includes('marketing');
 
   const de = {
     consentModal: {
       label: 'Datenschutz-Einstellungen',
-      title: 'Datenschutz-Einstellungen',
+      title: '',
       description: hasMarketing
-        ? `Wir möchten optionale Dienste für Statistik (${statisticsServices('de')}) und Marketing (${marketingServices('de')}) einsetzen. Je nach Ihrer Auswahl können Daten zu Ihrem Besuch und Gerät an Google oder Meta übermittelt und auch außerhalb der EU verarbeitet werden. Jeder Dienst wird erst mit Ihrer Einwilligung aktiviert; die Website funktioniert auch ohne diese Dienste. Ihre Auswahl können Sie jederzeit unter „${settingsLabel.de}“ ändern oder widerrufen.`
-        : hasAnalytics
-          ? `Wir möchten auf dieser Website einen optionalen Dienst für Statistik (${statisticsServices('de')}) einsetzen. Er wird erst aktiviert, wenn Sie zustimmen – ohne Zustimmung funktioniert die Website vollständig. Dabei können Daten wie Ihre IP-Adresse und Geräteinformationen an Google übermittelt und auch in den USA verarbeitet werden. Ihre Auswahl können Sie jederzeit unter „${settingsLabel.de}“ ändern oder widerrufen.`
-          : '',
+        ? `<a href="${routes.privacy.de}">Cookies</a> · Statistik &amp; Werbung nach Wahl`
+        : `<a href="${routes.privacy.de}">Cookies</a> · Statistik nach Wahl`,
       acceptAllBtn: 'Alle akzeptieren',
       acceptNecessaryBtn: 'Nur notwendige',
-      showPreferencesBtn: 'Einstellungen',
-      footer: `<span>Verantwortlich: ${operator} · <a href="${routes.privacy.de}">Datenschutzerklärung</a> · <a href="${routes.imprint.de}">Impressum</a></span>`,
+      showPreferencesBtn: 'Optionen',
     },
     preferencesModal: {
       title: settingsLabel.de,
@@ -118,16 +114,13 @@ export function buildTranslations() {
   const ru = {
     consentModal: {
       label: 'Настройки конфиденциальности',
-      title: 'Настройки конфиденциальности',
+      title: '',
       description: hasMarketing
-        ? `Мы хотели бы использовать дополнительные сервисы для статистики (${statisticsServices('ru')}) и маркетинга (${marketingServices('ru')}). В зависимости от вашего выбора сведения о посещении и устройстве могут передаваться Google или Meta и обрабатываться за пределами ЕС. Каждый сервис включается только после вашего согласия; без них сайт работает полностью. Выбор можно в любой момент изменить или отозвать в «${settingsLabel.ru}».`
-        : hasAnalytics
-          ? `Мы хотели бы использовать на этом сайте дополнительный сервис для статистики (${statisticsServices('ru')}). Он включается только с вашего согласия — без него сайт работает полностью. При этом данные, например IP-адрес и сведения об устройстве, могут передаваться Google и обрабатываться в том числе в США. Выбор можно в любой момент изменить или отозвать в «${settingsLabel.ru}».`
-          : '',
+        ? `<a href="${routes.privacy.ru}">Cookies</a> · статистика и реклама по согласию`
+        : `<a href="${routes.privacy.ru}">Cookies</a> · статистика по согласию`,
       acceptAllBtn: 'Принять все',
       acceptNecessaryBtn: 'Только необходимые',
       showPreferencesBtn: 'Настройки',
-      footer: `<span>Ответственный: ${operator} · <a href="${routes.privacy.ru}">Политика конфиденциальности</a> · <a href="${routes.imprint.ru}">Правовая информация</a></span>`,
     },
     preferencesModal: {
       title: settingsLabel.ru,
@@ -139,7 +132,7 @@ export function buildTranslations() {
       sections: [
         {
           title: settingsLabel.ru,
-          description: `Здесь вы решаете, какие дополнительные сервисы мы можем использовать. Необходимые функции всегда активны. Согласие можно в любой момент отозвать на будущее. Подробности — в <a href="${routes.privacy.ru}">политике конфиденциальности</a>.`,
+          description: `Здесь вы решаете, какие дополнительные сервисы мы можем использовать. Необходимые функции всегда активны. Согласие можно в любой момент отозвать на будущее. Подробности: в <a href="${routes.privacy.ru}">политике конфиденциальности</a>.`,
         },
         {
           title: 'Необходимые <span class="pm__badge">всегда активны</span>',

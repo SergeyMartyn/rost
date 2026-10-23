@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { createHmac } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { handleApi, type Deps, type OrdersEnv } from '../worker/orders';
+import { reconcileSheetPayments } from '../worker/sheets';
 import {
   HOST_DEPOSIT_CENTS,
   HOST_HOLD_MINUTES,
@@ -16,6 +17,12 @@ function makeD1() {
   const db = new DatabaseSync(':memory:');
   db.exec(readFileSync('migrations/0001_orders.sql', 'utf8'));
   db.exec(readFileSync('migrations/0002_host_registrations.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0003_sheet_exports.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0004_payment_account.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0005_promotions.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0006_promo_pairs.sql', 'utf8'));
+  db.exec(readFileSync('migrations/0007_single_promotions.sql', 'utf8'));
+
   const stmt = (sql: string) => {
     let args: unknown[] = [];
     const s: any = {
@@ -55,10 +62,14 @@ const T0 = 1_790_000_000_000;
 function setup(over: Partial<OrdersEnv> = {}) {
   const d1 = makeD1();
   const stripeCalls: { body: URLSearchParams; headers: any }[] = [];
+  const sheetCalls: any[] = [];
   const deps: Deps = {
     now: () => T0,
     fetch: (async (url: string, init: any) => {
-      assert.match(String(url), /api\.stripe\.com/);
+      if (!String(url).includes('api.stripe.com')) {
+        sheetCalls.push(JSON.parse(init.body));
+        return new Response('ok');
+      }
       stripeCalls.push({
         body: new URLSearchParams(init.body),
         headers: init.headers,
@@ -80,12 +91,15 @@ function setup(over: Partial<OrdersEnv> = {}) {
     stripe_test: 'sk_test_host',
     STRIPE_WEBHOOK_SECRET: WH_SECRET,
     ADMIN_TOKEN: 'host-admin',
+    SHEETS_WEBHOOK_URL: 'https://script.google.com/macros/s/test/exec',
+    SHEETS_TOKEN: 'sheet-token',
     ...over,
   };
   const pending: Promise<unknown>[] = [];
   const ctx = { waitUntil: (p: Promise<unknown>) => void pending.push(p) };
   const api = (req: Request) => handleApi(req, env, ctx, deps);
-  return { d1, env, deps, api, stripeCalls };
+  const flush = () => Promise.all(pending.splice(0));
+  return { d1, env, deps, api, stripeCalls, sheetCalls, flush };
 }
 
 const hostReq = (body: object, host = HOST) =>
@@ -121,7 +135,9 @@ function signedEvent(
   t = Math.floor(T0 / 1000),
 ) {
   const body = JSON.stringify({ id, type, data: { object } });
-  const sig = createHmac('sha256', WH_SECRET).update(`${t}.${body}`).digest('hex');
+  const sig = createHmac('sha256', WH_SECRET)
+    .update(`${t}.${body}`)
+    .digest('hex');
   return new Request(`${HOST}/api/stripe/webhook`, {
     method: 'POST',
     headers: { 'Stripe-Signature': `t=${t},v1=${sig}` },
@@ -157,6 +173,83 @@ function paidSession(
 
 const row = (t: ReturnType<typeof setup>, id: string): any =>
   t.d1.db.prepare('SELECT * FROM host_registrations WHERE id=?').get(id);
+
+test('Timur host deposit is processed only by its own webhook and keeps a permanent table', async () => {
+  const t = setup({
+    STRIPE_ACCOUNT_OWNER: 'timur',
+    STRIPE_TIMUR_TEST_KEY: 'rk_test_timur',
+    STRIPE_TIMUR_WEBHOOK_SECRET: WH_SECRET,
+  });
+  const { id, session } = await create(t, { deposit: true });
+  assert.equal(row(t, id).payment_account, 'timur');
+  assert.equal(t.stripeCalls[0].headers.Authorization, 'Bearer rk_test_timur');
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(id, session, 5000),
+      'evt_wrong_owner',
+    ),
+  );
+  assert.equal(row(t, id).status, 'pending');
+  const req = signedEvent(
+    'checkout.session.completed',
+    paidSession(id, session, 5000),
+    'evt_timur_host',
+  );
+  await t.api(
+    new Request(`${HOST}/api/stripe/timur/webhook`, {
+      method: 'POST',
+      headers: req.headers,
+      body: await req.text(),
+    }),
+  );
+  await t.flush();
+  assert.equal(row(t, id).status, 'paid');
+  assert.equal(row(t, id).amount_paid_cents, 5000);
+  assert.equal(
+    t.d1.db
+      .prepare('SELECT expires_at FROM host_table_slots WHERE slot_no=1')
+      .get()!.expires_at,
+    null,
+  );
+  assert.equal(t.sheetCalls.length, 1);
+});
+
+test('cron recovers a host deposit missed by the webhook send without changing its reservation', async () => {
+  const t = setup();
+  const { id, session } = await create(t, { deposit: true });
+  // Payment completes while Google integration is unavailable.
+  t.env.SHEETS_TOKEN = undefined;
+  await t.api(
+    signedEvent(
+      'checkout.session.completed',
+      paidSession(id, session, 5000),
+      'evt_recover',
+    ),
+  );
+  await t.flush();
+  assert.equal(t.sheetCalls.length, 0);
+  const before = row(t, id);
+  t.env.SHEETS_TOKEN = 'sheet-token';
+  await reconcileSheetPayments(t.env, t.deps);
+  await reconcileSheetPayments(t.env, t.deps);
+  assert.equal(t.sheetCalls.length, 1);
+  assert.deepEqual(t.sheetCalls[0].row.slice(7, 13), [
+    50,
+    'paid',
+    249,
+    199,
+    1,
+    'Предоплата',
+  ]);
+  assert.deepEqual(row(t, id), before);
+  assert.equal(
+    t.d1.db
+      .prepare('SELECT expires_at FROM host_table_slots WHERE slot_no=1')
+      .get()!.expires_at,
+    null,
+  );
+});
 
 test('pricing: four totals, deposit changes only the amount due now', () => {
   assert.deepEqual(hostPrice('standard', false, false), {
@@ -202,10 +295,15 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
   assert.equal(call.body.get('line_items[0][price_data][currency]'), 'eur');
   assert.equal(call.body.get('metadata[kind]'), 'host-registration');
   assert.equal(call.body.get('metadata[host_registration_id]'), id);
-  assert.equal(call.body.get('payment_intent_data[metadata][host_registration_id]'), id);
+  assert.equal(
+    call.body.get('payment_intent_data[metadata][host_registration_id]'),
+    id,
+  );
   assert.match(call.body.get('success_url')!, /payment=success/);
   assert.match(call.body.get('cancel_url')!, /payment=cancelled/);
-  assert.ok(Number(call.body.get('expires_at')) >= Math.floor(T0 / 1000) + 1800);
+  assert.ok(
+    Number(call.body.get('expires_at')) >= Math.floor(T0 / 1000) + 1800,
+  );
 
   let saved = row(t, id);
   assert.equal(saved.status, 'pending');
@@ -221,12 +319,15 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
     .get() as any;
   assert.equal(slot.registration_id, id);
   assert.equal(slot.status, 'pending');
-  assert.equal(slot.expires_at, new Date(T0 + 30 * 60_000).toISOString());
+  assert.equal(slot.expires_at, new Date(T0 + 31 * 60_000).toISOString());
 
   const pending = await t.api(statusReq(id));
   assert.equal(pending.status, 200);
   assert.equal(((await pending.json()) as any).status, 'pending');
-  assert.equal(((await (await t.api(statusReq(id))).json()) as any).placeConfirmed, false);
+  assert.equal(
+    ((await (await t.api(statusReq(id))).json()) as any).placeConfirmed,
+    false,
+  );
 
   const wh = await t.api(
     signedEvent(
@@ -239,6 +340,17 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
   saved = row(t, id);
   assert.equal(saved.status, 'paid');
   assert.equal(saved.amount_paid_cents, 24900);
+  await t.flush();
+  assert.equal(t.sheetCalls.length, 1);
+  assert.equal(t.sheetCalls[0].tab, '07.11.2026 - TI_München');
+  assert.deepEqual(t.sheetCalls[0].row.slice(7, 13), [
+    249,
+    'paid',
+    249,
+    0,
+    1,
+    'Полная оплата',
+  ]);
   assert.equal(saved.provider_payment_id, 'pi_host_1');
   assert.ok(saved.paid_at);
   assert.equal(saved.table_no, 1);
@@ -261,7 +373,12 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
     ),
   );
   assert.equal(((await duplicate.json()) as any).duplicate, true);
-  assert.equal(t.d1.db.prepare('SELECT COUNT(*) c FROM host_registrations').get()!.c, 1);
+  await t.flush();
+  assert.equal(t.sheetCalls.length, 1);
+  assert.equal(
+    t.d1.db.prepare('SELECT COUNT(*) c FROM host_registrations').get()!.c,
+    1,
+  );
 });
 
 test('expanded format with media and deposit stores 428 / 50 / 378', async () => {
@@ -291,6 +408,24 @@ test('expanded format with media and deposit stores 428 / 50 / 378', async () =>
   const paid = row(t, id);
   assert.equal(paid.status, 'paid');
   assert.equal(paid.amount_paid_cents, 5000);
+  await t.flush();
+  assert.equal(t.sheetCalls.length, 1);
+  assert.deepEqual(t.sheetCalls[0].row.slice(7), [
+    50,
+    'paid',
+    428,
+    378,
+    1,
+    'Предоплата',
+    'Расширенный',
+    'Да',
+    'Путь к себе',
+  ]);
+  t.deps.now = () => T0 + 90 * 24 * 60 * 60_000;
+  const later = (await (await t.api(statusReq(id))).json()) as any;
+  assert.equal(later.placeConfirmed, true);
+  assert.equal(later.tableNo, 1);
+  assert.equal(row(t, id).status, 'paid');
   assert.equal(paid.remaining_cents, 37800);
 });
 
@@ -320,10 +455,13 @@ test('the eighth simultaneous application is rejected and tables are unique', as
   assert.equal(((await soldOut.json()) as any).error, 'sold_out');
 });
 
-test('an unpaid hold expires after 30 minutes, frees the table and keeps the application', async () => {
+test('an unpaid hold expires after 31 minutes, frees the table and keeps the application', async () => {
   const t = setup();
   const first = await create(t);
-  t.deps.now = () => T0 + 30 * 60_000 + 1;
+  t.deps.now = () => T0 + 30 * 60_000 + 59_999;
+  const before = (await (await t.api(statusReq(first.id))).json()) as any;
+  assert.equal(before.status, 'pending');
+  t.deps.now = () => T0 + 31 * 60_000;
   const after = (await (await t.api(statusReq(first.id))).json()) as any;
   assert.equal(after.status, 'expired');
   assert.equal(after.placeConfirmed, false);
@@ -373,7 +511,9 @@ test('amount, currency and session mismatches leave the application pending', as
   assert.equal(row(t, id).status, 'pending');
   assert.equal(row(t, id).amount_paid_cents, 0);
   const outcomes = t.d1.db
-    .prepare('SELECT outcome FROM webhook_events WHERE order_id=? ORDER BY event_id')
+    .prepare(
+      'SELECT outcome FROM webhook_events WHERE order_id=? ORDER BY event_id',
+    )
     .all(id) as any[];
   assert.deepEqual(
     outcomes.map((o) => o.outcome),
@@ -401,12 +541,25 @@ test('an expired checkout releases the table; a late payment can still take a fr
       'checkout.session.expired',
       {
         id: first.session,
+        metadata: { kind: 'host-registration', host_registration_id: first.id },
+      },
+      'evt_early_expired',
+    ),
+  );
+  assert.equal(row(t, first.id).status, 'pending');
+  t.deps.now = () => T0 + 31 * 60_000;
+  await t.api(
+    signedEvent(
+      'checkout.session.expired',
+      {
+        id: first.session,
         metadata: {
           kind: 'host-registration',
           host_registration_id: first.id,
         },
       },
       'evt_expired',
+      Math.floor((T0 + 31 * 60_000) / 1000),
     ),
   );
   assert.equal(row(t, first.id).status, 'expired');
@@ -433,7 +586,7 @@ test('an expired checkout releases the table; a late payment can still take a fr
 test('a late payment without a free table is recorded but no table is double-booked', async () => {
   const t = setup();
   const first = await create(t);
-  t.deps.now = () => T0 + 30 * 60_000 + 1;
+  t.deps.now = () => T0 + 31 * 60_000 + 1;
   await t.api(statusReq(first.id));
   for (let i = 0; i < 7; i++) await create(t, { name: `Гость ${i}` });
   const rows = t.d1.db
@@ -451,12 +604,14 @@ test('a late payment without a free table is recorded but no table is double-boo
           rows[i].due_now_cents,
         ),
         `evt_full_${i}`,
-        Math.floor((T0 + 30 * 60_000 + 2) / 1000),
+        Math.floor((T0 + 31 * 60_000 + 2) / 1000),
       ),
     );
   }
   assert.equal(
-    t.d1.db.prepare("SELECT COUNT(*) c FROM host_table_slots WHERE status='paid'").get()!.c,
+    t.d1.db
+      .prepare("SELECT COUNT(*) c FROM host_table_slots WHERE status='paid'")
+      .get()!.c,
     7,
   );
   await t.api(
@@ -464,7 +619,7 @@ test('a late payment without a free table is recorded but no table is double-boo
       'checkout.session.async_payment_succeeded',
       paidSession(first.id, first.session, 24900),
       'evt_late_no_table',
-      Math.floor((T0 + 30 * 60_000 + 3) / 1000),
+      Math.floor((T0 + 31 * 60_000 + 3) / 1000),
     ),
   );
   const late = row(t, first.id);
@@ -475,7 +630,9 @@ test('a late payment without a free table is recorded but no table is double-boo
     .get('evt_late_no_table') as any;
   assert.equal(outcome.outcome, 'applied:paid_without_table');
   assert.equal(
-    t.d1.db.prepare("SELECT COUNT(*) c FROM host_table_slots WHERE status='paid'").get()!.c,
+    t.d1.db
+      .prepare("SELECT COUNT(*) c FROM host_table_slots WHERE status='paid'")
+      .get()!.c,
     7,
   );
 });
@@ -544,9 +701,7 @@ test('admin CSV lists applications with the amount paid and the remainder', asyn
     deposit: true,
   });
   const get = (headers: Record<string, string> = {}) =>
-    t.api(
-      new Request(`${HOST}/api/admin/host-registrations.csv`, { headers }),
-    );
+    t.api(new Request(`${HOST}/api/admin/host-registrations.csv`, { headers }));
   assert.equal((await get()).status, 401);
   const response = await get({ Authorization: 'Bearer host-admin' });
   assert.equal(response.status, 200);

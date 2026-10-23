@@ -1,4 +1,5 @@
 ---
+import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 
 const { lang } = Astro.props as { lang: Language };
@@ -11,15 +12,19 @@ const content =
         sections: [
           {
             title: 'Мероприятия и стоимость',
-            body: 'Трансформационные игры проходят 7 ноября 2026 года в Мюнхене: тариф «Базовый импульс» стоит 80 €, тариф «Пик трансформации» — 180 €. Состав тарифов указан на странице мероприятия. Встреча-знакомство пройдёт 12 декабря 2026 года в Нюрнберге, билет стоит 29 €; точный адрес и время начала сообщим позже. Итоговая стоимость повторяется перед оплатой.',
+            body: 'Трансформационные игры проходят 7 ноября 2026 года в Мюнхене: тариф «Базовый импульс» стоит €80, тариф «Пик трансформации»: €180. Состав тарифов указан на странице мероприятия. Встреча-знакомство пройдёт 12 декабря 2026 года в Нюрнберге, билет стоит €29; точный адрес и время начала сообщим позже. Итоговая стоимость повторяется перед оплатой.',
           },
           {
             title: 'Оформление участия',
-            body: 'Билет можно оплатить на сайте банковской картой через Stripe или через PayPal. Оплата проходит на защищённой странице выбранного сервиса; данные карты мы не получаем. Цены указаны в евро. В соответствии с § 19 UStG НДС на продаваемые Margarita Martyn билеты не начисляется. Договор о покупке билета заключается с Margarita Martyn, когда оплата подтверждена; подтверждение придёт на указанный при оплате адрес электронной почты, а мы свяжемся с вами через оставленный контакт. Она организовала встречу в Регенсбурге и организует трансформационные игры в Мюнхене и встречу в Нюрнберге, получает оплату и отвечает за возвраты. Timur Cherepanov ведёт сайт и помогает с организацией участников. Контактные данные — в Impressum.\n\nПраво на отказ от договора: для договоров об оказании услуг досуга на определённую дату законное право отказа не предусмотрено (§ 312g абз. 2 п. 9 BGB). Если мероприятие отменяется организатором, мы возвращаем полную стоимость билета. В остальных случаях напишите нам заранее: мы рассмотрим возврат или перенос индивидуально.',
+            body: 'Организатор, продавец и получатель новых оплат: Timur Cherepanov, c/o IP-Management #8852, Ludwig-Erhard-Str. 18, 20459 Hamburg; grupparost@gmail.com. Билеты оплачиваются картой через Stripe или через PayPal на защищённой странице сервиса. Полные данные карты мы не получаем. Все цены итоговые, в евро. НДС не начисляется по § 19 UStG. Договор заключается после подтверждённой оплаты. Перед окончательным подтверждением на странице сервиса можно проверить сумму и исправить либо отменить оформление. Условия можно сохранить или распечатать. По вопросам подтверждения заказа напишите нам через оставленный контакт или по электронной почте.\n\nДля досуговых мероприятий на определённую дату законное право отказа от договора не предусмотрено (§ 312g абз. 2 п. 9 BGB). Если организатор отменяет мероприятие, возвращается вся уплаченная сумма, включая предоплату. При существенном переносе даты мы предложим участие в новую дату либо возврат. В остальных случаях напишите заранее: рассмотрим возврат или перенос индивидуально. Установленные законом права сохраняются. По прежним покупкам сторона договора указана в прежнем подтверждении; смена продавца их не переоформляет.',
+          },
+          {
+            title: 'Промокоды',
+            body: 'Индивидуальный промокод даёт 10% на один обычный билет трансформационных игр в Мюнхене: €80 до скидки, €8 скидка, €72 к оплате. Имя второго участника не требуется. Семейная скидка и акция «Приведи друга» дают 10% на обычный билет трансформационных игр в Мюнхене. Семейную скидку получает каждый участник пары. По акции с другом скидку получают пригласивший и новый участник. Скидка действует при покупке двух обычных билетов одним заказом. После применения кода укажите имя второго участника: €160 до скидки, €16 скидка, €144 к оплате за двоих. Для связи используем контакт покупателя. На один заказ применяется один код, скидки не суммируются. VIP «Пик трансформации», участие ведущих и дополнительные услуги в акциях не участвуют. Итоговая цена отображается перед переходом к оплате. Для других мероприятий действуют только явно подключённые к ним акции.',
           },
           {
             title: 'Изменения и вопросы',
-            body: 'Если планы изменились или у вас есть вопрос об участии, напишите нам через страницу контактов. Об изменениях в программе, времени или месте мы сообщим на странице мероприятия.',
+            body: 'Если планы изменились или у вас есть вопрос об участии, напишите нам через страницу контактов. Об изменениях сообщим на странице мероприятия, а об изменении даты, места или отмене также через оставленный контакт. Форматы предназначены для знакомства, общения и личной рефлексии; они не заменяют медицинскую или психотерапевтическую помощь. Конкретный личный или финансовый результат не гарантируется. Обновлено: 20 октября 2026 года.',
           },
         ],
         events: 'Мероприятия',
@@ -32,15 +37,19 @@ const content =
         sections: [
           {
             title: 'Veranstaltungen und Preise',
-            body: 'Die Transformationsspiele finden am 7. November 2026 in München statt: Das Ticket „Basisimpuls“ kostet 80 €, „Gipfel der Transformation“ 180 €. Was in den Tarifen enthalten ist, steht auf der Veranstaltungsseite. Das Kennenlerntreffen findet am 12. Dezember 2026 in Nürnberg statt und kostet 29 €; die genaue Adresse und Anfangszeit geben wir noch bekannt. Der Gesamtpreis wird vor der Zahlung erneut angezeigt.',
+            body: 'Die Transformationsspiele finden am 7. November 2026 in München statt: Das Ticket „Basisimpuls“ kostet €80, „Gipfel der Transformation“ €180. Was in den Tarifen enthalten ist, steht auf der Veranstaltungsseite. Das Kennenlerntreffen findet am 12. Dezember 2026 in Nürnberg statt und kostet €29; die genaue Adresse und Anfangszeit geben wir noch bekannt. Der Gesamtpreis wird vor der Zahlung erneut angezeigt.',
           },
           {
             title: 'Anmeldung',
-            body: 'Das Ticket kann online per Karte über Stripe oder über PayPal bezahlt werden. Die Zahlung erfolgt auf der gesicherten Seite des gewählten Anbieters; Kartendaten erhalten wir nicht. Alle Preise sind in Euro angegeben. Für die Ticketverkäufe von Margarita Martyn wird gemäß § 19 UStG keine Umsatzsteuer erhoben. Der Vertrag über das Ticket kommt mit Margarita Martyn zustande, sobald die Zahlung bestätigt ist; die Bestätigung senden wir an die bei der Zahlung angegebene E-Mail-Adresse, und wir melden uns über den von dir angegebenen Kontakt. Sie hat das Kennenlerntreffen in Regensburg organisiert und organisiert die Transformationsspiele in München sowie das Treffen in Nürnberg, nimmt die Zahlungen entgegen und ist für Erstattungen verantwortlich. Timur Cherepanov betreibt die Website und unterstützt die Teilnehmerorganisation. Kontaktdaten im Impressum.\n\nWiderrufsrecht: Für Verträge über Freizeitveranstaltungen zu einem bestimmten Termin besteht kein gesetzliches Widerrufsrecht (§ 312g Abs. 2 Nr. 9 BGB). Sagt die Veranstalterin die Veranstaltung ab, erstatten wir den vollen Ticketpreis. In allen anderen Fällen schreib uns bitte rechtzeitig; wir prüfen eine Erstattung oder Umbuchung im Einzelfall.',
+            body: 'Veranstalter, Verkäufer und Empfänger neuer Zahlungen: Timur Cherepanov, c/o IP-Management #8852, Ludwig-Erhard-Str. 18, 20459 Hamburg; grupparost@gmail.com. Die Zahlung erfolgt per Karte über Stripe oder über PayPal auf der gesicherten Seite des Anbieters. Vollständige Kartendaten erhalten wir nicht. Alle Preise sind Gesamtpreise in Euro; gemäß § 19 UStG wird keine Umsatzsteuer berechnet. Der Vertrag kommt mit bestätigter Zahlung zustande. Vor der endgültigen Zahlungsbestätigung beim Anbieter können Sie Betrag und Angaben prüfen und den Vorgang korrigieren oder abbrechen. Diese Bedingungen können Sie speichern oder ausdrucken. Bei Fragen zur Buchungsbestätigung schreiben Sie uns über den angegebenen Kontakt oder per E-Mail.\n\nFür Freizeitveranstaltungen zu einem bestimmten Termin besteht kein gesetzliches Widerrufsrecht (§ 312g Abs. 2 Nr. 9 BGB). Bei Absage durch den Veranstalter erstatten wir den gesamten gezahlten Betrag einschließlich Anzahlungen. Bei einer wesentlichen Terminverlegung bieten wir die Teilnahme am neuen Termin oder eine Erstattung an. In anderen Fällen kontaktieren Sie uns bitte rechtzeitig; wir prüfen Erstattung oder Umbuchung individuell. Gesetzliche Ansprüche bleiben unberührt. Für frühere Käufe bleibt der in der damaligen Bestätigung genannte Vertragspartner zuständig; der Anbieterwechsel schreibt diese Verträge nicht um.',
+          },
+          {
+            title: 'Rabattcodes',
+            body: 'Ein individueller Rabattcode gewährt 10% auf ein reguläres Teilnehmerticket für die Transformationsspiele in München: €80 vor Rabatt, €8 Rabatt, €72 Gesamtpreis. Ein zweiter Teilnehmername ist nicht erforderlich. Der Familienrabatt und die Aktion „Freunde einladen“ gewähren 10% auf das reguläre Teilnehmerticket für die Transformationsspiele in München. Beim Familienrabatt erhält jede Person des Paares den Rabatt. Bei der Freundesaktion erhalten ihn die einladende Person und ein neuer Teilnehmer. Der Rabatt gilt beim gemeinsamen Kauf von zwei regulären Tickets in einer Bestellung. Nach Anwendung des Codes ist der Name der zweiten Person erforderlich: €160 vor Rabatt, €16 Rabatt, €144 Gesamtpreis für zwei Personen. Wir nutzen den Kontakt der buchenden Person. Pro Bestellung gilt ein Code; Rabatte sind nicht kombinierbar. Das VIP-Ticket „Gipfel der Transformation“, Spielleiterteilnahmen und Zusatzleistungen sind ausgeschlossen. Der Gesamtpreis wird vor der Weiterleitung zur Zahlung angezeigt. Für andere Veranstaltungen gelten nur ausdrücklich dafür aktivierte Aktionen.',
           },
           {
             title: 'Änderungen und Fragen',
-            body: 'Wenn sich deine Pläne ändern oder du Fragen zur Teilnahme hast, schreib uns über die Kontaktseite. Änderungen an Programm, Uhrzeit oder Ort geben wir auf der Veranstaltungsseite bekannt.',
+            body: 'Wenn sich deine Pläne ändern oder du Fragen zur Teilnahme hast, schreib uns über die Kontaktseite. Änderungen geben wir auf der Veranstaltungsseite bekannt; über Änderungen an Datum oder Ort und Absagen informieren wir außerdem über den angegebenen Kontakt. Die Formate dienen Begegnung, Austausch und Reflexion und ersetzen keine medizinische oder psychotherapeutische Behandlung. Ein bestimmter persönlicher oder wirtschaftlicher Erfolg wird nicht zugesichert. Stand: 20. Oktober 2026.',
           },
         ],
         events: 'Veranstaltungen',
@@ -48,15 +57,17 @@ const content =
       };
 ---
 
-<article class="font-hero-sans max-w-3xl text-brand">
-  <h1 class="font-display text-2xl leading-tight sm:text-4xl md:text-5xl">
+<article class="font-hero-sans max-w-3xl mx-auto text-brand">
+  <Heading as="h1" variant="page" class="">
     {content.title}
-  </h1>
+  </Heading>
   <p class="mt-6 text-lg leading-relaxed text-muted">{content.intro}</p>
   <div class="mt-10 space-y-8">
     {content.sections.map((section) => (
       <section>
-        <h2 class="font-display text-2xl md:text-3xl">{section.title}</h2>
+        <Heading as="h2" variant="section" class="">
+          {section.title}
+        </Heading>
         <p class="mt-3 whitespace-pre-line leading-relaxed text-muted">
           {section.body}
         </p>

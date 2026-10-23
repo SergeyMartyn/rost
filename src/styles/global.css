@@ -4,6 +4,7 @@
 @import './formats.css';
 @import './faq.css';
 @import './team.css';
+@import './ui.css';
 
 @font-face {
   font-family: Onest;
@@ -60,7 +61,7 @@
   --color-formats-peach: #feeee8;
   --color-formats-mint: #eaf6f1;
   --color-faq-surface: #f2f4f2;
-  --font-sans: Arial, Helvetica, sans-serif;
+  --font-sans: Onest, Arial, Helvetica, sans-serif;
   --font-hero-sans: Onest, Arial, sans-serif;
   --font-display: Marmelad, Georgia, serif;
 
@@ -249,29 +250,7 @@
   }
 
   .site-header__cta {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 48px;
-    padding: 0 20px;
-    border-radius: var(--radius-2xl);
-    background: white;
-    color: var(--color-brand);
-    font-size: 15px;
-    font-weight: 700;
-    white-space: nowrap;
-    border: 1px solid white;
-    text-decoration: none;
-    transition:
-      background-color 180ms ease,
-      color 180ms ease;
-  }
-
-  .site-header__cta:hover,
-  .site-header__cta:focus-visible {
-    background: var(--color-brand);
-    color: var(--color-brand-gold);
-    text-decoration: none;
+    flex-shrink: 0;
   }
 
   .site-header__toggle,

@@ -19,10 +19,9 @@ const { lang, page, title, description } = Astro.props as {
   description: string;
 };
 const t = text[lang];
+const fullBleed = !['imprint', 'privacy', 'terms'].includes(page);
 const socialPage =
-  page === 'archive' ||
-  page === 'archiveRegensburg' ||
-  page === 'tiGames'
+  page === 'archive' || page === 'archiveRegensburg' || page === 'tiGames'
     ? 'events'
     : page === 'events' || page === 'about' || page === 'contacts'
       ? page
@@ -43,6 +42,7 @@ const structuredData = {
       '@type': 'Organization',
       '@id': orgId,
       name,
+      legalName: site.legal.operator,
       url: origin,
       logo: new URL('/brand-tree.png', origin).toString(),
       email: site.legal.email,
@@ -148,16 +148,7 @@ const structuredData = {
       {
         'home-page': page === 'home',
         'events-page': page === 'events',
-        'hero-page': [
-          'home',
-          'events',
-          'about',
-          'contacts',
-          'archive',
-          'archiveRegensburg',
-          'host',
-          'tiGames',
-        ].includes(page),
+        'hero-page': fullBleed,
       },
     ]}
   >
@@ -171,15 +162,9 @@ const structuredData = {
       class={
         page === 'home'
           ? 'home-main flex-1'
-          : page === 'events' ||
-              page === 'about' ||
-              page === 'contacts' ||
-              page === 'archive' ||
-              page === 'archiveRegensburg' ||
-              page === 'host' ||
-              page === 'tiGames'
+          : fullBleed
             ? 'flex-1'
-            : 'site-container py-16 md:py-24 lg:py-28 flex-1'
+            : 'site-container ui-section flex-1'
       }
     >
       <slot />

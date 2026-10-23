@@ -1,14 +1,14 @@
 @layer components {
   .hero {
-    --hero-space-top: 116px;
+    --hero-space-top: var(--ui-intro-top);
     --hero-space-bottom: 52px;
-    --hero-space-heading: 39px;
-    --hero-space-copy: 41px;
-    --hero-space-actions: 44px;
-    --hero-title-size: clamp(48px, 4.444vw, 64px);
-    --hero-copy-size: 24px;
+    --hero-space-heading: 24px;
+    --hero-space-copy: 24px;
+    --hero-space-actions: 32px;
+    --hero-title-size: var(--ui-page-size);
+    --hero-copy-size: var(--ui-lead-size);
     --hero-body-size: 18px;
-    --hero-eyebrow-size: 13px;
+    --hero-eyebrow-size: var(--ui-eyebrow-size);
     position: relative;
     overflow: hidden;
     background: linear-gradient(
@@ -106,36 +106,6 @@
     line-height: 1.5;
   }
 
-  .hero__cta {
-    display: inline-flex;
-    min-width: 220px;
-    min-height: 56px;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
-    margin-top: var(--hero-space-actions);
-    padding: 0 20px;
-    border: 0;
-    border-radius: var(--radius-2xl);
-    background: var(--color-brand);
-    color: white;
-    font-size: 17px;
-    font-weight: 700;
-    line-height: 1.2;
-    text-align: center;
-    text-decoration: none;
-    transition:
-      background-color 180ms ease,
-      color 180ms ease;
-  }
-
-  .hero__cta:hover,
-  .hero__cta:focus-visible {
-    background: white;
-    color: var(--color-brand);
-    text-decoration: none;
-  }
-
   .hero__meta {
     align-self: center;
     margin: calc(var(--spacing) * 5) 0 0;
@@ -154,10 +124,6 @@
     text-align: center;
   }
 
-  .hero--contacts .hero__eyebrow {
-    align-self: flex-start;
-  }
-
   .hero--contacts .hero__description {
     max-width: 42ch;
   }
@@ -165,10 +131,6 @@
   .hero--contacts .hero__body {
     max-width: 48ch;
     margin-top: calc(var(--spacing) * 10);
-  }
-
-  .hero--contacts .hero__cta {
-    margin-top: calc(var(--spacing) * 7);
   }
 
   .contact-channels {
@@ -326,11 +288,11 @@
 
   .hero--events::before {
     position: absolute;
-    top: -64px;
-    right: -96px;
-    width: 544px;
-    height: 544px;
-    border: 80px solid rgb(200 217 191 / 0.65);
+    top: var(--ui-intro-top);
+    right: var(--spacing-page-mobile);
+    width: min(80vw, 480px);
+    aspect-ratio: 1;
+    border: clamp(32px, 6vw, 72px) solid rgb(200 217 191 / 0.65);
     border-radius: 50%;
     content: '';
     pointer-events: none;
@@ -343,11 +305,6 @@
 
   .hero--host {
     background: var(--color-brand-surface);
-  }
-
-  .hero--host .hero__content > a {
-    align-self: flex-start;
-    margin-top: var(--hero-space-actions);
   }
 
   @media (min-width: 64rem) {
@@ -374,11 +331,11 @@
 
   @media (max-width: 63.999rem) {
     .hero {
-      --hero-title-size: 48px;
-      --hero-copy-size: 20px;
-      --hero-space-heading: 40px;
-      --hero-space-copy: 44px;
-      --hero-space-actions: 52px;
+      --hero-title-size: var(--ui-page-size);
+      --hero-copy-size: var(--ui-lead-size);
+      --hero-space-heading: 24px;
+      --hero-space-copy: 24px;
+      --hero-space-actions: 32px;
     }
 
     .hero__inner {
@@ -393,22 +350,8 @@
 
     .hero--host {
       --hero-space-heading: 24px;
-      --hero-space-copy: 28px;
-      --hero-space-actions: 40px;
-    }
-
-    .hero--host .hero__content {
-      align-items: flex-start;
-      text-align: left;
-    }
-
-    .hero--host .hero__description {
-      align-self: flex-start;
-    }
-
-    .hero__eyebrow {
-      align-self: flex-start;
-      text-align: left;
+      --hero-space-copy: 24px;
+      --hero-space-actions: 32px;
     }
 
     .hero__title-line {
@@ -423,24 +366,18 @@
     .hero__video {
       width: min(420px, 100%);
     }
-
-    .hero--inner-page .hero__description,
-    .hero--inner-page .hero__body {
-      align-self: stretch;
-      text-align: left;
-    }
   }
 
   @media (max-width: 47.999rem) {
     .hero {
-      --hero-space-top: 96px;
+      --hero-space-top: var(--ui-intro-top);
       --hero-space-bottom: 32px;
-      --hero-space-copy: 35px;
-      --hero-space-actions: 60px;
-      --hero-title-size: clamp(28px, 8.72vw, 34px);
-      --hero-copy-size: 17px;
+      --hero-space-copy: 24px;
+      --hero-space-actions: 32px;
+      --hero-title-size: var(--ui-page-size);
+      --hero-copy-size: var(--ui-lead-size);
       --hero-body-size: 17px;
-      --hero-eyebrow-size: 11px;
+      --hero-eyebrow-size: var(--ui-eyebrow-size);
     }
 
     .hero__content {
@@ -465,10 +402,6 @@
 
     .hero__description-line {
       display: inline;
-    }
-
-    .hero__cta {
-      min-height: 52px;
     }
 
     .hero__links {
@@ -504,8 +437,5 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .hero__cta {
-      transition: none;
-    }
   }
 }

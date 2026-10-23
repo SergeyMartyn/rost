@@ -1,0 +1,365 @@
+/* Shared visual contract. Components own appearance; callers own content/layout. */
+@layer base {
+  fieldset {
+    min-inline-size: 0;
+  }
+  :root {
+    --ui-page-size: clamp(28px, 8.72vw, 34px);
+    --ui-section-size: 32px;
+    --ui-card-size: 24px;
+    --ui-panel-size: 28px;
+    --ui-faq-size: 22px;
+    --ui-lead-size: 17px;
+    --ui-eyebrow-size: 12px;
+    --ui-button-height: 52px;
+    --ui-intro-top: 96px;
+    --ui-section-gap: 48px;
+  }
+  @media (min-width: 48rem) {
+    :root {
+      --ui-page-size: 48px;
+      --ui-section-size: 40px;
+      --ui-card-size: 28px;
+      --ui-panel-size: 32px;
+      --ui-faq-size: 24px;
+      --ui-lead-size: 20px;
+      --ui-eyebrow-size: 13px;
+      --ui-button-height: 56px;
+      --ui-intro-top: 116px;
+      --ui-section-gap: 64px;
+    }
+  }
+  @media (min-width: 64rem) {
+    :root {
+      --ui-page-size: 64px;
+      --ui-section-size: 48px;
+      --ui-card-size: 28px;
+      --ui-panel-size: 36px;
+      --ui-faq-size: 28px;
+      --ui-lead-size: 22px;
+      --ui-intro-top: 116px;
+    }
+  }
+}
+
+@layer components {
+  .ui-heading {
+    min-width: 0;
+    max-width: 100%;
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: var(--ui-section-size);
+    line-height: 1.2;
+    letter-spacing: normal;
+    overflow-wrap: anywhere;
+    text-wrap: balance;
+  }
+  .ui-heading--page {
+    font-size: var(--ui-page-size);
+  }
+  .ui-heading--card {
+    font-size: var(--ui-card-size);
+    line-height: 1.3;
+  }
+  .ui-heading--panel {
+    font-size: var(--ui-panel-size);
+  }
+  .ui-heading--action {
+    font-size: var(--ui-section-size);
+  }
+  .ui-heading--faq {
+    font-size: var(--ui-faq-size);
+  }
+  .ui-eyebrow {
+    font-size: var(--ui-eyebrow-size);
+    font-weight: 700;
+    line-height: 1.5;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .ui-lead {
+    font-size: var(--ui-lead-size);
+    line-height: 1.5;
+  }
+  .ui-section {
+    padding-block: var(--ui-section-gap);
+  }
+  .ui-prose {
+    max-width: 76ch;
+    margin-inline: auto;
+  }
+  .ui-section-heading > .ui-heading {
+    margin-top: 16px;
+  }
+  .ui-field {
+    width: 100%;
+    min-height: 48px;
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-xl);
+    background: white;
+    padding: 12px 16px;
+    color: var(--color-ink);
+    font: inherit;
+  }
+  .ui-field:focus-visible {
+    border-color: var(--color-brand);
+    outline: 3px solid var(--color-accent);
+    outline-offset: 2px;
+  }
+  .ui-choice-card {
+    border: 1px solid var(--color-line);
+    border-radius: var(--radius-2xl);
+    background: white;
+    padding: 16px;
+    cursor: pointer;
+  }
+  .ui-choice-card:has(:checked) {
+    border-color: var(--color-brand);
+    background: var(--color-brand-surface);
+  }
+  .ui-choice-card:focus-within {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+  .ui-page-top {
+    padding-top: var(--ui-intro-top);
+  }
+
+  .ui-intro {
+    min-width: 0;
+  }
+  .hero__cta {
+    min-width: min(220px, 100%);
+    align-self: center;
+    margin-top: 32px;
+  }
+  .hero__content > .hero__description {
+    font-size: var(--ui-lead-size);
+    line-height: 1.5;
+  }
+  .ui-intro--centered {
+    text-align: center;
+  }
+  .ui-intro--centered > :is(.ui-heading, .ui-lead) {
+    margin-inline: auto;
+  }
+  .ui-intro > .ui-heading--page {
+    margin-top: 24px;
+  }
+  .ui-intro > .ui-lead {
+    margin-top: 24px;
+  }
+  .ui-intro > .ui-button {
+    margin-top: 32px;
+  }
+  .ui-intro--centered > .ui-button {
+    align-self: center;
+  }
+
+  .ui-button {
+    display: inline-flex;
+    min-width: 0;
+    max-width: 100%;
+    min-height: var(--ui-button-height);
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-2xl);
+    background: var(--color-brand);
+    color: white;
+    font-family: var(--font-sans);
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-align: center;
+    text-decoration: none;
+    white-space: normal;
+    overflow-wrap: anywhere;
+    cursor: pointer;
+    transition:
+      background-color 180ms ease,
+      color 180ms ease,
+      border-color 180ms ease;
+  }
+  .ui-button:hover {
+    background: var(--color-brand);
+    color: var(--color-brand-gold);
+    text-decoration: none;
+  }
+  .ui-button--secondary {
+    border-color: var(--color-brand);
+    background: white;
+    color: var(--color-brand);
+  }
+  .ui-button--secondary:hover {
+    background: var(--color-brand);
+    color: var(--color-brand-gold);
+  }
+  .ui-button--inverse {
+    border-color: white;
+    background: white;
+    color: var(--color-brand);
+  }
+  .ui-button--inverse:hover {
+    background: var(--color-brand);
+    color: var(--color-brand-gold);
+  }
+  .ui-button:focus-visible {
+    outline: 3px solid var(--color-accent);
+    outline-offset: 4px;
+  }
+  .ui-button--inverse:focus-visible {
+    outline-color: white;
+  }
+  .ui-button--compact {
+    min-height: 48px;
+    padding: 10px 20px;
+    font-size: 15px;
+  }
+  .ui-button--full {
+    width: 100%;
+  }
+  .ui-button:disabled,
+  .ui-button[aria-busy='true'] {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+  .ui-button:disabled:hover {
+    background: var(--color-brand);
+    color: white;
+  }
+  .ui-button--secondary:disabled:hover,
+  .ui-button--inverse:disabled:hover {
+    background: white;
+    color: var(--color-brand);
+  }
+  .ui-icon-button {
+    display: inline-grid;
+    flex: none;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border: 1px solid var(--color-line);
+    border-radius: 50%;
+    background: white;
+    color: var(--color-brand);
+    font-size: 24px;
+    line-height: 1;
+  }
+  .ui-icon-button:hover {
+    background: var(--color-brand-surface);
+  }
+
+  main {
+    position: relative;
+  }
+  .site-header__event-links {
+    display: grid;
+    gap: 18px;
+    margin: -8px 0 8px 12px;
+    padding-left: 14px;
+    border-left: 1px solid rgb(255 255 255 / 0.25);
+  }
+  .site-header__mobile-nav .site-header__event-links a {
+    display: block;
+    padding: 2px 0;
+    font-size: 15px;
+    line-height: 1.45;
+  }
+  .site-header__event-links strong,
+  .site-header__event-links small {
+    display: block;
+  }
+  .site-header__event-links small {
+    margin-top: 4px;
+    color: rgb(255 255 255 / 0.75);
+    font-size: 12px;
+    font-weight: 400;
+  }
+  .ui-cta--brand {
+    background: var(--color-brand);
+    color: white;
+  }
+  .ui-cta--peach {
+    background: var(--color-formats-peach);
+    color: var(--color-brand);
+  }
+  .ui-cta__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 32px;
+  }
+  .ui-cta .ui-heading {
+    margin-top: 16px;
+  }
+  .ui-cta .ui-eyebrow {
+    color: var(--color-brand-gold);
+  }
+  .ui-cta--peach .ui-eyebrow {
+    color: var(--color-brand);
+  }
+  .ui-cta__description {
+    max-width: 60ch;
+    margin-top: 16px;
+    line-height: 1.6;
+  }
+  .ui-cta .ui-button {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 63.999rem) {
+    .ui-intro {
+      text-align: center;
+    }
+    .ui-intro > :is(.ui-heading, .ui-lead) {
+      margin-inline: auto;
+    }
+    .ui-intro > .ui-eyebrow {
+      align-self: center;
+      text-align: center;
+    }
+    .ui-intro > .ui-button {
+      align-self: center;
+    }
+    .ui-intro > .ui-intro__rule {
+      margin-inline: auto;
+    }
+    .hero--contacts .hero__content {
+      text-align: center;
+    }
+    .ui-section-heading {
+      text-align: center;
+    }
+    .ui-heading--page {
+      text-align: center;
+    }
+    .ui-section-heading > .ui-heading {
+      margin-inline: auto;
+    }
+  }
+  @media (max-width: 47.999rem) {
+    .ui-intro > .ui-button,
+    .ui-cta .ui-button {
+      width: min(100%, 350px);
+    }
+  }
+  @media (min-width: 64rem) {
+    .ui-cta__inner {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ui-cta .ui-section-heading {
+      min-width: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ui-button {
+      transition: none;
+    }
+  }
+}

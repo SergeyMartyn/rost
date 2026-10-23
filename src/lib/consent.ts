@@ -169,7 +169,16 @@ export function initConsent() {
     onConsent: startTracking,
     onChange: handleChange,
     onModalShow: ({ modalName }) => {
-      if (modalName === 'consentModal') watchBarHeight();
+      if (modalName === 'consentModal') {
+        // Keep the keyboard order identical to the compact visual order.
+        const buttons = document.querySelector('#cc-main .cm__btns');
+        const settings = buttons?.querySelector('[data-role="show"]');
+        const necessary = buttons?.querySelector('[data-role="necessary"]');
+        const all = buttons?.querySelector('[data-role="all"]');
+        if (buttons && settings && necessary && all)
+          buttons.replaceChildren(settings, necessary, all);
+        watchBarHeight();
+      }
     },
     onModalHide: ({ modalName }) => {
       if (modalName === 'consentModal')

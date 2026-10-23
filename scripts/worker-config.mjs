@@ -34,6 +34,16 @@ writeFileSync(
       vars: {
         DEFAULT_LANGUAGE: site.defaultLanguage,
         ORDERS_ENV: ordersEnv,
+        // New live sales belong to Timur. Local test builds keep the existing
+        // sandbox fixtures; historical orders select their stored account.
+        STRIPE_ACCOUNT_OWNER:
+          process.env.STRIPE_ACCOUNT_OWNER ||
+          (ordersEnv === 'live' ? 'timur' : 'margarita'),
+        PAYPAL_ACCOUNT_OWNER:
+          process.env.PAYPAL_ACCOUNT_OWNER ||
+          (ordersEnv === 'live' ? 'timur' : 'margarita'),
+        PAYPAL_NEW_ORDERS_ENABLED:
+          process.env.PAYPAL_NEW_ORDERS_ENABLED || 'true',
         // Test mode only accepts orders on *.workers.dev. The production deploy
         // explicitly selects the live database and enables live checkout.
         PAYMENTS_ENABLED:
@@ -46,8 +56,7 @@ writeFileSync(
         PAYPAL_MODE: ordersEnv === 'live' ? 'live' : 'sandbox',
         PAYPAL_PAYEE_EMAIL:
           process.env.PAYPAL_PAYEE_EMAIL || 'mail@margaritamartyn.com',
-        HOST_REGISTRATION_OPEN:
-          process.env.HOST_REGISTRATION_OPEN || 'true',
+        HOST_REGISTRATION_OPEN: process.env.HOST_REGISTRATION_OPEN || 'true',
       },
       d1_databases: [
         {

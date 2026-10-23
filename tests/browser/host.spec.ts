@@ -75,35 +75,35 @@ test('host page shows all four totals and the deposit switches only the amount d
         .check({ force: true });
       await page.locator('#host-media').uncheck();
       await page.locator('#host-deposit').uncheck();
-      await expect(page.locator('#host-total')).toHaveText('249 €');
-      await expect(page.locator('#host-due')).toHaveText('249 €');
+      await expect(page.locator('#host-total')).toHaveText('€249');
+      await expect(page.locator('#host-due')).toHaveText('€249');
       await expect(page.locator('#host-remaining-row')).toBeHidden();
 
       await page.locator('#host-media').check();
-      await expect(page.locator('#host-total')).toHaveText('328 €');
-      await expect(page.locator('#host-due')).toHaveText('328 €');
+      await expect(page.locator('#host-total')).toHaveText('€328');
+      await expect(page.locator('#host-due')).toHaveText('€328');
 
       await page
         .locator('input[name="host-format"][value="expanded"]')
         .check({ force: true });
-      await expect(page.locator('#host-total')).toHaveText('428 €');
-      await expect(page.locator('#host-due')).toHaveText('428 €');
+      await expect(page.locator('#host-total')).toHaveText('€428');
+      await expect(page.locator('#host-due')).toHaveText('€428');
 
       await page.locator('#host-deposit').check();
-      await expect(page.locator('#host-total')).toHaveText('428 €');
-      await expect(page.locator('#host-due')).toHaveText('50 €');
+      await expect(page.locator('#host-total')).toHaveText('€428');
+      await expect(page.locator('#host-due')).toHaveText('€50');
       await expect(page.locator('#host-remaining-row')).toBeVisible();
-      await expect(page.locator('#host-remaining')).toHaveText('378 €');
-      await expect(page.locator('#host-cta-due')).toHaveText('50 €');
+      await expect(page.locator('#host-remaining')).toHaveText('€378');
+      await expect(page.locator('#host-cta-due')).toHaveText('€50');
       await expect(page.locator('#host-deposit-note')).toBeVisible();
 
       await page.locator('#host-media').uncheck();
       await page
         .locator('input[name="host-format"][value="standard"]')
         .check({ force: true });
-      await expect(page.locator('#host-total')).toHaveText('249 €');
-      await expect(page.locator('#host-due')).toHaveText('50 €');
-      await expect(page.locator('#host-remaining')).toHaveText('199 €');
+      await expect(page.locator('#host-total')).toHaveText('€249');
+      await expect(page.locator('#host-due')).toHaveText('€50');
+      await expect(page.locator('#host-remaining')).toHaveText('€199');
     }
   }
 });

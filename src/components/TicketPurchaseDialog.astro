@@ -1,4 +1,6 @@
 ---
+import Button from './ui/Button.astro';
+import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 
 export interface PurchaseTicket {
@@ -81,13 +83,17 @@ const catalog = Object.fromEntries(
     id="payment-return-close"
     type="button"
     aria-label={lang === 'ru' ? 'Закрыть сообщение' : 'Mitteilung schließen'}
-    class="-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-2xl font-normal leading-none text-brand transition hover:bg-brand/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    class="ui-icon-button"
   >
     ×
   </button>
 </div>
 
-<script type="application/json" id="ticket-catalog" set:html={JSON.stringify(catalog)}></script>
+<script
+  type="application/json"
+  id="ticket-catalog"
+  set:html={JSON.stringify(catalog)}
+></script>
 
 <dialog
   id="ticket-dialog"
@@ -98,15 +104,12 @@ const catalog = Object.fromEntries(
   <div class="max-h-[calc(100dvh-2rem)] overflow-y-auto p-6 sm:p-8">
     <div class="flex items-start justify-between gap-6">
       <div>
-        <p
-          id="ticket-step"
-          class="text-xs font-bold uppercase tracking-[0.16em] text-accent"
-        >
+        <p id="ticket-step" class="ui-eyebrow text-accent">
           {copy.contactStep}
         </p>
-        <h2 id="ticket-title" class="mt-3 font-display text-3xl leading-tight">
+        <Heading as="h2" variant="panel" id="ticket-title" class="mt-3">
           {tickets[0]?.title}
-        </h2>
+        </Heading>
         <p id="ticket-summary" class="mt-2 text-sm text-muted">
           {tickets[0]?.summary}
         </p>
@@ -115,7 +118,7 @@ const catalog = Object.fromEntries(
         id="ticket-close"
         type="button"
         aria-label={copy.close}
-        class="grid h-10 w-10 shrink-0 place-items-center rounded-full border border-brand bg-brand-surface p-0 hover:bg-hero-end"
+        class="ui-icon-button"
       >
         <svg
           aria-hidden="true"
@@ -138,7 +141,7 @@ const catalog = Object.fromEntries(
           autocomplete="name"
           required
           placeholder={copy.namePlaceholder}
-          class="w-full rounded-xl border border-line px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+          class="ui-field"
         />
       </label>
       <fieldset>
@@ -218,7 +221,7 @@ const catalog = Object.fromEntries(
           placeholder={copy.contactPlaceholder}
           aria-describedby="contact-hint contact-error"
           aria-invalid="false"
-          class="w-full rounded-xl border border-line px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+          class="ui-field"
         />
       </label>
       <p id="contact-hint" class="-mt-3 text-xs leading-relaxed text-muted"></p>
@@ -228,18 +231,13 @@ const catalog = Object.fromEntries(
         class="-mt-3 hidden text-xs font-semibold leading-relaxed text-red-700"
       ></p>
       <p class="text-xs leading-relaxed text-muted">{copy.contactUse}</p>
-      <button
-        type="submit"
-        class="w-full rounded-2xl bg-brand px-6 py-4 font-bold text-white hover:bg-accent"
-      >
+      <Button variant="primary" size="regular" type="submit" class="w-full">
         {copy.continue}
-      </button>
+      </Button>
     </form>
     <div id="ticket-payment" class="mt-7 hidden space-y-3">
       <div class="pb-2 text-center">
-        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
-          {copy.contactFor}
-        </p>
+        <p class="ui-eyebrow text-accent">{copy.contactFor}</p>
         <p
           id="ticket-person"
           class="mt-1 break-words font-display text-3xl"
@@ -249,6 +247,104 @@ const catalog = Object.fromEntries(
           class="mt-1 break-all text-sm font-semibold text-accent"
         ></p>
       </div>
+      <details
+        id="ticket-promo-details"
+        class="rounded-xl border border-line p-4"
+      >
+        <summary class="min-h-12 cursor-pointer content-center text-sm font-semibold underline underline-offset-4">
+          {lang === 'ru' ? 'Есть промокод?' : 'Hast du einen Rabattcode?'}
+        </summary>
+        <div class="mt-3 space-y-3">
+          <label for="ticket-promo" class="block text-sm font-semibold">
+            {lang === 'ru' ? 'Промокод' : 'Rabattcode'}
+          </label>
+          <input
+            id="ticket-promo"
+            class="ui-field"
+            type="text"
+            maxlength="32"
+            autocomplete="off"
+            autocapitalize="characters"
+            spellcheck="false"
+            aria-describedby="ticket-promo-message"
+          />
+          <div class="flex flex-wrap gap-3">
+            <Button
+              id="ticket-promo-apply"
+              variant="secondary"
+              size="compact"
+              type="button"
+            >
+              {lang === 'ru' ? 'Применить' : 'Anwenden'}
+            </Button>
+            <Button
+              id="ticket-promo-remove"
+              variant="secondary"
+              size="compact"
+              type="button"
+              hidden
+            >
+              {lang === 'ru' ? 'Убрать' : 'Entfernen'}
+            </Button>
+          </div>
+          <p class="text-xs leading-relaxed text-muted">
+            {lang === 'ru'
+              ? 'Индивидуальный промокод: 10% на один обычный билет. Семейная скидка и «Приведи друга»: 10% при покупке двух билетов одним заказом. По акции с другом он должен быть новым участником. VIP без скидки; на заказ действует один код.'
+              : 'Individueller Rabattcode: 10% auf ein reguläres Ticket. Familienrabatt und „Freunde einladen“: 10% beim gemeinsamen Kauf von zwei Tickets. Eingeladene Freunde müssen neu dabei sein. VIP ist ausgeschlossen; pro Bestellung gilt ein Code.'}
+          </p>
+        </div>
+      </details>
+      <p
+        id="ticket-promo-message"
+        role="status"
+        aria-live="polite"
+        class="text-sm leading-relaxed text-brand"
+      ></p>
+      <div id="ticket-second-participant" class="space-y-2" hidden>
+        <label for="ticket-second-name" class="block text-sm font-semibold">
+          {lang === 'ru' ? 'Имя второго участника' : 'Name der zweiten Person'}
+        </label>
+        <input
+          id="ticket-second-name"
+          name="secondParticipantName"
+          class="ui-field"
+          type="text"
+          minlength="2"
+          maxlength="80"
+          autocomplete="off"
+          disabled
+          aria-describedby="ticket-second-hint"
+        />
+        <p id="ticket-second-hint" class="text-xs leading-relaxed text-muted">
+          {lang === 'ru'
+            ? 'С промокодом вы оплачиваете два билета одним платежом. Для связи используем ваш контакт.'
+            : 'Mit dem Code buchst du zwei Tickets in einer Zahlung. Wir nutzen deinen Kontakt für die Buchung.'}
+        </p>
+      </div>
+      <dl
+        id="ticket-price"
+        class="space-y-2 rounded-xl bg-brand-surface p-4 text-sm"
+        hidden
+      >
+        <div class="flex justify-between gap-4">
+          <dt id="ticket-price-label">
+            {lang === 'ru' ? 'Стоимость билета' : 'Ticketpreis'}
+          </dt>
+          <dd id="ticket-price-base" class="shrink-0"></dd>
+        </div>
+        <div
+          id="ticket-price-discount-row"
+          class="flex justify-between gap-4"
+          hidden
+        >
+          <dt>{lang === 'ru' ? 'Скидка' : 'Rabatt'}</dt>
+          <dd id="ticket-price-discount" class="shrink-0"></dd>
+        </div>
+        <div class="flex justify-between gap-4 border-t border-line pt-2 text-lg font-bold">
+          <dt>{lang === 'ru' ? 'К оплате' : 'Gesamtbetrag'}</dt>
+          <dd id="ticket-price-total" class="shrink-0"></dd>
+        </div>
+      </dl>
       <label class="flex items-start gap-3 rounded-xl bg-brand-surface p-3 text-xs leading-relaxed text-brand">
         <input
           id="ticket-privacy"
@@ -278,22 +374,32 @@ const catalog = Object.fromEntries(
         </span>
       </label>
       <p class="text-sm text-muted">{copy.choosePayment}</p>
-      <button
+      <p class="text-xs leading-relaxed text-muted">
+        {lang === 'ru'
+          ? 'Продавец и организатор: '
+          : 'Verkäufer und Veranstalter: '}
+        <a href={routes.imprint[lang]} class="underline underline-offset-2">
+          Timur Cherepanov
+        </a>
+      </p>
+      <Button
+        variant="secondary"
         type="button"
         data-payment="stripe"
         disabled
-        class="flex w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
+        class="w-full"
       >
         {copy.stripe} <span>→</span>
-      </button>
-      <button
+      </Button>
+      <Button
+        variant="secondary"
         type="button"
         data-payment="paypal"
         disabled
-        class="hidden w-full items-center justify-between rounded-2xl border border-line px-5 py-4 text-left font-bold hover:border-brand disabled:cursor-not-allowed disabled:opacity-50"
+        class="hidden w-full"
       >
         {copy.paypal} <span>→</span>
-      </button>
+      </Button>
       <p
         id="ticket-error"
         role="alert"
@@ -318,6 +424,7 @@ const catalog = Object.fromEntries(
 
 <script>
   import { contactMode, normalizeContact } from '../lib/contact';
+  import { ticketPricing } from '../lib/ticket-pricing';
 
   const dialog = document.querySelector<HTMLDialogElement>('#ticket-dialog');
   const form = document.querySelector<HTMLFormElement>('#ticket-form');
@@ -349,7 +456,9 @@ const catalog = Object.fromEntries(
   const contactStep = isRu
     ? 'Шаг 1 из 2 · Контакт'
     : 'Schritt 1 von 2 · Kontakt';
-  const paymentStep = isRu ? 'Шаг 2 из 2 · Оплата' : 'Schritt 2 von 2 · Zahlung';
+  const paymentStep = isRu
+    ? 'Шаг 2 из 2 · Оплата'
+    : 'Schritt 2 von 2 · Zahlung';
   const contactCopy = {
     Telegram: {
       label: isRu ? 'Ваш аккаунт в Telegram' : 'Dein Telegram-Benutzername',
@@ -454,6 +563,8 @@ const catalog = Object.fromEntries(
     clearContactError();
   };
 
+  let submitting = false;
+  const pricing = ticketPricing(!!isRu, () => refreshPaymentButtons());
   const refreshPaymentButtons = () => {
     paymentButtons.forEach((button) => {
       const provider = button.dataset.payment as 'stripe' | 'paypal';
@@ -461,7 +572,11 @@ const catalog = Object.fromEntries(
         button.classList.toggle('hidden', !paymentProviders.paypal);
         button.classList.toggle('flex', paymentProviders.paypal);
       }
-      button.disabled = !privacy?.checked || !paymentProviders[provider];
+      button.disabled =
+        submitting ||
+        !pricing.ready() ||
+        !privacy?.checked ||
+        !paymentProviders[provider];
     });
   };
 
@@ -514,10 +629,22 @@ const catalog = Object.fromEntries(
           : undefined;
         const key = selected || button.dataset.ticket || '';
         const ticket = catalog[key];
-        if (!dialog || !ticket || !title || !summary || !step || !form || !payment)
+        if (
+          !dialog ||
+          !ticket ||
+          !title ||
+          !summary ||
+          !step ||
+          !form ||
+          !payment
+        )
           return;
         currentTicket = key;
-        document.querySelector<HTMLElement>('#ticket-error')?.classList.add('hidden');
+        submitting = false;
+        pricing.reset(key);
+        document
+          .querySelector<HTMLElement>('#ticket-error')
+          ?.classList.add('hidden');
         title.textContent = ticket[0];
         summary.textContent = ticket[1];
         step.textContent = contactStep;
@@ -575,6 +702,7 @@ const catalog = Object.fromEntries(
     form.classList.add('hidden');
     payment.classList.remove('hidden');
     step.textContent = paymentStep;
+    void pricing.refresh();
     privacy?.focus();
   });
   privacy?.addEventListener('change', refreshPaymentButtons);
@@ -597,11 +725,21 @@ const catalog = Object.fromEntries(
     button.addEventListener('click', async (event) => {
       const button = event.currentTarget as HTMLButtonElement;
       const provider = button.dataset.payment as 'stripe' | 'paypal';
-      if (!currentTicket || !nameInput || !contactInput || !privacy?.checked)
+      if (
+        !currentTicket ||
+        !nameInput ||
+        !contactInput ||
+        !privacy?.checked ||
+        !pricing.ready() ||
+        submitting
+      )
         return;
+      if (!pricing.validate()) return;
       errorBox?.classList.add('hidden');
-      button.disabled = true;
+      submitting = true;
+      refreshPaymentButtons();
       let message = orderErrors.generic;
+      let pricingHandled = false;
       try {
         const response = await fetch('/api/orders', {
           method: 'POST',
@@ -613,6 +751,7 @@ const catalog = Object.fromEntries(
             contact: contactInput.value.trim(),
             lang: isRu ? 'ru' : 'de',
             consent: true,
+            ...pricing.payload(),
             provider,
           }),
         });
@@ -629,13 +768,31 @@ const catalog = Object.fromEntries(
         }
         if (response.status === 403 || response.status === 503)
           message = orderErrors.disabled;
+        if (
+          typeof data === 'object' &&
+          data !== null &&
+          'error' in data &&
+          [
+            'price_changed',
+            'invalid_promo',
+            'promo_not_applicable',
+            'pricing_unavailable',
+            'offer_ended',
+            'event_archived',
+          ].includes(String(data.error))
+        ) {
+          submitting = false;
+          pricing.reject(String(data.error));
+          pricingHandled = true;
+        }
       } catch {
         /* network error: generic message */
       }
-      if (errorBox) {
+      if (errorBox && !pricingHandled) {
         errorBox.textContent = message;
         errorBox.classList.remove('hidden');
       }
+      submitting = false;
       refreshPaymentButtons();
     }),
   );
@@ -663,7 +820,7 @@ const catalog = Object.fromEntries(
           : 'Danke! Wir prüfen die Zahlungsbestätigung und melden uns danach bei dir.'
         : returned === 'error'
           ? isRu
-            ? 'Не удалось подтвердить оплату. Если деньги списались, напишите нам — мы проверим платёж.'
+            ? 'Не удалось подтвердить оплату. Если деньги списались, напишите нам: мы проверим платёж.'
             : 'Die Zahlung konnte nicht bestätigt werden. Falls Geld abgebucht wurde, schreib uns bitte.'
           : isRu
             ? 'Оплата отменена. Билет не оформлен, деньги не списаны.'

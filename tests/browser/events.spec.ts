@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import site from '../../site.config.json' with { type: 'json' };
 
 test('events section keeps shared spacing and equal card widths', async ({
   page,
@@ -64,7 +65,7 @@ test('events section keeps shared spacing and equal card widths', async ({
   });
 });
 
-test('Munich photo links to TI; Nuremberg photo opens uncropped in both languages', async ({
+test('Munich photo links to TI; Nuremberg photo links to the event in both languages', async ({
   page,
 }) => {
   for (const lang of ['ru', 'de']) {
@@ -96,31 +97,14 @@ test('Munich photo links to TI; Nuremberg photo opens uncropped in both language
       await expect(
         page.locator('.events__frame').first().locator('.events__plus'),
       ).toHaveCount(0);
-      await page.locator('.events__photo-trigger').click();
-      await expect(page.locator('#event-photo-dialog')).toBeVisible();
-      await expect
-        .poll(() =>
-          page
-            .locator('#event-photo-full')
-            .evaluate(
-              (element: HTMLImageElement) =>
-                element.complete && element.naturalWidth > 0,
-            ),
-        )
-        .toBe(true);
-      await expect(page.locator('#event-photo-full')).toHaveCSS(
-        'object-fit',
-        'contain',
+      await expect(page.locator('.events__frame').nth(1)).toHaveAttribute(
+        'href',
+        `${site.routes.events[lang as 'ru' | 'de']}#nuremberg`,
       );
-      const fits = await page
-        .locator('#event-photo-full')
-        .evaluate((element) => {
-          const box = element.getBoundingClientRect();
-          return box.width <= innerWidth && box.height <= innerHeight;
-        });
-      expect(fits).toBe(true);
-      await page.keyboard.press('Escape');
-      await expect(page.locator('#event-photo-dialog')).not.toBeVisible();
+      await page.locator('.events__frame').nth(1).click();
+      await expect(page).toHaveURL(/#nuremberg$/);
+      await expect(page.locator('#nuremberg')).toBeVisible();
+      await page.goBack();
       await page.locator('.events__frame').first().click();
       await expect(page).toHaveURL(new RegExp(`${tiPath}$`));
       await page.goBack();
@@ -132,7 +116,7 @@ test('Munich photo links to TI; Nuremberg photo opens uncropped in both language
   }
 });
 
-test('header overlays each hero without a scroll gap at phone, tablet and desktop widths', async ({
+test('header overlays the page shell with no scroll gap at phone, tablet and desktop widths', async ({
   page,
 }) => {
   for (const lang of ['ru', 'de']) {
@@ -143,10 +127,7 @@ test('header overlays each hero without a scroll gap at phone, tablet and deskto
         lang === 'ru' ? '/ru/meropriyatiya/' : '/de/veranstaltungen/',
       ]) {
         await page.goto(path);
-        const selector =
-          path.endsWith('/') && (path === '/ru/' || path === '/de/')
-            ? '.home-main'
-            : '#main > div > section:first-child';
+        const selector = '#main';
         expect(
           await page
             .locator(selector)
@@ -287,7 +268,7 @@ test('Nuremberg details open accessibly and lead to its ticket form', async ({
       await page.locator('#meet-details-buy').click();
       await expect(details).not.toBeVisible();
       await expect(page.locator('#ticket-dialog')).toBeVisible();
-      await expect(page.locator('#ticket-summary')).toContainText('29 €');
+      await expect(page.locator('#ticket-summary')).toContainText('€29');
       await page.locator('#ticket-close').click();
     }
   }
@@ -390,31 +371,33 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
       })
       .locator('..')
       .locator('..');
-    await expect(answer).toContainText('29 €');
-    await expect(answer).toContainText('80 €');
-    await expect(answer).toContainText('180 €');
+    await expect(answer).toContainText('€29');
+    await expect(answer).toContainText('€80');
+    await expect(answer).toContainText('€180');
 
     await page.goto(tiGames);
     await expect(
       page.locator('input[name="games-ticket"][value="guest_peak"]'),
     ).toBeChecked();
     await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€180');
     await page.locator('#ticket-close').click();
     await page.goto(events);
     await expect(
       page.locator('input[name="events-games-ticket"][value="guest_peak"]'),
     ).toBeChecked();
     if (lang === 'ru')
-      await page.locator('#games').screenshot({ path: 'test-results/games-card-ru.png' });
+      await page
+        .locator('#games')
+        .screenshot({ path: 'test-results/games-card-ru.png' });
     await page.locator('#games [data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€180');
     await page.locator('#ticket-close').click();
     await page
       .locator('input[name="events-games-ticket"][value="guest"]')
       .check();
     await page.locator('#games [data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('80 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€80');
     await page.locator('#ticket-close').click();
     await expect(page.locator('#games')).toContainText(
       lang === 'ru'
@@ -422,26 +405,26 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
         : 'Programm und Details →',
     );
     await page.locator('[data-ticket="nuremberg_meetup"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('29 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€29');
     await page.locator('#ticket-close').click();
     await page.goto(tiGames);
     await page
       .locator('input[name="games-ticket"][value="guest"]')
       .check({ force: true });
     await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('80 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€80');
     await page.locator('#ticket-close').click();
     await page
       .locator('input[name="games-ticket"][value="guest_peak"]')
       .check({ force: true });
     await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('180 €');
+    await expect(page.locator('#ticket-summary')).toContainText('€180');
     await page.locator('#ticket-close').click();
     await expect(page.locator('[data-ticket="host"]')).toHaveCount(0);
     await page.goto(
       lang === 'ru' ? '/ru/usloviya-uchastiya/' : '/de/teilnahmebedingungen/',
     );
-    for (const price of ['29 €', '80 €', '180 €'])
+    for (const price of ['€29', '€80', '€180'])
       await expect(page.locator('main')).toContainText(price);
   }
 });
@@ -478,12 +461,35 @@ test('archive navigation and Regensburg retrospective work in both languages', a
           ? 'Встреча-знакомство в Регенсбурге'
           : 'Kennenlerntreffen in Regensburg',
       );
-      await expect(page.locator('main')).not.toContainText('29 €');
+      await expect(page.locator('main')).not.toContainText('€29');
       await expect(
         page
           .locator('a[href="https://www.instagram.com/p/DeWzwDOqNv2/"]')
           .first(),
       ).toBeVisible();
+      const moments = page.locator(
+        'section[aria-labelledby="archive-moments-title"]',
+      );
+      const preview = moments.locator(
+        'a[href="https://www.instagram.com/p/DeWzwDOqNv2/"]',
+      );
+      await expect(preview).toHaveCount(1);
+      await expect(
+        moments.locator('a[href="https://www.instagram.com/group_r.o.s.t/"]'),
+      ).toHaveText('Instagram R.O.S.T.');
+      const cover = preview.locator('img');
+      await cover.scrollIntoViewIfNeeded();
+      await expect
+        .poll(() =>
+          cover.evaluate(
+            (img: HTMLImageElement) =>
+              img.complete &&
+              img.naturalWidth > 0 &&
+              Math.abs(img.naturalWidth / img.naturalHeight - 9 / 16) < 0.01,
+          ),
+        )
+        .toBe(true);
+      await expect(page.locator('iframe[src*="instagram.com"]')).toHaveCount(0);
       await expect(page.locator('[data-ticket]')).toHaveCount(0);
       expect(
         await page.evaluate(() => document.documentElement.scrollWidth),

@@ -6,6 +6,7 @@ export interface HostEnv {
 
 export interface HostRegistrationRow {
   id: string;
+  payment_account: 'margarita' | 'timur';
   event_id: string;
   customer_name: string;
   email: string;
@@ -52,6 +53,7 @@ export interface NewHostRegistration {
   holdExpiresAt: string;
   tableNo: number;
   createdAt: string;
+  paymentAccount?: 'margarita' | 'timur';
 }
 
 const iso = (ms: number) => new Date(ms).toISOString();
@@ -111,15 +113,7 @@ export async function allocateHostTable(
        OR (status='pending' AND (expires_at IS NULL OR expires_at<=?))
      )`,
   )
-    .bind(
-      registrationId,
-      status,
-      expiresAt,
-      now,
-      HOST_TABLE_COUNT,
-      now,
-      now,
-    )
+    .bind(registrationId, status, expiresAt, now, HOST_TABLE_COUNT, now, now)
     .run();
   if (result.meta.changes !== 1) return null;
   const row = await env.ORDERS.prepare(
@@ -139,8 +133,8 @@ export async function insertHostRegistration(
        (id,event_id,customer_name,email,contact_method,contact_value,
         game_title,game_description,format,media_package,deposit_requested,
         total_cents,due_now_cents,remaining_cents,currency,status,table_no,
-        hold_expires_at,provider,created_at,updated_at)
-     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'EUR','pending',?,?,'stripe',?,?)`,
+        hold_expires_at,provider,payment_account,created_at,updated_at)
+     VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,'EUR','pending',?,?,'stripe',?,?,?)`,
   )
     .bind(
       registration.id,
@@ -159,6 +153,7 @@ export async function insertHostRegistration(
       registration.remainingCents,
       registration.tableNo,
       registration.holdExpiresAt,
+      registration.paymentAccount ?? 'margarita',
       registration.createdAt,
       registration.createdAt,
     )
@@ -237,11 +232,12 @@ export async function findHostRegistrationBySession(
 export async function findHostRegistrationByPayment(
   env: HostEnv,
   paymentId: string,
+  account: 'margarita' | 'timur' = 'margarita',
 ): Promise<HostRegistrationRow | null> {
   return env.ORDERS.prepare(
-    `SELECT * FROM host_registrations WHERE provider_payment_id=?`,
+    `SELECT * FROM host_registrations WHERE provider='stripe' AND payment_account=? AND provider_payment_id=?`,
   )
-    .bind(paymentId)
+    .bind(account, paymentId)
     .first<HostRegistrationRow>();
 }
 
@@ -275,7 +271,14 @@ export async function confirmHostPayment(
       .bind(registration.id)
       .first<{ slot_no: number }>();
     if (existing) tableNo = existing.slot_no;
-    else tableNo = await allocateHostTable(env, registration.id, null, nowMs, 'paid');
+    else
+      tableNo = await allocateHostTable(
+        env,
+        registration.id,
+        null,
+        nowMs,
+        'paid',
+      );
   }
   await env.ORDERS.prepare(
     `UPDATE host_registrations
@@ -293,6 +296,8 @@ export async function expireHostCheckout(
   id: string,
   nowMs: number,
 ): Promise<void> {
+  const registration = await findHostRegistration(env, id);
+  if (!registration || Date.parse(registration.hold_expires_at) > nowMs) return;
   await markHostRegistrationFailed(env, id, nowMs, 'expired');
 }
 

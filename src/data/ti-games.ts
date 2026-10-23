@@ -75,10 +75,10 @@ export interface TiGamesContent {
 const programRu: TiProgramItem[] = [
   { time: '09:30–10:00', label: 'Регистрация' },
   { time: '10:00–10:10', label: 'Открытие дня' },
-  { time: '10:10–11:30', label: 'Нетворкинг' },
+  { time: '10:10–11:30', label: 'Модерируемый нетворкинг' },
   { time: '11:30–11:45', label: 'Знакомство с ведущими' },
   { time: '11:45–14:00', label: 'Первая линейка игр' },
-  { time: '14:00–15:15', label: 'Обед' },
+  { time: '14:00–15:15', label: 'Совместный обед (оплачивается отдельно)' },
   { time: '15:15–15:30', label: 'Знакомство с ведущими' },
   { time: '15:30–17:45', label: 'Вторая линейка игр' },
   { time: '17:45–18:15', label: 'Награждение и розыгрыш' },
@@ -88,10 +88,13 @@ const programRu: TiProgramItem[] = [
 const programDe: TiProgramItem[] = [
   { time: '09:30–10:00', label: 'Anmeldung' },
   { time: '10:00–10:10', label: 'Eröffnung des Tages' },
-  { time: '10:10–11:30', label: 'Networking' },
+  { time: '10:10–11:30', label: 'Moderiertes Networking' },
   { time: '11:30–11:45', label: 'Begegnung mit den Spielleitenden' },
   { time: '11:45–14:00', label: 'Erste Spielrunde' },
-  { time: '14:00–15:15', label: 'Mittagessen' },
+  {
+    time: '14:00–15:15',
+    label: 'Gemeinsames Mittagessen (separat zu bezahlen)',
+  },
   { time: '15:15–15:30', label: 'Begegnung mit den Spielleitenden' },
   { time: '15:30–17:45', label: 'Zweite Spielrunde' },
   { time: '17:45–18:15', label: 'Auszeichnung und Verlosung' },
@@ -187,14 +190,14 @@ const practitionersRu: TiPractitioner[] = [
       'Увидите внутренние блоки и возможные действия.',
       'Почувствуете больше энергии для своих планов.',
     ],
-    note: '«Путь Желаний» — возможность снова прислушаться к себе.',
+    note: '«Путь Желаний»: возможность снова прислушаться к себе.',
   },
   {
     id: 'zinaida',
     image: '/images/ti-games/zinaida.webp',
     name: 'Зинаида Ланглитц',
     qualification: 'Коуч, ментор, практический психолог',
-    game: 'Путь к себе — волшебство самооценки',
+    game: 'Путь к себе: волшебство самооценки',
     tagline: 'Вернуть уверенность и внутреннюю опору',
     body: 'Поговорить об уверенности, самоценности и выборе следующего шага.',
     facts: [
@@ -216,7 +219,7 @@ const practitionersRu: TiPractitioner[] = [
       'Найдёте внутреннюю поддержку для дальнейших действий.',
       'Поищете способ действовать из уверенности, а не из страха.',
     ],
-    note: '«Путь к себе — волшебство самооценки» помогает взглянуть на себя по-новому.',
+    note: '«Путь к себе: волшебство самооценки» помогает взглянуть на себя по-новому.',
   },
   {
     id: 'alla',
@@ -355,7 +358,7 @@ const practitionersDe: TiPractitioner[] = [
     image: '/images/ti-games/zinaida.webp',
     name: 'Sinaida Langlitz',
     qualification: 'Coach, Mentorin, praktische Psychologin',
-    game: 'Der Weg zu sich selbst — die Magie des Selbstwerts',
+    game: 'Der Weg zu sich selbst: die Magie des Selbstwerts',
     tagline: 'Selbstvertrauen und innere Stabilität zurückgewinnen',
     body: 'Über Selbstvertrauen, Selbstwert und den nächsten Schritt sprechen.',
     facts: [
@@ -424,14 +427,14 @@ const practitionersDe: TiPractitioner[] = [
 
 export const tiGames: Record<Language, TiGamesContent> = {
   ru: {
-    eyebrow: 'Мероприятия / Трансформационные игры',
+    eyebrow: 'Мероприятия · Трансформационные игры',
     datePill: '7 ноября · Мюнхен',
     title: ['День', 'трансформационных', 'игр в Мюнхене'],
     intro:
       'Познакомьтесь с ведущими и участниками, выберите игры для двух игровых линеек и проведите день в хорошей компании.',
     heroHighlights: [
-      'С 10:10 — нетворкинг и знакомства',
-      'В 11:45 и 15:30 — игровые линейки',
+      '10:10 · Модерируемый нетворкинг',
+      '11:45 и 15:30 · 1-я и 2-я игровые линейки',
       'Чай и кофе включены в оба билета',
     ],
     when: 'Когда',
@@ -446,7 +449,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
     peakIncludes: 'Всё выше + Zoom, фото, ужин и консультация',
     buyTicket: 'Купить билет участника',
     host: 'Хочу провести игру',
-    ticketNote: 'Состав билетов — ниже на странице',
+    ticketNote: 'Состав билетов: ниже на странице',
     aboutEyebrow: 'О мероприятии',
     aboutTitle: ['Провести день с пользой', 'и в хорошей компании'],
     aboutBody:
@@ -476,7 +479,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
       {
         key: 'guest',
         name: 'Базовый импульс',
-        price: '80 €',
+        price: '€80',
         includes: [
           'Участие в играх',
           'Доступ к общим зонам',
@@ -487,7 +490,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
       {
         key: 'guest_peak',
         name: 'Пик трансформации',
-        price: '180 €',
+        price: '€180',
         includes: [
           'Всё из «Базового импульса»',
           'Групповой Zoom и профессиональные фото',
@@ -497,18 +500,18 @@ export const tiGames: Record<Language, TiGamesContent> = {
       },
     ],
     questionsTitle: 'Есть вопросы перед встречей?',
-    questionsBody: 'Напишите нам — поможем выбрать формат участия.',
+    questionsBody: 'Напишите нам: поможем выбрать формат участия.',
     contactLink: 'Связаться с нами →',
   },
   de: {
-    eyebrow: 'Veranstaltungen / Transformationsspiele',
+    eyebrow: 'Veranstaltungen · Transformationsspiele',
     datePill: '7. November · München',
     title: ['Tag der', 'Transformationsspiele', 'in München'],
     intro:
       'Lerne die Spielleitenden und andere Teilnehmende kennen, wähle Spiele aus zwei Spielrunden und verbringe den Tag in guter Gesellschaft.',
     heroHighlights: [
-      'Ab 10:10 Uhr: Networking und Kennenlernen',
-      'Um 11:45 und 15:30 Uhr: Spielrunden',
+      '10:10 · Moderiertes Networking',
+      '11:45 und 15:30 · 1. und 2. Spielrunde',
       'Tee und Kaffee in beiden Tickets enthalten',
     ],
     when: 'Wann',
@@ -523,7 +526,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
     peakIncludes: 'Alles oben + Zoom, Fotos, Abendessen und Beratung',
     buyTicket: 'Ticket für Teilnehmende kaufen',
     host: 'Ich möchte ein Spiel leiten',
-    ticketNote: 'Ticketinhalt — weiter unten auf der Seite',
+    ticketNote: 'Ticketinhalt: weiter unten auf der Seite',
     aboutEyebrow: 'Über die Veranstaltung',
     aboutTitle: ['Einen Tag mit Sinn', 'und in guter Gesellschaft'],
     aboutBody:
@@ -553,7 +556,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
       {
         key: 'guest',
         name: 'Basisimpuls',
-        price: '80 €',
+        price: '€80',
         includes: [
           'Teilnahme an den Spielen',
           'Zugang zu den Gemeinschaftsbereichen',
@@ -564,7 +567,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
       {
         key: 'guest_peak',
         name: 'Gipfel der Transformation',
-        price: '180 €',
+        price: '€180',
         includes: [
           'Alles aus „Basisimpuls“',
           'Gruppen-Zoom und professionelle Fotos',
@@ -574,7 +577,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
       },
     ],
     questionsTitle: 'Noch Fragen vor der Veranstaltung?',
-    questionsBody: 'Schreib uns — wir helfen bei der Wahl des Formats.',
+    questionsBody: 'Schreib uns: wir helfen bei der Wahl des Formats.',
     contactLink: 'Kontakt aufnehmen →',
   },
 };

@@ -1,0 +1,15 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'div'> {
+  centered?: boolean;
+}
+const { centered = false, class: className, ...attributes } = Astro.props;
+---
+
+<div
+  class:list={['ui-intro', { 'ui-intro--centered': centered }, className]}
+  {...attributes}
+>
+  <slot />
+</div>

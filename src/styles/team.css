@@ -1,6 +1,6 @@
 @layer components {
   .team {
-    padding-block: calc(var(--spacing) * 18);
+    padding-block: var(--ui-section-gap);
     background: linear-gradient(
       135deg,
       var(--color-brand-surface),
@@ -28,11 +28,6 @@
 
   .team__heading {
     margin: 0;
-    font-family: var(--font-display);
-    font-size: clamp(40px, 8vw, 76px);
-    font-weight: 400;
-    line-height: 1.08;
-    letter-spacing: -0.025em;
   }
 
   .team__brand {
@@ -105,10 +100,6 @@
 
   .team__name {
     margin: calc(var(--spacing) * 5) 0 0;
-    font-family: var(--font-display);
-    font-size: 22px;
-    font-weight: 400;
-    line-height: 1.2;
   }
 
   .team__role {
@@ -134,7 +125,7 @@
 
   @media (min-width: 48rem) {
     .team {
-      padding-block: calc(var(--spacing) * 22);
+      padding-block: var(--ui-section-gap);
     }
 
     .team__intro {

@@ -1,4 +1,9 @@
 ---
+import CtaSection from './ui/CtaSection.astro';
+import EventValueSection from './ui/EventValueSection.astro';
+import PageIntro from './ui/PageIntro.astro';
+import Button from './ui/Button.astro';
+import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 import {
   HOST_DEPOSIT_CENTS,
@@ -15,7 +20,7 @@ const initial = hostPrice('standard', false, false);
 const copy =
   lang === 'ru'
     ? {
-        eyebrow: 'Мюнхен / для ведущих',
+        eyebrow: 'Мюнхен · для ведущих',
         date: '7 ноября · Мюнхен',
         title: ['Проведите', 'свою игру', 'на встрече R.O.S.T.'],
         intro:
@@ -26,14 +31,26 @@ const copy =
           'После подтверждённой оплаты стол закрепляется за вами.',
         ],
         formatEyebrow: 'Формат',
-        formatTitle: ['Ваша игра —', 'в центре дня'],
+        formatTitle: ['Ваша игра', 'в центре дня'],
         formatIntro:
           'Мы помогаем представить вас и вашу игру до встречи и на площадке. Вы проводите игру, знакомитесь с участниками и коллегами, а организацию дня берёт на себя команда R.O.S.T.',
         features: [
-          ['Ваша практика в деле', 'Две игровые сессии по два часа и короткое представление на сцене.'],
-          ['Вас узнают до встречи', 'Прямой эфир и день в сторис R.O.S.T., профиль с описанием игры на сайте.'],
-          ['Контакты на площадке', 'Знакомство с участниками и коллегами; профиль и QR-код на экранах.'],
-          ['Поддержка команды', 'Подготовим пространство, скоординируем день и выдадим сертификат участия.'],
+          [
+            'Ваша практика в деле',
+            'Две игровые сессии по два часа и 1,5 минуты, чтобы представить свою игру на сцене.',
+          ],
+          [
+            'Вас узнают до встречи',
+            'Прямой эфир и день в сторис R.O.S.T., профиль с описанием игры на сайте.',
+          ],
+          [
+            'Контакты на площадке',
+            'Знакомство с участниками и коллегами; профиль и QR-код на экранах.',
+          ],
+          [
+            'Поддержка команды',
+            'Подготовим пространство, скоординируем день и выдадим сертификат участия.',
+          ],
         ],
         termsEyebrow: 'Условия',
         termsTitle: 'Форматы участия',
@@ -51,7 +68,8 @@ const copy =
             title: 'Расширенное',
             amount: HOST_FORMATS.expanded.amountCents,
             body: 'Всё из стандартного + дополнительное продвижение команды R.O.S.T.',
-            condition: 'Сосредоточьтесь на подготовке и проведении игры',
+            condition:
+              'Без обязательных публикаций в своих соцсетях: продвижение берёт на себя команда',
           },
         ],
         mediaTitle: 'Фото и видео',
@@ -67,7 +85,7 @@ const copy =
         formEyebrow: 'Регистрация',
         flowTitle: 'Регистрация → оплата → стол',
         flowBody:
-          'Заполните данные и перейдите к оплате. Стол резервируется на 30 минут. После подтверждённой оплаты участие и место закрепляются, дополнительное одобрение не требуется.',
+          'Заполните данные и перейдите к оплате. На оплату есть 30 минут и одна дополнительная минута. Без оплаты стол освобождается через 31 минуту. Подтверждённая оплата, в том числе предоплата €50, закрепляет стол без автоматического истечения срока.',
         formTitle: 'Данные для заявки',
         name: 'Как к вам обращаться?',
         namePlaceholder: 'Имя и фамилия',
@@ -83,9 +101,9 @@ const copy =
         gameDescription: 'Коротко опишите игру',
         gameDescriptionPlaceholder:
           'Для кого игра, что происходит на встрече и что важно знать участникам. Достаточно нескольких предложений.',
-        termsBefore: 'Я принимаю',
+        termsBefore: 'Принимаю',
         termsLink: 'условия для ведущих',
-        privacyBefore: 'и ознакомлен с',
+        privacyBefore: 'Ознакомлен с',
         privacyLink: 'политикой конфиденциальности',
         submit: 'Зарегистрироваться и занять стол',
         dueNote: 'К оплате сейчас',
@@ -96,23 +114,23 @@ const copy =
         conditions: [
           {
             title: 'Стоимость и состав',
-            body: `Стандартное участие — ${formatEuro(HOST_FORMATS.standard.amountCents)}: две игровые линейки по два часа, профиль на сайте, представление на сцене, продвижение и сертификат. Расширенное участие — ${formatEuro(HOST_FORMATS.expanded.amountCents)}: стандартный состав и дополнительное продвижение командой R.O.S.T. Пакет «Фото и видео» стоит ${formatEuro(HOST_MEDIA_CENTS)}: 10 профессиональных фотографий и один рилс.`,
+            body: `Стандартное участие: ${formatEuro(HOST_FORMATS.standard.amountCents)}: две игровые линейки по два часа, профиль на сайте, представление на сцене, продвижение и сертификат. Расширенное участие: ${formatEuro(HOST_FORMATS.expanded.amountCents)}: стандартный состав и дополнительное продвижение командой R.O.S.T. Пакет «Фото и видео» стоит ${formatEuro(HOST_MEDIA_CENTS)}: 10 профессиональных фотографий и один рилс.`,
           },
           {
             title: 'Предоплата и остаток',
-            body: `Предоплата ${formatEuro(HOST_DEPOSIT_CENTS)} не увеличивает стоимость, а входит в неё. Если вы отмечаете предоплату, сейчас оплачивается ${formatEuro(HOST_DEPOSIT_CENTS)}, остаток — позже по отдельной ссылке от организаторов. Без предоплаты сейчас оплачивается полная сумма.`,
+            body: `Предоплата ${formatEuro(HOST_DEPOSIT_CENTS)} не увеличивает стоимость, а входит в неё. Если вы отмечаете предоплату, сейчас оплачивается ${formatEuro(HOST_DEPOSIT_CENTS)}, остаток: позже по отдельной ссылке от организаторов. Без предоплаты сейчас оплачивается полная сумма.`,
           },
           {
             title: 'Бронь стола',
-            body: `После отправки заявки один из ${HOST_TABLE_COUNT} столов резервируется за вами на ${HOST_HOLD_MINUTES} минут. Место закрепляется только после подтверждённой оплаты. Если оплата не подтверждена, бронь освобождается, но данные заявки сохраняются.`,
+            body: `После отправки заявки один из ${HOST_TABLE_COUNT} столов резервируется за вами на ${HOST_HOLD_MINUTES} минут. Место закрепляется только после подтверждённой оплаты. Без оплаты стол освобождается через 31 минуту, но данные заявки сохраняются. Подтверждённая предоплата €50 закрепляет стол без автоматического истечения срока.`,
           },
           {
             title: 'Оплата и подтверждение',
-            body: 'Оплата проходит на защищённой странице Stripe. Возврат со страницы оплаты без серверного подтверждения платежа не считается оплатой. После подтверждённой оплаты отдельное одобрение организатора не требуется. НДС не начисляется в соответствии с § 19 UStG.',
+            body: 'Организатор, сторона договора и получатель новых оплат: Timur Cherepanov (адрес в Impressum), grupparost@gmail.com. Договор заключается после подтверждённой оплаты. Оплата проходит на защищённой странице Stripe. Возврат со страницы оплаты без серверного подтверждения платежа не считается оплатой. После подтверждённой оплаты отдельное одобрение организатора не требуется. НДС не начисляется в соответствии с § 19 UStG.',
           },
           {
             title: 'Отмена и возврат',
-            body: 'Для потребителей в отношении досуговых мероприятий на определённую дату законное право отказа не предусмотрено (§ 312g абз. 2 п. 9 BGB). Если мероприятие отменяет организатор, мы возвращаем полную уплаченную сумму. В остальных случаях напишите нам заранее: возврат или перенос рассматриваются индивидуально в рамках законодательства Германии.',
+            body: 'Для потребителей в отношении досуговых мероприятий на определённую дату законное право отказа не предусмотрено (§ 312g абз. 2 п. 9 BGB). Если мероприятие отменяет организатор, мы возвращаем полную уплаченную сумму. При существенном переносе даты предложим новую дату либо возврат. В остальных случаях напишите заранее: возврат или перенос рассматриваются индивидуально. Установленные законом права сохраняются.',
           },
         ],
         privacyLabel: 'Политика конфиденциальности',
@@ -130,7 +148,7 @@ const copy =
         statusUnknown:
           'Не удалось проверить статус оплаты. Если деньги списались, напишите нам.',
         errSoldOut:
-          'Все столы сейчас заняты. Напишите нам — сообщим, если место освободится.',
+          'Все столы сейчас заняты. Напишите нам: сообщим, если место освободится.',
         errPayments:
           'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
         errContact: 'Проверьте контакт: нужен корректный ник или номер.',
@@ -139,7 +157,7 @@ const copy =
           'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам.',
       }
     : {
-        eyebrow: 'München / für Spielleitende',
+        eyebrow: 'München · für Spielleitende',
         date: '7. November · München',
         title: ['Bringen Sie', 'Ihr Spiel', 'zu R.O.S.T.'],
         intro:
@@ -150,14 +168,26 @@ const copy =
           'Nach bestätigter Zahlung wird der Tisch für Sie reserviert.',
         ],
         formatEyebrow: 'Format',
-        formatTitle: ['Ihr Spiel —', 'im Mittelpunkt des Tages'],
+        formatTitle: ['Ihr Spiel', 'im Mittelpunkt des Tages'],
         formatIntro:
           'Wir stellen Sie und Ihr Spiel vor der Veranstaltung und vor Ort vor. Sie leiten Ihr Spiel und lernen Teilnehmende und Kolleginnen und Kollegen kennen; das R.O.S.T.-Team organisiert den Tag.',
         features: [
-          ['Ihre Praxis im Mittelpunkt', 'Zwei Spielrunden von je zwei Stunden und eine kurze Vorstellung auf der Bühne.'],
-          ['Sichtbarkeit vor dem Treffen', 'Instagram-Live und ein Tag in den R.O.S.T.-Storys; Ihr Spielprofil auf der Website.'],
-          ['Kontakte vor Ort', 'Austausch mit Teilnehmenden und anderen Spielleitenden; Profil und QR-Code auf den Bildschirmen.'],
-          ['Unterstützung durch das Team', 'Wir bereiten den Raum vor, koordinieren den Tag und stellen eine Teilnahmebescheinigung aus.'],
+          [
+            'Ihre Praxis im Mittelpunkt',
+            'Zwei Spielrunden von je zwei Stunden und 1,5 Minuten für die Vorstellung Ihres Spiels auf der Bühne.',
+          ],
+          [
+            'Sichtbarkeit vor dem Treffen',
+            'Instagram-Live und ein Tag in den R.O.S.T.-Storys; Ihr Spielprofil auf der Website.',
+          ],
+          [
+            'Kontakte vor Ort',
+            'Austausch mit Teilnehmenden und anderen Spielleitenden; Profil und QR-Code auf den Bildschirmen.',
+          ],
+          [
+            'Unterstützung durch das Team',
+            'Wir bereiten den Raum vor, koordinieren den Tag und stellen eine Teilnahmebescheinigung aus.',
+          ],
         ],
         termsEyebrow: 'Bedingungen',
         termsTitle: 'Teilnahmeformate',
@@ -175,7 +205,8 @@ const copy =
             title: 'Erweitert',
             amount: HOST_FORMATS.expanded.amountCents,
             body: 'Alles aus Standard + zusätzliche Bewerbung durch das R.O.S.T.-Team',
-            condition: 'Konzentrieren Sie sich auf die Vorbereitung und Durchführung Ihres Spiels',
+            condition:
+              'Keine verpflichtenden Beiträge in Ihren sozialen Netzwerken: Das Team übernimmt die Bewerbung',
           },
         ],
         mediaTitle: 'Foto und Video',
@@ -185,13 +216,13 @@ const copy =
         total: 'Teilnahmekosten',
         now: 'Jetzt',
         later: 'Später',
-        depositNote: `Die ${formatEuro(HOST_DEPOSIT_CENTS)} sind Teil der Gesamtkosten. Den Rest fordern die Organisatorinnen später über einen separaten Link an; er wird nicht automatisch abgebucht.`,
+        depositNote: `Die ${formatEuro(HOST_DEPOSIT_CENTS)} sind Teil der Gesamtkosten. Den Rest fordern der Veranstalter später über einen separaten Link an; er wird nicht automatisch abgebucht.`,
         closedNote:
           'Die Anmeldung für Spielleitende ist geschlossen. Schreiben Sie uns, wenn Sie teilnehmen möchten.',
         formEyebrow: 'Anmeldung',
         flowTitle: 'Anmeldung → Zahlung → Tisch',
         flowBody:
-          'Füllen Sie die Daten aus und gehen Sie zur Zahlung. Der Tisch wird für 30 Minuten reserviert. Nach bestätigter Zahlung sind Teilnahme und Platz gesichert; eine zusätzliche Freigabe ist nicht nötig.',
+          'Füllen Sie die Daten aus und gehen Sie zur Zahlung. Für die Zahlung haben Sie 30 Minuten und eine zusätzliche Minute Zeit. Ohne Zahlung wird der Tisch nach 31 Minuten freigegeben. Eine bestätigte Zahlung, auch die Anzahlung von €50, sichert den Tisch ohne automatischen Ablauf.',
         formTitle: 'Angaben zur Anmeldung',
         name: 'Wie dürfen wir Sie ansprechen?',
         namePlaceholder: 'Vor- und Nachname',
@@ -220,23 +251,23 @@ const copy =
         conditions: [
           {
             title: 'Kosten und Leistungen',
-            body: `Standardteilnahme — ${formatEuro(HOST_FORMATS.standard.amountCents)}: zwei Spielrunden von je zwei Stunden, Profil auf der Website, Vorstellung auf der Bühne, Bewerbung und Zertifikat. Erweiterte Teilnahme — ${formatEuro(HOST_FORMATS.expanded.amountCents)}: Standardumfang plus zusätzliche Bewerbung durch das R.O.S.T.-Team. Das Paket „Foto und Video“ kostet ${formatEuro(HOST_MEDIA_CENTS)}: 10 professionelle Fotos und ein Reel.`,
+            body: `Standardteilnahme: ${formatEuro(HOST_FORMATS.standard.amountCents)}: zwei Spielrunden von je zwei Stunden, Profil auf der Website, Vorstellung auf der Bühne, Bewerbung und Zertifikat. Erweiterte Teilnahme: ${formatEuro(HOST_FORMATS.expanded.amountCents)}: Standardumfang plus zusätzliche Bewerbung durch das R.O.S.T.-Team. Das Paket „Foto und Video“ kostet ${formatEuro(HOST_MEDIA_CENTS)}: 10 professionelle Fotos und ein Reel.`,
           },
           {
             title: 'Anzahlung und Restbetrag',
-            body: `Die Anzahlung von ${formatEuro(HOST_DEPOSIT_CENTS)} erhöht die Kosten nicht, sondern ist darin enthalten. Mit Anzahlung zahlen Sie jetzt ${formatEuro(HOST_DEPOSIT_CENTS)}, den Rest später über einen separaten Link der Organisatorinnen. Ohne Anzahlung zahlen Sie jetzt den vollen Betrag.`,
+            body: `Die Anzahlung von ${formatEuro(HOST_DEPOSIT_CENTS)} erhöht die Kosten nicht, sondern ist darin enthalten. Mit Anzahlung zahlen Sie jetzt ${formatEuro(HOST_DEPOSIT_CENTS)}, den Rest später über einen separaten Link des Veranstalters. Ohne Anzahlung zahlen Sie jetzt den vollen Betrag.`,
           },
           {
             title: 'Tischreservierung',
-            body: `Nach dem Absenden der Anmeldung wird einer von ${HOST_TABLE_COUNT} Tischen für ${HOST_HOLD_MINUTES} Minuten für Sie reserviert. Der Platz wird erst nach bestätigter Zahlung gesichert. Ohne Zahlungsbestätigung wird die Reservierung freigegeben, die Anmeldedaten bleiben jedoch gespeichert.`,
+            body: `Nach dem Absenden der Anmeldung wird einer von ${HOST_TABLE_COUNT} Tischen für ${HOST_HOLD_MINUTES} Minuten für Sie reserviert. Der Platz wird erst nach bestätigter Zahlung gesichert. Ohne Zahlung wird der Tisch nach 31 Minuten freigegeben; die Anmeldedaten bleiben gespeichert. Auch die bestätigte Anzahlung von €50 sichert den Tisch ohne automatischen Ablauf.`,
           },
           {
             title: 'Zahlung und Bestätigung',
-            body: 'Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Eine Rückkehr von der Zahlungsseite ohne serverseitige Zahlungsbestätigung gilt nicht als Zahlung. Nach bestätigter Zahlung ist keine zusätzliche Freigabe durch die Organisatorinnen erforderlich. Gemäß § 19 UStG wird keine Umsatzsteuer erhoben.',
+            body: 'Veranstalter, Vertragspartner und Empfänger neuer Zahlungen: Timur Cherepanov (Anschrift im Impressum), grupparost@gmail.com. Der Vertrag kommt mit bestätigter Zahlung zustande. Die Zahlung erfolgt auf der gesicherten Seite von Stripe. Eine Rückkehr von der Zahlungsseite ohne serverseitige Zahlungsbestätigung gilt nicht als Zahlung. Nach bestätigter Zahlung ist keine zusätzliche Freigabe durch der Veranstalter erforderlich. Gemäß § 19 UStG wird keine Umsatzsteuer erhoben.',
           },
           {
             title: 'Stornierung und Erstattung',
-            body: 'Für Verbraucher besteht bei Freizeitveranstaltungen zu einem bestimmten Termin kein gesetzliches Widerrufsrecht (§ 312g Abs. 2 Nr. 9 BGB). Sagt die Veranstalterin ab, erstatten wir den vollen gezahlten Betrag. In allen anderen Fällen schreiben Sie uns bitte rechtzeitig; eine Erstattung oder Umbuchung prüfen wir im Einzelfall im Rahmen des deutschen Rechts.',
+            body: 'Für Verbraucher besteht bei Freizeitveranstaltungen zu einem bestimmten Termin kein gesetzliches Widerrufsrecht (§ 312g Abs. 2 Nr. 9 BGB). Sagt der Veranstalter ab, erstatten wir den vollen gezahlten Betrag. Bei einer wesentlichen Terminverlegung bieten wir den neuen Termin oder eine Erstattung an. In anderen Fällen schreiben Sie uns bitte rechtzeitig; eine Erstattung oder Umbuchung prüfen wir individuell. Gesetzliche Ansprüche bleiben unberührt.',
           },
         ],
         privacyLabel: 'Datenschutzerklärung',
@@ -244,18 +275,19 @@ const copy =
         statusClose: 'Mitteilung schließen',
         statusSuccess: 'Zahlung bestätigt. Der Tisch ist für Sie reserviert.',
         statusPaidNoTable:
-          'Zahlung bestätigt. Die Organisatorinnen melden sich wegen des Tisches bei Ihnen.',
+          'Zahlung bestätigt. Der Veranstalter meldet sich wegen des Tisches bei Ihnen.',
         statusPending:
           'Die Zahlung ist noch nicht bestätigt. Wir prüfen sie; laden Sie die Seite in einer Minute neu.',
         statusExpired:
           'Die Reservierung ist abgelaufen. Die Anmeldung bleibt gespeichert; senden Sie sie erneut, um einen Tisch zu sichern.',
-        statusCancelled: 'Zahlung abgebrochen. Die Anmeldung bleibt gespeichert.',
+        statusCancelled:
+          'Zahlung abgebrochen. Die Anmeldung bleibt gespeichert.',
         statusRefunded:
           'Die Zahlung wurde erstattet. Wenn das unerwartet ist, schreiben Sie uns.',
         statusUnknown:
           'Der Zahlungsstatus konnte nicht geprüft werden. Falls Geld abgebucht wurde, schreiben Sie uns.',
         errSoldOut:
-          'Alle Tische sind derzeit belegt. Schreiben Sie uns — wir melden uns, falls ein Platz frei wird.',
+          'Alle Tische sind derzeit belegt. Schreiben Sie uns: wir melden uns, falls ein Platz frei wird.',
         errPayments:
           'Die Online-Zahlung ist noch nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.',
         errContact:
@@ -270,31 +302,33 @@ const isRu = lang === 'ru';
 <div class="font-hero-sans text-brand">
   <section class="hero hero--host" aria-labelledby="host-title">
     <div class="hero__inner site-container">
-      <div class="hero__content">
+      <PageIntro class="hero__content">
         <div>
           <p class="hero__eyebrow">{copy.eyebrow}</p>
-          <span class="mt-5 inline-flex rounded-full bg-brand-gold px-5 py-2 text-xs font-bold uppercase tracking-[0.13em] text-brand">
+          <span class="ui-eyebrow mt-5 inline-flex rounded-full bg-brand-gold px-5 py-2 text-brand">
             {copy.date}
           </span>
         </div>
-        <h1 class="hero__title" id="host-title">
+        <Heading as="h1" variant="page" class="hero__title" id="host-title">
           <span class="block lg:inline">{copy.title[0]} </span>
           <span class="block lg:inline">{copy.title[1]} </span>
           <span class="block text-accent lg:inline">{copy.title[2]}</span>
-        </h1>
+        </Heading>
         <p class="hero__description">{copy.intro}</p>
-        <a
+        <Button
+          variant="primary"
+          size="regular"
           href="#host-registration"
-          class="inline-flex min-h-14 items-center justify-center rounded-2xl bg-brand px-7 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold"
+          class=""
         >
           {copy.heroCta}
-        </a>
+        </Button>
         <div class="mt-4 space-y-1 text-sm leading-relaxed text-muted">
           {copy.heroNote.map((line, index) => (
             <p id={index === 0 ? 'host-tables-note' : undefined}>{line}</p>
           ))}
         </div>
-      </div>
+      </PageIntro>
       <div class="hidden self-start rounded-4xl bg-hero-end p-8 lg:grid lg:place-items-center">
         <img
           src="/images/ti-games/kristina.webp"
@@ -307,15 +341,24 @@ const isRu = lang === 'ru';
     </div>
   </section>
 
-  <section id="host-benefits" class="bg-white py-18 md:py-26" aria-labelledby="host-benefits-title">
+  <section
+    id="host-benefits"
+    class="ui-section bg-white"
+    aria-labelledby="host-benefits-title"
+  >
     <div class="site-container">
-      <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
-        {copy.formatEyebrow}
-      </p>
-      <h2 id="host-benefits-title" class="mt-4 font-display text-[clamp(2rem,5vw,4.2rem)] leading-tight">
-        <span class="block lg:inline">{copy.formatTitle[0]} </span>
-        <span class="block lg:inline">{copy.formatTitle[1]}</span>
-      </h2>
+      <div class="ui-section-heading">
+        <p class="ui-eyebrow text-accent">{copy.formatEyebrow}</p>
+        <Heading
+          as="h2"
+          variant="section"
+          id="host-benefits-title"
+          class="mt-4"
+        >
+          <span class="block lg:inline">{copy.formatTitle[0]} </span>
+          <span class="block lg:inline">{copy.formatTitle[1]}</span>
+        </Heading>
+      </div>
       <p class="mt-5 max-w-3xl text-base leading-relaxed text-muted md:text-lg">
         {copy.formatIntro}
       </p>
@@ -330,15 +373,20 @@ const isRu = lang === 'ru';
     </div>
   </section>
 
-  <section id="host-registration" class="scroll-mt-24 bg-brand-surface py-18 md:py-26">
+  <EventValueSection lang={lang} audience="hosts" />
+
+  <section
+    id="host-registration"
+    class="ui-section scroll-mt-24 bg-brand-surface"
+  >
     <div class="site-container grid gap-10 lg:grid-cols-[minmax(0,1fr)_420px] lg:gap-14">
       <div class="min-w-0">
-        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
-          {copy.formEyebrow}
-        </p>
-        <h2 class="mt-4 font-display text-[clamp(1.8rem,4vw,3.4rem)] leading-tight">
-          {copy.flowTitle}
-        </h2>
+        <div class="ui-section-heading">
+          <p class="ui-eyebrow text-accent">{copy.formEyebrow}</p>
+          <Heading as="h2" variant="section" class="mt-4">
+            {copy.flowTitle}
+          </Heading>
+        </div>
         <p class="mt-4 max-w-2xl leading-relaxed text-muted">{copy.flowBody}</p>
 
         <form id="host-registration-form" class="mt-8 space-y-7">
@@ -347,7 +395,7 @@ const isRu = lang === 'ru';
             <div class="space-y-3">
               {copy.formats.map((format, index) => (
                 <label class="block cursor-pointer">
-                  <span class="flex min-h-28 items-start gap-3 rounded-2xl border border-line bg-white p-4 transition has-[:checked]:border-brand has-[:checked]:bg-brand-surface focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand">
+                  <span class="ui-choice-card flex min-h-28 items-start gap-3">
                     <input
                       type="radio"
                       name="host-format"
@@ -372,7 +420,11 @@ const isRu = lang === 'ru';
               ))}
             </div>
             <label class="mt-3 flex cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4">
-              <input id="host-media" type="checkbox" class="mt-1 h-5 w-5 shrink-0 accent-brand" />
+              <input
+                id="host-media"
+                type="checkbox"
+                class="mt-1 h-5 w-5 shrink-0 accent-brand"
+              />
               <span class="min-w-0 flex-1">
                 <span class="flex items-baseline justify-between gap-4">
                   <strong>{copy.mediaTitle}</strong>
@@ -380,14 +432,22 @@ const isRu = lang === 'ru';
                     +{formatEuro(HOST_MEDIA_CENTS)}
                   </strong>
                 </span>
-                <span class="mt-1 block text-sm text-muted">{copy.mediaBody}</span>
+                <span class="mt-1 block text-sm text-muted">
+                  {copy.mediaBody}
+                </span>
               </span>
             </label>
             <label class="mt-3 flex cursor-pointer items-start gap-3 rounded-2xl border border-line bg-white p-4">
-              <input id="host-deposit" type="checkbox" class="mt-1 h-5 w-5 shrink-0 accent-brand" />
+              <input
+                id="host-deposit"
+                type="checkbox"
+                class="mt-1 h-5 w-5 shrink-0 accent-brand"
+              />
               <span class="min-w-0 flex-1">
                 <strong>{copy.depositTitle}</strong>
-                <span class="mt-1 block text-sm text-muted">{copy.depositBody}</span>
+                <span class="mt-1 block text-sm text-muted">
+                  {copy.depositBody}
+                </span>
               </span>
             </label>
             <p
@@ -411,9 +471,15 @@ const isRu = lang === 'ru';
                 {formatEuro(initial.dueNowCents)}
               </strong>
             </div>
-            <div id="host-remaining-row" class="mt-2 flex items-baseline justify-between gap-4" hidden>
+            <div
+              id="host-remaining-row"
+              class="mt-2 flex items-baseline justify-between gap-4"
+              hidden
+            >
               <span class="text-sm font-semibold text-muted">{copy.later}</span>
-              <strong id="host-remaining" class="text-xl">{formatEuro(initial.remainingCents)}</strong>
+              <strong id="host-remaining" class="text-xl">
+                {formatEuro(initial.remainingCents)}
+              </strong>
             </div>
           </div>
 
@@ -428,7 +494,7 @@ const isRu = lang === 'ru';
                 minlength="2"
                 maxlength="80"
                 placeholder={copy.namePlaceholder}
-                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+                class="ui-field"
               />
             </label>
             <label class="block">
@@ -440,7 +506,7 @@ const isRu = lang === 'ru';
                 required
                 maxlength="160"
                 placeholder={copy.emailPlaceholder}
-                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+                class="ui-field"
               />
             </label>
             <fieldset>
@@ -463,16 +529,29 @@ const isRu = lang === 'ru';
               </div>
             </fieldset>
             <fieldset id="host-whatsapp-type" class="hidden">
-              <legend class="mb-2 text-sm font-bold">{copy.whatsappType}</legend>
+              <legend class="mb-2 text-sm font-bold">
+                {copy.whatsappType}
+              </legend>
               <div class="grid grid-cols-2 gap-2 text-center text-sm">
                 <label>
-                  <input type="radio" name="whatsapp-type" value="phone" checked class="peer sr-only" />
+                  <input
+                    type="radio"
+                    name="whatsapp-type"
+                    value="phone"
+                    checked
+                    class="peer sr-only"
+                  />
                   <span class="block cursor-pointer rounded-xl border border-line bg-white px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface">
                     {copy.whatsappPhone}
                   </span>
                 </label>
                 <label>
-                  <input type="radio" name="whatsapp-type" value="username" class="peer sr-only" />
+                  <input
+                    type="radio"
+                    name="whatsapp-type"
+                    value="username"
+                    class="peer sr-only"
+                  />
                   <span class="block cursor-pointer rounded-xl border border-line bg-white px-2 py-3 peer-checked:border-brand peer-checked:bg-brand-surface">
                     {copy.whatsappUsername}
                   </span>
@@ -480,16 +559,24 @@ const isRu = lang === 'ru';
               </div>
             </fieldset>
             <label class="block">
-              <span id="host-contact-label" class="mb-2 block text-sm font-bold">{copy.contact}</span>
+              <span
+                id="host-contact-label"
+                class="mb-2 block text-sm font-bold"
+              >
+                {copy.contact}
+              </span>
               <input
                 name="contact"
                 required
                 aria-describedby="host-contact-hint host-contact-error"
                 aria-invalid="false"
-                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+                class="ui-field"
               />
             </label>
-            <p id="host-contact-hint" class="-mt-3 text-xs leading-relaxed text-muted"></p>
+            <p
+              id="host-contact-hint"
+              class="-mt-3 text-xs leading-relaxed text-muted"
+            ></p>
             <p
               id="host-contact-error"
               role="alert"
@@ -503,11 +590,13 @@ const isRu = lang === 'ru';
                 minlength="3"
                 maxlength="120"
                 placeholder={copy.gameTitlePlaceholder}
-                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"
+                class="ui-field"
               />
             </label>
             <label class="block">
-              <span class="mb-2 block text-sm font-bold">{copy.gameDescription}</span>
+              <span class="mb-2 block text-sm font-bold">
+                {copy.gameDescription}
+              </span>
               <textarea
                 name="gameDescription"
                 required
@@ -515,22 +604,36 @@ const isRu = lang === 'ru';
                 maxlength="800"
                 rows="5"
                 placeholder={copy.gameDescriptionPlaceholder}
-                class="w-full rounded-xl border border-line bg-white px-4 py-3 outline-none focus:border-brand focus:ring-2 focus:ring-brand/15"></textarea>
+                class="ui-field"
+              ></textarea>
             </label>
           </fieldset>
 
           <div class="space-y-3 rounded-2xl bg-white p-4 text-sm leading-relaxed">
             <label class="flex items-start gap-3">
-              <input name="terms" type="checkbox" required class="mt-1 h-5 w-5 shrink-0" />
+              <input
+                name="terms"
+                type="checkbox"
+                required
+                class="mt-1 h-5 w-5 shrink-0"
+              />
               <span>
                 {copy.termsBefore}{' '}
-                <a href="#host-conditions" class="font-semibold underline underline-offset-2">
+                <a
+                  href="#host-conditions"
+                  class="font-semibold underline underline-offset-2"
+                >
                   {copy.termsLink}
                 </a>
               </span>
             </label>
             <label class="flex items-start gap-3">
-              <input name="privacy" type="checkbox" required class="mt-1 h-5 w-5 shrink-0" />
+              <input
+                name="privacy"
+                type="checkbox"
+                required
+                class="mt-1 h-5 w-5 shrink-0"
+              />
               <span>
                 {copy.privacyBefore}{' '}
                 <a
@@ -545,29 +648,44 @@ const isRu = lang === 'ru';
             </label>
           </div>
 
-          <p id="host-form-error" role="alert" tabindex="-1" class="hidden rounded-xl bg-red-50 p-3 text-sm text-red-800"></p>
+          <p
+            id="host-form-error"
+            role="alert"
+            tabindex="-1"
+            class="hidden rounded-xl bg-red-50 p-3 text-sm text-red-800"
+          ></p>
         </form>
       </div>
 
       <aside class="min-w-0 self-start rounded-4xl border border-brand/10 bg-white p-7 shadow-xl lg:sticky lg:top-28">
-        <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
-          {copy.formEyebrow}
-        </p>
+        <p class="ui-eyebrow text-accent">{copy.formEyebrow}</p>
         <div class="mt-4 flex items-baseline justify-between gap-4">
           <span class="text-sm font-semibold text-muted">{copy.total}</span>
-          <strong id="host-summary-total" class="font-display text-2xl font-normal">
+          <strong
+            id="host-summary-total"
+            class="font-display text-2xl font-normal"
+          >
             {formatEuro(initial.totalCents)}
           </strong>
         </div>
         <div class="mt-2 flex items-baseline justify-between gap-4">
           <span class="text-sm font-semibold text-muted">{copy.now}</span>
-          <strong id="host-summary-due" class="font-display text-4xl font-normal">
+          <strong
+            id="host-summary-due"
+            class="font-display text-4xl font-normal"
+          >
             {formatEuro(initial.dueNowCents)}
           </strong>
         </div>
-        <div id="host-summary-remaining-row" class="mt-2 flex items-baseline justify-between gap-4" hidden>
+        <div
+          id="host-summary-remaining-row"
+          class="mt-2 flex items-baseline justify-between gap-4"
+          hidden
+        >
           <span class="text-sm font-semibold text-muted">{copy.later}</span>
-          <strong id="host-summary-remaining" class="text-xl">{formatEuro(initial.remainingCents)}</strong>
+          <strong id="host-summary-remaining" class="text-xl">
+            {formatEuro(initial.remainingCents)}
+          </strong>
         </div>
         <p
           id="host-closed-note"
@@ -575,42 +693,69 @@ const isRu = lang === 'ru';
           hidden
           class="mt-5 rounded-xl bg-brand-surface p-3 text-sm font-semibold leading-relaxed text-brand"
         ></p>
-        <button
+        <Button
+          variant="primary"
+          size="regular"
           id="host-submit"
           type="submit"
           form="host-registration-form"
-          class="mt-6 w-full rounded-2xl bg-brand px-6 py-4 text-center font-bold text-white transition hover:bg-accent hover:text-brand-gold focus-visible:bg-accent focus-visible:text-brand-gold disabled:cursor-not-allowed disabled:opacity-50"
+          class="mt-6 w-full"
         >
           {copy.submit}
-        </button>
+        </Button>
         <p class="mt-3 text-center text-sm font-semibold text-brand">
-          {copy.dueNote} — <span id="host-cta-due">{formatEuro(initial.dueNowCents)}</span>
+          {copy.dueNote} :{' '}
+          <span id="host-cta-due">{formatEuro(initial.dueNowCents)}</span>
         </p>
-        <p class="mt-4 text-xs leading-relaxed text-muted">{copy.paymentNote}</p>
+        <p class="mt-4 text-xs leading-relaxed text-muted">
+          {copy.paymentNote}
+        </p>
+        <p class="mt-3 text-xs leading-relaxed text-muted">
+          {lang === 'ru'
+            ? 'Продавец и организатор: '
+            : 'Verkäufer und Veranstalter: '}
+          <a href={routes.imprint[lang]} class="underline underline-offset-2">
+            Timur Cherepanov
+          </a>
+        </p>
       </aside>
     </div>
   </section>
 
-  <section id="host-conditions" class="scroll-mt-24 bg-white py-18 md:py-26">
+  <section id="host-conditions" class="ui-section scroll-mt-24 bg-white">
     <div class="site-container max-w-3xl">
-      <p class="text-xs font-bold uppercase tracking-[0.16em] text-accent">
-        {copy.conditionsEyebrow}
-      </p>
-      <h2 class="mt-4 break-words font-display text-3xl md:text-4xl">{copy.conditionsTitle}</h2>
+      <div class="ui-section-heading">
+        <p class="ui-eyebrow text-accent">{copy.conditionsEyebrow}</p>
+        <Heading as="h2" variant="section" class="mt-4 break-words">
+          {copy.conditionsTitle}
+        </Heading>
+      </div>
       <div class="mt-8 space-y-7">
         {copy.conditions.map((section) => (
           <section>
-            <h3 class="font-display text-2xl">{section.title}</h3>
+            <Heading as="h3" variant="card" class="">
+              {section.title}
+            </Heading>
             <p class="mt-2 leading-relaxed text-muted">{section.body}</p>
           </section>
         ))}
       </div>
-      <div class="mt-8 flex flex-wrap gap-6 font-semibold">
-        <a href={routes.privacy[lang]} class="underline underline-offset-4">{copy.privacyLabel}</a>
-        <a href={routes.contacts[lang]} class="underline underline-offset-4">{copy.contactsLabel}</a>
-      </div>
     </div>
   </section>
+  <CtaSection
+    title={
+      isRu
+        ? 'Есть вопросы перед встречей?'
+        : 'Noch Fragen vor der Veranstaltung?'
+    }
+    description={
+      isRu
+        ? 'Напишите нам, поможем с форматом участия и регистрацией.'
+        : 'Schreiben Sie uns. Wir helfen Ihnen bei Teilnahmeformat und Anmeldung.'
+    }
+    href={routes.contacts[lang]}
+    label={isRu ? 'Связаться с нами →' : 'Kontakt aufnehmen →'}
+  />
 </div>
 
 <div
@@ -623,7 +768,7 @@ const isRu = lang === 'ru';
     id="host-status-close"
     type="button"
     aria-label={copy.statusClose}
-    class="-mr-1 -mt-1 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-2xl font-normal leading-none text-brand transition hover:bg-brand/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand"
+    class="ui-icon-button"
   >
     ×
   </button>
@@ -634,26 +779,44 @@ const isRu = lang === 'ru';
   import { formatEuro, hostPrice, type HostFormat } from '../lib/host';
 
   const isRu = document.documentElement.lang === 'ru';
-  const form = document.querySelector<HTMLFormElement>('#host-registration-form');
+  const form = document.querySelector<HTMLFormElement>(
+    '#host-registration-form',
+  );
   const submit = document.querySelector<HTMLButtonElement>('#host-submit');
   const total = document.querySelector<HTMLElement>('#host-total');
   const due = document.querySelector<HTMLElement>('#host-due');
   const remaining = document.querySelector<HTMLElement>('#host-remaining');
-  const remainingRow = document.querySelector<HTMLElement>('#host-remaining-row');
-  const summaryTotal = document.querySelector<HTMLElement>('#host-summary-total');
+  const remainingRow = document.querySelector<HTMLElement>(
+    '#host-remaining-row',
+  );
+  const summaryTotal = document.querySelector<HTMLElement>(
+    '#host-summary-total',
+  );
   const summaryDue = document.querySelector<HTMLElement>('#host-summary-due');
-  const summaryRemaining = document.querySelector<HTMLElement>('#host-summary-remaining');
-  const summaryRemainingRow = document.querySelector<HTMLElement>('#host-summary-remaining-row');
+  const summaryRemaining = document.querySelector<HTMLElement>(
+    '#host-summary-remaining',
+  );
+  const summaryRemainingRow = document.querySelector<HTMLElement>(
+    '#host-summary-remaining-row',
+  );
   const ctaDue = document.querySelector<HTMLElement>('#host-cta-due');
   const depositNote = document.querySelector<HTMLElement>('#host-deposit-note');
   const media = document.querySelector<HTMLInputElement>('#host-media');
   const deposit = document.querySelector<HTMLInputElement>('#host-deposit');
   const errorBox = document.querySelector<HTMLElement>('#host-form-error');
-  const contactInput = form?.querySelector<HTMLInputElement>('input[name="contact"]');
-  const contactLabel = document.querySelector<HTMLElement>('#host-contact-label');
+  const contactInput = form?.querySelector<HTMLInputElement>(
+    'input[name="contact"]',
+  );
+  const contactLabel = document.querySelector<HTMLElement>(
+    '#host-contact-label',
+  );
   const contactHint = document.querySelector<HTMLElement>('#host-contact-hint');
-  const contactError = document.querySelector<HTMLElement>('#host-contact-error');
-  const whatsappType = document.querySelector<HTMLElement>('#host-whatsapp-type');
+  const contactError = document.querySelector<HTMLElement>(
+    '#host-contact-error',
+  );
+  const whatsappType = document.querySelector<HTMLElement>(
+    '#host-whatsapp-type',
+  );
   const tablesNote = document.querySelector<HTMLElement>('#host-tables-note');
   const closedNote = document.querySelector<HTMLElement>('#host-closed-note');
   let hostOpen = true;
@@ -697,8 +860,8 @@ const isRu = lang === 'ru';
       } else if (data.freeTables === 0) {
         closeRegistration(
           isRu
-            ? 'Все столы сейчас заняты. Напишите нам — сообщим, если место освободится.'
-            : 'Alle Tische sind derzeit belegt. Schreiben Sie uns — wir melden uns, falls ein Platz frei wird.',
+            ? 'Все столы сейчас заняты. Напишите нам: сообщим, если место освободится.'
+            : 'Alle Tische sind derzeit belegt. Schreiben Sie uns: wir melden uns, falls ein Platz frei wird.',
         );
       }
     })
@@ -742,7 +905,9 @@ const isRu = lang === 'ru';
       inputMode: 'tel',
     },
     'WhatsApp-username': {
-      label: isRu ? 'Ваше имя пользователя WhatsApp' : 'Ihr WhatsApp-Benutzername',
+      label: isRu
+        ? 'Ваше имя пользователя WhatsApp'
+        : 'Ihr WhatsApp-Benutzername',
       placeholder: '@username',
       hint: isRu
         ? 'Имя пользователя доступно в WhatsApp постепенно. Проверьте, что оно уже работает.'
@@ -756,9 +921,11 @@ const isRu = lang === 'ru';
   } as const;
 
   const selectedChannel = () =>
-    form?.querySelector<HTMLInputElement>('input[name="channel"]:checked')?.value || 'Telegram';
+    form?.querySelector<HTMLInputElement>('input[name="channel"]:checked')
+      ?.value || 'Telegram';
   const selectedWhatsAppType = () =>
-    form?.querySelector<HTMLInputElement>('input[name="whatsapp-type"]:checked')?.value || 'phone';
+    form?.querySelector<HTMLInputElement>('input[name="whatsapp-type"]:checked')
+      ?.value || 'phone';
   const mode = () => contactMode(selectedChannel(), selectedWhatsAppType());
 
   const clearContactError = () => {
@@ -803,15 +970,20 @@ const isRu = lang === 'ru';
   };
 
   const updatePrice = () => {
-    const checked = form?.querySelector<HTMLInputElement>('input[name="host-format"]:checked');
-    const format = (checked?.value === 'expanded' ? 'expanded' : 'standard') as HostFormat;
+    const checked = form?.querySelector<HTMLInputElement>(
+      'input[name="host-format"]:checked',
+    );
+    const format = (
+      checked?.value === 'expanded' ? 'expanded' : 'standard'
+    ) as HostFormat;
     const price = hostPrice(format, !!media?.checked, !!deposit?.checked);
     if (total) total.textContent = formatEuro(price.totalCents);
     if (due) due.textContent = formatEuro(price.dueNowCents);
     if (remaining) remaining.textContent = formatEuro(price.remainingCents);
     if (summaryTotal) summaryTotal.textContent = formatEuro(price.totalCents);
     if (summaryDue) summaryDue.textContent = formatEuro(price.dueNowCents);
-    if (summaryRemaining) summaryRemaining.textContent = formatEuro(price.remainingCents);
+    if (summaryRemaining)
+      summaryRemaining.textContent = formatEuro(price.remainingCents);
     if (ctaDue) ctaDue.textContent = formatEuro(price.dueNowCents);
     if (remainingRow) remainingRow.hidden = !deposit?.checked;
     if (summaryRemainingRow) summaryRemainingRow.hidden = !deposit?.checked;
@@ -821,33 +993,40 @@ const isRu = lang === 'ru';
   updateContactMode();
   updatePrice();
   form
-    ?.querySelectorAll<HTMLInputElement>('input[name="channel"], input[name="whatsapp-type"]')
+    ?.querySelectorAll<HTMLInputElement>(
+      'input[name="channel"], input[name="whatsapp-type"]',
+    )
     .forEach((radio) => radio.addEventListener('change', updateContactMode));
   contactInput?.addEventListener('input', () => validateContact(true));
   form
-    ?.querySelectorAll<HTMLInputElement>('input[name="host-format"], #host-media, #host-deposit')
+    ?.querySelectorAll<HTMLInputElement>(
+      'input[name="host-format"], #host-media, #host-deposit',
+    )
     .forEach((input) => input.addEventListener('change', updatePrice));
 
   const errorMessages = () =>
     isRu
       ? {
           sold_out:
-            'Все столы сейчас заняты. Напишите нам — сообщим, если место освободится.',
-          payments: 'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
+            'Все столы сейчас заняты. Напишите нам: сообщим, если место освободится.',
+          payments:
+            'Онлайн-оплата пока недоступна. Напишите нам, и мы всё оформим.',
           closed:
             'Регистрация ведущих закрыта. Напишите нам, если хотите участвовать.',
           contact: 'Проверьте контакт: нужен корректный ник или номер.',
           email: 'Проверьте адрес электронной почты.',
-          generic: 'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам.',
+          generic:
+            'Не удалось отправить заявку. Попробуйте ещё раз или напишите нам.',
         }
       : {
           sold_out:
-            'Alle Tische sind derzeit belegt. Schreiben Sie uns — wir melden uns, falls ein Platz frei wird.',
+            'Alle Tische sind derzeit belegt. Schreiben Sie uns: wir melden uns, falls ein Platz frei wird.',
           payments:
             'Die Online-Zahlung ist noch nicht verfügbar. Schreiben Sie uns, wir kümmern uns darum.',
           closed:
             'Die Anmeldung für Spielleitende ist geschlossen. Schreiben Sie uns, wenn Sie teilnehmen möchten.',
-          contact: 'Bitte prüfen Sie den Kontakt: Benutzername oder Nummer ist nicht gültig.',
+          contact:
+            'Bitte prüfen Sie den Kontakt: Benutzername oder Nummer ist nicht gültig.',
           email: 'Bitte prüfen Sie die E-Mail-Adresse.',
           generic:
             'Die Anmeldung konnte nicht gesendet werden. Bitte versuchen Sie es erneut oder schreiben Sie uns.',
@@ -858,20 +1037,39 @@ const isRu = lang === 'ru';
     if (!hostOpen) return;
     validateContact(true);
     if (!form.reportValidity() || !contactInput || !submit) return;
-    const checked = form.querySelector<HTMLInputElement>('input[name="host-format"]:checked');
-    const format = (checked?.value === 'expanded' ? 'expanded' : 'standard') as HostFormat;
+    const checked = form.querySelector<HTMLInputElement>(
+      'input[name="host-format"]:checked',
+    );
+    const format = (
+      checked?.value === 'expanded' ? 'expanded' : 'standard'
+    ) as HostFormat;
     const body = {
       format,
       media: !!media?.checked,
       deposit: !!deposit?.checked,
-      name: (form.querySelector<HTMLInputElement>('input[name="name"]')?.value || '').trim(),
-      email: (form.querySelector<HTMLInputElement>('input[name="email"]')?.value || '').trim(),
+      name: (
+        form.querySelector<HTMLInputElement>('input[name="name"]')?.value || ''
+      ).trim(),
+      email: (
+        form.querySelector<HTMLInputElement>('input[name="email"]')?.value || ''
+      ).trim(),
       channel: mode(),
       contact: contactInput.value.trim(),
-      gameTitle: (form.querySelector<HTMLInputElement>('input[name="gameTitle"]')?.value || '').trim(),
-      gameDescription: (form.querySelector<HTMLTextAreaElement>('textarea[name="gameDescription"]')?.value || '').trim(),
-      terms: form.querySelector<HTMLInputElement>('input[name="terms"]')?.checked === true,
-      privacy: form.querySelector<HTMLInputElement>('input[name="privacy"]')?.checked === true,
+      gameTitle: (
+        form.querySelector<HTMLInputElement>('input[name="gameTitle"]')
+          ?.value || ''
+      ).trim(),
+      gameDescription: (
+        form.querySelector<HTMLTextAreaElement>(
+          'textarea[name="gameDescription"]',
+        )?.value || ''
+      ).trim(),
+      terms:
+        form.querySelector<HTMLInputElement>('input[name="terms"]')?.checked ===
+        true,
+      privacy:
+        form.querySelector<HTMLInputElement>('input[name="privacy"]')
+          ?.checked === true,
       lang: isRu ? 'ru' : 'de',
     };
     const messages = errorMessages();
@@ -905,7 +1103,8 @@ const isRu = lang === 'ru';
       } else if (response.status === 409 || error === 'sold_out') {
         message = messages.sold_out;
         closeRegistration(message);
-      } else if (response.status === 403 || response.status === 503) message = messages.payments;
+      } else if (response.status === 403 || response.status === 503)
+        message = messages.payments;
       else if (error === 'bad_contact') message = messages.contact;
       else if (error === 'bad_email') message = messages.email;
     } catch {
@@ -920,11 +1119,15 @@ const isRu = lang === 'ru';
   });
 
   const statusBox = document.querySelector<HTMLElement>('#host-status');
-  const statusMessage = document.querySelector<HTMLElement>('#host-status-message');
-  document.querySelector('#host-status-close')?.addEventListener('click', () => {
-    statusBox?.classList.add('hidden');
-    statusBox?.classList.remove('flex');
-  });
+  const statusMessage = document.querySelector<HTMLElement>(
+    '#host-status-message',
+  );
+  document
+    .querySelector('#host-status-close')
+    ?.addEventListener('click', () => {
+      statusBox?.classList.add('hidden');
+      statusBox?.classList.remove('flex');
+    });
   const showStatus = (message: string) => {
     if (!statusBox || !statusMessage) return;
     statusMessage.textContent = message;
@@ -964,7 +1167,7 @@ const isRu = lang === 'ru';
             showStatus(
               isRu
                 ? 'Оплата подтверждена. Организаторы свяжутся с вами по поводу стола.'
-                : 'Zahlung bestätigt. Die Organisatorinnen melden sich wegen des Tisches bei Ihnen.',
+                : 'Zahlung bestätigt. Der Veranstalter meldet sich wegen des Tisches bei Ihnen.',
             );
           } else if (data.status === 'expired') {
             showStatus(

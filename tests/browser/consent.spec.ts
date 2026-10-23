@@ -46,7 +46,7 @@ test('HTML has no GTM snippet, noscript or pre-connect hints', async ({
 });
 
 for (const lang of ['de', 'ru'] as const)
-  test(`banner ${lang}: shown, no requests before choice, equal buttons`, async ({
+  test(`banner ${lang}: shown, no requests before choice, distinct buttons in the requested order`, async ({
     page,
   }) => {
     const external = trackExternal(page);
@@ -69,9 +69,15 @@ for (const lang of ['de', 'ru'] as const)
           Math.round(el.getBoundingClientRect().height),
         ].join('|');
       });
-    expect(await style('[data-role="all"]')).toBe(
+    expect(await style('[data-role="all"]')).not.toBe(
       await style('[data-role="necessary"]'),
     );
+    await expect(bar.locator('.cm__btns > button')).toHaveCount(3);
+    expect(
+      await bar
+        .locator('.cm__btns > button')
+        .evaluateAll((els) => els.map((el) => el.getAttribute('data-role'))),
+    ).toEqual(['show', 'necessary', 'all']);
     // page stays usable behind the non-modal bar
     expect(
       await page.evaluate(

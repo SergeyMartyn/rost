@@ -1,0 +1,472 @@
+[
+  {
+    "base": "https://rost.community",
+    "lang": "ru",
+    "width": 1034,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 824.1875,
+        "upper": 104,
+        "lower": 104,
+        "paddingTop": "104px",
+        "paddingBottom": "104px",
+        "pseudoTop": "96px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1473.5625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 2969.515625,
+        "upper": 104,
+        "lower": 104,
+        "paddingTop": "104px",
+        "paddingBottom": "104px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 3586.609375,
+        "upper": 104,
+        "lower": 104,
+        "paddingTop": "104px",
+        "paddingBottom": "104px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 824.1875,
+    "heroHeight": 708.1875,
+    "titleHeight": 307.1875,
+    "overflow": false
+  },
+  {
+    "base": "https://rost.community",
+    "lang": "de",
+    "width": 1034,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 766.640625,
+        "upper": 104,
+        "lower": 104,
+        "paddingTop": "104px",
+        "paddingBottom": "104px",
+        "pseudoTop": "96px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1416.015625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 2985.96875,
+        "upper": 104,
+        "lower": 104,
+        "paddingTop": "104px",
+        "paddingBottom": "104px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 3603.0625,
+        "upper": 104,
+        "lower": 104,
+        "paddingTop": "104px",
+        "paddingBottom": "104px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 766.640625,
+    "heroHeight": 650.640625,
+    "titleHeight": 230.390625,
+    "overflow": false
+  },
+  {
+    "base": "http://127.0.0.1:8787",
+    "lang": "ru",
+    "width": 390,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 1285.234375,
+        "upper": 48,
+        "lower": 48,
+        "paddingTop": "48px",
+        "paddingBottom": "48px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1807.09375,
+        "upper": 48,
+        "lower": 48,
+        "paddingTop": "48px",
+        "paddingBottom": "48px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 4128.703125,
+        "upper": 48,
+        "lower": 48,
+        "paddingTop": "48px",
+        "paddingBottom": "48px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 4848.09375,
+        "upper": 48,
+        "lower": 48,
+        "paddingTop": "48px",
+        "paddingBottom": "48px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 640.140625,
+    "heroHeight": 544.140625,
+    "titleHeight": 122.390625,
+    "overflow": false
+  },
+  {
+    "base": "http://127.0.0.1:8787",
+    "lang": "ru",
+    "width": 768,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 1243.78125,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1710.375,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 3583.546875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 4516.046875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 585.1875,
+    "heroHeight": 469.1875,
+    "titleHeight": 115.1875,
+    "overflow": false
+  },
+  {
+    "base": "http://127.0.0.1:8787",
+    "lang": "ru",
+    "width": 1034,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 824.1875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1393.5625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 2889.515625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 3426.609375,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 824.1875,
+    "heroHeight": 708.1875,
+    "titleHeight": 307.1875,
+    "overflow": false
+  },
+  {
+    "base": "http://127.0.0.1:8787",
+    "lang": "ru",
+    "width": 1440,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 714.390625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1177.421875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 2497.375,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 2989.46875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 714.390625,
+    "heroHeight": 598.390625,
+    "titleHeight": 230.390625,
+    "overflow": false
+  },
+  {
+    "base": "http://127.0.0.1:8787",
+    "lang": "de",
+    "width": 390,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 1306.828125,
+        "upper": 48,
+        "lower": 48,
+        "paddingTop": "48px",
+        "paddingBottom": "48px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1828.6875,
+        "upper": 48,
+        "lower": 48,
+        "paddingTop": "48px",
+        "paddingBottom": "48px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 4250.296875,
+        "upper": 48,
+        "lower": 48,
+        "paddingTop": "48px",
+        "paddingBottom": "48px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 5008.078125,
+        "upper": 48,
+        "lower": 48,
+        "paddingTop": "48px",
+        "paddingBottom": "48px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 640.140625,
+    "heroHeight": 544.140625,
+    "titleHeight": 122.390625,
+    "overflow": false
+  },
+  {
+    "base": "http://127.0.0.1:8787",
+    "lang": "de",
+    "width": 768,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 1273.78125,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1740.375,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 3661.546875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 4614.046875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 615.1875,
+    "heroHeight": 499.1875,
+    "titleHeight": 115.1875,
+    "overflow": false
+  },
+  {
+    "base": "http://127.0.0.1:8787",
+    "lang": "de",
+    "width": 1034,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 766.640625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1336.015625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 2905.96875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 3443.0625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 766.640625,
+    "heroHeight": 650.640625,
+    "titleHeight": 230.390625,
+    "overflow": false
+  },
+  {
+    "base": "http://127.0.0.1:8787",
+    "lang": "de",
+    "width": 1440,
+    "sections": [
+      {
+        "label": "ti-about-title",
+        "top": 747.390625,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-program-title",
+        "top": 1233.171875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "0px"
+      },
+      {
+        "label": "ti-practitioners-title",
+        "top": 2553.125,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      },
+      {
+        "label": "ti-tickets-title",
+        "top": 3045.21875,
+        "upper": 64,
+        "lower": 64,
+        "paddingTop": "64px",
+        "paddingBottom": "64px",
+        "pseudoTop": "auto"
+      }
+    ],
+    "heroBottom": 747.390625,
+    "heroHeight": 631.390625,
+    "titleHeight": 230.390625,
+    "overflow": false
+  }
+]

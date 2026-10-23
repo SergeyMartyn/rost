@@ -4,6 +4,7 @@ import { normalizeContact } from '../src/lib/contact';
 import {
   HOST_EVENT_ID,
   HOST_HOLD_MINUTES,
+  HOST_RELEASE_MINUTES,
   HOST_TABLE_COUNT,
   formatEuro,
   hostPrice,
@@ -24,19 +25,31 @@ import {
   type HostRegistrationRow,
 } from './host';
 import { TICKETS, isTicketKey } from './tickets';
+import { exportOrderPayment, exportHostPayment } from './sheets';
+import { PricingError, quotePrice } from './promotions';
 
 export interface OrdersEnv {
   ORDERS: D1Database;
   ORDERS_ENV?: string; // 'test' | 'live'
   PAYMENTS_ENABLED?: string; // must be 'true'
   stripe_test?: string; // Secret (test key)
-  STRIPE_SECRET_KEY?: string; // Secret (live key)
+  STRIPE_SECRET_KEY?: string; // Original account, retained for legacy processing
+  STRIPE_ACCOUNT_OWNER?: 'margarita' | 'timur'; // Selects NEW Stripe checkouts only
+  STRIPE_TIMUR_SECRET_KEY?: string; // Separate live credential; no fallback
+  STRIPE_TIMUR_TEST_KEY?: string;
+  STRIPE_TIMUR_WEBHOOK_SECRET?: string;
+  PAYPAL_NEW_ORDERS_ENABLED?: string; // Does not disable existing captures/webhooks
   STRIPE_WEBHOOK_SECRET?: string; // Secret
   ADMIN_TOKEN?: string; // Secret, protects the CSV export
   SHEETS_WEBHOOK_URL?: string; // Google Apps Script web app URL
   SHEETS_TOKEN?: string; // Secret shared with the Apps Script
   PAYPAL_ENABLED?: string;
   PAYPAL_MODE?: string; // 'sandbox' | 'live', must match ORDERS_ENV
+  PAYPAL_ACCOUNT_OWNER?: 'margarita' | 'timur'; // New orders only
+  PAYPAL_TIMUR_CLIENT_ID?: string;
+  PAYPAL_TIMUR_CLIENT_SECRET?: string;
+  PAYPAL_TIMUR_PAYEE_EMAIL?: string;
+  PAYPAL_TIMUR_WEBHOOK_ID?: string;
   PAYPAL_CLIENT_ID?: string;
   PAYPAL_CLIENT_SECRET?: string;
   PAYPAL_PAYEE_EMAIL?: string;
@@ -111,7 +124,14 @@ export { normalizeContact };
 
 function stripeKey(env: OrdersEnv): string | null {
   const live = env.ORDERS_ENV === 'live';
-  const key = live ? env.STRIPE_SECRET_KEY : env.stripe_test;
+  const key =
+    env.STRIPE_ACCOUNT_OWNER === 'timur'
+      ? live
+        ? env.STRIPE_TIMUR_SECRET_KEY
+        : env.STRIPE_TIMUR_TEST_KEY
+      : live
+        ? env.STRIPE_SECRET_KEY
+        : env.stripe_test;
   if (!key) return null;
   // Never mix modes: test key only in test env, live key only in live env.
   const ok = live ? /^(sk|rk)_live_/.test(key) : /^(sk|rk)_test_/.test(key);
@@ -127,6 +147,29 @@ function paymentsAllowed(url: URL, env: OrdersEnv): boolean {
   if (env.ORDERS_ENV !== 'live' && !url.hostname.endsWith('.workers.dev'))
     return false;
   return true;
+}
+
+function paypalAccountEnv(
+  env: OrdersEnv,
+  account: 'margarita' | 'timur',
+): OrdersEnv {
+  if (account === 'margarita') return env;
+  return {
+    ...env,
+    PAYPAL_CLIENT_ID: env.PAYPAL_TIMUR_CLIENT_ID,
+    PAYPAL_CLIENT_SECRET: env.PAYPAL_TIMUR_CLIENT_SECRET,
+    PAYPAL_PAYEE_EMAIL: env.PAYPAL_TIMUR_PAYEE_EMAIL,
+    PAYPAL_WEBHOOK_ID: env.PAYPAL_TIMUR_WEBHOOK_ID,
+  };
+}
+
+function newPaypalReady(env: OrdersEnv): boolean {
+  return env.PAYPAL_ACCOUNT_OWNER !== undefined &&
+    !['margarita', 'timur'].includes(env.PAYPAL_ACCOUNT_OWNER)
+    ? false
+    : paypalReady(
+        paypalAccountEnv(env, env.PAYPAL_ACCOUNT_OWNER ?? 'margarita'),
+      );
 }
 
 function paypalReady(env: OrdersEnv): boolean {
@@ -185,6 +228,41 @@ function paypalApprovalUrl(links: unknown, live: boolean): string | null {
 
 const euroAmount = (cents: number) => (cents / 100).toFixed(2);
 
+async function priceQuote(
+  request: Request,
+  env: OrdersEnv,
+  deps: Deps,
+): Promise<Response> {
+  if (request.method !== 'POST') return json({ error: 'method' }, 405);
+  const url = new URL(request.url);
+  if (!paymentsAllowed(url, env))
+    return json({ error: 'payments_disabled' }, 403);
+  try {
+    if (new URL(request.headers.get('Origin') || '').host !== url.host)
+      return json({ error: 'bad_origin' }, 403);
+  } catch {
+    return json({ error: 'bad_origin' }, 403);
+  }
+  const text = await request.text();
+  if (text.length > 4096) return json({ error: 'too_large' }, 413);
+  let body: Record<string, unknown>;
+  try {
+    body = JSON.parse(text);
+    if (!body || Array.isArray(body) || typeof body !== 'object') throw Error();
+  } catch {
+    return json({ error: 'bad_json' }, 400);
+  }
+  try {
+    return json(
+      await quotePrice(env.ORDERS, body.ticket, body.promoCode, deps.now()),
+    );
+  } catch (error) {
+    return error instanceof PricingError
+      ? json({ error: error.code }, error.status)
+      : json({ error: 'pricing_unavailable' }, 503);
+  }
+}
+
 // ---------- POST /api/orders ----------
 async function createOrder(
   request: Request,
@@ -207,6 +285,8 @@ async function createOrder(
   let body: Record<string, unknown>;
   try {
     body = JSON.parse(text);
+    if (!body || typeof body !== 'object' || Array.isArray(body))
+      throw Error('bad_json');
   } catch {
     return json({ error: 'bad_json' }, 400);
   }
@@ -217,9 +297,37 @@ async function createOrder(
   if (ticket.salesClosed) return json({ error: 'event_archived' }, 410);
   if (body.ticket === 'guest_early' && !isEarlyBirdActive(requestTime))
     return json({ error: 'offer_ended', serverTime: requestTime }, 409);
+  let price;
+  try {
+    price = await quotePrice(
+      env.ORDERS,
+      body.ticket,
+      body.promoCode,
+      requestTime,
+    );
+  } catch (error) {
+    if (error instanceof PricingError)
+      return json({ error: error.code }, error.status);
+    return json({ error: 'pricing_unavailable' }, 503);
+  }
+  // A promo must have been previewed. Legacy clients without a promo remain
+  // compatible. Browser-supplied amounts are never a price source.
+  if (
+    (price.promoCode || body.quoteKey !== undefined) &&
+    body.quoteKey !== price.quoteKey
+  )
+    return json({ error: 'price_changed', quote: price }, 409);
   const name = typeof body.name === 'string' ? body.name.trim() : '';
   if (name.length < 2 || name.length > 80)
     return json({ error: 'bad_name' }, 400);
+  if (body.quantity !== undefined && body.quantity !== price.quantity)
+    return json({ error: 'bad_quantity' }, 400);
+  const secondName =
+    typeof body.secondParticipantName === 'string'
+      ? body.secondParticipantName.trim()
+      : '';
+  if (price.quantity === 2 && (secondName.length < 2 || secondName.length > 80))
+    return json({ error: 'second_participant_required' }, 400);
   const contact = normalizeContact(
     String(body.channel ?? ''),
     String(body.contact ?? ''),
@@ -234,15 +342,24 @@ async function createOrder(
         ? 'paypal'
         : null;
   if (!provider) return json({ error: 'bad_provider' }, 400);
+  if (provider === 'paypal') {
+    if (!newPaypalReady(env))
+      return json({ error: 'payments_not_configured' }, 503);
+    env = paypalAccountEnv(env, env.PAYPAL_ACCOUNT_OWNER ?? 'margarita');
+  }
   const key = provider === 'stripe' ? stripeKey(env) : null;
-  if (provider === 'stripe' ? !key : !paypalReady(env))
+  if (
+    provider === 'stripe'
+      ? !key
+      : !paypalReady(env) || env.PAYPAL_NEW_ORDERS_ENABLED === 'false'
+  )
     return json({ error: 'payments_not_configured' }, 503);
 
   const id = crypto.randomUUID();
   const now = iso(requestTime);
   await env.ORDERS.prepare(
-    `INSERT INTO orders (id,event_id,ticket_type,customer_name,contact_method,contact_value,amount_cents,currency,status,provider,created_at,updated_at)
-     VALUES (?,?,?,?,?,?,?, 'EUR','pending',?,?,?)`,
+    `INSERT INTO orders (id,event_id,ticket_type,customer_name,contact_method,contact_value,amount_cents,currency,status,provider,payment_account,created_at,updated_at,base_amount_cents,discount_cents,discount_percent,promo_code,promotion_kind,issuer_code,issuer_name,pricing_version,quantity,second_participant_name)
+     VALUES (?,?,?,?,?,?,?, 'EUR','pending',?,?,?,?,?,?,?,?,?,?,?,2,?,?)`,
   )
     .bind(
       id,
@@ -251,10 +368,24 @@ async function createOrder(
       name,
       contact.method,
       contact.value,
-      ticket.amountCents,
+      price.amountCents,
       provider,
+      (provider === 'stripe'
+        ? env.STRIPE_ACCOUNT_OWNER
+        : env.PAYPAL_ACCOUNT_OWNER) === 'timur'
+        ? 'timur'
+        : 'margarita',
       now,
       now,
+      price.baseAmountCents,
+      price.discountCents,
+      price.discountPercent,
+      price.promoCode,
+      price.promotionKind,
+      price.issuerCode,
+      price.issuerName,
+      price.quantity,
+      price.quantity === 2 ? secondName : null,
     )
     .run();
 
@@ -280,11 +411,17 @@ async function createOrder(
             {
               reference_id: id,
               custom_id: id,
-              description: ticket.label[lang],
+              description:
+                ticket.label[lang] +
+                (price.quantity === 2
+                  ? lang === 'ru'
+                    ? ' · 2 билета'
+                    : ' · 2 Tickets'
+                  : ''),
               payee: { email_address: env.PAYPAL_PAYEE_EMAIL },
               amount: {
                 currency_code: 'EUR',
-                value: euroAmount(ticket.amountCents),
+                value: euroAmount(price.amountCents),
               },
             },
           ],
@@ -317,9 +454,11 @@ async function createOrder(
   const form = new URLSearchParams({
     mode: 'payment',
     'payment_method_types[0]': 'card',
-    'line_items[0][quantity]': '1',
+    'line_items[0][quantity]': String(price.quantity),
     'line_items[0][price_data][currency]': 'eur',
-    'line_items[0][price_data][unit_amount]': String(ticket.amountCents),
+    'line_items[0][price_data][unit_amount]': String(
+      price.amountCents / price.quantity,
+    ),
     'line_items[0][price_data][product_data][name]': ticket.label[lang],
     client_reference_id: id,
     'metadata[order_id]': id,
@@ -375,12 +514,12 @@ function hostCheckoutLabel(
 ): string {
   const base =
     lang === 'de'
-      ? `R.O.S.T. Spiele München — ${format === 'expanded' ? 'erweiterte Teilnahme' : 'Standardteilnahme'}${media ? ' + Foto/Video' : ''}`
-      : `R.O.S.T. Игры в Мюнхене — ${format === 'expanded' ? 'расширенное участие' : 'стандартное участие'}${media ? ' + фото/видео' : ''}`;
+      ? `R.O.S.T. Spiele München · ${format === 'expanded' ? 'erweiterte Teilnahme' : 'Standardteilnahme'}${media ? ' + Foto/Video' : ''}`
+      : `R.O.S.T. Игры в Мюнхене · ${format === 'expanded' ? 'расширенное участие' : 'стандартное участие'}${media ? ' + фото/видео' : ''}`;
   if (!deposit) return `${base}, ${formatEuro(totalCents)}`;
   return lang === 'de'
-    ? `${base}, Anzahlung 50 € (gesamt ${formatEuro(totalCents)})`
-    : `${base}, предоплата 50 € (всего ${formatEuro(totalCents)})`;
+    ? `${base}, Anzahlung €50 (gesamt ${formatEuro(totalCents)})`
+    : `${base}, предоплата €50 (всего ${formatEuro(totalCents)})`;
 }
 
 async function createHostRegistration(
@@ -414,10 +553,7 @@ async function createHostRegistration(
   if (name.length < 2 || name.length > 80)
     return json({ error: 'bad_name' }, 400);
   const email = typeof body.email === 'string' ? body.email.trim() : '';
-  if (
-    email.length > 160 ||
-    !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)
-  )
+  if (email.length > 160 || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email))
     return json({ error: 'bad_email' }, 400);
   const contact = normalizeContact(
     String(body.channel ?? ''),
@@ -429,9 +565,7 @@ async function createHostRegistration(
   if (gameTitle.length < 3 || gameTitle.length > 120)
     return json({ error: 'bad_game_title' }, 400);
   const gameDescription =
-    typeof body.gameDescription === 'string'
-      ? body.gameDescription.trim()
-      : '';
+    typeof body.gameDescription === 'string' ? body.gameDescription.trim() : '';
   if (gameDescription.length < 10 || gameDescription.length > 800)
     return json({ error: 'bad_game_description' }, 400);
   if (body.terms !== true || body.privacy !== true)
@@ -446,7 +580,7 @@ async function createHostRegistration(
   const nowMs = deps.now();
   const id = crypto.randomUUID();
   await releaseExpiredHostHolds(env, nowMs);
-  const holdExpiresAt = iso(nowMs + HOST_HOLD_MINUTES * 60_000);
+  const holdExpiresAt = iso(nowMs + HOST_RELEASE_MINUTES * 60_000);
   const tableNo = await allocateHostTable(env, id, holdExpiresAt, nowMs);
   if (tableNo === null) return json({ error: 'sold_out' }, 409);
   try {
@@ -468,6 +602,8 @@ async function createHostRegistration(
       holdExpiresAt,
       tableNo,
       createdAt: iso(nowMs),
+      paymentAccount:
+        env.STRIPE_ACCOUNT_OWNER === 'timur' ? 'timur' : 'margarita',
     });
   } catch (error) {
     await releaseHostTable(env, id, nowMs);
@@ -495,9 +631,8 @@ async function createHostRegistration(
     success_url: `${hostPage}?payment=success&registration=${id}`,
     cancel_url: `${hostPage}?payment=cancelled&registration=${id}`,
     locale: lang,
-    // Stripe requires at least 30 minutes; the extra minute absorbs request
-    // latency. The table hold itself is 30 minutes.
-    expires_at: String(Math.floor(nowMs / 1000) + 31 * 60),
+    // The checkout and unpaid table share the same 31-minute deadline.
+    expires_at: String(Math.floor(nowMs / 1000) + HOST_RELEASE_MINUTES * 60),
   });
   let session: { id?: string; url?: string } = {};
   try {
@@ -578,7 +713,17 @@ async function hostAvailability(env: OrdersEnv, deps: Deps): Promise<Response> {
 
 // ---------- POST /api/stripe/webhook ----------
 interface OrderRow {
+  quantity?: number;
+  second_participant_name?: string | null;
+  base_amount_cents?: number | null;
+  discount_cents?: number;
+  discount_percent?: number;
+  promo_code?: string | null;
+  promotion_kind?: string | null;
+  issuer_code?: string | null;
+  issuer_name?: string | null;
   id: string;
+  payment_account: 'margarita' | 'timur';
   provider: string;
   ticket_type: string;
   customer_name: string;
@@ -712,6 +857,7 @@ async function paypalReturn(
   if (order.status === 'paid') return returnRedirect(url, 'success');
   if (order.status !== 'pending' && order.status !== 'cancelled')
     return returnRedirect(url, 'error');
+  env = paypalAccountEnv(env, order.payment_account);
   const details = await capturePayPalOrder(env, deps, order);
   if (!details) return returnRedirect(url, 'error');
   await markPayPalPaid(env, ctx, deps, order, details);
@@ -815,8 +961,10 @@ async function paypalWebhook(
   env: OrdersEnv,
   ctx: Ctx,
   deps: Deps,
+  account: 'margarita' | 'timur' = 'margarita',
 ): Promise<Response> {
   if (request.method !== 'POST') return json({ error: 'method' }, 405);
+  env = paypalAccountEnv(env, account);
   if (!paypalReady(env)) return json({ error: 'not_configured' }, 503);
   const raw = await request.text();
   if (raw.length > 65536) return json({ error: 'too_large' }, 413);
@@ -832,7 +980,8 @@ async function paypalWebhook(
   if (!verified) return json({ error: 'bad_signature' }, 400);
   if (typeof event?.id !== 'string' || typeof event?.event_type !== 'string')
     return json({ error: 'bad_event' }, 400);
-  const eventId = `paypal:${event.id}`;
+  const eventId =
+    account === 'timur' ? `paypal:timur:${event.id}` : `paypal:${event.id}`;
   if (
     await env.ORDERS.prepare(
       'SELECT 1 AS x FROM webhook_events WHERE event_id=?',
@@ -852,9 +1001,9 @@ async function paypalWebhook(
       : resource.supplementary_data?.related_ids?.order_id;
   if (typeof sessionId === 'string') {
     order = await env.ORDERS.prepare(
-      "SELECT * FROM orders WHERE provider='paypal' AND provider_session_id=?",
+      "SELECT * FROM orders WHERE provider='paypal' AND payment_account=? AND provider_session_id=?",
     )
-      .bind(sessionId)
+      .bind(account, sessionId)
       .first<OrderRow>();
   }
   if (
@@ -898,9 +1047,9 @@ async function paypalWebhook(
           : null;
     if (captureId) {
       order = await env.ORDERS.prepare(
-        "SELECT * FROM orders WHERE provider='paypal' AND provider_payment_id=?",
+        "SELECT * FROM orders WHERE provider='paypal' AND payment_account=? AND provider_payment_id=?",
       )
-        .bind(captureId)
+        .bind(account, captureId)
         .first<OrderRow>();
     }
     if (
@@ -930,19 +1079,24 @@ async function stripeWebhook(
   env: OrdersEnv,
   ctx: Ctx,
   deps: Deps,
+  account: 'margarita' | 'timur' = 'margarita',
 ): Promise<Response> {
   if (request.method !== 'POST') return json({ error: 'method' }, 405);
-  if (!env.STRIPE_WEBHOOK_SECRET) return json({ error: 'not_configured' }, 503);
+  const signingSecret =
+    account === 'timur'
+      ? env.STRIPE_TIMUR_WEBHOOK_SECRET
+      : env.STRIPE_WEBHOOK_SECRET;
+  if (!signingSecret) return json({ error: 'not_configured' }, 503);
   const body = await request.text();
   const ok = await verifyStripeSignature(
     body,
     request.headers.get('Stripe-Signature'),
-    env.STRIPE_WEBHOOK_SECRET,
+    signingSecret,
     Math.floor(deps.now() / 1000),
   );
   if (!ok) return json({ error: 'bad_signature' }, 400);
   const event: Obj = JSON.parse(body);
-  const eventId: string = event.id;
+  const eventId: string = account === 'timur' ? `timur:${event.id}` : event.id;
   const type: string = event.type;
   const obj: Obj = event.data?.object ?? {};
   const now = iso(deps.now());
@@ -966,6 +1120,12 @@ async function stripeWebhook(
     const order = await env.ORDERS.prepare(`SELECT * FROM orders WHERE id=?`)
       .bind(orderId)
       .first<OrderRow>();
+    if (
+      !order ||
+      order.provider !== 'stripe' ||
+      order.payment_account !== account
+    )
+      return { orderId: null, order: null };
     return { orderId, order };
   };
 
@@ -977,7 +1137,11 @@ async function stripeWebhook(
       typeof session.metadata?.host_registration_id !== 'string'
     )
       return null;
-    return findHostRegistration(env, session.metadata.host_registration_id);
+    const host = await findHostRegistration(
+      env,
+      session.metadata.host_registration_id,
+    );
+    return host?.payment_account === account ? host : null;
   };
 
   switch (type) {
@@ -1022,6 +1186,9 @@ async function stripeWebhook(
           host.id,
           tableNo === null ? 'applied:paid_without_table' : 'applied',
         ).run();
+        const paidHost = await findHostRegistration(env, host.id);
+        if (paidHost?.status === 'paid')
+          ctx.waitUntil(exportHostPayment(env, deps, paidHost));
         break;
       }
       if (obj.payment_status !== 'paid') {
@@ -1129,11 +1296,13 @@ async function stripeWebhook(
           hostRefund = await findHostRegistrationByPayment(
             env,
             obj.payment_intent,
+            account,
           );
         } catch {
           hostRefund = null;
         }
       }
+      if (hostRefund?.payment_account !== account) hostRefund = null;
       if (hostRefund) {
         if (hostRefund.status === 'paid') {
           await refundHostRegistration(env, hostRefund, deps.now());
@@ -1150,8 +1319,8 @@ async function stripeWebhook(
         record(null, 'applied'),
         env.ORDERS.prepare(
           `UPDATE orders SET status='refunded', refunded_at=?, updated_at=?
-           WHERE provider_payment_id=? AND status='paid'`,
-        ).bind(now, now, obj.payment_intent),
+           WHERE provider='stripe' AND payment_account=? AND provider_payment_id=? AND status='paid'`,
+        ).bind(now, now, account, obj.payment_intent),
       ]);
       break;
     }
@@ -1168,31 +1337,7 @@ async function pushToSheet(
   email: string | null,
   paidAt: string,
 ) {
-  if (!env.SHEETS_WEBHOOK_URL || !env.SHEETS_TOKEN) return;
-  const ticket = TICKETS[order.ticket_type as keyof typeof TICKETS];
-  try {
-    await deps.fetch(env.SHEETS_WEBHOOK_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        token: env.SHEETS_TOKEN,
-        tab: ticket?.sheetTab ?? 'Other',
-        row: [
-          paidAt,
-          order.id,
-          order.ticket_type,
-          order.customer_name,
-          order.contact_method,
-          order.contact_value,
-          email ?? '',
-          order.amount_cents / 100,
-          'paid',
-        ],
-      }),
-    });
-  } catch (e) {
-    console.error('sheet push failed (order is safe in D1)', order.id, e);
-  }
+  await exportOrderPayment(env, deps, { ...order, email, paid_at: paidAt });
 }
 
 // ---------- GET /api/admin/orders.csv ----------
@@ -1215,7 +1360,7 @@ async function adminCsv(request: Request, env: OrdersEnv): Promise<Response> {
   if (status) (where.push('status=?'), args.push(status));
   if (eventId) (where.push('event_id=?'), args.push(eventId));
   const { results } = await env.ORDERS.prepare(
-    `SELECT id,event_id,ticket_type,customer_name,contact_method,contact_value,email,amount_cents,currency,status,provider,provider_session_id,provider_payment_id,created_at,paid_at,refunded_at,cancelled_at
+    `SELECT id,event_id,ticket_type,customer_name,contact_method,contact_value,email,amount_cents,currency,status,provider,provider_session_id,provider_payment_id,created_at,paid_at,refunded_at,cancelled_at,base_amount_cents,discount_cents,discount_percent,promo_code,promotion_kind,issuer_code,issuer_name,quantity,second_participant_name
      FROM orders ${where.length ? 'WHERE ' + where.join(' AND ') : ''} ORDER BY created_at`,
   )
     .bind(...args)
@@ -1257,7 +1402,8 @@ async function adminHostCsv(
   return new Response(csv, {
     headers: {
       'Content-Type': 'text/csv; charset=utf-8',
-      'Content-Disposition': 'attachment; filename="rost-host-registrations.csv"',
+      'Content-Disposition':
+        'attachment; filename="rost-host-registrations.csv"',
       'Cache-Control': 'no-store',
     },
   });
@@ -1272,20 +1418,27 @@ export async function handleApi(
 ): Promise<Response> {
   const url = new URL(request.url);
   const { pathname } = url;
+  if (pathname === '/api/orders/quote') return priceQuote(request, env, deps);
   if (pathname === '/api/payments/config') {
     if (request.method !== 'GET') return json({ error: 'method' }, 405);
     const enabled = paymentsAllowed(url, env);
     return json({
       mode: env.ORDERS_ENV === 'live' ? 'live' : 'test',
       stripe: enabled && !!stripeKey(env),
-      paypal: enabled && paypalReady(env),
+      paypal:
+        enabled &&
+        newPaypalReady(env) &&
+        env.PAYPAL_NEW_ORDERS_ENABLED !== 'false',
     });
   }
   if (pathname === '/api/config') {
     if (request.method !== 'GET') return json({ error: 'method' }, 405);
     const enabled = paymentsAllowed(url, env);
     const stripe = enabled && stripeKey(env) !== null;
-    const paypal = enabled && paypalReady(env);
+    const paypal =
+      enabled &&
+      newPaypalReady(env) &&
+      env.PAYPAL_NEW_ORDERS_ENABLED !== 'false';
     return json({
       paymentsEnabled: stripe || paypal,
       mode: env.ORDERS_ENV === 'live' ? 'live' : 'test',
@@ -1315,8 +1468,12 @@ export async function handleApi(
     return paypalReturn(request, env, ctx, deps);
   if (pathname === '/api/paypal/cancel')
     return paypalCancel(request, env, deps);
+  if (pathname === '/api/paypal/timur/webhook')
+    return paypalWebhook(request, env, ctx, deps, 'timur');
   if (pathname === '/api/paypal/webhook')
     return paypalWebhook(request, env, ctx, deps);
+  if (pathname === '/api/stripe/timur/webhook')
+    return stripeWebhook(request, env, ctx, deps, 'timur');
   if (pathname === '/api/stripe/webhook')
     return stripeWebhook(request, env, ctx, deps);
   if (pathname === '/api/admin/orders.csv' && request.method === 'GET')

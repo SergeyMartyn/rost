@@ -1,6 +1,6 @@
 @layer components {
   .faq {
-    padding-block: calc(var(--spacing) * 12);
+    padding-block: var(--ui-section-gap);
     background: var(--color-faq-surface);
     color: var(--color-brand);
     font-family: var(--font-hero-sans);
@@ -21,10 +21,6 @@
 
   .faq__heading {
     margin: calc(var(--spacing) * 7) 0 0;
-    font-family: var(--font-display);
-    font-size: 38px;
-    font-weight: 400;
-    line-height: 1.1;
   }
 
   .faq__lead {
@@ -62,7 +58,7 @@
   .faq__question-text {
     min-width: 0;
     font-family: var(--font-display);
-    font-size: 22px;
+    font-size: var(--ui-faq-size);
     line-height: 1.2;
   }
 
@@ -115,12 +111,10 @@
 
   @media (min-width: 48rem) {
     .faq {
-      padding-block: calc(var(--spacing) * 16);
+      padding-block: var(--ui-section-gap);
     }
 
-    .faq__heading {
-      font-size: 48px;
-    }
+
 
     .faq__lead {
       max-width: 40ch;
@@ -137,7 +131,7 @@
     }
 
     .faq__question-text {
-      font-size: 24px;
+      font-size: var(--ui-faq-size);
     }
 
     .faq__answer {
@@ -147,7 +141,7 @@
 
   @media (min-width: 64rem) {
     .faq {
-      padding-block: calc(var(--spacing) * 20) calc(var(--spacing) * 15);
+      padding-block: var(--ui-section-gap);
     }
 
     .faq__inner {
@@ -162,7 +156,6 @@
 
     .faq__heading {
       margin-top: calc(var(--spacing) * 12);
-      font-size: 56px;
     }
 
     .faq__lead {
@@ -175,7 +168,7 @@
     }
 
     .faq__question-text {
-      font-size: 28px;
+      font-size: var(--ui-faq-size);
     }
 
     .faq__answer {

@@ -1,8 +1,8 @@
 /*
  * Consent banner styling. Uses the site's own tokens (global.css @theme) and
  * follows the site's existing look: Onest, 16px button radius, brand green.
- * Accept and refuse buttons are visually identical (R-6.4); "Settings" has the
- * same size with the secondary (outlined) style.
+ * Compact first layer: settings, necessary, accept all in one row.
+ * All actions have the same height and a distinct requested color.
  */
 
 /* Footer link that reopens the settings (R-6.14): looks like the other footer links. */
@@ -252,5 +252,79 @@ body {
   #cc-main,
   #cc-main * {
     transition: none !important;
+  }
+}
+
+/* Only the first layer is compact; detailed preferences remain readable. */
+#cc-main .cm--bar .cm__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+}
+#cc-main .cm--bar .cm__texts {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 2px 8px;
+  padding: 0;
+}
+#cc-main .cm--bar .cm__title {
+  padding: 0;
+  margin: 0;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.4;
+}
+#cc-main .cm--bar .cm__desc {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+#cc-main .cm--bar .cm__btns {
+  display: grid !important;
+  grid-template-columns: 1.1fr 1.4fr 1.1fr;
+  width: 100%;
+  gap: 6px;
+  padding: 0;
+  margin: 0;
+  border: 0;
+}
+#cc-main .cm--bar .cm__btns > .cm__btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 44px;
+  padding: 6px 4px;
+  margin: 0 !important;
+  font-size: 12px;
+  line-height: 1.25;
+  border-radius: 12px;
+  white-space: normal;
+}
+#cc-main .cm--bar [data-role='necessary'] {
+  background: var(--color-hero-end);
+  border-color: var(--color-hero-end);
+  color: var(--color-brand);
+}
+#cc-main .cm--bar [data-role='necessary']:hover {
+  background: var(--color-brand-surface);
+  border-color: var(--color-brand);
+}
+@media (min-width: 48rem) {
+  #cc-main .cm--bar .cm__body {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-inline: 32px;
+  }
+  #cc-main .cm--bar .cm__btns {
+    width: min(55%, 540px);
+    flex-shrink: 0;
+  }
+  #cc-main .cm--bar .cm__btns > .cm__btn {
+    font-size: 13px;
   }
 }

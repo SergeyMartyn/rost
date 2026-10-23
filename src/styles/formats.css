@@ -1,6 +1,6 @@
 @layer components {
   .formats {
-    padding-block: calc(var(--spacing) * 12);
+    padding-block: var(--ui-section-gap);
     background: linear-gradient(
       135deg,
       var(--color-formats-start),
@@ -26,10 +26,6 @@
 
   .formats__heading {
     margin: calc(var(--spacing) * 8) 0 0;
-    font-family: var(--font-display);
-    font-size: 38px;
-    font-weight: 400;
-    line-height: 1.1;
   }
 
   .formats__lead {
@@ -127,10 +123,6 @@
 
   .formats__card-heading {
     margin: calc(var(--spacing) * 4) 0 0;
-    font-family: var(--font-display);
-    font-size: 26px;
-    font-weight: 400;
-    line-height: 1.2;
   }
 
   .formats__card-body {
@@ -151,19 +143,15 @@
       font-size: 15px;
     }
 
-    .formats:lang(de) .formats__card-heading {
-      font-size: 20px;
-    }
+
   }
 
   @media (min-width: 48rem) {
     .formats {
-      padding-block: calc(var(--spacing) * 16);
+      padding-block: var(--ui-section-gap);
     }
 
-    .formats__heading {
-      font-size: 48px;
-    }
+
 
     .formats__lead {
       max-width: 440px;
@@ -188,9 +176,7 @@
       min-height: 312px;
     }
 
-    .formats__card-heading {
-      font-size: 27px;
-    }
+
 
     .formats__card-body {
       font-size: 17px;
@@ -199,7 +185,7 @@
 
   @media (min-width: 64rem) {
     .formats {
-      padding-block: calc(var(--spacing) * 20) calc(var(--spacing) * 18);
+      padding-block: var(--ui-section-gap);
     }
 
     .formats__intro {
@@ -212,7 +198,6 @@
 
     .formats__heading {
       margin-top: calc(var(--spacing) * 12);
-      font-size: 64px;
     }
 
     .formats__lead {
@@ -257,9 +242,7 @@
       padding: calc(var(--spacing) * 8);
     }
 
-    .formats__card-heading {
-      font-size: 32px;
-    }
+
 
     .formats__card-body {
       font-size: 18px;

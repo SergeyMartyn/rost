@@ -1,0 +1,43 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+
+type Common = {
+  variant?: 'primary' | 'secondary' | 'inverse';
+  size?: 'regular' | 'compact';
+  full?: boolean;
+};
+type Props = Common &
+  (
+    | (HTMLAttributes<'a'> & { href: string; disabled?: never })
+    | (HTMLAttributes<'button'> & { href?: never })
+  );
+const {
+  href,
+  variant = 'primary',
+  size = 'regular',
+  full = false,
+  class: className,
+  ...attributes
+} = Astro.props;
+const classes = [
+  'ui-button',
+  `ui-button--${variant}`,
+  `ui-button--${size}`,
+  { 'ui-button--full': full },
+  className,
+];
+const buttonAttributes = {
+  type: 'button',
+  ...attributes,
+} as HTMLAttributes<'button'>;
+---
+
+{href !== undefined ? (
+  <a href={href} class:list={classes} {...(attributes as HTMLAttributes<'a'>)}>
+    <slot />
+  </a>
+) : (
+  <button class:list={classes} {...buttonAttributes}>
+    <slot />
+  </button>
+)}

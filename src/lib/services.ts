@@ -59,7 +59,7 @@ export const services: ConsentService[] = [
     },
     usTransfer: {
       de: 'ja, Grundlage: EU-US Data Privacy Framework',
-      ru: 'да, основание — EU-US Data Privacy Framework',
+      ru: 'да, основание: EU-US Data Privacy Framework',
     },
     policyUrl: 'https://policies.google.com/privacy',
   },

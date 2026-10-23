@@ -1,0 +1,166 @@
+---
+import Heading from './Heading.astro';
+import type { Language } from '../../lib/site';
+
+const { lang, audience } = Astro.props as {
+  lang: Language;
+  audience: 'participants' | 'hosts';
+};
+const isRu = lang === 'ru';
+const copy =
+  audience === 'participants'
+    ? isRu
+      ? {
+          eyebrow: 'Ваш первый игровой день',
+          title: 'Приходите со своим вопросом',
+          body: 'Иногда хочется перемен, но трудно понять, с чего начать. В игре можно посмотреть на свою ситуацию со стороны, обсудить её с ведущим и заметить варианты следующего шага.',
+          points: [
+            [
+              'Выберите свой запрос',
+              'Отношения, деньги, работа или личные решения. Посмотрите описания игр и ведущих, чтобы найти близкую вам тему.',
+            ],
+            [
+              'Попробуйте без подготовки',
+              'Опыт не нужен. Ведущий объяснит правила и поможет включиться. Вы сами решаете, чем готовы поделиться с группой.',
+            ],
+            [
+              'Останьтесь на связи',
+              'Две игровые линейки и модерируемый нетворкинг дают время познакомиться с людьми и продолжить общение после встречи.',
+            ],
+          ],
+          note: 'Возьмите блокнот и ручку, чтобы сохранить свои мысли. В расширенный билет также входят групповой Zoom после встречи, закрытый чат и индивидуальная консультация на 15–20 минут.',
+        }
+      : {
+          eyebrow: 'Dein erster Spieltag',
+          title: 'Bring dein eigenes Anliegen mit',
+          body: 'Du möchtest etwas verändern und suchst einen Anfang? Im Spiel kannst du deine Situation aus einer anderen Perspektive betrachten, dich mit der Spielleitung austauschen und Ideen für deinen nächsten Schritt sammeln.',
+          points: [
+            [
+              'Finde dein Thema',
+              'Beziehungen, Geld, Beruf oder persönliche Entscheidungen: Die Spielbeschreibungen und Profile helfen dir bei der Auswahl.',
+            ],
+            [
+              'Komm ohne Vorkenntnisse',
+              'Die Spielleitung erklärt die Regeln und begleitet die Runde. Du entscheidest selbst, was du mit der Gruppe teilen möchtest.',
+            ],
+            [
+              'Bleib in Verbindung',
+              'Zwei Spielrunden und moderiertes Networking lassen Zeit, Menschen kennenzulernen und den Austausch nach dem Treffen fortzusetzen.',
+            ],
+          ],
+          note: 'Bring ein Notizbuch und einen Stift für deine Gedanken mit. Das erweiterte Ticket enthält außerdem einen Gruppen-Zoom nach dem Treffen, einen geschlossenen Chat und eine persönliche Beratung von 15–20 Minuten.',
+        }
+    : isRu
+      ? {
+          eyebrow: 'Знакомство, которое продолжается',
+          title: 'Покажите свою практику в действии',
+          body: 'На встрече участники знакомятся с вами через личный опыт игры. Можно рассказать о своём подходе, ответить на вопросы и обменяться контактами с теми, кто хочет продолжить общение.',
+          points: [
+            [
+              'До встречи',
+              'Эфир, день в сторис R.O.S.T. и профиль игры на сайте помогут участникам заранее познакомиться с вами и выбрать свою игровую линейку.',
+            ],
+            [
+              'Во время встречи',
+              'Короткое представление на сцене и две игровые сессии дают возможность показать, как вы работаете. QR-код профиля на экранах поможет найти вас после игры.',
+            ],
+            [
+              'После знакомства',
+              'Обменяйтесь контактами с участниками и коллегами. Обсудите совместные идеи и договоритесь о следующей встрече с теми, кому близок ваш подход.',
+            ],
+          ],
+          note: 'Команда готовит площадку и координирует день. В расширенном формате продвижение берём на себя, обязательные публикации в ваших соцсетях не нужны. Пакет из 10 фото и одного рилса можно добавить отдельно за €79.',
+        }
+      : {
+          eyebrow: 'Begegnungen mit Fortsetzung',
+          title: 'Zeigen Sie Ihre Arbeit in der Praxis',
+          body: 'Die Teilnehmenden lernen Sie durch das gemeinsame Spiel kennen. Stellen Sie Ihren Ansatz vor, beantworten Sie Fragen und tauschen Sie Kontakte mit Menschen aus, die das Gespräch fortsetzen möchten.',
+          points: [
+            [
+              'Vor dem Treffen',
+              'Instagram-Live, ein Tag in den R.O.S.T.-Storys und Ihr Spielprofil auf der Website helfen den Teilnehmenden, Sie kennenzulernen und ihre Spielrunde auszuwählen.',
+            ],
+            [
+              'Während des Treffens',
+              'Die kurze Vorstellung auf der Bühne und zwei Spielrunden machen Ihre Arbeitsweise erlebbar. Der Profil-QR-Code auf den Bildschirmen hilft, Sie nach dem Spiel wiederzufinden.',
+            ],
+            [
+              'Nach dem Kennenlernen',
+              'Tauschen Sie Kontakte mit Teilnehmenden und anderen Spielleitenden aus. Besprechen Sie gemeinsame Ideen und mögliche weitere Treffen.',
+            ],
+          ],
+          note: 'Das Team bereitet den Raum vor und koordiniert den Tag. Im erweiterten Format übernehmen wir die Bewerbung ohne verpflichtende Beiträge in Ihren sozialen Netzwerken. Ein Paket mit 10 Fotos und einem Reel ist für €79 separat buchbar.',
+        };
+const titleId = `event-value-${audience}`;
+const photo =
+  audience === 'hosts'
+    ? {
+        file: 'host-session',
+        height: 900,
+        alt: isRu
+          ? 'Ведущая и участники за игровым столом R.O.S.T.'
+          : 'Spielleiterin und Teilnehmende am Spieltisch von R.O.S.T.',
+      }
+    : {
+        file: 'game-moments',
+        height: 675,
+        alt: isRu
+          ? 'Участники игровых встреч R.O.S.T. за игровыми столами'
+          : 'Teilnehmende bei den Spieltreffen von R.O.S.T.',
+      };
+const photoBase = `/images/events/games/${photo.file}`;
+const photoSizes =
+  '(min-width: 80rem) 572px, (min-width: 64rem) calc((100vw - 152px) / 2), (min-width: 48rem) calc(100vw - 64px), calc(100vw - 40px)';
+---
+
+<section class="ui-section bg-white" aria-labelledby={titleId}>
+  <div class="site-container grid items-start gap-8 lg:grid-cols-2 lg:gap-14">
+    <div>
+      <div class="ui-section-heading">
+        <p class="ui-eyebrow text-accent">{copy.eyebrow}</p>
+        <Heading as="h2" variant="section" id={titleId} class="mt-4">
+          {copy.title}
+        </Heading>
+      </div>
+      <p class="mt-5 leading-relaxed text-muted">{copy.body}</p>
+      <div class="mt-7 space-y-6">
+        {copy.points.map(([title, body]) => (
+          <div>
+            <Heading as="h3" variant="card">
+              {title}
+            </Heading>
+            <p class="mt-2 leading-relaxed text-muted">{body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+    <div class="min-w-0">
+      <figure class="overflow-hidden rounded-3xl bg-brand-surface">
+        <picture>
+          <source
+            type="image/avif"
+            srcset={`${photoBase}-600.avif 600w, ${photoBase}-1200.avif 1200w`}
+            sizes={photoSizes}
+          />
+          <img
+            src={`${photoBase}-1200.webp`}
+            srcset={`${photoBase}-600.webp 600w, ${photoBase}-1200.webp 1200w`}
+            sizes={photoSizes}
+            alt={photo.alt}
+            width="1200"
+            height={photo.height}
+            loading="lazy"
+            decoding="async"
+            class="block h-auto w-full"
+          />
+        </picture>
+        <figcaption class="px-5 py-4 text-sm text-muted">
+          {isRu ? 'Игровые встречи R.O.S.T.' : 'Spieltreffen von R.O.S.T.'}
+        </figcaption>
+      </figure>
+      <p class="mt-6 rounded-3xl bg-brand-surface p-6 leading-relaxed text-brand">
+        {copy.note}
+      </p>
+    </div>
+  </div>
+</section>
