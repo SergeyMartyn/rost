@@ -41,11 +41,23 @@ test('TI page renders all mockup sections without horizontal overflow', async ({
       await expect(page.locator('h1')).toContainText(item.title);
       await expect(page.locator('#ti-ticket-card')).toBeVisible();
       await expect(page.locator('#ti-about-title')).toBeVisible();
+      const features = page.locator('.ti-about h3');
+      await expect(features).toHaveCount(3);
+      for (const feature of await features.all())
+        await expect(feature).toBeVisible();
+      await expect(page.locator('.ti-about')).toContainText(
+        item.lang === 'ru' ? 'Общение' : 'Austausch',
+      );
+      await expect(page.locator('#ti-ticket-card')).toContainText('09:30');
+      await expect(page.locator('#ti-ticket-card')).toContainText('10:00');
+      await expect(
+        page.getByRole('button', { name: /Елена Гельмель|Elena Gelmel/ }),
+      ).toHaveCount(0);
       await expect(page.locator('#ti-program')).toContainText('09:30–10:00');
       await expect(page.locator('#ti-practitioners-title')).toContainText(
         item.practitioners,
       );
-      await expect(page.locator('[data-practitioner]')).toHaveCount(5);
+      await expect(page.locator('[data-practitioner]')).toHaveCount(4);
       await expect(page.locator('#ti-tickets-title')).toContainText(
         item.tickets,
       );
@@ -70,7 +82,7 @@ test('practitioner photos load on phone and desktop', async ({ page }) => {
       await page.setViewportSize({ width, height: 900 });
       await page.goto(item.path);
       const images = page.locator('[data-practitioner] img');
-      await expect(images).toHaveCount(5);
+      await expect(images).toHaveCount(4);
       for (const image of await images.all()) {
         await image.scrollIntoViewIfNeeded();
         await expect
@@ -141,7 +153,7 @@ test('long practitioner details remain scrollable on a phone', async ({
 }) => {
   await page.setViewportSize({ width: 390, height: 760 });
   await page.goto('/ru/meropriyatiya/transformatsionnye-igry/');
-  await page.locator('[data-practitioner="4"]').click();
+  await page.locator('[data-practitioner="3"]').click();
   await expect(page.locator('#practitioner-name')).toHaveText(
     'Алла Афанасенко',
   );
@@ -214,5 +226,21 @@ test('TI ticket card keeps the host link', async ({ page }) => {
     await expect(
       page.locator(`#ti-ticket-card a[href="${item.host}"]`),
     ).toBeVisible();
+  }
+});
+
+test('event catalogue uses the confirmed registration and opening time', async ({
+  page,
+}) => {
+  for (const lang of ['ru', 'de']) {
+    await page.goto(
+      lang === 'ru' ? '/ru/meropriyatiya/' : '/de/veranstaltungen/',
+    );
+    const games = page.locator('#games');
+    await expect(games).toContainText('09:30');
+    await expect(games).toContainText('10:00');
+    await expect(games).not.toContainText(
+      lang === 'ru' ? 'Время уточняется' : 'Uhrzeit folgt',
+    );
   }
 });

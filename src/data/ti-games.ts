@@ -36,6 +36,7 @@ export interface TiGamesContent {
   when: string;
   where: string;
   date: string;
+  arrival: string;
   venue: string;
   address: string;
   chooseTicket: string;
@@ -56,7 +57,6 @@ export interface TiGamesContent {
   practitionersEyebrow: string;
   practitionersTitle: string;
   practitioners: TiPractitioner[];
-  practitionerCounter: string;
   gameLabel: string;
   fitLabel: string;
   factsLabel: string;
@@ -72,9 +72,12 @@ export interface TiGamesContent {
   contactLink: string;
 }
 
+const registrationTime = '09:30';
+const openingTime = '10:00';
+
 const programRu: TiProgramItem[] = [
-  { time: '09:30–10:00', label: 'Регистрация' },
-  { time: '10:00–10:10', label: 'Открытие дня' },
+  { time: `${registrationTime}–${openingTime}`, label: 'Регистрация' },
+  { time: `${openingTime}–10:10`, label: 'Открытие дня' },
   { time: '10:10–11:30', label: 'Модерируемый нетворкинг' },
   { time: '11:30–11:45', label: 'Знакомство с ведущими' },
   { time: '11:45–14:00', label: 'Первая линейка игр' },
@@ -86,8 +89,8 @@ const programRu: TiProgramItem[] = [
 ];
 
 const programDe: TiProgramItem[] = [
-  { time: '09:30–10:00', label: 'Anmeldung' },
-  { time: '10:00–10:10', label: 'Eröffnung des Tages' },
+  { time: `${registrationTime}–${openingTime}`, label: 'Anmeldung' },
+  { time: `${openingTime}–10:10`, label: 'Eröffnung des Tages' },
   { time: '10:10–11:30', label: 'Moderiertes Networking' },
   { time: '11:30–11:45', label: 'Begegnung mit den Spielleitenden' },
   { time: '11:45–14:00', label: 'Erste Spielrunde' },
@@ -161,36 +164,6 @@ const practitionersRu: TiPractitioner[] = [
       'Поисследуете связь ароматов, воспоминаний и эмоциональных состояний.',
     ],
     note: 'Игра «Вопрос в эфире. Круг трансформаций» приглашает задать важный для вас вопрос.',
-  },
-  {
-    id: 'elena',
-    image: '/images/ti-games/elena.webp',
-    name: 'Елена Гельмель',
-    qualification:
-      'Сертифицированный игропрактик, специалист по метафорическим картам, бизнес-тренер',
-    game: 'Путь Желаний',
-    tagline: 'Разобраться, какие желания ваши',
-    body: 'Отделить свои желания от навязанных ожиданий и найти опору для действия.',
-    facts: [
-      'Обучалась у создателей игры на её мировой премьере в Дубае.',
-      'Провела более 50 игровых сессий и свыше 70 часов работы с метафорическими картами.',
-      'Разработала обучающие программы, которые за пять лет прошли более 4500 человек.',
-      'Сочетает глубину работы с ясной и бережной атмосферой.',
-    ],
-    fit: [
-      'Чувствуете, что пора что-то менять в работе или своём деле.',
-      'Страх и сомнения мешают начать.',
-      'Устали подстраиваться под чужие ожидания.',
-      'Хотите яснее услышать собственные желания.',
-      'Давно откладываете личную мечту как «слишком смелую».',
-    ],
-    results: [
-      'Отделите свои желания от навязанных.',
-      'Найдёте мотивацию для движения к важной для вас цели.',
-      'Увидите внутренние блоки и возможные действия.',
-      'Почувствуете больше энергии для своих планов.',
-    ],
-    note: '«Путь Желаний»: возможность снова прислушаться к себе.',
   },
   {
     id: 'zinaida',
@@ -324,36 +297,6 @@ const practitionersDe: TiPractitioner[] = [
     note: '„Frage im Äther. Kreis der Transformationen“ lädt dich ein, deine wichtige Frage zu stellen.',
   },
   {
-    id: 'elena',
-    image: '/images/ti-games/elena.webp',
-    name: 'Elena Gelmel',
-    qualification:
-      'Zertifizierte Spielpraktikerin, Expertin für metaphorische Karten, Business-Trainerin',
-    game: 'Der Weg der Wünsche',
-    tagline: 'Herausfinden, welche Wünsche die eigenen sind',
-    body: 'Eigene Wünsche von übernommenen Erwartungen trennen und eine Grundlage für Handeln finden.',
-    facts: [
-      'Lernte bei den Entwicklerinnen und Entwicklern des Spiels während seiner Weltpremiere in Dubai.',
-      'Leitete über 50 Spielrunden und arbeitete mehr als 70 Stunden mit metaphorischen Karten.',
-      'Entwickelte Lernprogramme, an denen in fünf Jahren über 4500 Menschen teilnahmen.',
-      'Verbindet tiefgehende Arbeit mit einer klaren, behutsamen Atmosphäre.',
-    ],
-    fit: [
-      'Du möchtest etwas in deiner Arbeit oder deinem Projekt ändern.',
-      'Angst und Zweifel hindern dich am Anfang.',
-      'Du bist müde davon, dich nach fremden Erwartungen zu richten.',
-      'Du möchtest deine eigenen Wünsche deutlicher spüren.',
-      'Du schiebst einen persönlichen Traum als „zu kühn“ auf.',
-    ],
-    results: [
-      'Du unterscheidest eigene Wünsche von übernommenen.',
-      'Du findest Motivation für dein persönliches Ziel.',
-      'Du erkennst innere Hürden und mögliche Schritte.',
-      'Du gewinnst neue Energie für deine Pläne.',
-    ],
-    note: '„Der Weg der Wünsche“ ist eine Gelegenheit, wieder auf dich selbst zu hören.',
-  },
-  {
     id: 'zinaida',
     image: '/images/ti-games/zinaida.webp',
     name: 'Sinaida Langlitz',
@@ -440,6 +383,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
     when: 'Когда',
     where: 'Где',
     date: '7 ноября 2026',
+    arrival: `Регистрация с ${registrationTime} · начало в ${openingTime}`,
     venue: 'Мюнхен',
     address: 'Perchtinger Straße 12 · 81379 München',
     chooseTicket: 'Выберите билет участника',
@@ -465,7 +409,6 @@ export const tiGames: Record<Language, TiGamesContent> = {
     practitionersEyebrow: 'Игропрактики',
     practitionersTitle: 'С кем можно сыграть',
     practitioners: practitionersRu,
-    practitionerCounter: 'Игропрактик · 1 из 5',
     gameLabel: 'Игра',
     factsLabel: 'О ведущей',
     fitLabel: 'Подойдёт, если',
@@ -517,6 +460,7 @@ export const tiGames: Record<Language, TiGamesContent> = {
     when: 'Wann',
     where: 'Wo',
     date: '7. November 2026',
+    arrival: `Anmeldung ab ${registrationTime} · Beginn um ${openingTime}`,
     venue: 'München',
     address: 'Perchtinger Straße 12 · 81379 München',
     chooseTicket: 'Wähle dein Ticket',
@@ -542,7 +486,6 @@ export const tiGames: Record<Language, TiGamesContent> = {
     practitionersEyebrow: 'Spielleitende',
     practitionersTitle: 'Mit wem du spielen kannst',
     practitioners: practitionersDe,
-    practitionerCounter: 'Spielleitende · 1 von 5',
     gameLabel: 'Spiel',
     factsLabel: 'Über die Spielleiterin',
     fitLabel: 'Passt, wenn',

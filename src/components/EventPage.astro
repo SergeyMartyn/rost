@@ -1,5 +1,6 @@
 ---
 import CtaSection from './ui/CtaSection.astro';
+import { tiGames } from '../data/ti-games';
 import PageIntro from './ui/PageIntro.astro';
 import Button from './ui/Button.astro';
 import Heading from './ui/Heading.astro';
@@ -42,7 +43,7 @@ const copy =
         gamesDate: '7 ноября 2026',
         meetMonth: 'декабря',
         gamesMonth: 'ноября',
-        timeLater: 'Время уточняется',
+        gamesTime: tiGames.ru.arrival,
         meetRegistration: 'Время начала сообщим позже',
         meetAddress: 'Адрес сообщим позже',
         gamesVenue: 'Мюнхен',
@@ -88,12 +89,6 @@ const copy =
             game: 'Вопрос в эфире. Круг трансформаций',
             about:
               'Через ароматы и интуитивные практики посмотреть на ситуацию под новым углом.',
-          },
-          {
-            name: 'Елена Гельмель',
-            game: 'Путь Желаний',
-            about:
-              'Разобраться, какие желания ваши, и найти опору для действия.',
           },
           {
             name: 'Зинаида Ланглитц',
@@ -177,7 +172,7 @@ const copy =
         gamesDate: '7. November 2026',
         meetMonth: 'Dezember',
         gamesMonth: 'November',
-        timeLater: 'Uhrzeit folgt',
+        gamesTime: tiGames.de.arrival,
         meetRegistration: 'Die Anfangszeit geben wir noch bekannt',
         meetAddress: 'Die Adresse geben wir noch bekannt',
         gamesVenue: 'München',
@@ -224,12 +219,6 @@ const copy =
             game: 'Frage im Äther. Kreis der Transformationen',
             about:
               'Mit Aromen und intuitiven Praktiken die Situation aus einem neuen Blickwinkel betrachten.',
-          },
-          {
-            name: 'Elena Gelmel',
-            game: 'Der Weg der Wünsche',
-            about:
-              'Herausfinden, welche Wünsche die eigenen sind, und eine Grundlage für Handeln finden.',
           },
           {
             name: 'Sinaida Langlitz',
@@ -356,7 +345,7 @@ const eventTickets = [
           <div class="rounded-3xl bg-white/75 p-6">
             <p class="ui-eyebrow text-muted">{copy.when}</p>
             <p class="mt-3 font-display text-2xl">{copy.gamesDate}</p>
-            <p class="mt-2 text-sm text-muted">{copy.timeLater}</p>
+            <p class="mt-2 text-sm text-muted">{copy.gamesTime}</p>
           </div>
           <div class="rounded-3xl bg-white/75 p-6">
             <p class="ui-eyebrow text-muted">{copy.where}</p>
