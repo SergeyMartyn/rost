@@ -37,15 +37,15 @@ const copy =
         features: [
           [
             'Ваша практика в деле',
-            'Две игровые сессии по два часа и 1,5 минуты, чтобы представить свою игру на сцене.',
+            'Две игровые сессии по программе и 1,5 минуты для представления своей игры участникам.',
           ],
           [
-            'Вас узнают до встречи',
+            'Анонс до встречи',
             'Прямой эфир и день в сторис R.O.S.T., профиль с описанием игры на сайте.',
           ],
           [
             'Контакты на площадке',
-            'Знакомство с участниками и коллегами; профиль и QR-код на экранах.',
+            'Знакомство с участниками и коллегами; профиль и QR-код со ссылкой на него.',
           ],
           [
             'Поддержка команды',
@@ -59,7 +59,7 @@ const copy =
             id: 'standard',
             title: 'Стандартное',
             amount: HOST_FORMATS.standard.amountCents,
-            body: 'Две игры, эфир и сторис R.O.S.T., профиль на сайте, сцена, сертификат',
+            body: 'Две игры, эфир и сторис R.O.S.T., профиль на сайте, представление игры, сертификат участия',
             condition:
               'Условие: публиковать приглашение в своих соцсетях не реже раза в неделю',
           },
@@ -67,7 +67,7 @@ const copy =
             id: 'expanded',
             title: 'Расширенное',
             amount: HOST_FORMATS.expanded.amountCents,
-            body: 'Всё из стандартного + дополнительное продвижение команды R.O.S.T.',
+            body: 'Всё из стандартного + размещение анонсов игры в Instagram R.O.S.T., Telegram R.O.S.T. и на сайте',
             condition:
               'Без обязательных публикаций в своих соцсетях: продвижение берёт на себя команда',
           },
@@ -114,7 +114,7 @@ const copy =
         conditions: [
           {
             title: 'Стоимость и состав',
-            body: `Стандартное участие: ${formatEuro(HOST_FORMATS.standard.amountCents)}: две игровые линейки по два часа, профиль на сайте, представление на сцене, продвижение и сертификат. Расширенное участие: ${formatEuro(HOST_FORMATS.expanded.amountCents)}: стандартный состав и дополнительное продвижение командой R.O.S.T. Пакет «Фото и видео» стоит ${formatEuro(HOST_MEDIA_CENTS)}: 10 профессиональных фотографий и один рилс.`,
+            body: `Стандартное участие: ${formatEuro(HOST_FORMATS.standard.amountCents)}: две игровые линейки по программе, профиль на сайте, представление игры участникам, эфир и сторис R.O.S.T., сертификат участия. Расширенное участие: ${formatEuro(HOST_FORMATS.expanded.amountCents)}: стандартный состав и размещение анонсов игры командой в Instagram R.O.S.T., Telegram R.O.S.T. и на сайте. Охват, число участников у стола, будущие клиенты и доход не гарантируются. Пакет «Фото и видео» стоит ${formatEuro(HOST_MEDIA_CENTS)}: 10 профессиональных фотографий и один рилс.`,
           },
           {
             title: 'Предоплата и остаток',
@@ -174,7 +174,7 @@ const copy =
         features: [
           [
             'Ihre Praxis im Mittelpunkt',
-            'Zwei Spielrunden von je zwei Stunden und 1,5 Minuten für die Vorstellung Ihres Spiels auf der Bühne.',
+            'Zwei Spielrunden gemäß Programm und 1,5 Minuten für die Vorstellung Ihres Spiels.',
           ],
           [
             'Sichtbarkeit vor dem Treffen',
@@ -182,7 +182,7 @@ const copy =
           ],
           [
             'Kontakte vor Ort',
-            'Austausch mit Teilnehmenden und anderen Spielleitenden; Profil und QR-Code auf den Bildschirmen.',
+            'Austausch mit Teilnehmenden und anderen Spielleitenden; Profil und QR-Code mit Link zum Profil.',
           ],
           [
             'Unterstützung durch das Team',
@@ -196,7 +196,7 @@ const copy =
             id: 'standard',
             title: 'Standard',
             amount: HOST_FORMATS.standard.amountCents,
-            body: 'Zwei Spielrunden, Instagram-Live und Storys, Website-Profil, Bühne, Teilnahmebescheinigung',
+            body: 'Zwei Spielrunden, Instagram-Live und Storys, Website-Profil, Spielvorstellung, Teilnahmebescheinigung',
             condition:
               'Bedingung: mindestens einmal pro Woche eine Einladung in Ihren sozialen Netzwerken veröffentlichen',
           },
@@ -204,7 +204,7 @@ const copy =
             id: 'expanded',
             title: 'Erweitert',
             amount: HOST_FORMATS.expanded.amountCents,
-            body: 'Alles aus Standard + zusätzliche Bewerbung durch das R.O.S.T.-Team',
+            body: 'Alles aus Standard + Ankündigungen des Spiels auf dem Instagram-Profil von R.O.S.T., in Telegram und auf der Website',
             condition:
               'Keine verpflichtenden Beiträge in Ihren sozialen Netzwerken: Das Team übernimmt die Bewerbung',
           },
@@ -251,7 +251,7 @@ const copy =
         conditions: [
           {
             title: 'Kosten und Leistungen',
-            body: `Standardteilnahme: ${formatEuro(HOST_FORMATS.standard.amountCents)}: zwei Spielrunden von je zwei Stunden, Profil auf der Website, Vorstellung auf der Bühne, Bewerbung und Zertifikat. Erweiterte Teilnahme: ${formatEuro(HOST_FORMATS.expanded.amountCents)}: Standardumfang plus zusätzliche Bewerbung durch das R.O.S.T.-Team. Das Paket „Foto und Video“ kostet ${formatEuro(HOST_MEDIA_CENTS)}: 10 professionelle Fotos und ein Reel.`,
+            body: `Standardteilnahme: ${formatEuro(HOST_FORMATS.standard.amountCents)}: zwei Spielrunden gemäß Programm, Profil auf der Website, Spielvorstellung, Instagram-Live und Storys sowie eine Teilnahmebescheinigung. Erweiterte Teilnahme: ${formatEuro(HOST_FORMATS.expanded.amountCents)}: Standardumfang plus Ankündigungen des Spiels durch das Team auf dem Instagram-Profil von R.O.S.T., in Telegram und auf der Website. Reichweite, die Zahl der Personen am Spieltisch, spätere Kunden und Einnahmen werden nicht zugesichert. Das Paket „Foto und Video“ kostet ${formatEuro(HOST_MEDIA_CENTS)}: 10 professionelle Fotos und ein Reel.`,
           },
           {
             title: 'Anzahlung und Restbetrag',

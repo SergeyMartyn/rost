@@ -77,32 +77,11 @@ const copy =
           },
         ],
         gamesPractitionersTitle: 'С кем можно сыграть',
-        gamesPractitioners: [
-          {
-            name: 'Кристина Бауэр',
-            game: 'AinSof',
-            about:
-              'Исследовать свой запрос, увидеть ограничения и ресурсы для следующего шага.',
-          },
-          {
-            name: 'Катарина Базаль',
-            game: 'Вопрос в эфире. Круг трансформаций',
-            about:
-              'Через ароматы и интуитивные практики посмотреть на ситуацию под новым углом.',
-          },
-          {
-            name: 'Зинаида Ланглитц',
-            game: 'Путь к себе: волшебство самооценки',
-            about:
-              'Поговорить об уверенности, самоценности и выборе следующего шага.',
-          },
-          {
-            name: 'Алла Афанасенко',
-            game: 'Секс, Деньги и Любовь · Дивергент',
-            about:
-              'Исследовать отношения, внутренние роли, принятие и перемены в жизни.',
-          },
-        ],
+        gamesPractitioners: tiGames.ru.practitioners.map((person) => ({
+          name: person.name,
+          game: person.game,
+          about: person.body,
+        })),
         gamesDetailsClose: 'Закрыть программу',
         gamesDetailsBuy: 'Купить билет участника',
         guest: 'Купить билет участника',
@@ -207,32 +186,11 @@ const copy =
           },
         ],
         gamesPractitionersTitle: 'Mit wem du spielen kannst',
-        gamesPractitioners: [
-          {
-            name: 'Kristina Bauer',
-            game: 'AinSof',
-            about:
-              'Dem eigenen Anliegen nachgehen, Grenzen und Ressourcen für den nächsten Schritt erkennen.',
-          },
-          {
-            name: 'Katharina Basal',
-            game: 'Frage im Äther. Kreis der Transformationen',
-            about:
-              'Mit Aromen und intuitiven Praktiken die Situation aus einem neuen Blickwinkel betrachten.',
-          },
-          {
-            name: 'Sinaida Langlitz',
-            game: 'Der Weg zu sich selbst: die Magie des Selbstwerts',
-            about:
-              'Über Selbstvertrauen, Selbstwert und den nächsten Schritt sprechen.',
-          },
-          {
-            name: 'Alla Afanasenko',
-            game: 'Sex, Geld und Liebe · Divergent',
-            about:
-              'Beziehungen, innere Rollen, Annahme und Veränderungen im Leben erkunden.',
-          },
-        ],
+        gamesPractitioners: tiGames.de.practitioners.map((person) => ({
+          name: person.name,
+          game: person.game,
+          about: person.body,
+        })),
         gamesDetailsClose: 'Programm schließen',
         gamesDetailsBuy: 'Ticket für Teilnehmende kaufen',
         guest: 'Ticket für Teilnehmende kaufen',
