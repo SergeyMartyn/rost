@@ -23,7 +23,7 @@ writeFileSync(
       routes: [{ pattern: 'rost.community/*', zone_name: 'rost.community' }],
       workers_dev: true,
       preview_urls: false,
-      triggers: { crons: ['* * * * *'] },
+      triggers: { crons: ['*/5 * * * *'] },
       assets: {
         directory: './dist',
         binding: 'ASSETS',

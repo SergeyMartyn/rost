@@ -58,23 +58,12 @@ export interface NewHostRegistration {
 
 const iso = (ms: number) => new Date(ms).toISOString();
 
-function tableSlotSeed(): string {
-  return Array.from(
-    { length: HOST_TABLE_COUNT },
-    (_, index) => `(${index + 1},'free')`,
-  ).join(',');
-}
-
 export async function releaseExpiredHostHolds(
   env: HostEnv,
   nowMs: number,
 ): Promise<void> {
   const now = iso(nowMs);
   await env.ORDERS.batch([
-    env.ORDERS.prepare(
-      `INSERT INTO host_table_slots (slot_no,status) VALUES ${tableSlotSeed()}
-       ON CONFLICT(slot_no) DO NOTHING`,
-    ),
     env.ORDERS.prepare(
       `UPDATE host_registrations SET status='expired', updated_at=?
        WHERE status='pending' AND hold_expires_at<=?`,

@@ -5,6 +5,7 @@ import { createHmac } from 'node:crypto';
 import { DatabaseSync } from 'node:sqlite';
 import { handleApi, type Deps, type OrdersEnv } from '../worker/orders';
 import { reconcileSheetPayments } from '../worker/sheets';
+import worker from '../worker/index';
 import {
   HOST_DEPOSIT_CENTS,
   HOST_HOLD_MINUTES,
@@ -714,4 +715,31 @@ test('admin CSV lists applications with the amount paid and the remainder', asyn
   assert.match(csv, /42800/);
   assert.match(csv, /5000/);
   assert.match(csv, /37800/);
+});
+
+
+test('idle scheduled maintenance performs three queries without reseeding or changing slots', async () => {
+  const t = setup();
+  const slotsBefore = t.d1.db.prepare('SELECT * FROM host_table_slots ORDER BY slot_no').all();
+  const queries: string[] = [];
+  const prepare = t.d1.prepare;
+  t.d1.prepare = (sql: string) => {
+    queries.push(sql);
+    return prepare(sql);
+  };
+  const pending: Promise<unknown>[] = [];
+  await worker.scheduled(
+    {} as ScheduledController,
+    {
+      ...t.env,
+      ASSETS: { fetch: async () => new Response('asset') },
+      DEFAULT_LANGUAGE: 'ru',
+    },
+    { waitUntil: (p: Promise<unknown>) => pending.push(p) } as unknown as ExecutionContext,
+  );
+  await Promise.all(pending);
+  assert.equal(queries.length, 3);
+  assert.equal(queries.filter((sql) => /INSERT/i.test(sql)).length, 0);
+  assert.deepEqual(t.d1.db.prepare('SELECT * FROM host_table_slots ORDER BY slot_no').all(), slotsBefore);
+  assert.equal(t.sheetCalls.length, 0);
 });
