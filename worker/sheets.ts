@@ -6,6 +6,7 @@ type Payment = {
   quantity?: number;
   second_participant_name?: string | null;
   id: string;
+  provider: string;
   ticket_type: string;
   customer_name: string;
   contact_method: string;
@@ -24,7 +25,9 @@ type SheetRow = (string | number)[];
 const safeCell = (value: string | number): string | number =>
   typeof value === 'string' && /^[=+\-@\t\r]/.test(value) ? "'" + value : value;
 
-// The first nine columns retain the deployed Apps Script contract.
+// Live Tickets layout: H amount, I method, J status; host fields K:Q, pricing R:Y.
+const paymentMethod = (provider: string): string =>
+  provider === 'stripe' ? 'Stripe' : provider === 'paypal' ? 'PayPal' : '';
 export function orderSheetRow(order: Payment): SheetRow {
   return [
     order.paid_at ?? '',
@@ -35,8 +38,9 @@ export function orderSheetRow(order: Payment): SheetRow {
     order.contact_value,
     order.email ?? '',
     order.amount_cents / 100,
+    paymentMethod(order.provider),
     'paid',
-    // Keep J:P reserved for hosts. New pricing columns start at Q.
+    // Keep K:Q reserved for hosts. New pricing columns start at R.
     '',
     '',
     '',
@@ -71,6 +75,7 @@ export function hostSheetRow(host: HostRegistrationRow): SheetRow {
     host.contact_value,
     host.email,
     host.amount_paid_cents / 100,
+    paymentMethod(host.provider),
     'paid',
     host.total_cents / 100,
     host.remaining_cents / 100,
@@ -214,7 +219,7 @@ export async function reconcileSheetPayments(
   for (const item of due.results) {
     if (item.kind === 'host') {
       const host = await env.ORDERS.prepare(
-        `SELECT id, paid_at, customer_name, email,
+        `SELECT id, provider, paid_at, customer_name, email,
         contact_method, contact_value, amount_paid_cents, total_cents, remaining_cents,
         table_no, deposit_requested, format, media_package, game_title
         FROM host_registrations WHERE id=? AND status='paid'`,
@@ -224,7 +229,7 @@ export async function reconcileSheetPayments(
       if (host) await exportHostPayment(env, deps, host);
     } else {
       const order = await env.ORDERS.prepare(
-        `SELECT id, paid_at, ticket_type, customer_name,
+        `SELECT id, provider, paid_at, ticket_type, customer_name,
         contact_method, contact_value, email, amount_cents,
         base_amount_cents, discount_cents, discount_percent, promo_code, promotion_kind, issuer_name, quantity, second_participant_name
         FROM orders WHERE id=? AND status='paid'`,

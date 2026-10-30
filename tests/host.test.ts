@@ -234,8 +234,9 @@ test('cron recovers a host deposit missed by the webhook send without changing i
   await reconcileSheetPayments(t.env, t.deps);
   await reconcileSheetPayments(t.env, t.deps);
   assert.equal(t.sheetCalls.length, 1);
-  assert.deepEqual(t.sheetCalls[0].row.slice(7, 13), [
+  assert.deepEqual(t.sheetCalls[0].row.slice(7, 14), [
     50,
+    'Stripe',
     'paid',
     249,
     199,
@@ -343,8 +344,9 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
   await t.flush();
   assert.equal(t.sheetCalls.length, 1);
   assert.equal(t.sheetCalls[0].tab, '07.11.2026 - TI_München');
-  assert.deepEqual(t.sheetCalls[0].row.slice(7, 13), [
+  assert.deepEqual(t.sheetCalls[0].row.slice(7, 14), [
     249,
+    'Stripe',
     'paid',
     249,
     0,
@@ -412,6 +414,7 @@ test('expanded format with media and deposit stores 428 / 50 / 378', async () =>
   assert.equal(t.sheetCalls.length, 1);
   assert.deepEqual(t.sheetCalls[0].row.slice(7), [
     50,
+    'Stripe',
     'paid',
     428,
     378,

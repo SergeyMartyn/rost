@@ -277,7 +277,7 @@ test('Stripe charges the discounted snapshot, rejects full-price confirmation an
   assert.equal(row(t, order.id).status, 'paid');
   assert.equal(t.sheetCalls.length, 1);
   assert.equal(t.sheetCalls[0].row[7], 144);
-  assert.deepEqual(t.sheetCalls[0].row.slice(16), [
+  assert.deepEqual(t.sheetCalls[0].row.slice(17), [
     160,
     10,
     16,
@@ -931,7 +931,7 @@ test('single promo cannot buy a pair, ignores stale second name and exports a co
   assert.equal(row(t, order.id).status, 'paid');
   assert.equal(t.sheetCalls.length, 1);
   assert.equal(t.sheetCalls[0].row[7], 72);
-  assert.deepEqual(t.sheetCalls[0].row.slice(16), [
+  assert.deepEqual(t.sheetCalls[0].row.slice(17), [
     80,
     10,
     8,

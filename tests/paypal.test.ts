@@ -205,8 +205,10 @@ test('PayPal uses the same discounted quote and preserves attribution on capture
   assert.equal(record(t).status, 'paid');
   assert.equal(record(t).amount_cents, 14400);
   assert.equal(t.sheetCalls[0].row[7], 144);
-  assert.equal(t.sheetCalls[0].row[19], 'FRIEND10X');
-  assert.equal(t.sheetCalls[0].row[21], 'Максим');
+  assert.equal(t.sheetCalls[0].row[8], 'PayPal');
+  assert.equal(t.sheetCalls[0].row[9], 'paid');
+  assert.equal(t.sheetCalls[0].row[20], 'FRIEND10X');
+  assert.equal(t.sheetCalls[0].row[22], 'Максим');
   await t.api(
     webhook(
       'PAYMENT.CAPTURE.REFUNDED',
@@ -560,7 +562,7 @@ test('PayPal single promo captures only one discounted ticket and exports the so
   assert.equal(record(t).status, 'paid');
   assert.equal(record(t).amount_cents, 7200);
   assert.equal(t.sheetCalls.length, 1);
-  assert.deepEqual(t.sheetCalls[0].row.slice(16), [
+  assert.deepEqual(t.sheetCalls[0].row.slice(17), [
     80,
     10,
     8,

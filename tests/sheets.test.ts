@@ -50,6 +50,7 @@ function setup() {
   };
   const order = {
     id: 'order-1',
+    provider: 'stripe',
     ticket_type: 'nuremberg_meetup',
     customer_name: 'Test',
     contact_method: 'telegram',
@@ -86,6 +87,8 @@ test('acknowledged sends are deduplicated, Nuremberg uses its own tab, unsafe ce
   assert.equal(t.calls.length, 1);
   assert.equal(t.calls[0].tab, '12.12.26 - Nuernberg');
   assert.equal(t.calls[0].row[7], 29);
+  assert.equal(t.calls[0].row[8], 'Stripe');
+  assert.equal(t.calls[0].row[9], 'paid');
   assert.equal(t.calls[0].row[5], "'@test");
   assert.ok(t.receipt().delivered_at);
 });
@@ -129,6 +132,8 @@ test('cron backfills only paid orders, recovers missed sends, and leaves payment
   await reconcileSheetPayments(t.env, t.deps);
   assert.equal(t.calls.length, 1);
   assert.equal(t.calls[0].row[1], 'paid');
+  assert.equal(t.calls[0].row[8], 'Stripe');
+  assert.equal(t.calls[0].row[9], 'paid');
   assert.deepEqual(
     t.db.prepare('SELECT * FROM orders ORDER BY id').all(),
     before,
@@ -151,7 +156,7 @@ test('cron recovers an expired delivery lease after an interrupted process', asy
   assert.ok(t.receipt().delivered_at);
 });
 
-test('cron recovers the exact promo snapshot in Q:V without duplicating a delivery', async () => {
+test('cron recovers the exact promo snapshot in R:W without duplicating a delivery', async () => {
   const t = setup();
   t.db
     .prepare(
@@ -164,8 +169,8 @@ test('cron recovers the exact promo snapshot in Q:V without duplicating a delive
   await reconcileSheetPayments(t.env, t.deps);
   assert.equal(t.calls.length, 1);
   assert.equal(t.calls[0].tab, '07.11.2026 - TI_München');
-  assert.deepEqual(t.calls[0].row.slice(9, 16), ['', '', '', '', '', '', '']);
-  assert.deepEqual(t.calls[0].row.slice(16), [
+  assert.deepEqual(t.calls[0].row.slice(10, 17), ['', '', '', '', '', '', '']);
+  assert.deepEqual(t.calls[0].row.slice(17), [
     80,
     10,
     8,
@@ -191,7 +196,7 @@ test('cron exports both participants and pair quantity from one paid order only 
   assert.equal(t.calls.length, 1);
   assert.equal(t.calls[0].row[3], 'First Person');
   assert.equal(t.calls[0].row[7], 144);
-  assert.deepEqual(t.calls[0].row.slice(16), [
+  assert.deepEqual(t.calls[0].row.slice(17), [
     160,
     10,
     16,
@@ -216,7 +221,7 @@ test('cron restores the single promo snapshot once with quantity one and no seco
   await reconcileSheetPayments(t.env, t.deps);
   assert.equal(t.calls.length, 1);
   assert.equal(t.calls[0].row[7], 72);
-  assert.deepEqual(t.calls[0].row.slice(16), [
+  assert.deepEqual(t.calls[0].row.slice(17), [
     80,
     10,
     8,
