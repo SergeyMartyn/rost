@@ -56,7 +56,7 @@ for (const lang of ['ru', 'de'] as const) {
     await expect(main).toContainText(
       lang === 'ru' ? 'на сайте' : 'auf der Website',
     );
-    for (const amount of ['€249', '€349', '€79', '€50'])
+    for (const amount of ['€299', '€399', '€79', '€50'])
       await expect(main).toContainText(amount);
     await expect(main).toContainText(
       lang === 'ru' ? 'сертификат участия' : 'Teilnahmebescheinigung',

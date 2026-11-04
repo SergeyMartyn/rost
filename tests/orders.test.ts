@@ -470,7 +470,7 @@ for (const [ticket, cents] of [
   ['nuremberg_meetup', 2900],
   ['guest', 8000],
   ['guest_peak', 18000],
-  ['host', 24900],
+  ['host', 29900],
 ] as const) {
   test(`ticket ${ticket}: server-side price ${cents / 100} EUR, pending → paid`, async () => {
     const t = setup();

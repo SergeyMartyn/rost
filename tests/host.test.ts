@@ -239,8 +239,8 @@ test('cron recovers a host deposit missed by the webhook send without changing i
     50,
     'Stripe',
     'paid',
+    299,
     249,
-    199,
     1,
     'Предоплата',
   ]);
@@ -255,27 +255,27 @@ test('cron recovers a host deposit missed by the webhook send without changing i
 
 test('pricing: four totals, deposit changes only the amount due now', () => {
   assert.deepEqual(hostPrice('standard', false, false), {
-    totalCents: 24900,
-    dueNowCents: 24900,
+    totalCents: 29900,
+    dueNowCents: 29900,
     remainingCents: 0,
   });
   assert.deepEqual(hostPrice('standard', true, false), {
-    totalCents: 32800,
-    dueNowCents: 32800,
+    totalCents: 37800,
+    dueNowCents: 37800,
     remainingCents: 0,
   });
   assert.deepEqual(hostPrice('expanded', false, false), {
-    totalCents: 34900,
-    dueNowCents: 34900,
+    totalCents: 39900,
+    dueNowCents: 39900,
     remainingCents: 0,
   });
   assert.deepEqual(hostPrice('expanded', true, true), {
-    totalCents: 42800,
+    totalCents: 47800,
     dueNowCents: 5000,
-    remainingCents: 37800,
+    remainingCents: 42800,
   });
-  assert.equal(HOST_FORMATS.standard.amountCents, 24900);
-  assert.equal(HOST_FORMATS.expanded.amountCents, 34900);
+  assert.equal(HOST_FORMATS.standard.amountCents, 29900);
+  assert.equal(HOST_FORMATS.expanded.amountCents, 39900);
   assert.equal(HOST_DEPOSIT_CENTS, 5000);
   assert.equal(HOST_TABLE_COUNT, 7);
   assert.equal(HOST_HOLD_MINUTES, 30);
@@ -285,14 +285,14 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
   const t = setup();
   const { id, data, session } = await create(t);
   assert.equal(data.tableNo, 1);
-  assert.equal(data.totalCents, 24900);
-  assert.equal(data.dueNowCents, 24900);
+  assert.equal(data.totalCents, 29900);
+  assert.equal(data.dueNowCents, 29900);
   assert.equal(data.remainingCents, 0);
 
   const call = t.stripeCalls[0];
   assert.equal(
     call.body.get('line_items[0][price_data][unit_amount]'),
-    '24900',
+    '29900',
   );
   assert.equal(call.body.get('line_items[0][price_data][currency]'), 'eur');
   assert.equal(call.body.get('metadata[kind]'), 'host-registration');
@@ -310,7 +310,7 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
   let saved = row(t, id);
   assert.equal(saved.status, 'pending');
   assert.equal(saved.table_no, 1);
-  assert.equal(saved.total_cents, 24900);
+  assert.equal(saved.total_cents, 29900);
   assert.equal(saved.amount_paid_cents, 0);
   assert.equal(saved.email, 'maria@example.com');
   assert.ok(saved.game_title);
@@ -334,22 +334,22 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
   const wh = await t.api(
     signedEvent(
       'checkout.session.completed',
-      paidSession(id, session, 24900),
+      paidSession(id, session, 29900),
       'evt_host_paid',
     ),
   );
   assert.equal(wh.status, 200);
   saved = row(t, id);
   assert.equal(saved.status, 'paid');
-  assert.equal(saved.amount_paid_cents, 24900);
+  assert.equal(saved.amount_paid_cents, 29900);
   await t.flush();
   assert.equal(t.sheetCalls.length, 1);
   assert.equal(t.sheetCalls[0].tab, '07.11.2026 - TI_München');
   assert.deepEqual(t.sheetCalls[0].row.slice(7, 14), [
-    249,
+    299,
     'Stripe',
     'paid',
-    249,
+    299,
     0,
     1,
     'Полная оплата',
@@ -371,7 +371,7 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
   const duplicate = await t.api(
     signedEvent(
       'checkout.session.completed',
-      paidSession(id, session, 24900),
+      paidSession(id, session, 29900),
       'evt_host_paid',
     ),
   );
@@ -384,7 +384,7 @@ test('application is saved unpaid, reserves a table and is confirmed only by a w
   );
 });
 
-test('expanded format with media and deposit stores 428 / 50 / 378', async () => {
+test('expanded format with media and deposit stores 478 / 50 / 428', async () => {
   const t = setup();
   const { id, session } = await create(t, {
     format: 'expanded',
@@ -396,9 +396,9 @@ test('expanded format with media and deposit stores 428 / 50 / 378', async () =>
     '5000',
   );
   const saved = row(t, id);
-  assert.equal(saved.total_cents, 42800);
+  assert.equal(saved.total_cents, 47800);
   assert.equal(saved.due_now_cents, 5000);
-  assert.equal(saved.remaining_cents, 37800);
+  assert.equal(saved.remaining_cents, 42800);
   assert.equal(saved.media_package, 1);
   assert.equal(saved.deposit_requested, 1);
   await t.api(
@@ -417,8 +417,8 @@ test('expanded format with media and deposit stores 428 / 50 / 378', async () =>
     50,
     'Stripe',
     'paid',
+    478,
     428,
-    378,
     1,
     'Предоплата',
     'Расширенный',
@@ -430,7 +430,7 @@ test('expanded format with media and deposit stores 428 / 50 / 378', async () =>
   assert.equal(later.placeConfirmed, true);
   assert.equal(later.tableNo, 1);
   assert.equal(row(t, id).status, 'paid');
-  assert.equal(paid.remaining_cents, 37800);
+  assert.equal(paid.remaining_cents, 42800);
 });
 
 test('the eighth simultaneous application is rejected and tables are unique', async () => {
@@ -501,14 +501,14 @@ test('amount, currency and session mismatches leave the application pending', as
   await t.api(
     signedEvent(
       'checkout.session.completed',
-      paidSession(id, session, 24900, { currency: 'usd' }),
+      paidSession(id, session, 29900, { currency: 'usd' }),
       'evt_bad_currency',
     ),
   );
   await t.api(
     signedEvent(
       'checkout.session.completed',
-      paidSession(id, 'cs_other', 24900),
+      paidSession(id, 'cs_other', 29900),
       'evt_bad_session',
     ),
   );
@@ -530,7 +530,7 @@ test('amount, currency and session mismatches leave the application pending', as
   await t.api(
     signedEvent(
       'checkout.session.completed',
-      paidSession(id, session, 24900),
+      paidSession(id, session, 29900),
       'evt_good',
     ),
   );
@@ -576,7 +576,7 @@ test('an expired checkout releases the table; a late payment can still take a fr
   await t.api(
     signedEvent(
       'checkout.session.async_payment_succeeded',
-      paidSession(first.id, first.session, 24900),
+      paidSession(first.id, first.session, 29900),
       'evt_late',
       Math.floor((T0 + 40 * 60_000) / 1000),
     ),
@@ -584,7 +584,7 @@ test('an expired checkout releases the table; a late payment can still take a fr
   const late = row(t, first.id);
   assert.equal(late.status, 'paid');
   assert.equal(late.table_no, 1);
-  assert.equal(late.amount_paid_cents, 24900);
+  assert.equal(late.amount_paid_cents, 29900);
 });
 
 test('a late payment without a free table is recorded but no table is double-booked', async () => {
@@ -621,7 +621,7 @@ test('a late payment without a free table is recorded but no table is double-boo
   await t.api(
     signedEvent(
       'checkout.session.async_payment_succeeded',
-      paidSession(first.id, first.session, 24900),
+      paidSession(first.id, first.session, 29900),
       'evt_late_no_table',
       Math.floor((T0 + 31 * 60_000 + 3) / 1000),
     ),
@@ -712,9 +712,9 @@ test('admin CSV lists applications with the amount paid and the remainder', asyn
   const csv = await response.text();
   assert.match(csv, /remaining_cents/);
   assert.match(csv, new RegExp(id));
-  assert.match(csv, /42800/);
+  assert.match(csv, /47800/);
   assert.match(csv, /5000/);
-  assert.match(csv, /37800/);
+  assert.match(csv, /42800/);
 });
 
 
@@ -742,4 +742,27 @@ test('idle scheduled maintenance performs three queries without reseeding or cha
   assert.equal(queries.filter((sql) => /INSERT/i.test(sql)).length, 0);
   assert.deepEqual(t.d1.db.prepare('SELECT * FROM host_table_slots ORDER BY slot_no').all(), slotsBefore);
   assert.equal(t.sheetCalls.length, 0);
+});
+
+
+test('historical host checkout retains its stored price while new checkouts require 299 EUR', async () => {
+  const t = setup();
+  const historical = await create(t);
+  // Model a checkout created before the catalogue price changed.
+  t.d1.db.prepare('UPDATE host_registrations SET total_cents=24900,due_now_cents=24900 WHERE id=?').run(historical.id);
+  await t.api(signedEvent('checkout.session.completed', paidSession(historical.id, historical.session, 24900), 'evt_historical_price'));
+  await t.flush();
+  assert.equal(row(t, historical.id).status, 'paid');
+  assert.equal(row(t, historical.id).total_cents, 24900);
+  assert.equal(t.sheetCalls[0].row[7], 249);
+
+  const current = await create(t);
+  assert.equal(row(t, current.id).due_now_cents, 29900);
+  await t.api(signedEvent('checkout.session.completed', paidSession(current.id, current.session, 24900), 'evt_reject_old_price'));
+  assert.equal(row(t, current.id).status, 'pending');
+  await t.api(signedEvent('checkout.session.completed', paidSession(current.id, current.session, 29900), 'evt_current_price'));
+  await t.flush();
+  assert.equal(row(t, current.id).status, 'paid');
+  assert.equal(row(t, current.id).amount_paid_cents, 29900);
+  assert.equal(t.sheetCalls[1].row[7], 299);
 });

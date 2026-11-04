@@ -7,8 +7,8 @@ export const HOST_DEPOSIT_CENTS = 5000;
 export const HOST_MEDIA_CENTS = 7900;
 
 export const HOST_FORMATS = {
-  standard: { amountCents: 24900 },
-  expanded: { amountCents: 34900 },
+  standard: { amountCents: 29900 },
+  expanded: { amountCents: 39900 },
 } as const;
 
 export type HostFormat = keyof typeof HOST_FORMATS;

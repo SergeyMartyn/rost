@@ -1,3 +1,5 @@
+import { HOST_FORMATS } from '../src/lib/host';
+
 // Server-side ticket catalogue. Prices are decided HERE, never taken from the browser.
 export type TicketKey =
   | 'meetup'
@@ -66,7 +68,7 @@ export const TICKETS: Record<TicketKey, Ticket> = {
   },
   host: {
     eventId: 'munich-games-2026-11-07',
-    amountCents: 24900,
+    amountCents: HOST_FORMATS.standard.amountCents,
     label: {
       de: 'R.O.S.T. Spiele München, Ticket für Spielleitende',
       ru: 'R.O.S.T. Игры в Мюнхене, билет ведущего игр',
