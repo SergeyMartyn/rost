@@ -6,6 +6,7 @@ import { quotePrice } from '../worker/promotions';
 import { TICKETS } from '../worker/tickets';
 
 test('additive promo migration preserves old purchases and rounds a half cent consistently', async () => {
+  TICKETS.guest.soldOut = false;
   const db = new DatabaseSync(':memory:');
   for (const file of [
     '0001_orders',

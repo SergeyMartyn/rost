@@ -1,3 +1,4 @@
+import { isTicketSoldOut } from '../src/lib/ticket-availability';
 import { HOST_FORMATS } from '../src/lib/host';
 
 // Server-side ticket catalogue. Prices are decided HERE, never taken from the browser.
@@ -17,6 +18,7 @@ export interface Ticket {
   sheetTab: string;
   /** Historical tickets remain in the catalogue for webhook reconciliation. */
   salesClosed?: boolean;
+  soldOut?: boolean;
 }
 
 export const TICKETS: Record<TicketKey, Ticket> = {
@@ -40,6 +42,7 @@ export const TICKETS: Record<TicketKey, Ticket> = {
     sheetTab: '12.12.26 - Nuernberg',
   },
   guest: {
+    soldOut: isTicketSoldOut('guest'),
     eventId: 'munich-games-2026-11-07',
     amountCents: 8000,
     label: {
@@ -58,6 +61,7 @@ export const TICKETS: Record<TicketKey, Ticket> = {
     sheetTab: '07.11.2026 - TI_München',
   },
   guest_early: {
+    soldOut: isTicketSoldOut('guest_early'),
     eventId: 'munich-games-2026-11-07',
     amountCents: 8000,
     label: {

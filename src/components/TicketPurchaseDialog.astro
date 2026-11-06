@@ -1,4 +1,5 @@
 ---
+import { isTicketSoldOut } from '../lib/ticket-availability';
 import Button from './ui/Button.astro';
 import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
@@ -9,10 +10,11 @@ export interface PurchaseTicket {
   summary: string;
 }
 
-const { lang, tickets } = Astro.props as {
+const { lang, tickets: suppliedTickets } = Astro.props as {
   lang: Language;
   tickets: PurchaseTicket[];
 };
+const tickets = suppliedTickets.filter((ticket) => !isTicketSoldOut(ticket.key));
 const copy =
   lang === 'ru'
     ? {
@@ -778,6 +780,7 @@ const catalog = Object.fromEntries(
             'promo_not_applicable',
             'pricing_unavailable',
             'offer_ended',
+            'sold_out',
             'event_archived',
           ].includes(String(data.error))
         ) {

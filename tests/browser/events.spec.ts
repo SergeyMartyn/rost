@@ -393,12 +393,7 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await page.locator('#games [data-ticket="guest"]').click();
     await expect(page.locator('#ticket-summary')).toContainText('€180');
     await page.locator('#ticket-close').click();
-    await page
-      .locator('input[name="events-games-ticket"][value="guest"]')
-      .check();
-    await page.locator('#games [data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('€80');
-    await page.locator('#ticket-close').click();
+    await expect(page.locator('input[name="events-games-ticket"][value="guest"]')).toBeDisabled();
     await expect(page.locator('#games')).toContainText(
       lang === 'ru'
         ? 'Программа и подробности встречи →'
@@ -408,12 +403,7 @@ test('the three ticket prices agree in both languages', async ({ page }) => {
     await expect(page.locator('#ticket-summary')).toContainText('€29');
     await page.locator('#ticket-close').click();
     await page.goto(tiGames);
-    await page
-      .locator('input[name="games-ticket"][value="guest"]')
-      .check({ force: true });
-    await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('€80');
-    await page.locator('#ticket-close').click();
+    await expect(page.locator('input[name="games-ticket"][value="guest"]')).toBeDisabled();
     await page
       .locator('input[name="games-ticket"][value="guest_peak"]')
       .check({ force: true });

@@ -110,12 +110,7 @@ test('TI ticket selection opens the shared purchase dialog with the right price'
     await expect(page.locator('#ticket-dialog')).toBeVisible();
     await expect(page.locator('#ticket-summary')).toContainText('€180');
     await page.locator('#ticket-close').click();
-    await page
-      .locator('input[name="games-ticket"][value="guest"]')
-      .check({ force: true });
-    await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('€80');
-    await page.locator('#ticket-close').click();
+    await expect(page.locator('input[name="games-ticket"][value="guest"]')).toBeDisabled();
   }
 });
 
@@ -180,18 +175,8 @@ test('mobile sticky ticket bar opens purchase for the selected tariff', async ({
     await expect(page.locator('#ticket-dialog')).toBeVisible();
     await expect(page.locator('#ticket-summary')).toContainText('€180');
     await page.locator('#ticket-close').click();
-    await page
-      .locator('input[name="games-ticket-details"][value="guest"]')
-      .check({ force: true });
-    if (item.lang === 'ru')
-      await page.screenshot({ path: 'test-results/ti-tickets-ru-390.png' });
-    await expect(
-      page.locator('input[name="games-ticket"][value="guest"]'),
-    ).toBeChecked();
-    await page.locator('#ti-sticky-buy').click();
-    await expect(page.locator('#ticket-dialog')).toBeVisible();
-    await expect(page.locator('#ticket-summary')).toContainText('€80');
-    await page.locator('#ticket-close').click();
+    await expect(page.locator('input[name="games-ticket-details"][value="guest"]')).toBeDisabled();
+    await expect(page.locator('input[name="games-ticket"][value="guest_peak"]')).toBeChecked();
   }
 });
 

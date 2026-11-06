@@ -61,15 +61,10 @@ test('ticket contents select the whole card and synchronize the purchase', async
   const basic = page.locator(
     'input[name="games-ticket-details"][value="guest"]',
   );
-  await basic
-    .locator('xpath=ancestor::label')
-    .getByRole('listitem')
-    .last()
-    .click();
-  await expect(basic).toBeChecked();
+  await expect(basic).toBeDisabled();
   await expect(
     page.locator('input[name="games-ticket"][value="guest"]'),
-  ).toBeChecked();
+  ).toBeDisabled();
   const peak = page.locator(
     'input[name="games-ticket-details"][value="guest_peak"]',
   );
@@ -79,7 +74,8 @@ test('ticket contents select the whole card and synchronize the purchase', async
   await expect(peak).toBeChecked();
   await peak.focus();
   await page.keyboard.press('ArrowLeft');
-  await expect(basic).toBeChecked();
+  await expect(basic).toBeDisabled();
+  await expect(peak).toBeChecked();
   const first = page.locator('[data-practitioner="0"]');
   await expect(first).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
   await first.scrollIntoViewIfNeeded();

@@ -59,6 +59,8 @@ export function ticketPricing(isRu: boolean, changed: () => void) {
     input?.setAttribute('aria-invalid', String(error));
   };
   const errorText = (code: string) => {
+    if (code === 'sold_out')
+      return isRu ? 'Этот билет распродан. Выберите другой билет.' : 'Dieses Ticket ist ausverkauft. Bitte wähle ein anderes Ticket.';
     if (code === 'promo_not_applicable')
       return isRu
         ? 'Промокод не применяется к этому билету. Уберите код, чтобы оплатить без скидки.'

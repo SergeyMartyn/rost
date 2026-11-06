@@ -295,6 +295,7 @@ async function createOrder(
   const requestTime = deps.now();
   const ticket = TICKETS[body.ticket];
   if (ticket.salesClosed) return json({ error: 'event_archived' }, 410);
+  if (ticket.soldOut) return json({ error: 'sold_out' }, 409);
   if (body.ticket === 'guest_early' && !isEarlyBirdActive(requestTime))
     return json({ error: 'offer_ended', serverTime: requestTime }, 409);
   let price;

@@ -1,3 +1,4 @@
+import { TICKETS } from '../worker/tickets';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -54,6 +55,9 @@ const WH_SECRET = 'whsec_test_123';
 const T0 = 1_790_000_000_000;
 
 function setup(over: Partial<OrdersEnv> = {}) {
+  // These fixtures exercise the payment flow with inventory available.
+  TICKETS.guest.soldOut = false;
+  TICKETS.guest_early.soldOut = false;
   const d1 = makeD1();
   const stripeCalls: { body: URLSearchParams; headers: any }[] = [];
   const sheetCalls: any[] = [];
@@ -941,4 +945,31 @@ test('single promo cannot buy a pair, ignores stale second name and exports a co
     1,
     '',
   ]);
+});
+
+
+test('sold-out basic tickets reject both providers and all promotion paths while existing Stripe orders still settle', async () => {
+  const t = setup();
+  const existing = await createOrder(t, 'guest');
+  TICKETS.guest.soldOut = true;
+  TICKETS.guest_early.soldOut = true;
+  for (const ticket of ['guest', 'guest_early']) {
+    for (const promoCode of ['', 'PROMO10T', 'FAMILY10K', 'FRIEND10S']) {
+      const quote = await t.api(quoteRequest(ticket, promoCode));
+      assert.equal(quote.status, 409);
+      assert.deepEqual(await quote.json(), { error: 'sold_out' });
+      for (const provider of ['stripe', 'paypal']) {
+        const response = await t.api(orderReq(goodBody(ticket, { provider, promoCode })));
+        assert.equal(response.status, 409);
+        assert.deepEqual(await response.json(), { error: 'sold_out' });
+      }
+    }
+  }
+  assert.equal(t.d1.db.prepare('SELECT COUNT(*) AS n FROM orders').get()!.n, 1);
+  await t.api(signedEvent('checkout.session.completed', paidSession(existing.id, existing.session, 8000), 'evt_sold_out_existing'));
+  await t.flush();
+  assert.equal(row(t, existing.id).status, 'paid');
+  assert.equal(t.sheetCalls[0].row[7], 80);
+  assert.equal((await t.api(quoteRequest('guest_peak'))).status, 200);
+  assert.equal((await t.api(orderReq(goodBody('guest_peak')))).status, 200);
 });

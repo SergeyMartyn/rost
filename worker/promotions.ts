@@ -31,6 +31,7 @@ export async function quotePrice(
   if (!isTicketKey(ticketKey)) throw new PricingError('bad_ticket');
   const ticket = TICKETS[ticketKey];
   if (ticket.salesClosed) throw new PricingError('event_archived', 410);
+  if (ticket.soldOut) throw new PricingError('sold_out', 409);
   if (ticketKey === 'guest_early' && !isEarlyBirdActive(now))
     throw new PricingError('offer_ended', 409);
   if (code !== undefined && code !== null && typeof code !== 'string')

@@ -1,7 +1,9 @@
+import { isTicketSoldOut } from '../../src/lib/ticket-availability';
 import { test, expect, type Page } from '@playwright/test';
 import site from '../../site.config.json' with { type: 'json' };
 
 async function openPayment(page: Page, lang: 'ru' | 'de', ticket = 'guest') {
+  test.skip(isTicketSoldOut(ticket), 'This promotion checkout requires available basic tickets; sold-out behavior is covered separately.');
   await page.goto(site.routes.tiGames[lang]);
   await page.locator(`#ti-ticket-card input[value="${ticket}"]`).check();
   await page.locator('#ti-ticket-card [data-ticket]').click();

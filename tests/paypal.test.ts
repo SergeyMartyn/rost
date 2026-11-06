@@ -1,3 +1,4 @@
+import { TICKETS } from '../worker/tickets';
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
@@ -9,6 +10,9 @@ const SESSION = 'PAYPAL123456789';
 const NOW = 1_790_000_000_000;
 
 function setup(over: Partial<OrdersEnv> = {}) {
+  // These fixtures exercise the payment flow with inventory available.
+  TICKETS.guest.soldOut = false;
+  TICKETS.guest_early.soldOut = false;
   const db = new DatabaseSync(':memory:');
   db.exec(readFileSync('migrations/0001_orders.sql', 'utf8'));
   db.exec(readFileSync('migrations/0002_host_registrations.sql', 'utf8'));
@@ -572,4 +576,16 @@ test('PayPal single promo captures only one discounted ticket and exports the so
     1,
     '',
   ]);
+});
+
+
+test('existing PayPal approval can settle after the basic ticket sells out', async () => {
+  const t = setup();
+  assert.equal((await t.api(orderRequest({ ticket: 'guest' }))).status, 200);
+  const id = record(t).id;
+  TICKETS.guest.soldOut = true;
+  assert.equal((await t.api(orderRequest({ ticket: 'guest' }))).status, 409);
+  assert.equal((await t.api(paypalReturn(id))).status, 303);
+  assert.equal(record(t).status, 'paid');
+  assert.equal(record(t).amount_cents, 8000);
 });
