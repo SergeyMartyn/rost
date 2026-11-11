@@ -196,7 +196,7 @@ export function exportHostPayment(
   );
 }
 
-// Runs on the five-minute cron. Catches failed/missed sends and
+// Runs on the hourly cron. Catches failed/missed sends and
 // backfills existing paid records, without changing payment or booking state.
 export async function reconcileSheetPayments(
   env: OrdersEnv,

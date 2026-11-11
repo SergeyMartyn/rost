@@ -1,14 +1,9 @@
-import { HOST_EVENT_ID } from '../src/lib/host';
 import { routes, type Language } from '../src/lib/site';
 import { handleApi, type OrdersEnv } from './orders';
-import { releaseExpiredHostHolds } from './host';
 import { reconcileSheetPayments } from './sheets';
 import { TICKETS } from './tickets';
 
-// Munich is closed for scheduled maintenance after the event.
-const scheduledEventIds = [
-  ...new Set(Object.values(TICKETS).map((ticket) => ticket.eventId)),
-].filter((eventId) => eventId !== 'munich-games-2026-11-07');
+const scheduledEventIds = [TICKETS.nuremberg_meetup.eventId];
 
 export function chooseLanguage(header: string, fallback: Language): Language {
   const ranges = header.split(',').map((part, index) => {
@@ -74,8 +69,6 @@ export default {
     env: WorkerEnv,
     ctx: ExecutionContext,
   ): Promise<void> {
-    if (scheduledEventIds.includes(HOST_EVENT_ID))
-      ctx.waitUntil(releaseExpiredHostHolds(env, Date.now()));
     ctx.waitUntil(
       reconcileSheetPayments(
         env,

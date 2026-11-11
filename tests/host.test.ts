@@ -718,14 +718,21 @@ test('admin CSV lists applications with the amount paid and the remainder', asyn
 });
 
 
-test('scheduled maintenance skips Munich host tables and runs only order recovery', async () => {
+test('scheduled maintenance queries only Nuremberg orders', async () => {
   const t = setup();
   const slotsBefore = t.d1.db.prepare('SELECT * FROM host_table_slots ORDER BY slot_no').all();
   const queries: string[] = [];
+  const eventBindings: unknown[] = [];
   const prepare = t.d1.prepare;
   t.d1.prepare = (sql: string) => {
     queries.push(sql);
-    return prepare(sql);
+    const statement = prepare(sql);
+    const bind = statement.bind;
+    statement.bind = (...args: unknown[]) => {
+      eventBindings.push(...args.slice(1));
+      return bind(...args);
+    };
+    return statement;
   };
   const pending: Promise<unknown>[] = [];
   await worker.scheduled(
@@ -739,6 +746,7 @@ test('scheduled maintenance skips Munich host tables and runs only order recover
   );
   await Promise.all(pending);
   assert.equal(queries.length, 1);
+  assert.deepEqual(eventBindings, ['nuremberg-2026-12-12']);
   assert.doesNotMatch(queries[0], /host_registrations|host_table_slots/);
   assert.equal(queries.filter((sql) => /INSERT/i.test(sql)).length, 0);
   assert.deepEqual(t.d1.db.prepare('SELECT * FROM host_table_slots ORDER BY slot_no').all(), slotsBefore);
