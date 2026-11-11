@@ -54,7 +54,8 @@ test('structured data, canonical and social metadata on every page', async ({
     const socialPage =
       page === 'archive' ||
       page === 'archiveRegensburg' ||
-      page === 'tiGames'
+      page === 'tiGames' ||
+      page === 'munichMeetup'
         ? 'events'
         : ['home', 'events', 'about', 'contacts'].includes(page)
           ? page

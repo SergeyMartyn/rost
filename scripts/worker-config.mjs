@@ -56,7 +56,7 @@ writeFileSync(
         PAYPAL_MODE: ordersEnv === 'live' ? 'live' : 'sandbox',
         PAYPAL_PAYEE_EMAIL:
           process.env.PAYPAL_PAYEE_EMAIL || 'mail@margaritamartyn.com',
-        HOST_REGISTRATION_OPEN: process.env.HOST_REGISTRATION_OPEN || 'true',
+        HOST_REGISTRATION_OPEN: process.env.HOST_REGISTRATION_OPEN || 'false',
       },
       d1_databases: [
         {

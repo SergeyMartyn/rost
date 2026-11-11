@@ -21,7 +21,7 @@ const { lang, page, title, description } = Astro.props as {
 const t = text[lang];
 const fullBleed = !['imprint', 'privacy', 'terms'].includes(page);
 const socialPage =
-  page === 'archive' || page === 'archiveRegensburg' || page === 'tiGames'
+  ['archive', 'archiveRegensburg', 'tiGames', 'munichMeetup'].includes(page)
     ? 'events'
     : page === 'events' || page === 'about' || page === 'contacts'
       ? page

@@ -12,6 +12,7 @@ import Team from '../components/Team.astro';
 import PageHero from '../components/PageHero.astro';
 import ParticipationTerms from '../components/ParticipationTerms.astro';
 import HostRegistration from '../components/HostRegistration.astro';
+import MunichMeetup from '../components/MunichMeetup.astro';
 import TiGamesPage from '../components/TiGamesPage.astro';
 import {
   routes,
@@ -55,6 +56,8 @@ const legalText =
     <EventPage lang={lang} />
   ) : page === 'tiGames' ? (
     <TiGamesPage lang={lang} />
+  ) : page === 'munichMeetup' ? (
+    <MunichMeetup lang={lang} />
   ) : page === 'archive' ? (
     <ArchiveIndex lang={lang} />
   ) : page === 'archiveRegensburg' ? (
@@ -69,7 +72,7 @@ const legalText =
   ) : page === 'terms' ? (
     <ParticipationTerms lang={lang} />
   ) : page === 'host' ? (
-    <HostRegistration lang={lang} />
+    <HostRegistration lang={lang} archived />
   ) : (
     <div class="font-hero-sans ui-prose">
       {!legalText && <p class="text-brand mb-5">{t.legal}</p>}

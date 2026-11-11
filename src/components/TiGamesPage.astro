@@ -1,28 +1,31 @@
 ---
-import { isTicketSoldOut } from '../lib/ticket-availability';
 import CtaSection from './ui/CtaSection.astro';
-import EventValueSection from './ui/EventValueSection.astro';
 import PageIntro from './ui/PageIntro.astro';
 import Button from './ui/Button.astro';
 import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 import { tiGames } from '../data/ti-games';
-import TicketPurchaseDialog, {
-  type PurchaseTicket,
-} from './TicketPurchaseDialog.astro';
 
 const { lang } = Astro.props as { lang: Language };
-const basicSoldOut = isTicketSoldOut('guest');
-const soldOutLabel = lang === 'ru' ? 'Распродано' : 'Ausverkauft';
 const content = tiGames[lang];
-const ticketByKey = Object.fromEntries(
-  content.tickets.map((ticket) => [ticket.key, ticket]),
-);
-const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
-  key: ticket.key,
-  title: ticket.name,
-  summary: `${content.datePill} · ${ticket.price}`,
-}));
+const isRu = lang === 'ru';
+const archive = isRu ? {
+  eyebrow: 'Архив мероприятий',
+  status: 'Мероприятие завершилось',
+  intro: '7 ноября в Мюнхене прошёл День трансформационных игр. В программе были знакомство, нетворкинг и две игровые линейки.',
+  about: 'На встрече участники знакомились с ведущими и выбирали игры для двух игровых линеек.',
+  hosts: 'Ведущие игр',
+  next: 'Ближайшие мероприятия',
+  image: 'Трансформационная игра R.O.S.T.',
+} : {
+  eyebrow: 'Veranstaltungsarchiv',
+  status: 'Die Veranstaltung ist vorbei',
+  intro: 'Am 7. November fand in München der Tag der Transformationsspiele statt. Auf dem Programm standen Kennenlernen, Networking und zwei Spielrunden.',
+  about: 'Beim Treffen lernten die Teilnehmenden die Spielleitenden kennen und wählten Spiele für zwei Runden aus.',
+  hosts: 'Spielleitende',
+  next: 'Nächste Veranstaltungen',
+  image: 'Transformationsspiel bei R.O.S.T.',
+};
 ---
 
 <div class="font-hero-sans text-brand">
@@ -32,9 +35,9 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         id="ti-games-hero"
         class="min-w-0 pb-12 md:pb-16 lg:col-start-1 lg:row-start-1"
       >
-        <p class="ui-eyebrow text-brand">{content.eyebrow}</p>
+        <p class="ui-eyebrow text-brand">{archive.eyebrow}</p>
         <p class="mt-5 inline-flex min-h-10 items-center rounded-full bg-brand-gold px-5 text-xs font-bold tracking-[0.08em] text-brand">
-          {content.datePill}
+          <time datetime="2026-11-07">{content.date}</time> · {content.venue}
         </p>
         <Heading as="h1" variant="page" class="break-words">
           {content.title.join(' ')}
@@ -43,106 +46,16 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
           class="ui-intro__rule mt-8 h-1 w-40 bg-brand-gold md:w-64 lg:mt-10 lg:w-90"
           aria-hidden="true"
         ></div>
-        <p class="ui-lead mt-6 max-w-2xl text-muted">{content.intro}</p>
-        <ul class="mt-7 grid max-w-2xl gap-3 text-sm text-brand sm:grid-cols-3 sm:gap-4">
-          {content.heroHighlights.map((highlight) => (
-            <li class="flex gap-2 border-l-2 border-brand-gold pl-3 leading-snug">
-              {highlight}
-            </li>
-          ))}
-        </ul>
+        <p class="ui-lead mt-6 max-w-2xl text-muted">{archive.intro}</p>
+        <p class="ui-eyebrow mt-6">{archive.status}</p>
+        <Button variant="primary" size="regular" href={routes.events[lang]} class="mt-7">{archive.next}</Button>
       </PageIntro>
-
-      <aside
-        id="ti-ticket-card"
-        class="relative z-10 mt-0 min-w-0 self-start overflow-hidden pb-10 lg:col-start-2 lg:row-span-3 lg:row-start-1 lg:mt-0 lg:sticky lg:top-28"
-      >
-        <div class="overflow-hidden rounded-4xl border border-brand/10 bg-white shadow-xl">
-          <div class="bg-hero-end px-7 py-5 text-brand">
-            <p class="ui-eyebrow">{content.when}</p>
-            <p class="mt-3 font-display text-3xl">{content.date}</p>
-            <p class="mt-2 text-sm">{content.arrival}</p>
-          </div>
-          <div class="p-6 sm:p-7">
-            <p class="text-sm text-muted">
-              {content.venue} · Perchtinger Straße 12
-            </p>
-            <fieldset class="mt-5">
-              <legend class="mb-3 font-bold text-brand">
-                {content.chooseTicket}
-              </legend>
-              <div class="space-y-3">
-                <label class="ui-choice-card flex min-h-24 items-start gap-3">
-                  <input
-                    type="radio"
-                    name="games-ticket"
-                    disabled={basicSoldOut}
-                    value="guest"
-                    class="mt-1 h-4 w-4 shrink-0 accent-brand"
-                  />
-                  <span class="flex min-w-0 flex-1 items-start gap-3">
-                    <span class="min-w-0 flex-1">
-                      <strong class="block text-sm">
-                        {content.basicTicket}
-                        {basicSoldOut && <span class="mt-1 block text-xs font-bold">{soldOutLabel}</span>}
-                      </strong>
-                      <span class="mt-1 block text-xs leading-snug text-muted">
-                        {content.basicIncludes}
-                      </span>
-                    </span>
-                    <strong class="shrink-0 font-display text-2xl font-normal">
-                      {ticketByKey.guest.price}
-                    </strong>
-                  </span>
-                </label>
-                <label class="ui-choice-card flex min-h-24 items-start gap-3">
-                  <input
-                    type="radio"
-                    name="games-ticket"
-                    value="guest_peak"
-                    checked
-                    class="mt-1 h-4 w-4 shrink-0 accent-brand"
-                  />
-                  <span class="flex min-w-0 flex-1 items-start gap-3">
-                    <span class="min-w-0 flex-1">
-                      <strong class="block text-sm">
-                        {content.peakTicket}
-                      </strong>
-                      <span class="mt-1 block text-xs leading-snug text-muted">
-                        {content.peakIncludes}
-                      </span>
-                    </span>
-                    <strong class="shrink-0 font-display text-2xl font-normal">
-                      {ticketByKey.guest_peak.price}
-                    </strong>
-                  </span>
-                </label>
-              </div>
-            </fieldset>
-            <Button
-              variant="primary"
-              size="regular"
-              type="button"
-              data-ticket="guest"
-              data-ticket-group="games-ticket"
-              class="mt-5 w-full"
-            >
-              {content.buyTicket}
-            </Button>
-            <Button
-              variant="secondary"
-              size="compact"
-              href={routes.host[lang]}
-              class="mt-3 w-full"
-            >
-              <span>{content.host}</span>
-              <span aria-hidden="true">→</span>
-            </Button>
-            <p class="mt-4 text-center text-xs leading-relaxed text-muted">
-              {content.ticketNote}
-            </p>
-          </div>
-        </div>
+      <aside class="pb-10 lg:col-start-2 lg:row-start-1">
+        <picture>
+          <source type="image/avif" srcset="/images/rost-ti-preview-600.avif 600w, /images/rost-ti-preview.avif 1200w" sizes="(min-width: 64rem) 360px, 100vw" />
+          <img src="/images/rost-ti-preview.webp" alt={archive.image} width="1200" height="798" class="w-full rounded-4xl object-cover" />
+        </picture>
+        <p class="mt-3 text-sm text-muted">{content.address}</p>
       </aside>
 
       <section
@@ -152,13 +65,11 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         <div class="ui-section-heading">
           <p class="ui-eyebrow text-accent">{content.aboutEyebrow}</p>
           <Heading as="h2" variant="section" id="ti-about-title" class="mt-4">
-            {content.aboutTitle.map((line) => (
-              <span class="block">{line}</span>
-            ))}
+            {isRu ? 'Как прошёл день' : 'So war der Tag'}
           </Heading>
         </div>
         <p class="mt-5 max-w-2xl leading-relaxed text-muted">
-          {content.aboutBody}
+          {archive.about}
         </p>
         <p class="mt-4 max-w-2xl text-sm leading-relaxed text-muted">
           {content.scopeNote}
@@ -191,7 +102,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
         <div class="ui-section-heading">
           <p class="ui-eyebrow text-accent">{content.programEyebrow}</p>
           <Heading as="h2" variant="section" id="ti-program-title" class="mt-4">
-            {content.programTitle}
+            {isRu ? 'Программа дня' : 'Tagesprogramm'}
           </Heading>
         </div>
         <div class="mt-6 grid gap-x-8 sm:grid-cols-2">
@@ -208,8 +119,6 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     </div>
   </div>
 
-  <EventValueSection lang={lang} audience="participants" />
-
   <section class="ui-section bg-white" aria-labelledby="ti-practitioners-title">
     <div class="site-container">
       <div class="ui-section-heading">
@@ -220,7 +129,7 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
           id="ti-practitioners-title"
           class="mt-4"
         >
-          {content.practitionersTitle}
+          {archive.hosts}
         </Heading>
       </div>
       <div class="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -263,79 +172,8 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     </div>
   </section>
 
-  <section
-    class="ui-section bg-brand-surface"
-    aria-labelledby="ti-tickets-title"
-  >
-    <div class="site-container">
-      <div class="ui-section-heading">
-        <p class="ui-eyebrow text-accent">{content.ticketsEyebrow}</p>
-        <Heading as="h2" variant="section" id="ti-tickets-title" class="mt-4">
-          {content.ticketsTitle}
-        </Heading>
-      </div>
-      <fieldset class="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <legend class="sr-only">{content.chooseTicket}</legend>
-        {content.tickets.map((ticket, index) => (
-          <label
-            class:list={[
-              isTicketSoldOut(ticket.key) ? 'cursor-not-allowed opacity-60' : 'cursor-pointer',
-              'block rounded-3xl border-2 border-line bg-white p-6 transition has-[:checked]:border-brand focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-brand',
-            ]}
-          >
-            <span class="flex items-start justify-between gap-4">
-              <span class="flex min-w-0 items-start gap-3">
-                <input
-                  type="radio"
-                  name="games-ticket-details"
-                  value={ticket.key}
-                  disabled={isTicketSoldOut(ticket.key)}
-                  checked={index === 1}
-                  class="mt-2 h-4 w-4 shrink-0 accent-brand"
-                />
-                <span class="min-w-0 break-words font-display text-2xl">
-                  {ticket.name}
-                  {isTicketSoldOut(ticket.key) && <span class="mt-1 block font-hero-sans text-sm font-bold">{soldOutLabel}</span>}
-                </span>
-              </span>
-              <strong class="shrink-0 font-display text-3xl font-normal">
-                {ticket.price}
-              </strong>
-            </span>
-            <span role="list" class="mt-5 block space-y-2">
-              {ticket.includes.map((item) => (
-                <span
-                  role="listitem"
-                  class="block text-sm leading-relaxed text-muted"
-                >
-                  {item}
-                </span>
-              ))}
-            </span>
-          </label>
-        ))}
-      </fieldset>
-    </div>
-  </section>
-
-  <CtaSection
-    title={content.questionsTitle}
-    description={content.questionsBody}
-    href={routes.contacts[lang]}
-    label={content.contactLink}
-  />
+  <CtaSection title={isRu ? 'Увидимся на следующей встрече' : 'Wir sehen uns beim nächsten Treffen'} href={routes.events[lang]} label={archive.next} />
 </div>
-
-<Button
-  variant="primary"
-  size="regular"
-  id="ti-sticky-buy"
-  type="button"
-  hidden
-  class="fixed inset-x-4 bottom-4 z-40 shadow-xl lg:hidden"
->
-  {content.buyTicket}
-</Button>
 
 <dialog
   id="practitioner-dialog"
@@ -448,7 +286,6 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
   set:html={JSON.stringify(content.practitioners)}
 ></script>
 
-<TicketPurchaseDialog lang={lang} tickets={purchaseTickets} />
 
 <script>
   const practitioners = JSON.parse(
@@ -599,49 +436,6 @@ const purchaseTickets: PurchaseTicket[] = content.tickets.map((ticket) => ({
     practitionerDialog?.close(),
   );
 
-  const stickyBuy = document.querySelector<HTMLButtonElement>('#ti-sticky-buy');
-  const hero = document.querySelector<HTMLElement>('#ti-games-hero');
-  const footer = document.querySelector<HTMLElement>('.site-footer');
-  let heroVisible = true;
-  let footerVisible = false;
-  const updateStickyBuy = () => {
-    const shouldShow =
-      window.matchMedia('(max-width: 63.999rem)').matches &&
-      !heroVisible &&
-      !footerVisible;
-    if (stickyBuy) stickyBuy.hidden = !shouldShow;
-    document.body.style.paddingBottom = shouldShow ? '88px' : '';
-  };
-  if (hero)
-    new IntersectionObserver((entries) => {
-      heroVisible = entries[0]?.isIntersecting ?? false;
-      updateStickyBuy();
-    }).observe(hero);
-  if (footer)
-    new IntersectionObserver((entries) => {
-      footerVisible = entries[0]?.isIntersecting ?? false;
-      updateStickyBuy();
-    }).observe(footer);
-  window.addEventListener('resize', updateStickyBuy);
-
-  const ticketRadios = document.querySelectorAll<HTMLInputElement>(
-    'input[name="games-ticket"], input[name="games-ticket-details"]',
-  );
-  ticketRadios.forEach((radio) =>
-    radio.addEventListener('change', () => {
-      if (!radio.checked) return;
-      ticketRadios.forEach((other) => {
-        if (other.value === radio.value) other.checked = true;
-      });
-    }),
-  );
-  stickyBuy?.addEventListener('click', () => {
-    document
-      .querySelector<HTMLButtonElement>(
-        '[data-ticket="guest"][data-ticket-group="games-ticket"]',
-      )
-      ?.click();
-  });
 </script>
 
 <style>

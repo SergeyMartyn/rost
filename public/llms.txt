@@ -19,9 +19,11 @@
 - [Мероприятия](https://rost.community/ru/meropriyatiya/) /
   [Veranstaltungen](https://rost.community/de/veranstaltungen/): встречи и игры
   с датами, адресами и ценами.
-- [Трансформационные игры в Мюнхене](https://rost.community/ru/meropriyatiya/transformatsionnye-igry/) /
-  [Transformationsspiele München](https://rost.community/de/veranstaltungen/transformationsspiele/):
-  программа, игропрактики, билеты и условия участия.
+- [Трансформационные игры в Мюнхене](https://rost.community/ru/arkhiv-meropriyatiy/transformatsionnye-igry-myunhen/) /
+  [Transformationsspiele München](https://rost.community/de/veranstaltungsarchiv/transformationsspiele-muenchen/):
+  архив игр 7 ноября 2026 года, программа и ведущие.
+- [Встреча в Мюнхене](https://rost.community/ru/meropriyatiya/myunhen/) /
+  [Treffen in München](https://rost.community/de/veranstaltungen/muenchen/): 12 декабря 2026 года.
 - [О нас](https://rost.community/ru/o-nas/) /
   [Über uns](https://rost.community/de/ueber-uns/): смысл сообщества и команда.
 - [Контакты](https://rost.community/ru/kontakty/) /

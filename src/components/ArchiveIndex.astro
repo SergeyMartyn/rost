@@ -13,7 +13,7 @@ const copy =
         title: 'Прошедшие встречи',
         intro:
           'Фотографии, видео и короткие истории о том, как мы встречались и знакомились.',
-        count: '1 ВСТРЕЧА В АРХИВЕ',
+        count: '2 ВСТРЕЧИ В АРХИВЕ',
         month: 'ОКТЯБРЬ 2026',
         meta: '10 ОКТЯБРЯ 2026 · РЕГЕНСБУРГ',
         event: 'Встреча-знакомство в Регенсбурге',
@@ -31,7 +31,7 @@ const copy =
         title: 'Vergangene Treffen',
         intro:
           'Fotos, Videos und kurze Geschichten darüber, wie wir uns getroffen und kennengelernt haben.',
-        count: '1 TREFFEN IM ARCHIV',
+        count: '2 TREFFEN IM ARCHIV',
         month: 'OKTOBER 2026',
         meta: '10. OKTOBER 2026 · REGENSBURG',
         event: 'Kennenlerntreffen in Regensburg',
@@ -44,6 +44,37 @@ const copy =
         nextLink: 'Nächste Veranstaltungen →',
         photoAlt: 'Teilnehmende beim Treffen in Regensburg',
       };
+const entries = [
+  {
+    route: routes.tiGames[lang],
+    datetime: '2026-11-07',
+    month: lang === 'ru' ? 'НОЯБРЬ 2026' : 'NOVEMBER 2026',
+    meta:
+      lang === 'ru' ? '7 НОЯБРЯ 2026 · МЮНХЕН' : '7. NOVEMBER 2026 · MÜNCHEN',
+    event:
+      lang === 'ru'
+        ? 'День трансформационных игр в Мюнхене'
+        : 'Tag der Transformationsspiele in München',
+    description:
+      lang === 'ru'
+        ? 'Программа дня, две игровые линейки и ведущие игр.'
+        : 'Das Tagesprogramm, zwei Spielrunden und die Spielleitenden.',
+    eventLink: copy.eventLink,
+    photoAlt:
+      lang === 'ru'
+        ? 'Трансформационная игра R.O.S.T.'
+        : 'Transformationsspiel bei R.O.S.T.',
+    image: 'rost-ti-preview',
+    height: 798,
+  },
+  {
+    ...copy,
+    route: routes.archiveRegensburg[lang],
+    datetime: '2026-10-10',
+    image: 'rost-networking-preview',
+    height: 675,
+  },
+];
 ---
 
 <div class="font-hero-sans text-brand">
@@ -64,61 +95,66 @@ const copy =
     </PageIntro>
   </section>
 
-  <section class="ui-section bg-white" aria-labelledby="archive-month">
-    <div class="site-container">
-      <h2 id="archive-month" class="ui-eyebrow">
-        {copy.month}
-      </h2>
-      <article class="mt-9 grid overflow-hidden rounded-4xl bg-brand-surface p-4 md:p-8 lg:grid-cols-2 lg:gap-12">
-        <a
-          href={routes.archiveRegensburg[lang]}
-          class="block overflow-hidden rounded-3xl bg-hero-end"
-          aria-label={copy.event}
-        >
-          <picture>
-            <source
-              type="image/avif"
-              srcset="/images/rost-networking-preview-600.avif 600w, /images/rost-networking-preview.avif 1200w"
-              sizes="(min-width: 64rem) 540px, 100vw"
-            />
-            <source
-              type="image/webp"
-              srcset="/images/rost-networking-preview-600.webp 600w, /images/rost-networking-preview.webp 1200w"
-              sizes="(min-width: 64rem) 540px, 100vw"
-            />
-            <img
-              src="/images/rost-networking-preview.webp"
-              alt={copy.photoAlt}
-              width="1200"
-              height="675"
-              loading="lazy"
-              decoding="async"
-              class="h-64 w-full object-cover md:h-96 lg:h-full"
-            />
-          </picture>
-        </a>
-        <div class="flex flex-col items-start justify-center px-3 pb-5 pt-8 md:px-0 lg:py-6">
-          <time datetime="2026-10-10" class="ui-eyebrow">
-            {copy.meta}
-          </time>
-          <Heading as="h3" variant="card" class="mt-6 max-w-xl">
-            {copy.event}
-          </Heading>
-          <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-            {copy.description}
-          </p>
-          <Button
-            variant="primary"
-            size="regular"
-            href={routes.archiveRegensburg[lang]}
-            class="mt-7"
+  {entries.map((entry) => (
+    <section
+      class="ui-section bg-white"
+      aria-labelledby={`archive-${entry.datetime}`}
+    >
+      <div class="site-container">
+        <h2 id={`archive-${entry.datetime}`} class="ui-eyebrow">
+          {entry.month}
+        </h2>
+        <article class="mt-9 grid overflow-hidden rounded-4xl bg-brand-surface p-4 md:p-8 lg:grid-cols-2 lg:gap-12">
+          <a
+            href={entry.route}
+            class="block overflow-hidden rounded-3xl bg-hero-end"
+            aria-label={entry.event}
           >
-            {copy.eventLink}
-          </Button>
-        </div>
-      </article>
-    </div>
-  </section>
+            <picture>
+              <source
+                type="image/avif"
+                srcset={`/images/${entry.image}-600.avif 600w, /images/${entry.image}.avif 1200w`}
+                sizes="(min-width: 64rem) 540px, 100vw"
+              />
+              <source
+                type="image/webp"
+                srcset={`/images/${entry.image}-600.webp 600w, /images/${entry.image}.webp 1200w`}
+                sizes="(min-width: 64rem) 540px, 100vw"
+              />
+              <img
+                src={`/images/${entry.image}.webp`}
+                alt={entry.photoAlt}
+                width="1200"
+                height={entry.height}
+                loading="lazy"
+                decoding="async"
+                class="h-64 w-full object-cover md:h-96 lg:h-full"
+              />
+            </picture>
+          </a>
+          <div class="flex flex-col items-start justify-center px-3 pb-5 pt-8 md:px-0 lg:py-6">
+            <time datetime={entry.datetime} class="ui-eyebrow">
+              {entry.meta}
+            </time>
+            <Heading as="h3" variant="card" class="mt-6 max-w-xl">
+              {entry.event}
+            </Heading>
+            <p class="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+              {entry.description}
+            </p>
+            <Button
+              variant="primary"
+              size="regular"
+              href={entry.route}
+              class="mt-7"
+            >
+              {entry.eventLink}
+            </Button>
+          </div>
+        </article>
+      </div>
+    </section>
+  ))}
 
   <CtaSection
     title={copy.nextTitle}

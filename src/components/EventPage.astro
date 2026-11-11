@@ -1,7 +1,6 @@
 ---
-import { isTicketSoldOut } from '../lib/ticket-availability';
+import { munichMeetup } from '../data/munich-meetup';
 import CtaSection from './ui/CtaSection.astro';
-import { tiGames } from '../data/ti-games';
 import PageIntro from './ui/PageIntro.astro';
 import Button from './ui/Button.astro';
 import Heading from './ui/Heading.astro';
@@ -11,8 +10,6 @@ import ArchiveLink from './ArchiveLink.astro';
 import TicketPurchaseDialog from './TicketPurchaseDialog.astro';
 
 const { lang } = Astro.props as { lang: Language };
-const basicSoldOut = isTicketSoldOut('guest');
-const soldOutLabel = lang === 'ru' ? 'Распродано' : 'Ausverkauft';
 const copy =
   lang === 'ru'
     ? {
@@ -20,8 +17,7 @@ const copy =
         title: 'Мероприятия',
         intro:
           'Повод выйти из чата и познакомиться с людьми, с которыми захочется встретиться снова.',
-        meetShort: '12 декабря · Нюрнберг ↗',
-        gamesShort: '7 ноября · Мюнхен ↗',
+        meetShort: '13 декабря · Нюрнберг ↗',
         meetTag: 'Первая встреча',
         meetTitle: 'Встреча-знакомство',
         meetPlace: 'и рождественский рынок в Нюрнберге',
@@ -42,58 +38,13 @@ const copy =
         meetDetailsBuy: 'Купить билет · €29',
         when: 'Когда',
         where: 'Где',
-        meetDate: '12 декабря 2026',
-        gamesDate: '7 ноября 2026',
+        meetDate: '13 декабря 2026',
         meetMonth: 'декабря',
-        gamesMonth: 'ноября',
-        gamesTime: tiGames.ru.arrival,
         meetRegistration: 'Время начала сообщим позже',
         meetAddress: 'Адрес сообщим позже',
-        gamesVenue: 'Мюнхен',
-        gamesAddress: 'Перхтингер-штрассе, 12 · 81379 Мюнхен',
         meetTicket: 'Билет на встречу',
         buyTicket: 'Купить билет →',
         beforePayment: 'Перед оплатой попросим имя и удобный способ связи.',
-        gamesTag: 'Для участников и ведущих',
-        gamesTitle: 'День трансформационных',
-        gamesPlace: 'игр в Мюнхене',
-        gamesBody:
-          'Две игровые сессии, нетворкинг и время, чтобы познакомиться с людьми ближе.',
-        gamesDetailsLink: 'Программа и подробности встречи →',
-        gamesDetailsTitle: 'День трансформационных игр в Мюнхене',
-        gamesDetailsIntro:
-          'Две игровые линейки, нетворкинг и знакомство с ведущими. Ниже: программа дня и практики, с которыми можно сыграть.',
-        gamesProgramTitle: 'Программа',
-        gamesProgram: [
-          { time: '09:30–10:00', label: 'Регистрация' },
-          { time: '10:00–10:10', label: 'Открытие дня' },
-          { time: '10:10–11:30', label: 'Нетворкинг' },
-          { time: '11:30–11:45', label: 'Знакомство с ведущими' },
-          { time: '11:45–14:00', label: 'Первая линейка игр' },
-          { time: '14:00–15:15', label: 'Обед' },
-          { time: '15:15–15:30', label: 'Знакомство с ведущими' },
-          { time: '15:30–17:45', label: 'Вторая линейка игр' },
-          { time: '17:45–18:15', label: 'Награждение и розыгрыш' },
-          {
-            time: '18:30–22:00',
-            label: 'Ужин VIP · тариф «Пик трансформации»',
-          },
-        ],
-        gamesPractitionersTitle: 'С кем можно сыграть',
-        gamesPractitioners: tiGames.ru.practitioners.map((person) => ({
-          name: person.name,
-          game: person.game,
-          about: person.body,
-        })),
-        gamesDetailsClose: 'Закрыть программу',
-        gamesDetailsBuy: 'Купить билет участника',
-        guest: 'Купить билет участника',
-        chooseTicket: 'Выберите билет участника',
-        basicTicket: 'Базовый импульс',
-        peakTicket: 'Пик трансформации',
-        basicIncludes: 'Игры, общие зоны, напитки и фото',
-        peakIncludes: 'Всё из базового, Zoom, фото, ужин и консультация',
-        host: 'Хочу провести игру',
         questions: 'Есть вопросы перед встречей?',
         questionsBody:
           'Порядок участия и время начала уточним перед мероприятием.',
@@ -128,8 +79,7 @@ const copy =
         title: 'Veranstaltungen',
         intro:
           'Ein Anlass, den Chat zu verlassen und Menschen kennenzulernen, die du gern wiedersehen möchtest.',
-        meetShort: '12. Dezember · Nürnberg ↗',
-        gamesShort: '7. November · München ↗',
+        meetShort: '13. Dezember · Nürnberg ↗',
         meetTag: 'Erstes Treffen',
         meetTitle: 'Kennenlerntreffen',
         meetPlace: 'und Christkindlesmarkt in Nürnberg',
@@ -150,59 +100,14 @@ const copy =
         meetDetailsBuy: 'Ticket kaufen · €29',
         when: 'Wann',
         where: 'Wo',
-        meetDate: '12. Dezember 2026',
-        gamesDate: '7. November 2026',
+        meetDate: '13. Dezember 2026',
         meetMonth: 'Dezember',
-        gamesMonth: 'November',
-        gamesTime: tiGames.de.arrival,
         meetRegistration: 'Die Anfangszeit geben wir noch bekannt',
         meetAddress: 'Die Adresse geben wir noch bekannt',
-        gamesVenue: 'München',
-        gamesAddress: 'Perchtinger Straße 12 · 81379 München',
         meetTicket: 'Ticket für das Treffen',
         buyTicket: 'Ticket kaufen →',
         beforePayment:
           'Vor der Zahlung fragen wir nach deinem Namen und einem Kontaktweg.',
-        gamesTag: 'Für Gäste und Spielleitende',
-        gamesTitle: 'Tag der Transformationsspiele',
-        gamesPlace: 'in München',
-        gamesBody:
-          'Zwei Spielrunden, Networking und Zeit, um Menschen näher kennenzulernen.',
-        gamesDetailsLink: 'Programm und Details →',
-        gamesDetailsTitle: 'Tag der Transformationsspiele in München',
-        gamesDetailsIntro:
-          'Zwei Spielrunden, Networking und Begegnungen mit den Spielleitenden. Unten findest du das Tagesprogramm und die Praktiken.',
-        gamesProgramTitle: 'Programm',
-        gamesProgram: [
-          { time: '09:30–10:00', label: 'Anmeldung' },
-          { time: '10:00–10:10', label: 'Eröffnung des Tages' },
-          { time: '10:10–11:30', label: 'Networking' },
-          { time: '11:30–11:45', label: 'Begegnung mit den Spielleitenden' },
-          { time: '11:45–14:00', label: 'Erste Spielrunde' },
-          { time: '14:00–15:15', label: 'Mittagessen' },
-          { time: '15:15–15:30', label: 'Begegnung mit den Spielleitenden' },
-          { time: '15:30–17:45', label: 'Zweite Spielrunde' },
-          { time: '17:45–18:15', label: 'Auszeichnung und Verlosung' },
-          {
-            time: '18:30–22:00',
-            label: 'VIP-Abendessen · Tarif „Gipfel der Transformation“',
-          },
-        ],
-        gamesPractitionersTitle: 'Mit wem du spielen kannst',
-        gamesPractitioners: tiGames.de.practitioners.map((person) => ({
-          name: person.name,
-          game: person.game,
-          about: person.body,
-        })),
-        gamesDetailsClose: 'Programm schließen',
-        gamesDetailsBuy: 'Ticket für Teilnehmende kaufen',
-        guest: 'Ticket für Teilnehmende kaufen',
-        chooseTicket: 'Wähle dein Ticket',
-        basicTicket: 'Basisimpuls',
-        peakTicket: 'Gipfel der Transformation',
-        basicIncludes: 'Spiele, Gemeinschaftsbereiche, Getränke und Foto',
-        peakIncludes: 'Basistarif, Zoom, Fotos, Abendessen und Beratung',
-        host: 'Ich möchte ein Spiel leiten',
         questions: 'Noch Fragen zum Treffen?',
         questionsBody:
           'Details zum Ablauf und zur Anfangszeit teilen wir vor der Veranstaltung mit.',
@@ -235,26 +140,12 @@ const copy =
       };
 const eventTickets = [
   {
-    key: 'guest',
-    title: lang === 'ru' ? 'Базовый импульс' : 'Basisimpuls',
-    summary:
-      lang === 'ru' ? '7 ноября · Мюнхен · €80' : '7. November · München · €80',
-  },
-  {
-    key: 'guest_peak',
-    title: lang === 'ru' ? 'Пик трансформации' : 'Gipfel der Transformation',
-    summary:
-      lang === 'ru'
-        ? '7 ноября · Мюнхен · €180'
-        : '7. November · München · €180',
-  },
-  {
     key: 'nuremberg_meetup',
     title: lang === 'ru' ? 'Билет на встречу' : 'Ticket für das Treffen',
     summary:
       lang === 'ru'
-        ? '12 декабря · Нюрнберг · €29'
-        : '12. Dezember · Nürnberg · €29',
+        ? '13 декабря · Нюрнберг · €29'
+        : '13. Dezember · Nürnberg · €29',
   },
 ];
 ---
@@ -271,8 +162,8 @@ const eventTickets = [
         </Heading>
         <p class="hero__description">{copy.intro}</p>
         <div class="hero__links">
-          <Button variant="secondary" size="compact" href="#games">
-            {copy.gamesShort}
+          <Button variant="secondary" size="compact" href="#munich">
+            {munichMeetup[lang].date} · {munichMeetup[lang].city}
           </Button>
           <Button variant="secondary" size="compact" href="#nuremberg">
             {copy.meetShort}
@@ -283,119 +174,16 @@ const eventTickets = [
     </div>
   </section>
 
-  <section id="games" class="ui-section scroll-mt-24 bg-brand-surface">
-    <div class="site-container grid gap-9 lg:grid-cols-[minmax(0,1fr)_360px] lg:gap-14">
-      <div class="min-w-0">
-        <div class="mb-8 flex flex-wrap items-center gap-3">
-          <span class="ui-eyebrow rounded-full bg-white px-4 py-2 text-accent">
-            {copy.gamesTag}
-          </span>
-          <span class="text-sm font-semibold text-muted">
-            {lang === 'ru' ? 'Мюнхен' : 'München'}
-          </span>
-        </div>
-        <Heading as="h2" variant="section" class="max-w-3xl">
-          {copy.gamesTitle}
-          <br />
-          {copy.gamesPlace}
-        </Heading>
-        <p class="mt-7 max-w-2xl text-lg leading-relaxed text-muted">
-          {copy.gamesBody}
-        </p>
-        <div class="mt-10 grid max-w-2xl gap-4 sm:grid-cols-2">
-          <div class="rounded-3xl bg-white/75 p-6">
-            <p class="ui-eyebrow text-muted">{copy.when}</p>
-            <p class="mt-3 font-display text-2xl">{copy.gamesDate}</p>
-            <p class="mt-2 text-sm text-muted">{copy.gamesTime}</p>
-          </div>
-          <div class="rounded-3xl bg-white/75 p-6">
-            <p class="ui-eyebrow text-muted">{copy.where}</p>
-            <p class="mt-3 font-display text-2xl">{copy.gamesVenue}</p>
-            <p class="mt-2 text-sm text-muted">{copy.gamesAddress}</p>
-          </div>
-        </div>
-        <Button
-          variant="secondary"
-          size="compact"
-          id="games-details-open"
-          href={routes.tiGames[lang]}
-          class="mt-6"
-        >
-          {copy.gamesDetailsLink}
-        </Button>
+  <section id="munich" class="ui-section scroll-mt-24 bg-brand-surface">
+    <div class="site-container">
+      <div class="ui-section-heading">
+        <time datetime={munichMeetup.datetime} class="ui-eyebrow text-accent">{munichMeetup[lang].date}</time>
+        <Heading as="h2" variant="section" class="mt-4">{munichMeetup[lang].title}</Heading>
       </div>
-      <aside class="min-w-0 self-start overflow-hidden rounded-4xl border border-brand/10 bg-white shadow-xl lg:sticky lg:top-28">
-        <div class="bg-hero-end px-7 py-5 text-brand">
-          <p class="ui-eyebrow">{copy.when}</p>
-          <p class="mt-3 font-display text-3xl">{copy.gamesDate}</p>
-        </div>
-        <div class="p-7">
-          <p class="text-sm text-muted">
-            {copy.gamesVenue} · Perchtinger Straße 12
-          </p>
-          <fieldset class="mt-5">
-            <legend class="mb-3 font-bold">{copy.chooseTicket}</legend>
-            <div class="space-y-3">
-              <label class="ui-choice-card flex min-h-24 items-start gap-3">
-                <input
-                  type="radio"
-                  name="events-games-ticket"
-                    disabled={basicSoldOut}
-                  value="guest"
-                  class="mt-1 h-4 w-4 shrink-0 accent-brand"
-                />
-                <span class="min-w-0 flex-1">
-                  <strong class="block text-sm">{copy.basicTicket}
-                        {basicSoldOut && <span class="mt-1 block text-xs font-bold">{soldOutLabel}</span>}</strong>
-                  <span class="mt-1 block text-xs leading-snug text-muted">
-                    {copy.basicIncludes}
-                  </span>
-                </span>
-                <strong class="shrink-0 font-display text-2xl font-normal">
-                  €80
-                </strong>
-              </label>
-              <label class="ui-choice-card flex min-h-24 items-start gap-3">
-                <input
-                  type="radio"
-                  name="events-games-ticket"
-                  value="guest_peak"
-                  checked
-                  class="mt-1 h-4 w-4 shrink-0 accent-brand"
-                />
-                <span class="min-w-0 flex-1">
-                  <strong class="block text-sm">{copy.peakTicket}</strong>
-                  <span class="mt-1 block text-xs leading-snug text-muted">
-                    {copy.peakIncludes}
-                  </span>
-                </span>
-                <strong class="shrink-0 font-display text-2xl font-normal">
-                  €180
-                </strong>
-              </label>
-            </div>
-          </fieldset>
-          <Button
-            variant="primary"
-            size="regular"
-            type="button"
-            data-ticket="guest"
-            data-ticket-group="events-games-ticket"
-            class="mt-3 w-full"
-          >
-            {copy.gamesDetailsBuy}
-          </Button>
-          <Button
-            variant="secondary"
-            size="compact"
-            href={routes.host[lang]}
-            class="mt-3 w-full"
-          >
-            <span>{copy.host}</span>
-            <span aria-hidden="true">→</span>
-          </Button>
-        </div>
-      </aside>
+      <p class="mt-5 text-lg text-muted">{munichMeetup[lang].details}</p>
+      <Button variant="secondary" size="compact" href={routes.munichMeetup[lang]} class="mt-6">
+        {munichMeetup[lang].link}
+      </Button>
     </div>
   </section>
 
@@ -451,7 +239,7 @@ const eventTickets = [
             class="absolute -right-8 -top-16 h-60 w-60 rounded-full border-[2.5rem] border-white/40"
           ></div>
           <div class="relative flex items-end gap-3 text-brand">
-            <strong class="font-display text-7xl leading-none">12</strong>
+            <strong class="font-display text-7xl leading-none">13</strong>
             <span class="pb-2 text-lg font-semibold leading-tight">
               {copy.meetMonth}
               <br />
@@ -479,7 +267,9 @@ const eventTickets = [
     </div>
   </section>
 
-  <ArchiveLink lang={lang} />
+  <div id="games" class="scroll-mt-24">
+    <ArchiveLink lang={lang} />
+  </div>
 
   <CtaSection
     title={copy.questions}

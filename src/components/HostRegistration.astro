@@ -15,7 +15,7 @@ import {
   hostPrice,
 } from '../lib/host';
 
-const { lang } = Astro.props as { lang: Language };
+const { lang, archived = false } = Astro.props as { lang: Language; archived?: boolean };
 const initial = hostPrice('standard', false, false);
 const copy =
   lang === 'ru'
@@ -299,6 +299,17 @@ const copy =
 const isRu = lang === 'ru';
 ---
 
+{archived ? (
+  <section class="bg-hero-start font-hero-sans text-brand">
+    <PageIntro class="site-container ui-page-top pb-16 md:pb-24">
+      <p class="ui-eyebrow">{isRu ? '7 ноября 2026 · Мюнхен' : '7. November 2026 · München'}</p>
+      <Heading as="h1" variant="page">{isRu ? 'Регистрация ведущих завершена' : 'Die Anmeldung für Spielleitende ist geschlossen'}</Heading>
+      <Button variant="secondary" size="regular" href={routes.tiGames[lang]} class="mt-7">
+        {isRu ? 'День трансформационных игр в архиве' : 'Tag der Transformationsspiele im Archiv'}
+      </Button>
+    </PageIntro>
+  </section>
+) : (
 <div class="font-hero-sans text-brand">
   <section class="hero hero--host" aria-labelledby="host-title">
     <div class="hero__inner site-container">
@@ -758,6 +769,8 @@ const isRu = lang === 'ru';
   />
 </div>
 
+)}
+
 <div
   id="host-status"
   role="status"
@@ -828,7 +841,7 @@ const isRu = lang === 'ru';
       closedNote.hidden = false;
     }
   };
-  fetch('/api/host-registrations/availability')
+  if (form) fetch('/api/host-registrations/availability')
     .then((response) =>
       response.ok
         ? (response.json() as Promise<{

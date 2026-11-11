@@ -33,11 +33,12 @@ export const TICKETS: Record<TicketKey, Ticket> = {
     salesClosed: true,
   },
   nuremberg_meetup: {
+    // Keep the original ID and sheet tab for existing orders and promotion scopes.
     eventId: 'nuremberg-2026-12-12',
     amountCents: 2900,
     label: {
-      de: 'R.O.S.T. Kennenlerntreffen Nürnberg, 12. Dezember 2026',
-      ru: 'R.O.S.T. Встреча-знакомство в Нюрнберге, 12 декабря 2026',
+      de: 'R.O.S.T. Kennenlerntreffen Nürnberg, 13. Dezember 2026',
+      ru: 'R.O.S.T. Встреча-знакомство в Нюрнберге, 13 декабря 2026',
     },
     sheetTab: '12.12.26 - Nuernberg',
   },
@@ -50,6 +51,7 @@ export const TICKETS: Record<TicketKey, Ticket> = {
       ru: 'R.O.S.T. Игры в Мюнхене, билет «Базовый импульс»',
     },
     sheetTab: '07.11.2026 - TI_München',
+    salesClosed: true,
   },
   guest_peak: {
     eventId: 'munich-games-2026-11-07',
@@ -59,6 +61,7 @@ export const TICKETS: Record<TicketKey, Ticket> = {
       ru: 'R.O.S.T. Игры в Мюнхене, билет «Пик трансформации»',
     },
     sheetTab: '07.11.2026 - TI_München',
+    salesClosed: true,
   },
   guest_early: {
     soldOut: isTicketSoldOut('guest_early'),
@@ -69,6 +72,7 @@ export const TICKETS: Record<TicketKey, Ticket> = {
       ru: 'R.O.S.T. Игры в Мюнхене, ранний билет участника',
     },
     sheetTab: '07.11.2026 - TI_München',
+    salesClosed: true,
   },
   host: {
     eventId: 'munich-games-2026-11-07',
@@ -78,6 +82,7 @@ export const TICKETS: Record<TicketKey, Ticket> = {
       ru: 'R.O.S.T. Игры в Мюнхене, билет ведущего игр',
     },
     sheetTab: '07.11.2026 - TI_München',
+    salesClosed: true,
   },
 };
 

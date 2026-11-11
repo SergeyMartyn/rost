@@ -1,4 +1,5 @@
 ---
+import { munichMeetup } from '../data/munich-meetup';
 import Button from './ui/Button.astro';
 import { routes, languages, type Language, type Page } from '../lib/site';
 
@@ -125,17 +126,9 @@ const socials = [
           </a>
           {item.page === 'events' && (
             <div class="site-header__event-links">
-              <a href={routes.tiGames[lang]}>
-                <strong>
-                  {lang === 'ru'
-                    ? 'Трансформационные игры'
-                    : 'Transformationsspiele'}
-                </strong>
-                <small>
-                  {lang === 'ru'
-                    ? 'Мюнхен · 7 ноября 2026'
-                    : 'München · 7. November 2026'}
-                </small>
+              <a href={routes.munichMeetup[lang]}>
+                <strong>{munichMeetup[lang].title}</strong>
+                <small>{munichMeetup[lang].date}</small>
               </a>
               <a href={`${routes.events[lang]}#nuremberg`}>
                 <strong>
@@ -145,8 +138,8 @@ const socials = [
                 </strong>
                 <small>
                   {lang === 'ru'
-                    ? 'Нюрнберг · 12 декабря 2026'
-                    : 'Nürnberg · 12. Dezember 2026'}
+                    ? 'Нюрнберг · 13 декабря 2026'
+                    : 'Nürnberg · 13. Dezember 2026'}
                 </small>
               </a>
             </div>

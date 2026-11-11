@@ -29,8 +29,12 @@
       "ru": "/ru/meropriyatiya/"
     },
     "tiGames": {
-      "de": "/de/veranstaltungen/transformationsspiele/",
-      "ru": "/ru/meropriyatiya/transformatsionnye-igry/"
+      "de": "/de/veranstaltungsarchiv/transformationsspiele-muenchen/",
+      "ru": "/ru/arkhiv-meropriyatiy/transformatsionnye-igry-myunhen/"
+    },
+    "munichMeetup": {
+      "de": "/de/veranstaltungen/muenchen/",
+      "ru": "/ru/meropriyatiya/myunhen/"
     },
     "archive": {
       "de": "/de/veranstaltungsarchiv/",

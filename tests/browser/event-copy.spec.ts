@@ -16,8 +16,6 @@ for (const lang of ['ru', 'de'] as const) {
         ? 'Это не медицинская консультация и не психотерапия'
         : 'Es ist keine medizinische Beratung oder Psychotherapie',
     );
-    await expect(page.locator('#ti-ticket-card')).toContainText('€80');
-    await expect(page.locator('#ti-ticket-card')).toContainText('€180');
     await expect(page.locator('[data-practitioner]')).toHaveCount(4);
     for (let i = 0; i < 4; i++) {
       await page.locator(`[data-practitioner="${i}"]`).click();
@@ -44,23 +42,5 @@ for (const lang of ['ru', 'de'] as const) {
         () => document.documentElement.scrollWidth <= innerWidth,
       ),
     ).toBe(true);
-  });
-
-  test(`event copy ${lang}: concrete promotion channels and unchanged fees`, async ({
-    page,
-  }) => {
-    await page.goto(site.routes.host[lang]);
-    const main = page.locator('main');
-    await expect(main).toContainText('Instagram');
-    await expect(main).toContainText('Telegram');
-    await expect(main).toContainText(
-      lang === 'ru' ? 'на сайте' : 'auf der Website',
-    );
-    for (const amount of ['€299', '€399', '€79', '€50'])
-      await expect(main).toContainText(amount);
-    await expect(main).toContainText(
-      lang === 'ru' ? 'сертификат участия' : 'Teilnahmebescheinigung',
-    );
-    expect(await main.textContent()).not.toMatch(/на сцене|auf der Bühne/iu);
   });
 }

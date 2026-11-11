@@ -11,6 +11,8 @@ const NOW = 1_790_000_000_000;
 
 function setup(over: Partial<OrdersEnv> = {}) {
   // These fixtures exercise the payment flow with inventory available.
+  for (const key of ['guest', 'guest_early', 'guest_peak', 'host'] as const)
+    TICKETS[key].salesClosed = false;
   TICKETS.guest.soldOut = false;
   TICKETS.guest_early.soldOut = false;
   const db = new DatabaseSync(':memory:');

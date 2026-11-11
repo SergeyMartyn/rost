@@ -2,6 +2,8 @@ import { isTicketSoldOut } from '../../src/lib/ticket-availability';
 import { test, expect, type Page } from '@playwright/test';
 import site from '../../site.config.json' with { type: 'json' };
 
+test.skip(site.routes.tiGames.ru.startsWith('/ru/arkhiv-meropriyatiy/'), 'Browser checkout for the archived November event is closed.');
+
 async function openPayment(page: Page, lang: 'ru' | 'de', ticket = 'guest') {
   test.skip(isTicketSoldOut(ticket), 'This promotion checkout requires available basic tickets; sold-out behavior is covered separately.');
   await page.goto(site.routes.tiGames[lang]);

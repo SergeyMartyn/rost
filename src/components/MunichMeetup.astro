@@ -1,0 +1,33 @@
+---
+import PageIntro from './ui/PageIntro.astro';
+import Heading from './ui/Heading.astro';
+import Button from './ui/Button.astro';
+import { munichMeetup } from '../data/munich-meetup';
+import { routes, type Language } from '../lib/site';
+
+const { lang } = Astro.props as { lang: Language };
+const copy = munichMeetup[lang];
+---
+
+<section class="bg-hero-start font-hero-sans text-brand">
+  <PageIntro class="site-container ui-page-top pb-16 md:pb-24">
+    <p class="ui-eyebrow">
+      {lang === 'ru' ? 'Ближайшие мероприятия' : 'Nächste Veranstaltungen'}
+    </p>
+    <Heading as="h1" variant="page">
+      {copy.title}
+    </Heading>
+    <time datetime={munichMeetup.datetime} class="mt-6 text-lg font-semibold">
+      {copy.date}
+    </time>
+    <p class="ui-lead mt-4 text-muted">{copy.details}</p>
+    <Button
+      variant="secondary"
+      size="regular"
+      href={routes.events[lang]}
+      class="mt-7"
+    >
+      {lang === 'ru' ? 'Все мероприятия' : 'Alle Veranstaltungen'}
+    </Button>
+  </PageIntro>
+</section>

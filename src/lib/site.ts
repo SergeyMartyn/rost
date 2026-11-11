@@ -1,3 +1,4 @@
+import { munichMeetup } from '../data/munich-meetup';
 import config from '../../site.config.json';
 export type Language = 'de' | 'ru';
 export type Page = keyof typeof config.routes;
@@ -11,6 +12,7 @@ export const text = {
     home: 'Startseite',
     events: 'Veranstaltungen',
     tiGames: 'Transformationsspiele München',
+    munichMeetup: munichMeetup.de.title,
     archive: 'Veranstaltungsarchiv',
     archiveRegensburg: 'Kennenlerntreffen in Regensburg',
     about: 'Über uns',
@@ -38,6 +40,7 @@ export const text = {
     home: 'Главная',
     events: 'Мероприятия',
     tiGames: 'Трансформационные игры в Мюнхене',
+    munichMeetup: munichMeetup.ru.title,
     archive: 'Архив мероприятий',
     archiveRegensburg: 'Встреча-знакомство в Регенсбурге',
     about: 'О нас',

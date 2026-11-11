@@ -65,7 +65,7 @@ test('events section keeps shared spacing and equal card widths', async ({
   });
 });
 
-test('Munich photo links to TI; Nuremberg photo links to the event in both languages', async ({
+test('December cards link to Munich details and the Nuremberg section', async ({
   page,
 }) => {
   for (const lang of ['ru', 'de']) {
@@ -73,7 +73,7 @@ test('Munich photo links to TI; Nuremberg photo links to the event in both langu
       await page.setViewportSize({ width, height: 900 });
       await page.goto(`/${lang}/`);
       const previews = page.locator('.events__photo img');
-      await expect(previews).toHaveCount(2);
+      await expect(previews).toHaveCount(1);
       for (const image of await previews.all()) {
         await image.scrollIntoViewIfNeeded();
         await expect
@@ -86,13 +86,10 @@ test('Munich photo links to TI; Nuremberg photo links to the event in both langu
           .toBe(true);
         await expect(image).toHaveCSS('object-fit', 'cover');
       }
-      const tiPath =
-        lang === 'ru'
-          ? '/ru/meropriyatiya/transformatsionnye-igry/'
-          : '/de/veranstaltungen/transformationsspiele/';
+      const munichPath = site.routes.munichMeetup[lang as 'ru' | 'de'];
       await expect(page.locator('.events__frame').first()).toHaveAttribute(
         'href',
-        tiPath,
+        munichPath,
       );
       await expect(
         page.locator('.events__frame').first().locator('.events__plus'),
@@ -106,11 +103,11 @@ test('Munich photo links to TI; Nuremberg photo links to the event in both langu
       await expect(page.locator('#nuremberg')).toBeVisible();
       await page.goBack();
       await page.locator('.events__frame').first().click();
-      await expect(page).toHaveURL(new RegExp(`${tiPath}$`));
+      await expect(page).toHaveURL(new RegExp(`${munichPath}$`));
       await page.goBack();
       await expect(page.locator('.events__link').first()).toHaveAttribute(
         'href',
-        new RegExp(`/${lang}/.*#games$`),
+        munichPath,
       );
     }
   }
@@ -274,30 +271,6 @@ test('Nuremberg details open accessibly and lead to its ticket form', async ({
   }
 });
 
-test('Munich programme link leads to the dedicated TI page', async ({
-  page,
-}) => {
-  for (const [lang, path, target] of [
-    ['ru', '/ru/meropriyatiya/', '/ru/meropriyatiya/transformatsionnye-igry/'],
-    [
-      'de',
-      '/de/veranstaltungen/',
-      '/de/veranstaltungen/transformationsspiele/',
-    ],
-  ] as const) {
-    await page.goto(path);
-    await page.locator('#games-details-open').click();
-    await expect(page).toHaveURL(new RegExp(`${target}$`));
-    await expect(page.locator('#ti-program')).toContainText('09:30–10:00');
-    await expect(page.locator('#ti-program')).toContainText(
-      lang === 'ru' ? 'VIP' : 'VIP',
-    );
-    await expect(page.locator('#ti-practitioners-title')).toContainText(
-      lang === 'ru' ? 'С кем можно сыграть' : 'Mit wem du spielen kannst',
-    );
-  }
-});
-
 test('contact errors replace hints, local WhatsApp numbers normalize, and terms links resolve', async ({
   page,
   request,
@@ -339,83 +312,6 @@ test('contact errors replace hints, local WhatsApp numbers normalize, and terms 
       lang === 'ru' ? '/ru/konfidentsialnost/' : '/de/datenschutz/',
     );
     expect((await request.get(termsPath)).status()).toBe(200);
-  }
-});
-
-test('the three ticket prices agree in both languages', async ({ page }) => {
-  for (const lang of ['ru', 'de'] as const) {
-    const home = lang === 'ru' ? '/ru/' : '/de/';
-    const events =
-      lang === 'ru' ? '/ru/meropriyatiya/' : '/de/veranstaltungen/';
-    const tiGames =
-      lang === 'ru'
-        ? '/ru/meropriyatiya/transformatsionnye-igry/'
-        : '/de/veranstaltungen/transformationsspiele/';
-    await page.goto(home);
-    await page
-      .locator('.faq__question-text')
-      .filter({
-        hasText:
-          lang === 'ru'
-            ? 'Сколько стоит участие?'
-            : 'Was kostet die Teilnahme?',
-      })
-      .click();
-    const answer = page
-      .locator('.faq__question-text')
-      .filter({
-        hasText:
-          lang === 'ru'
-            ? 'Сколько стоит участие?'
-            : 'Was kostet die Teilnahme?',
-      })
-      .locator('..')
-      .locator('..');
-    await expect(answer).toContainText('€29');
-    await expect(answer).toContainText('€80');
-    await expect(answer).toContainText('€180');
-
-    await page.goto(tiGames);
-    await expect(
-      page.locator('input[name="games-ticket"][value="guest_peak"]'),
-    ).toBeChecked();
-    await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('€180');
-    await page.locator('#ticket-close').click();
-    await page.goto(events);
-    await expect(
-      page.locator('input[name="events-games-ticket"][value="guest_peak"]'),
-    ).toBeChecked();
-    if (lang === 'ru')
-      await page
-        .locator('#games')
-        .screenshot({ path: 'test-results/games-card-ru.png' });
-    await page.locator('#games [data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('€180');
-    await page.locator('#ticket-close').click();
-    await expect(page.locator('input[name="events-games-ticket"][value="guest"]')).toBeDisabled();
-    await expect(page.locator('#games')).toContainText(
-      lang === 'ru'
-        ? 'Программа и подробности встречи →'
-        : 'Programm und Details →',
-    );
-    await page.locator('[data-ticket="nuremberg_meetup"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('€29');
-    await page.locator('#ticket-close').click();
-    await page.goto(tiGames);
-    await expect(page.locator('input[name="games-ticket"][value="guest"]')).toBeDisabled();
-    await page
-      .locator('input[name="games-ticket"][value="guest_peak"]')
-      .check({ force: true });
-    await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText('€180');
-    await page.locator('#ticket-close').click();
-    await expect(page.locator('[data-ticket="host"]')).toHaveCount(0);
-    await page.goto(
-      lang === 'ru' ? '/ru/usloviya-uchastiya/' : '/de/teilnahmebedingungen/',
-    );
-    for (const price of ['€29', '€80', '€180'])
-      await expect(page.locator('main')).toContainText(price);
   }
 });
 
@@ -526,16 +422,6 @@ test('requested FAQ order and purchase hover colors', async ({ page }) => {
   );
   await page.locator('[data-ticket="nuremberg_meetup"]').hover();
   await expect(page.locator('[data-ticket="nuremberg_meetup"]')).toHaveCSS(
-    'color',
-    'rgb(240, 207, 99)',
-  );
-  await page.goto('/ru/meropriyatiya/transformatsionnye-igry/');
-  await page.locator('[data-ticket="guest"]').hover();
-  await expect(page.locator('[data-ticket="guest"]')).toHaveCSS(
-    'background-color',
-    'rgb(33, 76, 63)',
-  );
-  await expect(page.locator('[data-ticket="guest"]')).toHaveCSS(
     'color',
     'rgb(240, 207, 99)',
   );

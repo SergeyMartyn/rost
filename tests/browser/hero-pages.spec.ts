@@ -96,46 +96,6 @@ test('contact headings use the available desktop width', async ({ page }) => {
   }
 });
 
-test('games date and venue agree across pages and ticket summary', async ({
-  page,
-}) => {
-  for (const [lang, routes] of Object.entries(paths)) {
-    await page.goto(routes[0]);
-    await expect(page.locator('.events__date').first()).toHaveAttribute(
-      'datetime',
-      '2026-11-07',
-    );
-    await page.goto(routes[1]);
-    await expect(page.locator('#nuremberg')).toContainText(
-      lang === 'ru' ? '12 декабря 2026' : '12. Dezember 2026',
-    );
-    await expect(page.locator('#games')).toContainText(
-      lang === 'ru' ? '7 ноября 2026' : '7. November 2026',
-    );
-    await expect(page.locator('#games')).toContainText(
-      lang === 'ru' ? 'Мюнхен' : 'München',
-    );
-    await expect(page.locator('#games')).toContainText(
-      lang === 'ru' ? 'Перхтингер-штрассе, 12' : 'Perchtinger Straße 12',
-    );
-    await expect(page.locator('#games a[href*="maps"]')).toHaveCount(0);
-    if (lang === 'ru') {
-      await page.locator('#games').screenshot({
-        path: 'test-results/games-venue-ru.png',
-      });
-    }
-    await page.goto(
-      lang === 'ru'
-        ? '/ru/meropriyatiya/transformatsionnye-igry/'
-        : '/de/veranstaltungen/transformationsspiele/',
-    );
-    await page.locator('[data-ticket="guest"]').click();
-    await expect(page.locator('#ticket-summary')).toContainText(
-      lang === 'ru' ? '7 ноября' : '7. November',
-    );
-  }
-});
-
 test('footer centers at tablet and wraps legal links below copyright on phones', async ({
   page,
 }) => {

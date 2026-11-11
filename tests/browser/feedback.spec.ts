@@ -53,78 +53,6 @@ test('compact consent fits phone and desktop with all actions in one row', async
   }
 });
 
-test('ticket contents select the whole card and synchronize the purchase', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 900 });
-  await page.goto(site.routes.tiGames.ru);
-  const basic = page.locator(
-    'input[name="games-ticket-details"][value="guest"]',
-  );
-  await expect(basic).toBeDisabled();
-  await expect(
-    page.locator('input[name="games-ticket"][value="guest"]'),
-  ).toBeDisabled();
-  const peak = page.locator(
-    'input[name="games-ticket-details"][value="guest_peak"]',
-  );
-  await peak
-    .locator('xpath=ancestor::label')
-    .click({ position: { x: 10, y: 10 } });
-  await expect(peak).toBeChecked();
-  await peak.focus();
-  await page.keyboard.press('ArrowLeft');
-  await expect(basic).toBeDisabled();
-  await expect(peak).toBeChecked();
-  const first = page.locator('[data-practitioner="0"]');
-  await expect(first).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
-  await first.scrollIntoViewIfNeeded();
-  await first.screenshot({ path: 'test-results/first-practitioner-390.png' });
-  await first.click();
-  await expect(page.locator('#practitioner-dialog')).toBeVisible();
-});
-
-test('value sections use localized copy and optimized event photographs', async ({
-  page,
-}) => {
-  await page.setViewportSize({ width: 390, height: 900 });
-  for (const lang of ['ru', 'de'] as const) {
-    for (const [route, audience] of [
-      [site.routes.host[lang], 'hosts'],
-      [site.routes.tiGames[lang], 'participants'],
-    ]) {
-      await page.goto(route);
-      const section = page.locator(
-        `section[aria-labelledby="event-value-${audience}"]`,
-      );
-      const image = section.locator('img');
-      await image.scrollIntoViewIfNeeded();
-      await expect
-        .poll(() =>
-          image.evaluate(
-            (el: HTMLImageElement, audience) =>
-              el.complete &&
-              el.naturalWidth > 0 &&
-              /-(600|1200)\.(avif|webp)$/.test(el.currentSrc) &&
-              Math.abs(
-                el.naturalWidth / el.naturalHeight -
-                  (audience === 'hosts' ? 4 / 3 : 16 / 9),
-              ) < 0.01,
-            audience,
-          ),
-        )
-        .toBe(true);
-      await expect(section.getByRole('heading', { level: 3 })).toHaveCount(3);
-      await expect(image).not.toHaveAttribute('alt', '');
-      await section.screenshot({
-        style:
-          '.site-header, #ti-sticky-buy, body > a { visibility: hidden !important; }',
-        path: `test-results/value-${audience}-${lang}-390.png`,
-      });
-    }
-  }
-});
-
 test('mobile menu contains both localized event destinations', async ({
   page,
 }) => {
@@ -136,7 +64,7 @@ test('mobile menu contains both localized event destinations', async ({
     await expect(links).toHaveCount(2);
     await expect(links.nth(0)).toHaveAttribute(
       'href',
-      site.routes.tiGames[lang],
+      site.routes.munichMeetup[lang],
     );
     await expect(links.nth(1)).toHaveAttribute(
       'href',

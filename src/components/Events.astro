@@ -1,4 +1,5 @@
 ---
+import { munichMeetup } from '../data/munich-meetup';
 import Heading from './ui/Heading.astro';
 import { routes, type Language } from '../lib/site';
 
@@ -14,20 +15,16 @@ const copy =
         ],
         events: [
           {
-            name: 'Трансформационные игры в Мюнхене',
-            date: '7 ноября 2026',
-            datetime: '2026-11-07',
-            anchor: 'games',
-            photoAlt: 'Участники трансформационной игры за столом',
-            openPhoto: 'Открыть фотографию игры целиком',
+            name: munichMeetup.ru.title,
+            date: munichMeetup.ru.date,
+            datetime: munichMeetup.datetime,
+            anchor: 'munich',
           },
           {
             name: 'Встреча-знакомство и рождественский рынок в Нюрнберге',
-            date: '12 декабря 2026',
-            datetime: '2026-12-12',
+            date: '13 декабря 2026',
+            datetime: '2026-12-13',
             anchor: 'nuremberg',
-            photoAlt: 'Участники встречи на общей фотографии',
-            openPhoto: 'Открыть фотографию встречи целиком',
           },
         ],
       }
@@ -39,41 +36,26 @@ const copy =
         ],
         events: [
           {
-            name: 'Transformationsspiele in München',
-            date: '7. November 2026',
-            datetime: '2026-11-07',
-            anchor: 'games',
-            photoAlt: 'Teilnehmende bei einem Transformationsspiel am Tisch',
-            openPhoto: 'Foto des Spiels vollständig öffnen',
+            name: munichMeetup.de.title,
+            date: munichMeetup.de.date,
+            datetime: munichMeetup.datetime,
+            anchor: 'munich',
           },
           {
             name: 'Kennenlerntreffen und Christkindlesmarkt in Nürnberg',
-            date: '12. Dezember 2026',
-            datetime: '2026-12-12',
+            date: '13. Dezember 2026',
+            datetime: '2026-12-13',
             anchor: 'nuremberg',
-            photoAlt: 'Teilnehmende des Treffens auf einem Gruppenfoto',
-            openPhoto: 'Foto des Treffens vollständig öffnen',
           },
         ],
       };
 const photos = [
-  {
-    preview: '/images/rost-ti-preview.webp',
-    previewSmall: '/images/rost-ti-preview-600.webp',
-    previewAvif: '/images/rost-ti-preview.avif',
-    previewSmallAvif: '/images/rost-ti-preview-600.avif',
-    full: '/images/rost-ti-full.webp',
-    fullAvif: '/images/rost-ti-full.avif',
-    width: 1200,
-    height: 798,
-  },
+  null,
   {
     preview: '/images/rost-networking-preview.webp',
     previewSmall: '/images/rost-networking-preview-600.webp',
     previewAvif: '/images/rost-networking-preview.avif',
     previewSmallAvif: '/images/rost-networking-preview-600.avif',
-    full: '/images/rost-networking-full.webp',
-    fullAvif: '/images/rost-networking-full.avif',
     width: 1200,
     height: 675,
   },
@@ -99,61 +81,77 @@ const photos = [
     </div>
 
     <div class="events__grid">
-      {copy.events.map((event, index) => (
-        <article class="events__item">
-          <a
-            class:list={[
-              'events__frame',
-              { 'events__frame--game': index === 0 },
-            ]}
-            href={
-              index === 0
-                ? routes.tiGames[lang]
-                : `${routes.events[lang]}#${event.anchor}`
-            }
-            aria-label={event.name}
-          >
-            <div
+      {copy.events.map((event, index) => {
+        const photo = photos[index];
+        return (
+          <article class="events__item">
+            <a
               class:list={[
-                'events__photo',
-                { 'events__photo--networking': index === 1 },
+                'events__frame',
+                { 'events__frame--game': index === 0 },
               ]}
+              href={
+                index === 0
+                  ? routes.munichMeetup[lang]
+                  : `${routes.events[lang]}#${event.anchor}`
+              }
+              aria-label={event.name}
             >
-              <picture>
-                <source
-                  type="image/avif"
-                  srcset={`${photos[index].previewSmallAvif} 600w, ${photos[index].previewAvif} 1200w`}
-                  sizes="(min-width: 64rem) 600px, 100vw"
-                />
-                <source
-                  type="image/webp"
-                  srcset={`${photos[index].previewSmall} 600w, ${photos[index].preview} 1200w`}
-                  sizes="(min-width: 64rem) 600px, 100vw"
-                />
-                <img
-                  src={photos[index].preview}
-                  alt=""
-                  width={photos[index].width}
-                  height={photos[index].height}
-                  loading="lazy"
-                  decoding="async"
-                />
-              </picture>
-            </div>
-          </a>
-          <a
-            class="events__link"
-            href={`${routes.events[lang]}#${event.anchor}`}
-          >
-            <Heading as="h3" variant="card" class="events__name">
-              {event.name}
-            </Heading>
-            <time class="events__date" datetime={event.datetime}>
-              {event.date}
-            </time>
-          </a>
-        </article>
-      ))}
+              <div
+                class:list={[
+                  'events__photo',
+                  { 'events__photo--networking': index === 1 },
+                ]}
+              >
+                {photo ? (
+                  <picture>
+                    <source
+                      type="image/avif"
+                      srcset={`${photo.previewSmallAvif} 600w, ${photo.previewAvif} 1200w`}
+                      sizes="(min-width: 64rem) 600px, 100vw"
+                    />
+                    <source
+                      type="image/webp"
+                      srcset={`${photo.previewSmall} 600w, ${photo.preview} 1200w`}
+                      sizes="(min-width: 64rem) 600px, 100vw"
+                    />
+                    <img
+                      src={photo.preview}
+                      alt=""
+                      width={photo.width}
+                      height={photo.height}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </picture>
+                ) : (
+                  <div class="grid h-full min-h-48 place-content-center bg-hero-end p-5 text-center text-brand">
+                    <span class="font-display text-4xl md:text-5xl">
+                      {munichMeetup[lang].city}
+                    </span>
+                    <span class="mt-2 font-semibold">{event.date}</span>
+                  </div>
+                )}
+              </div>
+            </a>
+            <a
+              class="events__link"
+              href={
+                index === 0
+                  ? routes.munichMeetup[lang]
+                  : `${routes.events[lang]}#${event.anchor}`
+              }
+            >
+              <Heading as="h3" variant="card" class="events__name">
+                {event.name}
+              </Heading>
+              <time class="events__date" datetime={event.datetime}>
+                {event.date}
+              </time>
+            </a>
+          </article>
+        );
+      })}
     </div>
   </div>
 </section>

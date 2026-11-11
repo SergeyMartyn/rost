@@ -55,8 +55,8 @@ for (const lang of ['ru', 'de'] as const) {
 test('shared submit button still submits contact forms and dialog restores focus', async ({
   page,
 }) => {
-  await page.goto('/ru/meropriyatiya/transformatsionnye-igry/');
-  const trigger = page.locator('#ti-ticket-card [data-ticket]');
+  await page.goto('/ru/meropriyatiya/');
+  const trigger = page.locator('[data-ticket="nuremberg_meetup"]');
   await trigger.click();
   const submit = page.locator('#ticket-form button[type="submit"]');
   await expect(submit).toHaveClass(/ui-button/);
