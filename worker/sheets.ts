@@ -1,3 +1,4 @@
+import { HOST_EVENT_ID } from '../src/lib/host';
 import type { Deps, OrdersEnv } from './orders';
 import type { HostRegistrationRow } from './host';
 import { TICKETS } from './tickets';
@@ -200,21 +201,35 @@ export function exportHostPayment(
 export async function reconcileSheetPayments(
   env: OrdersEnv,
   deps: Deps,
+  eventIds?: readonly string[],
 ): Promise<void> {
-  if (!env.SHEETS_WEBHOOK_URL || !env.SHEETS_TOKEN) return;
+  if (!env.SHEETS_WEBHOOK_URL || !env.SHEETS_TOKEN || eventIds?.length === 0)
+    return;
+  const now = deps.now();
+  const orderScope = eventIds
+    ? `AND o.event_id IN (${eventIds.map(() => '?').join(', ')})`
+    : '';
+  const includeHosts = !eventIds || eventIds.includes(HOST_EVENT_ID);
+  const hostScope = includeHosts
+    ? `UNION ALL
+       SELECT 'host' AS kind, h.id FROM host_registrations h
+       LEFT JOIN sheet_exports e ON e.export_id='host:'||h.id
+       WHERE h.status='paid' AND (e.export_id IS NULL OR (e.delivered_at IS NULL AND e.next_attempt_at<=?))
+       ${eventIds ? 'AND h.event_id = ?' : ''}`
+    : '';
+  const hostBindings: (number | string)[] = includeHosts ? [now] : [];
+  if (includeHosts && eventIds) hostBindings.push(HOST_EVENT_ID);
   const due = await env.ORDERS.prepare(
     `
     SELECT 'order' AS kind, o.id FROM orders o
     LEFT JOIN sheet_exports e ON e.export_id='order:'||o.id
     WHERE o.status='paid' AND (e.export_id IS NULL OR (e.delivered_at IS NULL AND e.next_attempt_at<=?))
-    UNION ALL
-    SELECT 'host' AS kind, h.id FROM host_registrations h
-    LEFT JOIN sheet_exports e ON e.export_id='host:'||h.id
-    WHERE h.status='paid' AND (e.export_id IS NULL OR (e.delivered_at IS NULL AND e.next_attempt_at<=?))
+    ${orderScope}
+    ${hostScope}
     LIMIT 10
   `,
   )
-    .bind(deps.now(), deps.now())
+    .bind(now, ...(eventIds ?? []), ...hostBindings)
     .all<{ kind: string; id: string }>();
   for (const item of due.results) {
     if (item.kind === 'host') {

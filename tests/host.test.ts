@@ -718,7 +718,7 @@ test('admin CSV lists applications with the amount paid and the remainder', asyn
 });
 
 
-test('idle scheduled maintenance performs three queries without reseeding or changing slots', async () => {
+test('scheduled maintenance skips Munich host tables and runs only order recovery', async () => {
   const t = setup();
   const slotsBefore = t.d1.db.prepare('SELECT * FROM host_table_slots ORDER BY slot_no').all();
   const queries: string[] = [];
@@ -738,7 +738,8 @@ test('idle scheduled maintenance performs three queries without reseeding or cha
     { waitUntil: (p: Promise<unknown>) => pending.push(p) } as unknown as ExecutionContext,
   );
   await Promise.all(pending);
-  assert.equal(queries.length, 3);
+  assert.equal(queries.length, 1);
+  assert.doesNotMatch(queries[0], /host_registrations|host_table_slots/);
   assert.equal(queries.filter((sql) => /INSERT/i.test(sql)).length, 0);
   assert.deepEqual(t.d1.db.prepare('SELECT * FROM host_table_slots ORDER BY slot_no').all(), slotsBefore);
   assert.equal(t.sheetCalls.length, 0);

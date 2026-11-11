@@ -140,6 +140,17 @@ test('cron backfills only paid orders, recovers missed sends, and leaves payment
   );
 });
 
+test('scoped recovery sends an eligible order and leaves Munich for payment callbacks', async () => {
+  const t = setup();
+  t.db.exec(`INSERT INTO orders
+    (id, event_id, ticket_type, customer_name, contact_method, contact_value, amount_cents, status)
+    VALUES ('munich', 'munich-games-2026-11-07', 'guest', 'Test', 'telegram', 'test', 8000, 'paid'),
+           ('nuremberg', 'nuremberg-2026-12-12', 'nuremberg_meetup', 'Test', 'telegram', 'test', 2900, 'paid')`);
+  await reconcileSheetPayments(t.env, t.deps, ['nuremberg-2026-12-12']);
+  assert.deepEqual(t.calls.map((call) => call.row[1]), ['nuremberg']);
+  assert.equal(t.db.prepare('SELECT COUNT(*) AS n FROM sheet_exports').get()!.n, 1);
+});
+
 test('cron recovers an expired delivery lease after an interrupted process', async () => {
   const t = setup();
   t.db
